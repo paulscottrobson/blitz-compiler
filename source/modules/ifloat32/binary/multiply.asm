@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		shortmultiply.asm
+;		Name:		multiply.asm
 ;		Purpose:	32x32 bit integer multiplication, 32 bit result with rounding and shift
-;		Created:	11th April 2023
+;		Created:	1st April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -14,7 +14,7 @@
 
 ; ************************************************************************************************
 ;
-;		Multiply stack entry A by stack entry B. If necessary right shifts. Returns on 
+;		Multiply stack entry X by stack entry X+1. If necessary right shifts. Returns on 
 ;		exit the number of left shifts required to fix it up. Calculates sign of result.
 ;
 ;		Does not change exponent.
@@ -23,35 +23,33 @@
 
 MultiplyShort:
 		phy 								; save Y
-		ldx 	#UseAMantissa
-		jsr 	FloatCopyToCX 				; copy A to C
-		jsr 	FloatSetZeroMantissaOnlyX	; set A to zero
+		jsr 	NSMShiftUpTwo 				; copy S[X] to S[X+2]
+		jsr 	NSMSetZeroMantissaOnly 		; set mantissa S[X] to zero
 		ldy 	#0 							; Y is the shift count.
 		;
 		;		Main multiply loop.
 		;				
 _I32MLoop:
-		lda 	CMantissa0 					; check C is zero
-		ora 	CMantissa1
-		ora 	CMantissa2
-		ora 	CMantissa3
+		lda 	NSMantissa0+2,x 			; check S[X+2] is zero
+		ora 	NSMantissa1+2,x
+		ora 	NSMantissa2+2,x
+		ora 	NSMantissa3+2,x
 		beq 	_I32MExit 					; exit if zero
 
-		lda 	CMantissa0 					; check LSB of n1 
-		lsr 	a
-		bcc 	_I32MNoAdd
+		lda 	NSMantissa0+2,x 			; check LSB of n1 
+		and 	#1
+		beq 	_I32MNoAdd
 		;
-		jsr 	AddBtoA 					; if so add B to A.
+		jsr 	FloatAddTopTwoStack 		; if so add S[X+1] to S[X+0]
 		;
-		lda 	AMantissa3	 				; has Mantissa overflowed ?
+		lda 	NSMantissa3,x 				; has MantissaA overflowed ?
 		bpl 	_I32MNoAdd
 		;
 		;		Overflow. Shift result right, increment the shift count, keeping the
 		; 		result in 31 bits - now we lose some precision though.
 		;
 _I32ShiftRight:		
-		ldx 	#UseAMantissa
-		jsr 	FloatShiftRight 			; shift S[X] right
+		jsr 	NSMShiftRight 				; shift S[X] right
 		iny 								; increment shift count
 		bra 	_I32MShiftUpper 			; n2 is doubled by default.
 		;

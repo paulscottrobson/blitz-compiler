@@ -29,6 +29,7 @@ all: floats
 
 floats :
 	python $(SCRIPTDIR)floats.py 5 8 >modules$(S)ifloat32$(S)generated$(S)testnumbers.dat
+	python $(SCRIPTDIR)constants.py
 	python $(SCRIPTDIR)build.py ifloat32 machine_$(HARDWARE) -o_floats.asm -mifloat32
 	$(ASM) $(ASMOPTS) _floats.asm -o build$(S)floats.prg
 	$(CCOPY) build$(S)floats.prg $(BINDIR)

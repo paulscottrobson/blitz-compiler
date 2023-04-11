@@ -3,7 +3,7 @@
 ;
 ;		Name:		normalise.asm
 ;		Purpose:	Normalise FP value
-;		Created:	11th April 2023
+;		Created:	1st April 2023
 ;		Reviewed: 	No
 ;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
@@ -14,15 +14,15 @@
 
 ; ************************************************************************************************
 ;
-;							Normalise AMantissa,X, return Z set if zero
+;									  Normalise Stack[X]
 ;
 ; ************************************************************************************************
 
-FloatNormaliseX:
-		jsr 	FloatIsZeroX 				; if zero exit 
+NSNormalise:
+		jsr 	NSMIsZero 					; if zero exit 
 		bne 	_NSNormaliseOptimise 		; if so, normalise it.
-		asl 	AStatus,x 					; clear the sign bit.
-		ror 	AStatus,x 					; (no -0)
+		asl 	NSStatus,x 					; clear the sign bit.
+		ror 	NSStatus,x 					; (no -0)
 		lda 	#0 							; set Z flag
 		rts
 		;
@@ -30,31 +30,31 @@ FloatNormaliseX:
 		;		(providing bit 7 of 2nd byte is not set)
 		;
 _NSNormaliseOptimise:						
-		lda 	AMantissa3,x 				; upper byte zero ?
+		lda 	NSMantissa3,x 				; upper byte zero ?
 		bne 	_NSNormaliseLoop
-		lda 	AMantissa2,x 				; byte normalise
+		lda 	NSMantissa2,x 				; byte normalise
 		bmi 	_NSNormaliseLoop 			; can't do it if bit 7 set of 2
 
-		sta 	AMantissa3,x
-		lda 	AMantissa1,x
-		sta 	AMantissa2,x
-		lda 	AMantissa0,x
-		sta 	AMantissa1,x
-		stz 	AMantissa0,x
+		sta 	NSMantissa3,x
+		lda 	NSMantissa1,x
+		sta 	NSMantissa2,x
+		lda 	NSMantissa0,x
+		sta 	NSMantissa1,x
+		stz 	NSMantissa0,x
 		;
-		lda 	AExponent,x
+		lda 	NSExponent,x
 		sec
 		sbc 	#8
-		sta 	AExponent,x
+		sta 	NSExponent,x
 		bra 	_NSNormaliseOptimise
 		;
 		;		Normalise by bit
 		;
 _NSNormaliseLoop:		
-		bit 	AMantissa3,x 				; bit 30 set ?
+		bit 	NSMantissa3,x 				; bit 30 set ?
 		bvs 	_NSNExit 					; exit if so with Z flag clear
-		jsr 	FloatShiftLeftX 				; shift mantissa left
-		dec 	AExponent,x 				; adjust exponent
+		jsr 	NSMShiftLeft 				; shift mantissa left
+		dec 	NSExponent,x 				; adjust exponent
 		bra 	_NSNormaliseLoop
 _NSNExit:
 		lda 	#$FF 						; clear Z flag

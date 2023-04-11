@@ -2,10 +2,10 @@
 ; ************************************************************************************************
 ;
 ;		Name:		multiply.asm
-;		Purpose:	Multiply BMantissa by AMantissa
-;		Created:	11th April 2023
+;		Purpose:	Multiply Stack[x] by Stack[x+1] floating point
+;		Created:	1st April 2023
 ;		Reviewed: 	No
-;		Author : 	Paul Robson (paul@robsoFloat.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
@@ -19,24 +19,27 @@
 ; ************************************************************************************************
 
 FloatMultiply:	
-		ldx 	#UseAMantissa
-		jsr 	FloatNormaliseX				; normalise A and exit if zero
+		pha
+		jsr 	NSNormalise		 			; normalise S[X] and exit if zero
 		beq 	_FDExit 					; return zero if zero (e.g. zero*something)
-		ldx 	#UseBMantissa
-		jsr 	FloatNormaliseX				; normalise B and error if zero.
+		inx 
+		jsr 	NSNormalise		 			; normalise S[x+1] and error if zero.
+		dex
+		cmp 	#0
 		beq 	_FDSetZero 					
 
 		jsr 	MultiplyShort 				; calculate the result.		
-		adc 	AExponent 					; calculate exponent including the shift.
+		adc 	NSExponent,x 				; calculate exponent including the shift.
 		clc
-		adc 	BExponent
-		sta 	AExponent
+		adc 	NSExponent+1,x
+		sta 	NSExponent,x
 		bra 	_FDExit
 
 _FDSetZero:
-		jsr 	FloatSetZeroX 				; return 0
+		jsr 	NSMSetZero 					; return 0
 _FDExit:
-		jsr 	FloatNormaliseX 			; normalise the result
+		jsr 	NSNormalise 				; normalise the result
+		pla
 		rts
 
 		.send 	code

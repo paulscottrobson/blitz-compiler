@@ -97,7 +97,7 @@ _ENNoRestart:
 		beq 	_ESTAHighState
 		cmp 	#ESTA_Decimal
 		beq 	_ESTADecimalState
-		jmp 	Unimplemented 				; should not happen !
+		.debug 								; should not happen !
 		
 		; --------------------------------------------------------------------
 		;
@@ -178,7 +178,8 @@ _ESTADecimalState:
 		sec
 		rts
 _ESTADSFail:
-		.error_range
+		clc
+		rts
 		
 		; --------------------------------------------------------------------
 		;

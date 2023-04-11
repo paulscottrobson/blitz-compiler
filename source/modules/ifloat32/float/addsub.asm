@@ -20,7 +20,7 @@
 
 FloatSubtract:
 		lda 	NSStatus+1,x 				; negate FPB
-		eor 	#NSBIsNegative
+		eor 	#$80
 		sta 	NSStatus+1,x				; and fall through.
 
 ; ************************************************************************************************
@@ -75,7 +75,7 @@ _FAExponentsEqual:
 		;
 		;		"Add" code, e.g. both have same sign
 		;
-		jsr 	AddTopTwoStack 				; do the add of the mantissae
+		jsr 	FloatAddTopTwoStack 		; do the add of the mantissae
 		lda 	NSMantissa3,x 				; do we have an overflow in Mantissa A ?
 		bpl 	_FAExit 					; if no, we are done.
 		jsr 	NSMShiftRight 				; shift A right, renormalising it.
@@ -85,7 +85,7 @@ _FAExponentsEqual:
 		;		"Subtract" code, e.g. both have different sign.
 		;
 _FADifferentSigns:
-		jsr 	SubTopTwoStack 				; subtract mantissa B from A
+		jsr 	FloatSubTopTwoStack 		; subtract mantissa B from A
 		lda 	NSMantissa3,x 				; is the result negative ?
 		bpl 	_FACheckZero 				; if no, check for -0
 		jsr 	NSMNegate 					; netate result

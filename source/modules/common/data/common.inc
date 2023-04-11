@@ -25,6 +25,10 @@ ZeroPageMandatory = $40
 ;		Variables that can go anywhere
 ;
 MemoryStorage = $400
+;
+;		Size of stack
+;
+MathStackSize = 8
 
 ; ************************************************************************************************
 ;

@@ -42,9 +42,12 @@ FloatDivide:
 		sta 	NSExponent,x
 _FDExit:
 		pla
+		clc
 		rts
 _FDZero:
-		.error_divzero
+		pla
+		sec
+		rts
 
 		.send 	code
 
