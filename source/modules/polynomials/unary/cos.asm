@@ -18,12 +18,10 @@
 ;
 ; ************************************************************************************************
 
-UnaryCosine: 	
-		
-CalculateCosine:		
+FloatCosine: 	
 		.pushfloat Const_PiDiv2 			; add PI/2
 		jsr 	FloatAdd
-		jmp 	CalculateSine
+		jmp 	FloatSine
 
 		.send 	code
 

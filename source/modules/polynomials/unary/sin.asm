@@ -18,9 +18,7 @@
 ;
 ; ************************************************************************************************
 
-UnarySine: 	
-
-CalculateSine:
+FloatSine:
 		lda 	NSStatus,x 					; save sign
 		pha
 		stz 	NSStatus,x 					; make +ve
