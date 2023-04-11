@@ -27,17 +27,22 @@ HARDWARE = x16
 
 all: float
 
-float :
-	python $(SCRIPTDIR)constants.py
-	python $(SCRIPTDIR)mathconstants.py
-	python $(SCRIPTDIR)coremaths.py
+float : prelim
+	python $(SCRIPTDIR)floatcom.py >modules$(S)ifloat32$(S)generated$(S)testcode.dat
 	python $(SCRIPTDIR)build.py ifloat32 polynomials machine_$(HARDWARE) -o_float.asm -mifloat32
 	$(ASM) $(ASMOPTS) _float.asm -o build$(S)float.prg
 	$(CCOPY) build$(S)float.prg $(BINDIR)
 	$(CDEL) dump*.bin
-#	$(HRUNEMU) -prg build$(S)float.prg,801 -run
+	$(HRUNEMU) -prg build$(S)float.prg,801 -run
 #	python $(SCRIPTDIR)float.py
-	
+
+#
+#		Do stuff before building.
+#
+prelim: 
+	python $(SCRIPTDIR)constants.py
+	python $(SCRIPTDIR)mathconstants.py
+	python $(SCRIPTDIR)coremaths.py
 #
 #		Update tools
 #	
