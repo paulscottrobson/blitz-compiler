@@ -14,7 +14,20 @@
 
 		.if ismain_ifloat32 == 1
 Boot:	
+		ldx 	#5
+_CopyNumbers:
+		lda 	TestConstants,x
+		sta 	AMantissa0,x		
+		lda 	TestConstants+6,x
+		sta 	BMantissa0,x		
+		dex 
+		bpl 	_CopyNumbers
+
 		jmp 	$FFFF
+
+
+TestConstants:
+		.include "../generated/testnumbers.dat"
 
 		.endif		
 		.send code

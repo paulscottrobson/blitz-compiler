@@ -10,6 +10,13 @@
 # *******************************************************************************************
 
 import os,sys,math
+from usedump import *
+
+# *******************************************************************************************
+#
+#									Float conversion class
+#
+# *******************************************************************************************
 
 class Float(object):
 	#
@@ -54,3 +61,10 @@ if __name__ == "__main__":
 	for n in sys.argv[1:]:
 		x = f.toFloat(float(n),False)
 		print("\t.dword\t${0:08x} ; {3}\n\t.byte\t${1:02x},${2:02x}".format(x[0],x[1],x[2],n))
+	#
+	#		Access dump file.
+	#
+	if len(sys.argv) == 1:
+		dump = MemoryDump()
+		print("A",dump.readFloat("AMantissa0"))
+		print("B",dump.readFloat("BMantissa0"))

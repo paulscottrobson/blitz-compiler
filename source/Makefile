@@ -28,11 +28,13 @@ HARDWARE = x16
 all: floats
 
 floats :
+	python $(SCRIPTDIR)floats.py 5 8 >modules$(S)ifloat32$(S)generated$(S)testnumbers.dat
 	python $(SCRIPTDIR)build.py ifloat32 machine_$(HARDWARE) -o_floats.asm -mifloat32
 	$(ASM) $(ASMOPTS) _floats.asm -o build$(S)floats.prg
 	$(CCOPY) build$(S)floats.prg $(BINDIR)
 	$(CDEL) dump*.bin
 	$(HRUNEMU) -prg build$(S)floats.prg,801 -run
+	python $(SCRIPTDIR)floats.py
 	
 #
 #		Update tools
