@@ -28,13 +28,14 @@ HARDWARE = x16
 all: float
 
 float : prelim
-	python $(SCRIPTDIR)floatcom.py >modules$(S)ifloat32$(S)generated$(S)testcode.dat
+	python $(SCRIPTDIR)test_binary.py >build$(S)temp$(S)float.code
+	python $(SCRIPTDIR)floatcom.py build$(S)temp$(S)float.code >modules$(S)ifloat32$(S)generated$(S)testcode.dat
 	python $(SCRIPTDIR)build.py ifloat32 polynomials machine_$(HARDWARE) -o_float.asm -mifloat32
 	$(ASM) $(ASMOPTS) _float.asm -o build$(S)float.prg
 	$(CCOPY) build$(S)float.prg $(BINDIR)
 	$(CDEL) dump*.bin
-	$(HRUNEMU) -prg build$(S)float.prg,801 -run
-#	python $(SCRIPTDIR)float.py
+	$(RUNEMU) -prg build$(S)float.prg,801 -run
+	python $(SCRIPTDIR)stack.py
 
 #
 #		Do stuff before building.
@@ -51,3 +52,8 @@ tools:
 	cd $(ROM_REPO) ; git pull ; make
 	$(CCOPY) $(EMU_REPO)$(S)x16emu$(APPSTEM) $(BINDIR)
 	$(CCOPY) $(ROM_REPO)$(S)build$(S)x16$(S)rom.bin $(BINDIR)
+#
+#		Show stack
+#
+stack:
+	python $(SCRIPTDIR)stack.py

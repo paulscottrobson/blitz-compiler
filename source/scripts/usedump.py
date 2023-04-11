@@ -56,3 +56,4 @@ class MemoryDump(object):
 		addr = self.convert(addr)
 		d = [self.readLong(addr),self.read(addr+4),self.read(addr+5)]
 		return self.f.toDecimal(d)
+		

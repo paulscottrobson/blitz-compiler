@@ -85,6 +85,7 @@ FloatSetMantissa:
 		stz 	NSMantissa1,x
 		stz 	NSMantissa2,x
 		stz 	NSMantissa3,x
+		stz 	NSStatus,x
 		rts
 				
 ; ************************************************************************************************

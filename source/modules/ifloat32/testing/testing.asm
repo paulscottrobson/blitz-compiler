@@ -18,6 +18,17 @@ Boot:	ldx 	#255
 
 		.exitemu
 
+FPAssertCheck:
+		cpx 	#0
+		bne 	_FPACFail
+		lda 	NSMantissa0,x
+		beq 	_FPACFail
+		dex
+		rts
+_FPACFail:
+		.debug
+		bra 	_FPACFail
+
 ; ************************************************************************************************
 ;
 ;								Push following FP constant on stack

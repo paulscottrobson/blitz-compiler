@@ -43,6 +43,7 @@ zTemp2:
 ;
 ; ************************************************************************************************
 
+		.align 16
 NSStatus: 									; Status bits of stack.
 		.fill 	MathStackSize
 NSMantissa0: 								; Mantissa on stack (address in 0,1 for string)

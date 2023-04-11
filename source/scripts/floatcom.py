@@ -16,6 +16,17 @@ from floats import *
 class FPCompiler(object):
 	def __init__(self):
 		self.float = Float()
+		self.mapping = { "+":"FloatAdd","-":"FloatSubtract","*":"FloatMultiply","/":"FloatDivide",
+						 "=":"CompareEqual",">":"CompareGreater","<":"CompareLess",
+						 "<>":"CompareNotEqual",">=":"CompareGreaterEqual","<=":"CompareLessEqual",
+						 "f.cmp":"FloatCompare",
+						 "assert":"FPAssertCheck"
+		}
+	#
+	def compileGroup(self,g):
+		for x in g.split():
+			if x != "":
+				self.compile(x)
 	#
 	def compile(self,s):
 		m = re.match("^\\-?\\d+$",s)
@@ -26,20 +37,25 @@ class FPCompiler(object):
 		if m is not None:
 			self.compileConst(float(s))
 			return
+		if s in self.mapping:
+			print("\tjsr\t{0}".format(self.mapping[s]))
+			return 
 
-		assert "Bad command "+s
+		assert False,"Bad command "+s
 	#
 	def compileConst(self,n):
 		print("\tjsr\tFPPushConstant\t; {0}".format(n))
 		x = self.float.toFloat(n,False)
 		print("\t.dword\t${0:08x}".format(x[0]))
 		print("\t.byte\t${0:02x},${1:02x}".format(x[1],x[2]))
-
+	#
+	def compileFile(self,f):
+		for l in open(f).readlines():
+			self.compileGroup(l.strip())
 
 
 
 
 fc = FPCompiler()
-fc.compile("24.358")
-fc.compile("42")
-fc.compile("-3.1415926")
+for f in sys.argv[1:]:
+	fc.compileFile(f)

@@ -34,7 +34,6 @@ FloatAdd:
 		pha
 		phy
 		dex
-		
 		jsr 	FloatNormalise 				; normalise S[X]
 		beq 	_FAReturn1
 

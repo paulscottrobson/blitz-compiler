@@ -14,11 +14,31 @@
 
 ; ************************************************************************************************
 ;
+;										Compare checks
+;
+; ************************************************************************************************
+
+CompareEqual:
+		lda 	NSMantissa0,x
+		bne 	ReturnFalse
+
+ReturnTrue:
+		lda 	#1
+		sta 	NSMantissa0,x
+		lda 	#$80
+		sta 	NSStatus,x
+		rts
+ReturnFalse:
+		stz 	NSMantissa0,x
+		rts				
+		
+; ************************************************************************************************
+;
 ;						Compare Stack vs 2nd. Return 255,0 or 1 in A
 ;
 ; ************************************************************************************************
 
-CompareFloat:	
+FloatCompare:	
 		jsr 	FloatSubtract 				; Calculate S[X]-S[X+1]
 		;
 		;		At this point the mantissae are equal. If we were comparing integers
@@ -40,7 +60,9 @@ CompareFloat:
 _FCNegative:		
 		lda 	#$FF 						; and return -1 if result<0
 _FCExit:
+		jsr 	FloatSetByte 				; set the result 255,0,1
 		rts
+
 
 		.send 	code
 
