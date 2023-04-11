@@ -20,7 +20,6 @@
 
 FloatDivide:	
 		pha
-		inx 
 		jsr 	FloatNormalise		 		; normalise S[x+1] and error if zero.
 		dex
 		cmp 	#0

@@ -20,10 +20,11 @@
 
 FloatMultiply:	
 		pha
-		jsr 	FloatNormalise		 			; normalise S[X] and exit if zero
+		dex
+		jsr 	FloatNormalise		 		; normalise S[X] and exit if zero
 		beq 	_FDExit 					; return zero if zero (e.g. zero*something)
 		inx 
-		jsr 	FloatNormalise		 			; normalise S[x+1] and error if zero.
+		jsr 	FloatNormalise		 		; normalise S[x+1] and error if zero.
 		dex
 		cmp 	#0
 		beq 	_FDSetZero 					
@@ -36,7 +37,7 @@ FloatMultiply:
 		bra 	_FDExit
 
 _FDSetZero:
-		jsr 	FloatSetZero 					; return 0
+		jsr 	FloatSetZero 				; return 0
 _FDExit:
 		jsr 	FloatNormalise 				; normalise the result
 		pla

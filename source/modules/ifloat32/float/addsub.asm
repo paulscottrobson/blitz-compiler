@@ -19,9 +19,9 @@
 ; ************************************************************************************************
 
 FloatSubtract:
-		lda 	NSStatus+1,x 				; negate FPB
+		lda 	NSStatus,x 					; negate top of stack
 		eor 	#$80
-		sta 	NSStatus+1,x				; and fall through.
+		sta 	NSStatus,x					; and fall through.
 
 ; ************************************************************************************************
 ;
@@ -33,6 +33,8 @@ FloatSubtract:
 FloatAdd:
 		pha
 		phy
+		dex
+		
 		jsr 	FloatNormalise 				; normalise S[X]
 		beq 	_FAReturn1
 
