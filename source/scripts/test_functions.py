@@ -36,11 +36,11 @@ for n in range(0,30):
 		a2 = a2 if random.randint(0,1) == 0 else a2+1
 		print("{0:.8f} atn {1:.8f} - abs 0.001 f.cmp assert".format(a2,math.atan(a2)))
 
-	if True:
+	if False:
 		a2 = random.randint(-200,200)/100
 		print("{0:.8f} exp {1:.8f} - abs 0.001 f.cmp assert".format(a2,pow(math.e,a2)))
 
-	if False:
+	if True:
 		a2 = random.randint(10,10000)/100
 		print("{0:.8f} log {1:.8f} - abs 0.001 f.cmp assert".format(a2,math.log(a2,math.e)))
 

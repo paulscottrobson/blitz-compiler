@@ -18,9 +18,8 @@
 ;
 ; ************************************************************************************************
 
-UnaryLog: 	
-
-LogCode:		
+FloatLogarithm: 	
+	
 		lda 	NSStatus,x 					; check > 0
 		bmi 	_ULRange
 		jsr 	FloatIsZero
