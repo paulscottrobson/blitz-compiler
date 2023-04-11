@@ -25,14 +25,16 @@ class Builder(object):
 		self.target = [x[2:] for x in sys.argv if x.startswith("-o")][0]
 		self.main = [x[2:] for x in sys.argv if x.startswith("-m")][0]
 		self.scanForFiles()
-
+	#
+	#		Scan source tre for required modules.
+	#
 	def scanForFiles(self):
 		for root,dirs,files in os.walk("."):
 			isOk = True
 			if root.find("modules") >= 0:
 				parts = root.split(os.sep)
 				if len(parts) == 3:
-					isOk = parts[-1] in sys.argv and not parts[-1].startswith("_")
+					isOk = (parts[-1] in sys.argv and not parts[-1].startswith("_")) or parts[-1] == "common"
 					self.defines.append("module_{0} = {1}".format(parts[-1],1 if isOk else 0))
 					self.defines.append("ismain_{0} = {1}".format(parts[-1],1 if parts[-1] == self.main else 0))
 			if isOk:

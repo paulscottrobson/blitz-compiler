@@ -14,7 +14,7 @@
 
 		.if ismain_ifloat32 == 1
 Boot:	
-		.debug
+		jmp 	$FFFF
 
 		.endif		
 		.send code

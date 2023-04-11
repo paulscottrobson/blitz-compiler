@@ -32,7 +32,7 @@ floats :
 	$(ASM) $(ASMOPTS) _floats.asm -o build$(S)floats.prg
 	$(CCOPY) build$(S)floats.prg $(BINDIR)
 	$(CDEL) dump*.bin
-	$(RUNEMU) -prg build$(S)floats.prg,801 -run
+	$(HRUNEMU) -prg build$(S)floats.prg,801 -run
 	
 #
 #		Update tools

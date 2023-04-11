@@ -5,14 +5,14 @@ module_runtime = 0
 ismain_runtime = 0
 module_ifloat32 = 1
 ismain_ifloat32 = 1
-module_common = 0
+module_common = 1
 ismain_common = 0
 
 	.include	"./modules/common/data/common.inc"
 	.include	"./modules/common/data/data.inc"
 	.include	"./modules/common/boot.end/macros.inc"
 	.include	"./modules/common/data/system.inc"
-	.include	"./modules/ifloat32/testing.inc"
+	.include	"./modules/ifloat32/testing/testing.inc"
 	.include	"./modules/common/boot.end/00start.asm"
-	.include	"./modules/ifloat32/testing.asm"
+	.include	"./modules/ifloat32/testing/testing.asm"
 	.include	"./modules/common/boot.end/zzEnd.asm"
