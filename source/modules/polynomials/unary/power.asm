@@ -27,12 +27,11 @@ FloatPower:
 		iny
 		jsr 	CopyFloatXY
 
-
 		inx 							; 2 = Log(0)
 		inx
 
 		jsr 	FloatLogarithm
-
+		bcs 	_FPWExit
 	
 		jsr 	FloatMultiply			; Multiply by original 1, into 1.
 
@@ -44,7 +43,7 @@ FloatPower:
 		dex  							; Exponent code.
 
 		jsr 	FloatExponent				
-		clc
+_FPWExit:		
 		rts
 		
 		.send 	code

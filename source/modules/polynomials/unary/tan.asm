@@ -19,7 +19,6 @@
 ; ************************************************************************************************
 
 FloatTangent: 	
-
 		txa 								; sin -> +1
 		tay
 		iny
@@ -36,9 +35,9 @@ FloatTangent:
 		inx
 		inx
 		jsr 	FloatCosine 				
-
 		
 		jsr 	FloatDivide 				; calculate sin/cos
+		bcs 	_FTExit 					; divide by zero
 
 		txa 								; copy result down.
 		tay
@@ -47,6 +46,7 @@ FloatTangent:
 		dex
 
 		clc
+_FTExit:		
 		rts		
 
 

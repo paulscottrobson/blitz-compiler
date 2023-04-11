@@ -19,7 +19,6 @@
 ; ************************************************************************************************
 
 FloatArcTan:
-		
 		jsr 	FloatNormalise 					; normalise x
 
 		lda 	NSStatus,x 						; save sign, make absolute
@@ -38,6 +37,8 @@ FloatArcTan:
 		jsr 	FloatSetByte
 		inx
 		jsr 	FloatDivide
+		bcs 	_FATError
+
 		jsr 	CoreAtn 						; calculate the root
 		jsr 	CompletePolynomial
 		jsr 	FloatNegate 					; make -ve
@@ -56,6 +57,12 @@ _UAComplete:
 		sta 	NSStatus,x
 		clc
 		rts
+
+_FATError:
+		pla
+		sec
+		rts
+
 		.send 	code
 
 ; ************************************************************************************************

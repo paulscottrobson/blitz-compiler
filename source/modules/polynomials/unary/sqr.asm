@@ -20,9 +20,11 @@
 
 FloatSquareRoot: 
 		jsr 	FloatLogarithm
+		bcs 	_FSQExit
 		dec 	NSExponent,x
 		jsr 	FloatExponent
 		clc
+_FSQExit:		
 		rts
 
 		.send 	code

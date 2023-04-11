@@ -45,7 +45,8 @@ FloatLogarithm:
 		.pushfloat Const_sqrt_2
 		inx
 
-		jsr 	FloatDivide
+		jsr 	FloatDivide 				; if zero, error.
+		bcs 	_ULRangePla
 
 		jsr 	FloatNegate 				; subtract from 1
 		inx
@@ -78,6 +79,8 @@ _LogNotNeg:
 		clc
 		rts
 
+_ULRangePla:
+		pla
 _ULRange:
 		sec
 		rts
