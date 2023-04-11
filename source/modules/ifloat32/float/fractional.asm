@@ -3,7 +3,7 @@
 ;
 ;		Name:		fractional.asm
 ;		Purpose:	Extract fractional part 
-;		Created:	1st April 2023
+;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
@@ -24,7 +24,7 @@ FloatFractionalPart:
 		lda 	NSStatus,x 					; take absolute value 
 		and 	#$7F
 		sta 	NSStatus,x
-		jsr 	NSNormalise
+		jsr 	FloatNormalise
 
 		lda 	NSExponent,x 				; calculate exponent-$E0 = digits to blank
 		sec
@@ -52,7 +52,7 @@ FloatFractionalPart:
 		jsr 	_FFPPartial
 		sta 	NSMantissa0,x
 		
-		jsr 	NSMIsZero 					; zeroed check.
+		jsr 	FloatIsZero 					; zeroed check.
 		bne 	_FFPExit
 
 _FFPZero:

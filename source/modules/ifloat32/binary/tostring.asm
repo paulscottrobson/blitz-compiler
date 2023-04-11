@@ -3,7 +3,7 @@
 ;
 ;		Name : 		tostring.asm
 ;		Author :	Paul Robson (paul@robsons.org.uk)
-;		Created : 	1st April 2023
+;		Created : 	11th April 2023
 ;		Reviewed :	No
 ;		Purpose :	Convert Integer to String
 ;
@@ -64,7 +64,7 @@ _CI32DivideConvert:
 
 		jsr 	NSMCopyPlusTwoToZero 		; Copy the divide result into place.
 		;
-		jsr 	NSMIsZero 					; is it zero ?
+		jsr 	FloatIsZero 					; is it zero ?
 		beq 	_CI32NoRecurse 				; if so, don't recursively call.
 		;
 		lda 	NSMantissa0+1,x 			; this is the base which is not changed by divide

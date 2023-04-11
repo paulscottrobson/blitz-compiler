@@ -3,7 +3,7 @@
 ;
 ;		Name:		simple.asm
 ;		Purpose:	Simple binary operations
-;		Created:	1st April 2023
+;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -70,7 +70,7 @@ _DiffSigns:
 		sta 	NSStatus,x
 		jsr 	NSMNegateMantissa 			; negate the mantissa and exit
 _AddExit:
-		jsr 	NSMIsZero 					; check for -0
+		jsr 	FloatIsZero 					; check for -0
 		bne 	_AddNonZero
 		stz 	NSStatus,x
 _AddNonZero:		

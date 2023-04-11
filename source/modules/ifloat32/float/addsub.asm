@@ -33,11 +33,11 @@ FloatSubtract:
 FloatAdd:
 		pha
 		phy
-		jsr 	NSNormalise 				; normalise S[X]
+		jsr 	FloatNormalise 				; normalise S[X]
 		beq 	_FAReturn1
 
 		inx 								; normalise S[X+1]
-		jsr 	NSNormalise
+		jsr 	FloatNormalise
 		dex
 		cmp 	#0
 		beq 	_FAExit 					; if so, just return A
@@ -91,7 +91,7 @@ _FADifferentSigns:
 		jsr 	NSMNegate 					; netate result
 		jsr 	NSMNegateMantissa 			; negate (2'c) the mantissa
 _FACheckZero:		
-		jsr 	NSMIsZero	 				; check for -0
+		jsr 	FloatIsZero	 				; check for -0
 		bne 	_FAExit
 		stz 	NSStatus,x
 		bra 	_FAExit

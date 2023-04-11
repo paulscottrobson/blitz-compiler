@@ -3,7 +3,7 @@
 ;
 ;		Name:		tostring.asm
 ;		Purpose:	Convert number to string
-;		Created:	1st April 2023
+;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -18,7 +18,7 @@
 ;
 ; ************************************************************************************************
 
-ConvertNumberToString:
+FloatToString:
 		phy 								; save code position
 		sta 	decimalPlaces	 			; save number of DPs.
 		stz 	dbOffset 					; offset into decimal buffer = start.
@@ -47,7 +47,7 @@ _CNTSNotFloat:
 
 		jsr 	MakePlusTwoString 			; do the integer part.
 		jsr 	FloatFractionalPart 		; get the fractional part
-		jsr 	NSNormalise					; normalise , exit if zero
+		jsr 	FloatNormalise					; normalise , exit if zero
 		beq 	_CNTSExit
 		lda 	#"."
 		jsr 	WriteDecimalBuffer 			; write decimal place
@@ -61,7 +61,7 @@ _CNTSDecimal:
 		jsr 	FloatMultiply
 		jsr 	MakePlusTwoString 			; put the integer e.g. next digit out.
 		jsr 	FloatFractionalPart 		; get the fractional part
-		jsr 	NSNormalise 				; normalise it.
+		jsr 	FloatNormalise 				; normalise it.
 		;
 		lda 	NSExponent,x 				; gone to zero, exit.
 		cmp 	#$D0 						; very small remainder, so don't bother.

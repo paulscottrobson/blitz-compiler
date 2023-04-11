@@ -3,7 +3,7 @@
 ;
 ;		Name:		number.asm
 ;		Purpose:	Number utilities
-;		Created:	1st April 2023
+;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -122,7 +122,7 @@ NSMShiftRight:
 ;
 ; ************************************************************************************************
 
-NSMIsZero:
+FloatIsZero:
 		lda 	NSMantissa3,x
 		ora		NSMantissa2,x
 		ora		NSMantissa1,x

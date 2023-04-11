@@ -3,7 +3,7 @@
 ;
 ;		Name:		compare.asm
 ;		Purpose:	X[S] to X[S+1]
-;		Created:	1st April 2023
+;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;

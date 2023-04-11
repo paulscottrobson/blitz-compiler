@@ -3,7 +3,7 @@
 ;
 ;		Name:		normalise.asm
 ;		Purpose:	Normalise FP value
-;		Created:	1st April 2023
+;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
@@ -18,8 +18,8 @@
 ;
 ; ************************************************************************************************
 
-NSNormalise:
-		jsr 	NSMIsZero 					; if zero exit 
+FloatNormalise:
+		jsr 	FloatIsZero 				; if zero exit 
 		bne 	_NSNormaliseOptimise 		; if so, normalise it.
 		asl 	NSStatus,x 					; clear the sign bit.
 		ror 	NSStatus,x 					; (no -0)

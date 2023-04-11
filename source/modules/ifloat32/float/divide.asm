@@ -3,7 +3,7 @@
 ;
 ;		Name:		divide.asm
 ;		Purpose:	Divide Stack[x] by Stack[x+1] floating point
-;		Created:	1st April 2023
+;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
@@ -21,17 +21,17 @@
 FloatDivide:	
 		pha
 		inx 
-		jsr 	NSNormalise		 			; normalise S[x+1] and error if zero.
+		jsr 	FloatNormalise		 			; normalise S[x+1] and error if zero.
 		dex
 		cmp 	#0
 		beq 	_FDZero 					
 
-		jsr 	NSNormalise		 			; normalise S[X] and exit if zero
+		jsr 	FloatNormalise		 			; normalise S[X] and exit if zero
 		beq 	_FDExit 					; return zero if zero (e.g. zero/something)
 
 		jsr 	Int32ShiftDivide 			; do the shift division for dividing.
 		jsr 	NSMCopyPlusTwoToZero 		; copy the mantissa down
-		jsr		NSNormalise 				; renormalise
+		jsr		FloatNormalise 				; renormalise
 		jsr 	CalculateSign 				; calculate result sign
 
 		lda 	NSExponent,x 				; calculate exponent

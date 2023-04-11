@@ -3,7 +3,7 @@
 ;
 ;		Name:		integer.asm
 ;		Purpose:	Make FPA Denormalised integer
-;		Created:	1st April 2023
+;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
@@ -23,10 +23,10 @@ FloatIntegerPart:
 		;
 		lda 	NSExponent,x 				; is it integer already ?
 		beq 	_FIPExit 					; if so do nothing
-		jsr 	NSMIsZero 					; is it zero ?
+		jsr 	FloatIsZero 					; is it zero ?
 		beq 	_FIPZero 					; if so return zero.
 		;
-		jsr 	NSNormalise 				; normalise
+		jsr 	FloatNormalise 				; normalise
 		beq 	_FIPZero 					; normalised to zero, exit zero
 		;
 _FIPShift:
@@ -38,7 +38,7 @@ _FIPShift:
 		bra 	_FIPShift
 
 _FIPCheckZero:
-		jsr 	NSMIsZero 					; avoid -0 problem
+		jsr 	FloatIsZero 					; avoid -0 problem
 		bne 	_FIPExit 					; set to zero if mantissa zero.		
 _FIPZero:
 		jsr 	NSMSetZero

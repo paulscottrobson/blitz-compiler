@@ -3,7 +3,7 @@
 ;
 ;		Name:		multiply.asm
 ;		Purpose:	32x32 bit integer multiplication, 32 bit result with rounding and shift
-;		Created:	1st April 2023
+;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -21,7 +21,7 @@
 ;
 ; ************************************************************************************************
 
-MultiplyShort:
+FloatMultiplyShort:
 		phy 								; save Y
 		jsr 	NSMShiftUpTwo 				; copy S[X] to S[X+2]
 		jsr 	NSMSetZeroMantissaOnly 		; set mantissa S[X] to zero

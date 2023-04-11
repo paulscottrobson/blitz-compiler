@@ -3,7 +3,7 @@
 ;
 ;		Name:		divide.asm
 ;		Purpose:	32x32 bit integer division (2 variants)
-;		Created:	1st April 2023
+;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;

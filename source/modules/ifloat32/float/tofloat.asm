@@ -3,7 +3,7 @@
 ;
 ;		Name:		tofloat.asm
 ;		Purpose:	State machine number encoding
-;		Created:	1st April 2023
+;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -31,13 +31,13 @@ ESTA_Decimal = 3 							; fractional part.
 ;
 ; ************************************************************************************************
 
-EncodeNumberStart: 							; come here to reset the FSM.
+FloatEncodeStart: 							; come here to reset the FSM.
 		sec
-		bra 	EncodeNumberContinue+1
+		bra 	FloatEncodeContinue+1
 
-EncodeNumberContinue: 						; come here to continue it.
+FloatEncodeContinue: 						; come here to continue it.
 		clc
-EncodeNumber:		
+FloatEncode:		
 		php 								; save reset flag.
 		cmp 	#"." 						; only accept 0-9 and .
 		beq 	_ENIsOkay
@@ -196,15 +196,15 @@ _ENConstructFinal:
 		adc 	decimalCount
 		tay 
 		;
-		lda 	DecimalScalarTable-5,y 		; copy decimal scalar to X+2
+		lda 	FloatScalarTable-5,y 		; copy decimal scalar to X+2
 		sta 	NSMantissa0+2,x  			; this is 10^-n
-		lda 	DecimalScalarTable-5+1,y
+		lda 	FloatScalarTable-5+1,y
 		sta 	NSMantissa1+2,x
-		lda 	DecimalScalarTable-5+2,y
+		lda 	FloatScalarTable-5+2,y
 		sta 	NSMantissa2+2,x
-		lda 	DecimalScalarTable-5+3,y
+		lda 	FloatScalarTable-5+3,y
 		sta 	NSMantissa3+2,x
-		lda 	DecimalScalarTable-5+4,y
+		lda 	FloatScalarTable-5+4,y
 		sta 	NSExponent+2,x
 		;
 		ply
