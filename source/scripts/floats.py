@@ -50,9 +50,8 @@ if __name__ == "__main__":
 	#
 	#		Basic conversion checking
 	#
-	if False:
-		for c in [3.14159,42,42000,0.000001234,123456789.987]:
-			x = f.toFloat(c,False)
-			n = f.toDecimal(x)
-			print("{0:<16} {1:16} {2}".format(c,str(x),n))
+	for c in [3.14159,42,42000,0.000001234,123456789.987]:
+		x = f.toFloat(c,False)
+		n = f.toDecimal(x)
+		print("{0:<16} {1:16} {2}".format(c,str(x),n))
 
