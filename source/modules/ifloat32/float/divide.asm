@@ -21,18 +21,18 @@
 FloatDivide:	
 		pha
 		inx 
-		jsr 	FloatNormalise		 			; normalise S[x+1] and error if zero.
+		jsr 	FloatNormalise		 		; normalise S[x+1] and error if zero.
 		dex
 		cmp 	#0
 		beq 	_FDZero 					
 
-		jsr 	FloatNormalise		 			; normalise S[X] and exit if zero
+		jsr 	FloatNormalise		 		; normalise S[X] and exit if zero
 		beq 	_FDExit 					; return zero if zero (e.g. zero/something)
 
 		jsr 	Int32ShiftDivide 			; do the shift division for dividing.
 		jsr 	NSMCopyPlusTwoToZero 		; copy the mantissa down
 		jsr		FloatNormalise 				; renormalise
-		jsr 	CalculateSign 				; calculate result sign
+		jsr 	FloatCalculateSign 			; calculate result sign
 
 		lda 	NSExponent,x 				; calculate exponent
 		sec

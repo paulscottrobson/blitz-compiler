@@ -36,7 +36,7 @@ FloatMultiply:
 		bra 	_FDExit
 
 _FDSetZero:
-		jsr 	NSMSetZero 					; return 0
+		jsr 	FloatSetZero 					; return 0
 _FDExit:
 		jsr 	FloatNormalise 				; normalise the result
 		pla

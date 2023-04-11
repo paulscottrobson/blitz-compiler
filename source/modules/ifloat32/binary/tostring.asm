@@ -55,7 +55,7 @@ _CI32NotNeg:
 
 _CI32DivideConvert:
 		inx 								; write to next slot up
-		jsr 	NSMSetByte 		 			; write the base out.
+		jsr 	FloatSetByte 		 		; write the base out.
 		dex
 		jsr 	Int32Divide 				; divide
 		;
@@ -64,7 +64,7 @@ _CI32DivideConvert:
 
 		jsr 	NSMCopyPlusTwoToZero 		; Copy the divide result into place.
 		;
-		jsr 	FloatIsZero 					; is it zero ?
+		jsr 	FloatIsZero 				; is it zero ?
 		beq 	_CI32NoRecurse 				; if so, don't recursively call.
 		;
 		lda 	NSMantissa0+1,x 			; this is the base which is not changed by divide

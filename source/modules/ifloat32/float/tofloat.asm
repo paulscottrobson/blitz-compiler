@@ -69,7 +69,7 @@ _ENStartEncode:
 		cmp 	#'.'						; first is decimal place, go straight to that.
 		beq 	_ENFirstDP
 		and 	#15 						; put digit in mantissa, initially a single digit constant
-		jsr 	NSMSetByte 					; in single byte mode.
+		jsr 	FloatSetByte 				; in single byte mode.
 		lda 	#ESTA_Low
 		;
 		;		Come here to successfully change state.
@@ -80,7 +80,7 @@ _ENExitChange:
 		rts
 
 _ENFirstDP:
-		jsr 	NSMSetZero 					; clear integer part
+		jsr 	FloatSetZero 				; clear integer part
 		bra 	_ESTASwitchFloat			; go straight to float and exi
 
 		; --------------------------------------------------------------------
@@ -150,7 +150,7 @@ _ESTAHighState:
 _ESTASwitchFloat:
 		stz 	decimalCount 				; reset the count of digits - we divide by 10^n at the end.
 		inx 								; zero the decimal additive.
-		jsr 	NSMSetZero
+		jsr 	FloatSetZero
 		dex
 		lda 	#ESTA_Decimal 				; switch to decimal mode
 		bra 	_ENExitChange

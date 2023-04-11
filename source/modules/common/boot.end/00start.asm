@@ -20,7 +20,7 @@
 
 Start:	ldx 	#$FF 						; stack reset
 		txs	
-		jmp 	Boot
+		;jmp 	Boot
 
 		.send code
 

@@ -38,7 +38,7 @@ _CNTMain:
 
 		inx 								; round up so we don't get too many 6.999999
 		lda 	#1
-		jsr 	NSMSetByte		
+		jsr 	FloatSetByte		
 		dex
 		lda		NSExponent,x
 		sta 	NSExponent+1,x
@@ -56,7 +56,7 @@ _CNTSDecimal:
 		bmi 	_CNTSExit
 		inx 								; x 10.0
 		lda 	#10
-		jsr 	NSMSetByte
+		jsr 	FloatSetByte
 		dex
 		jsr 	FloatMultiply
 		jsr 	MakePlusTwoString 			; put the integer e.g. next digit out.
@@ -112,12 +112,14 @@ WriteDecimalBuffer:
 		.send 	code
 		
 		.section storage
+
 decimalPlaces:
 		.fill 	1
 dbOffset:
 		.fill 	1				
 decimalBuffer:
 		.fill 	32
+		
 		.send storage
 
 ; ************************************************************************************************

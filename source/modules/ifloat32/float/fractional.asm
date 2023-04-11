@@ -56,7 +56,7 @@ FloatFractionalPart:
 		bne 	_FFPExit
 
 _FFPZero:
-		jsr 	NSMSetZero
+		jsr 	FloatSetZero
 _FFPExit:	
 		ply	
 		rts		

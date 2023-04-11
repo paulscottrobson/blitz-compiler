@@ -73,16 +73,15 @@ FloatShiftUpTwo:
 ;
 ; ************************************************************************************************
 
-NSMSetZeroMantissaOnly: 					; clear *only* the mantissa
+FloatSetZeroMantissaOnly: 					; clear *only* the mantissa
 		lda 	#0
-		bra 	NSMSetMantissa
-NSMSetZero: 								; set the whole lot to zero, exponent, type, mantissa
+		bra 	FloatSetMantissa
+FloatSetZero: 								; set the whole lot to zero, exponent, mantissa
 		lda 	#0
-NSMSetByte:
-		stz 	NSExponent,x 				; zero exponent, as integer.
-		stz 	NSStatus,x 					; status zero (integer)
-NSMSetMantissa:		
-		sta 	NSMantissa0,x 				; mantissa
+FloatSetByte:
+		stz 	NSExponent,x 				; zero exponent, as +ve integer value.
+FloatSetMantissa:		
+		sta 	NSMantissa0,x 				; zero mantissa
 		stz 	NSMantissa1,x
 		stz 	NSMantissa2,x
 		stz 	NSMantissa3,x
@@ -96,7 +95,7 @@ NSMSetMantissa:
 
 FloatShiftLeft:		
 		clc
-NSMRotateLeft:
+FloatRotateLeft:
 		rol 	NSMantissa0,x
 		rol		NSMantissa1,x
 		rol		NSMantissa2,x

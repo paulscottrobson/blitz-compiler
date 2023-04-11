@@ -3,7 +3,7 @@
 ;
 ;		Name:		addsub.asm
 ;		Purpose:	Add/Subtract S[X+1] to S[X]
-;		Created:	1st April 2023
+;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;

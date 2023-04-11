@@ -40,7 +40,7 @@ Int32Divide:
 		pha 								; save AXY
 		phy
 		jsr 	FloatShiftUpTwo 				; copy S[X] to S[X+2]
-		jsr 	NSMSetZeroMantissaOnly 		; set S[X] to zero
+		jsr 	FloatSetZeroMantissaOnly 		; set S[X] to zero
 
 		ldy 	#32 						; loop 32 times
 _I32DivideLoop:
@@ -49,9 +49,9 @@ _I32DivideLoop:
 		jsr 	FloatShiftLeft				; shift S[X+2] S[X] left as a 64 bit element
 		dex
 		dex
-		jsr 	NSMRotateLeft
+		jsr 	FloatRotateLeft
 		;		
-		jsr 	DivideCheckSubtract 		; check if subtract possible
+		jsr 	FloatDivideCheck 		; check if subtract possible
 		bcc 	_I32DivideNoCarryIn
 		inc 	NSMantissa0+2,x 			; if possible, set Mantissa0[X+2].0
 _I32DivideNoCarryIn:
@@ -75,19 +75,19 @@ Int32ShiftDivide:
 
 		inx 								; clear S[X+2]
 		inx
-		jsr 	NSMSetZero
+		jsr 	FloatSetZero
 		dex
 		dex
 
 		ldy 	#31 						; loop 31 times.
 _I32SDLoop:
-		jsr 	DivideCheckSubtract 		; check if subtract possible
+		jsr 	FloatDivideCheck 		; check if subtract possible
 		inx
 		inx
-		jsr 	NSMRotateLeft				; shift 64 bit FPA left, rotating carry in
+		jsr 	FloatRotateLeft				; shift 64 bit FPA left, rotating carry in
 		dex
 		dex
-		jsr 	NSMRotateLeft
+		jsr 	FloatRotateLeft
 		dey 	 							; do 31 times
 		bne 	_I32SDLoop
 		ply 								; restore AY and exit
@@ -103,7 +103,7 @@ _I32SDLoop:
 ;
 ; ************************************************************************************************
 
-DivideCheckSubtract:
+FloatDivideCheck:
 		jsr 	FloatSubTopTwoStack 		; subtract Stack[X+1] from Stack[X+0]
 		bcs 	_DCSExit 					; if carry set, then could do, exit
 		jsr 	FloatAddTopTwoStack 		; add it back in

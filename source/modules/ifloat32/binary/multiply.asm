@@ -23,8 +23,8 @@
 
 FloatMultiplyShort:
 		phy 								; save Y
-		jsr 	FloatShiftUpTwo 				; copy S[X] to S[X+2]
-		jsr 	NSMSetZeroMantissaOnly 		; set mantissa S[X] to zero
+		jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2]
+		jsr 	FloatSetZeroMantissaOnly 	; set mantissa S[X] to zero
 		ldy 	#0 							; Y is the shift count.
 		;
 		;		Main multiply loop.
@@ -49,7 +49,7 @@ _I32MLoop:
 		; 		result in 31 bits - now we lose some precision though.
 		;
 _I32ShiftRight:		
-		jsr 	FloatShiftRight 				; shift S[X] right
+		jsr 	FloatShiftRight 			; shift S[X] right
 		iny 								; increment shift count
 		bra 	_I32MShiftUpper 			; n2 is doubled by default.
 		;
@@ -71,7 +71,7 @@ _I32MShiftUpper:
 		bra 	_I32MLoop 					; try again.
 
 _I32MExit:
-		jsr 	CalculateSign
+		jsr 	FloatCalculateSign
 		tya 								; shift in A
 		ply 								; restore Y and exit
 		rts
@@ -82,7 +82,7 @@ _I32MExit:
 ;
 ; ************************************************************************************************
 
-CalculateSign:
+FloatCalculateSign:
 		lda 	NSStatus,x 					; sign of result is 0 if same, 1 if different.
 		asl 	NSStatus,x 					; shift result left
 		eor 	NSStatus+1,x

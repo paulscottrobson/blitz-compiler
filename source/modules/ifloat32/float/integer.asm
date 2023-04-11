@@ -33,15 +33,15 @@ _FIPShift:
 		lda 	NSExponent,x 				; if Exponent >= 0 exit.
 		bpl 	_FIPCheckZero		 		
 
-		jsr 	FloatShiftRight 				; shift mantissa right
+		jsr 	FloatShiftRight 			; shift mantissa right
 		inc 	NSExponent,x 				; bump exponent 
 		bra 	_FIPShift
 
 _FIPCheckZero:
-		jsr 	FloatIsZero 					; avoid -0 problem
+		jsr 	FloatIsZero 				; avoid -0 problem
 		bne 	_FIPExit 					; set to zero if mantissa zero.		
 _FIPZero:
-		jsr 	NSMSetZero
+		jsr 	FloatSetZero
 _FIPExit:
 		pla
 		rts		
