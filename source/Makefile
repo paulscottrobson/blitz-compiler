@@ -25,16 +25,18 @@ EMU_REPO= ..$(S)..$(S)x16-emulator
 ROM_REPO= ..$(S)..$(S)x16-rom
 HARDWARE = x16
 
-all: runtime
+all: float
 
-runtime :
+float :
 	python $(SCRIPTDIR)constants.py
-	python $(SCRIPTDIR)build.py runtime ifloat32 machine_$(HARDWARE) -o_runtime.asm -mruntime
-	$(ASM) $(ASMOPTS) _runtime.asm -o build$(S)runtime.prg
-	$(CCOPY) build$(S)runtime.prg $(BINDIR)
+	python $(SCRIPTDIR)mathconstants.py
+	python $(SCRIPTDIR)coremaths.py
+	python $(SCRIPTDIR)build.py ifloat32 polynomials machine_$(HARDWARE) -o_float.asm -mifloat32
+	$(ASM) $(ASMOPTS) _float.asm -o build$(S)float.prg
+	$(CCOPY) build$(S)float.prg $(BINDIR)
 	$(CDEL) dump*.bin
-#	$(HRUNEMU) -prg build$(S)runtime.prg,801 -run
-#	python $(SCRIPTDIR)runtime.py
+#	$(HRUNEMU) -prg build$(S)float.prg,801 -run
+#	python $(SCRIPTDIR)float.py
 	
 #
 #		Update tools

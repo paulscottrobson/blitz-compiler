@@ -34,7 +34,7 @@ class Builder(object):
 			if root.find("modules") >= 0:
 				parts = root.split(os.sep)
 				if len(parts) == 3:
-					isOk = (parts[-1] in sys.argv and not parts[-1].startswith("_")) or parts[-1] == "common"
+					isOk = (parts[-1] in sys.argv or parts[-1] == "common") and not parts[-1].startswith("_")
 					self.defines.append("module_{0} = {1}".format(parts[-1],1 if isOk else 0))
 					self.defines.append("ismain_{0} = {1}".format(parts[-1],1 if parts[-1] == self.main else 0))
 			if isOk:
