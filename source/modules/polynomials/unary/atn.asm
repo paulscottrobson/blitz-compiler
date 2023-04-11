@@ -18,8 +18,10 @@
 ;
 ; ************************************************************************************************
 
-UnaryAtn: 	;; [atn]
+FloatArcTan:
 		
+		jsr 	FloatNormalise 					; normalise x
+
 		lda 	NSStatus,x 						; save sign, make absolute
 		pha
 		stz 	NSStatus,x
@@ -34,6 +36,7 @@ UnaryAtn: 	;; [atn]
 		jsr 	CopyFloatXY
 		lda 	#1 								; 1.0 in +0
 		jsr 	FloatSetByte
+		inx
 		jsr 	FloatDivide
 		jsr 	CoreAtn 						; calculate the root
 		jsr 	CompletePolynomial

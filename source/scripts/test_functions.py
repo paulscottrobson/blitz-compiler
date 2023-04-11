@@ -14,24 +14,24 @@ import random,math
 def randomFloat():
 	return random.randint(-1000000,1000000)/12347	
 
-for n in range(0,10):
+for n in range(0,30):
 	#
 	a1 = random.randint(-2000,2000)/100
 
-	if True:
+	if False:
 		n1 = randomFloat()
 		print("{0:.8f} negate {1:.8f} f.cmp = assert".format(n1,-n1))
 		print("{0:.8f} int {1} f.cmp = assert".format(n1,int(n1)))
 
-	if True:
+	if False:
 		print("{0:.8f} sin {1:.8f} - abs 0.001 f.cmp < assert".format(a1,math.sin(a1)))
 		print("{0:.8f} cos {1:.8f} - abs 0.001 f.cmp < assert".format(a1,math.cos(a1)))
 
-	if True:
+	if False:
 		a2 = random.randint(10,40) / 100 			# Test the basic mechanics here as not great
 		print("{0:.8f} tan {1:.8f} - abs 0.001 f.cmp assert".format(a2,math.tan(a2)))
 
-	if False:
+	if True:
 		a2 = random.randint(100,900) / 1000 		# Test the basic mechanics here as not great
 		a2 = a2 if random.randint(0,1) == 0 else a2+1
 		print("{0:.8f} atn {1:.8f} - abs 0.001 f.cmp assert".format(a2,math.atan(a2)))
