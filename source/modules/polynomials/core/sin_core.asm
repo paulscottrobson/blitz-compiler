@@ -39,16 +39,15 @@ CorePolySquared:
 		iny
 		jsr 	CopyFloatXY
 		inx 								; point to the pair and put x^2 on stack
+		inx
 		jsr 	FloatMultiply
-
 		ply 								; coefficient table back.
 		pla
 		jsr 	CalculateHornerPolynomial
-
 		txa 								; copy back to slot #1
 		tay
 		dey
-		jsr	 	CopyFloatXY
+		jsr	 	CopyFloatXY		
 		dex 								; point at result
 		rts
 

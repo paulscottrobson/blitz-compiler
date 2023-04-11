@@ -28,7 +28,7 @@ HARDWARE = x16
 all: float
 
 float : prelim
-	python $(SCRIPTDIR)test_binary.py >build$(S)temp$(S)float.code
+	python $(SCRIPTDIR)test_functions.py >build$(S)temp$(S)float.code
 	python $(SCRIPTDIR)floatcom.py build$(S)temp$(S)float.code >modules$(S)ifloat32$(S)generated$(S)testcode.dat
 	python $(SCRIPTDIR)build.py ifloat32 polynomials machine_$(HARDWARE) -o_float.asm -mifloat32
 	$(ASM) $(ASMOPTS) _float.asm -o build$(S)float.prg

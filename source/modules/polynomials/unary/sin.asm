@@ -20,13 +20,13 @@
 
 UnarySine: 	
 
-CalculateSine:		
-
+CalculateSine:
 		lda 	NSStatus,x 					; save sign
 		pha
 		stz 	NSStatus,x 					; make +ve
 
 		.pushfloat Const_1Div2Pi 			; divide by 2*Pi
+
 		jsr 	FloatMultiply 
 		jsr 	FloatFractionalPart 		; take the fractional part
 
@@ -47,13 +47,11 @@ _USSubtractOne:								; 0.75 - 1.0 calculate x - 1
 		inx
 		lda 	#1
 		jsr 	FloatSetByte
-		dex
 		jsr 	FloatSubtract
 
 _USProcessExit:
 		jsr 	CoreSine
 		jsr 	CompletePolynomial
-
 		pla 								; restore sign and apply
 		eor 	NSStatus,x
 		sta 	NSStatus,x

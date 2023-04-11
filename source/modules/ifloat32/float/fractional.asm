@@ -58,6 +58,7 @@ FloatFractionalPart:
 _FFPZero:
 		jsr 	FloatSetZero
 _FFPExit:	
+		jsr 	FloatNormalise
 		ply	
 		rts		
 ;

@@ -29,17 +29,17 @@ CalculateHornerPolynomial:
 		;
 		;		Horner evaluation loop (see coremaths.py)
 		;
-_CHPLoop:		
+_CHPLoop:	
 		txa 								; copy X-1 to X+1
 		tay
 		dex
 		iny
 		jsr 	CopyFloatXY 				; e.g. stack is <current> <x>
 		inx
+		inx
 		jsr 	FloatMultiply 				; times current by X
 		inx
 		jsr 	GetCoefficient 				; coefficient into X+1
-		dex
 		jsr 	FloatAdd 					; and add
 		;
 		inc 	coefficientCount
@@ -55,11 +55,9 @@ _CHPLoop:
 ; ************************************************************************************************
 
 CompletePolynomial:
-		dex 								; multiply by X
 		jsr 	FloatMultiply
 		inx 								; get the last value
 		jsr 	GetCoefficient 			
-		dex
 		jsr 	FloatAdd 					; and add it
 		rts
 

@@ -19,8 +19,9 @@ class FPCompiler(object):
 		self.mapping = { "+":"FloatAdd","-":"FloatSubtract","*":"FloatMultiply","/":"FloatDivide",
 						 "=":"CompareEqual",">":"CompareGreater","<":"CompareLess",
 						 "<>":"CompareNotEqual",">=":"CompareGreaterEqual","<=":"CompareLessEqual",
-						 "f.cmp":"FloatCompare",
-						 "assert":"FPAssertCheck"
+						 "f.cmp":"FloatCompare","negate":"FloatNegate","int":"FloatIntegerPart",
+						 "sin":"UnarySine","cos":"UnaryCosine",
+						 "assert":"FPAssertCheck","abs":"FPAbs",
 		}
 	#
 	def compileGroup(self,g):

@@ -20,7 +20,6 @@
 
 UnaryPI: 	
 		.pushfloat Const_pi
-		inx
 		clc
 		rts
 
