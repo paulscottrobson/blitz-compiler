@@ -20,7 +20,7 @@ def randomFloat():
 def randomString():
 	return "".join([chr(random.randint(0,25)+97) for x in range(0,random.randint(0,5))])
 
-for n in range(0,1):
+for n in range(0,10):
 	#
 	n1 = randomInt()
 	n2 = randomInt()
@@ -28,16 +28,16 @@ for n in range(0,1):
 	if True:
 		print("{0}  {1} - {2} f.cmp = assert".format(n1,n2,n1-n2))
 		print("{0}  {1} * {2} f.cmp = assert".format(n1,n2,n1*n2))
-		if n2 != 0:
+		if n2 != 0 and True:
 			print("{0}  {1} / {2:.8f} f.cmp = assert".format(n1,n2,n1/n2))
 
-	if False:
-		print("{0}  {1} > {2} f.cmp = assert".format(n1,n2,-1 if n1 > n2 else 0))
-		print("{0}  {1} >= {2} f.cmp = assert".format(n1,n2,-1 if n1 >= n2 else 0))
-		print("{0}  {1} < {2} f.cmp = assert".format(n1,n2,-1 if n1 < n2 else 0))
-		print("{0}  {1} <= {2} f.cmp = assert".format(n1,n2,-1 if n1 <= n2 else 0))
-		print("{0}  {1} = {2} f.cmp = assert".format(n1,n2,-1 if n1 == n2 else 0))
-		print("{0}  {1} <> {2} f.cmp = assert".format(n1,n2,-1 if n1 != n2 else 0))
+	if True:
+		print("{0}  {1} f.cmp = {2} f.cmp = assert".format(n1,n2,-1 if n1 == n2 else 0))
+		print("{0}  {1} f.cmp <> {2} f.cmp = assert".format(n1,n2,-1 if n1 != n2 else 0))
+		print("{0}  {1} f.cmp > {2} f.cmp = assert".format(n1,n2,-1 if n1 > n2 else 0))
+		print("{0}  {1} f.cmp >= {2} f.cmp = assert".format(n1,n2,-1 if n1 >= n2 else 0))
+		print("{0}  {1} f.cmp < {2} f.cmp = assert".format(n1,n2,-1 if n1 < n2 else 0))
+		print("{0}  {1} f.cmp <= {2} f.cmp = assert".format(n1,n2,-1 if n1 <= n2 else 0))
 
 
 	if True:
@@ -49,11 +49,11 @@ for n in range(0,1):
 		if n2 != 0:
 			print("{0:.8f}  {1:.8f} / {2:.8f} f.cmp = assert".format(n1,n2,n1/n2))
 
-	if False:
-		print("{0:.8f}  {1:.8f} > {2} f.cmp = assert".format(n1,n2,-1 if n1 > n2 else 0))
-		print("{0:.8f}  {1:.8f} >= {2} f.cmp = assert".format(n1,n2,-1 if n1 >= n2 else 0))
-		print("{0:.8f}  {1:.8f} < {2} f.cmp = assert".format(n1,n2,-1 if n1 < n2 else 0))
-		print("{0:.8f}  {1:.8f} <= {2} f.cmp = assert".format(n1,n2,-1 if n1 <= n2 else 0))
-		print("{0:.8f}  {1:.8f} = {2} f.cmp = assert".format(n1,n2,-1 if n1 == n2 else 0))
-		print("{0:.8f}  {1:.8f} <> {2} f.cmp = assert".format(n1,n2,-1 if n1 != n2 else 0))
+	if True:
+		print("{0:.8f}  {1:.8f} f.cmp > {2} f.cmp = assert".format(n1,n2,-1 if n1 > n2 else 0))
+		print("{0:.8f}  {1:.8f} f.cmp >= {2} f.cmp = assert".format(n1,n2,-1 if n1 >= n2 else 0))
+		print("{0:.8f}  {1:.8f} f.cmp < {2} f.cmp = assert".format(n1,n2,-1 if n1 < n2 else 0))
+		print("{0:.8f}  {1:.8f} f.cmp <= {2} f.cmp = assert".format(n1,n2,-1 if n1 <= n2 else 0))
+		print("{0:.8f}  {1:.8f} f.cmp = {2} f.cmp = assert".format(n1,n2,-1 if n1 == n2 else 0))
+		print("{0:.8f}  {1:.8f} f.cmp <> {2} f.cmp = assert".format(n1,n2,-1 if n1 != n2 else 0))
 

@@ -32,6 +32,35 @@ ReturnFalse:
 		stz 	NSMantissa0,x
 		rts				
 		
+CompareNotEqual:
+		lda 	NSMantissa0,x
+		bne 	ReturnTrue
+		bra 	ReturnFalse
+
+CompareLess:
+		lda 	NSMantissa0,x
+		cmp 	#$FF
+		beq 	ReturnTrue
+		bra 	ReturnFalse
+
+CompareGreater:
+		lda 	NSMantissa0,x
+		cmp 	#$01
+		beq 	ReturnTrue
+		bra 	ReturnFalse
+
+CompareLessEqual:
+		lda 	NSMantissa0,x
+		cmp 	#$01
+		bne 	ReturnTrue
+		bra 	ReturnFalse
+
+CompareGreaterEqual:
+		lda 	NSMantissa0,x
+		cmp 	#$FF
+		bne 	ReturnTrue
+		bra 	ReturnFalse
+		
 ; ************************************************************************************************
 ;
 ;						Compare Stack vs 2nd. Return 255,0 or 1 in A

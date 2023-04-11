@@ -74,18 +74,19 @@ FloatShiftUpTwo:
 ; ************************************************************************************************
 
 FloatSetZeroMantissaOnly: 					; clear *only* the mantissa
-		lda 	#0
-		bra 	FloatSetMantissa
+		stz 	NSMantissa0,x
+		bra 	FloatZero13
 FloatSetZero: 								; set the whole lot to zero, exponent, mantissa
 		lda 	#0
 FloatSetByte:
 		stz 	NSExponent,x 				; zero exponent, as +ve integer value.
 FloatSetMantissa:		
 		sta 	NSMantissa0,x 				; zero mantissa
+		stz 	NSStatus,x
+FloatZero13:		
 		stz 	NSMantissa1,x
 		stz 	NSMantissa2,x
 		stz 	NSMantissa3,x
-		stz 	NSStatus,x
 		rts
 				
 ; ************************************************************************************************

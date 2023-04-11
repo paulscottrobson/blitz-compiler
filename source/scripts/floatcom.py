@@ -37,6 +37,9 @@ class FPCompiler(object):
 		if m is not None:
 			self.compileConst(float(s))
 			return
+		if s == "exit":
+			print("\t.exitemu")
+			return
 		if s in self.mapping:
 			print("\tjsr\t{0}".format(self.mapping[s]))
 			return 
