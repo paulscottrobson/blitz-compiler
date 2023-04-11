@@ -18,14 +18,14 @@
 ;
 ; ************************************************************************************************
 
-UnaryTangent: 	
+FloatTangent: 	
 
 		txa 								; sin -> +1
 		tay
 		iny
 		jsr 	CopyFloatXY
 		inx
-		jsr 	CalculateSine 				
+		jsr 	FloatSine 				
 		dex
 
 		txa 								; cos -> +2
@@ -35,10 +35,10 @@ UnaryTangent:
 		jsr 	CopyFloatXY
 		inx
 		inx
-		jsr 	CalculateCosine 				
+		jsr 	FloatCosine 				
 
-		dex  								; divide sin/cos
-		jsr 	FloatDivide
+		
+		jsr 	FloatDivide 				; calculate sin/cos
 
 		txa 								; copy result down.
 		tay

@@ -27,7 +27,7 @@ for n in range(0,10):
 		print("{0:.8f} sin {1:.8f} - abs 0.001 f.cmp < assert".format(a1,math.sin(a1)))
 		print("{0:.8f} cos {1:.8f} - abs 0.001 f.cmp < assert".format(a1,math.cos(a1)))
 
-	if False:
+	if True:
 		a2 = random.randint(10,40) / 100 			# Test the basic mechanics here as not great
 		print("{0:.8f} tan {1:.8f} - abs 0.001 f.cmp assert".format(a2,math.tan(a2)))
 
