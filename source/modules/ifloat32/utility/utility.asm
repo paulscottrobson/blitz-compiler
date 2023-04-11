@@ -18,7 +18,7 @@
 ;
 ; ************************************************************************************************
 
-NSMNegate:							
+FloatNegate:							
 		lda 	NSStatus,x 					; everything is sign/magnitude usually so just
 		eor 	#$80  						; toggle the negative flag
 		sta 	NSStatus,x
@@ -30,7 +30,7 @@ NSMNegate:
 ;
 ; ************************************************************************************************
 
-NSMNegateMantissa:								
+FloatNegateMantissa:								
 		sec 								; when we want an actual 32 bit 2's complement value.
 		lda 	#0
 		sbc 	NSMantissa0,x
@@ -52,7 +52,7 @@ NSMNegateMantissa:
 ;
 ; ************************************************************************************************
 
-NSMShiftUpTwo:
+FloatShiftUpTwo:
 		lda 	NSMantissa0,x
 		sta 	NSMantissa0+2,x
 		lda 	NSMantissa1,x
@@ -94,7 +94,7 @@ NSMSetMantissa:
 ;
 ; ************************************************************************************************
 
-NSMShiftLeft:		
+FloatShiftLeft:		
 		clc
 NSMRotateLeft:
 		rol 	NSMantissa0,x
@@ -109,7 +109,7 @@ NSMRotateLeft:
 ;
 ; ************************************************************************************************
 
-NSMShiftRight:		
+FloatShiftRight:		
 		lsr 	NSMantissa3,x
 		ror		NSMantissa2,x
 		ror		NSMantissa1,x

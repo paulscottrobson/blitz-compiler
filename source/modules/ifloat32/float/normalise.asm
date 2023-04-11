@@ -53,7 +53,7 @@ _NSNormaliseOptimise:
 _NSNormaliseLoop:		
 		bit 	NSMantissa3,x 				; bit 30 set ?
 		bvs 	_NSNExit 					; exit if so with Z flag clear
-		jsr 	NSMShiftLeft 				; shift mantissa left
+		jsr 	FloatShiftLeft 				; shift mantissa left
 		dec 	NSExponent,x 				; adjust exponent
 		bra 	_NSNormaliseLoop
 _NSNExit:

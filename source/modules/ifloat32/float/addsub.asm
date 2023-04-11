@@ -78,7 +78,7 @@ _FAExponentsEqual:
 		jsr 	FloatAddTopTwoStack 		; do the add of the mantissae
 		lda 	NSMantissa3,x 				; do we have an overflow in Mantissa A ?
 		bpl 	_FAExit 					; if no, we are done.
-		jsr 	NSMShiftRight 				; shift A right, renormalising it.
+		jsr 	FloatShiftRight 				; shift A right, renormalising it.
 		inc 	NSExponent,x 				; bump the exponent and exit
 		bra 	_FAExit
 		;
@@ -88,8 +88,8 @@ _FADifferentSigns:
 		jsr 	FloatSubTopTwoStack 		; subtract mantissa B from A
 		lda 	NSMantissa3,x 				; is the result negative ?
 		bpl 	_FACheckZero 				; if no, check for -0
-		jsr 	NSMNegate 					; netate result
-		jsr 	NSMNegateMantissa 			; negate (2'c) the mantissa
+		jsr 	FloatNegate 					; netate result
+		jsr 	FloatNegateMantissa 			; negate (2'c) the mantissa
 _FACheckZero:		
 		jsr 	FloatIsZero	 				; check for -0
 		bne 	_FAExit
@@ -128,7 +128,7 @@ _FAShiftToExponent2:
 		tya 								; compare Y to exponent  								
 		cmp 	NSExponent,x 				; reached the exponent required ?
 		beq 	_FASEExit 					; exit if so.
-		jsr 	NSMShiftRight	 			; shift the mantissa right
+		jsr 	FloatShiftRight	 			; shift the mantissa right
 		inc 	NSExponent,x 				; increment exponent
 		bra 	_FAShiftToExponent2
 _FASEExit:

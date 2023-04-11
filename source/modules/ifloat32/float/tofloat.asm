@@ -235,8 +235,8 @@ ESTAShiftDigitIntoMantissa:
 		pha
 		lda 	NSMantissa0,x 
 		pha
-		jsr 	NSMShiftLeft 				; x 2
-		jsr 	NSMShiftLeft 				; x 4
+		jsr 	FloatShiftLeft 				; x 2
+		jsr 	FloatShiftLeft 				; x 4
 
 		clc 								; pop mantissa and add
 		pla 
@@ -251,7 +251,7 @@ ESTAShiftDigitIntoMantissa:
 		pla
 		adc 	NSMantissa3,x
 		sta 	NSMantissa3,x 				; x 5
-		jsr 	NSMShiftLeft 				; x 10
+		jsr 	FloatShiftLeft 				; x 10
 		;
 		pla 								; add digit
 		clc

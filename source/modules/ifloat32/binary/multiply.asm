@@ -23,7 +23,7 @@
 
 FloatMultiplyShort:
 		phy 								; save Y
-		jsr 	NSMShiftUpTwo 				; copy S[X] to S[X+2]
+		jsr 	FloatShiftUpTwo 				; copy S[X] to S[X+2]
 		jsr 	NSMSetZeroMantissaOnly 		; set mantissa S[X] to zero
 		ldy 	#0 							; Y is the shift count.
 		;
@@ -49,7 +49,7 @@ _I32MLoop:
 		; 		result in 31 bits - now we lose some precision though.
 		;
 _I32ShiftRight:		
-		jsr 	NSMShiftRight 				; shift S[X] right
+		jsr 	FloatShiftRight 				; shift S[X] right
 		iny 								; increment shift count
 		bra 	_I32MShiftUpper 			; n2 is doubled by default.
 		;
@@ -58,13 +58,13 @@ _I32MNoAdd:
 		bvs 	_I32ShiftRight 				; instead.
 
 		inx
-		jsr 	NSMShiftLeft 				; shift additive S[X+1] left
+		jsr 	FloatShiftLeft 				; shift additive S[X+1] left
 		dex
 
 _I32MShiftUpper:
 		inx 								; shift S[X+2] right
 		inx
-		jsr 	NSMShiftRight
+		jsr 	FloatShiftRight
 		dex
 		dex
 

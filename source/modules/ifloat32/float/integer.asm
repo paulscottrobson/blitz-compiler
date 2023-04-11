@@ -33,7 +33,7 @@ _FIPShift:
 		lda 	NSExponent,x 				; if Exponent >= 0 exit.
 		bpl 	_FIPCheckZero		 		
 
-		jsr 	NSMShiftRight 				; shift mantissa right
+		jsr 	FloatShiftRight 				; shift mantissa right
 		inc 	NSExponent,x 				; bump exponent 
 		bra 	_FIPShift
 

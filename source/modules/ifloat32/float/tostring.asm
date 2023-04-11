@@ -78,7 +78,7 @@ _CNTSExit:
 
 MakePlusTwoString:
 		phx
-		jsr 	NSMShiftUpTwo 				; copy S[X] to S[X+2] - we will use S[X+2] for the intege part.		
+		jsr 	FloatShiftUpTwo 				; copy S[X] to S[X+2] - we will use S[X+2] for the intege part.		
 		inx 								; access it
 		inx
 		jsr 	FloatIntegerPart 			; make it an integer

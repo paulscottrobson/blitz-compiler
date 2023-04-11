@@ -39,14 +39,14 @@ NSMCopyPlusTwoToZero:
 Int32Divide:
 		pha 								; save AXY
 		phy
-		jsr 	NSMShiftUpTwo 				; copy S[X] to S[X+2]
+		jsr 	FloatShiftUpTwo 				; copy S[X] to S[X+2]
 		jsr 	NSMSetZeroMantissaOnly 		; set S[X] to zero
 
 		ldy 	#32 						; loop 32 times
 _I32DivideLoop:
 		inx
 		inx
-		jsr 	NSMShiftLeft				; shift S[X+2] S[X] left as a 64 bit element
+		jsr 	FloatShiftLeft				; shift S[X+2] S[X] left as a 64 bit element
 		dex
 		dex
 		jsr 	NSMRotateLeft

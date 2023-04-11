@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.58.2974? listing file
 ; 64tass -q -Wall -c -C -L build/code.lst -l build/code.lbl -Wall -o build/floats.prg _floats.asm
-; Tue Apr 11 10:58:17 2023
+; Tue Apr 11 10:59:21 2023
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -124,15 +124,15 @@
 .0841	20 7d 0a	jsr $0a7d			jsr 	FloatAddTopTwoStack 		; do the add of the mantissae
 .0844	b5 6a		lda $6a,x			lda 	NSMantissa3,x 				; do we have an overflow in Mantissa A ?
 .0846	10 35		bpl $087d			bpl 	_FAExit 					; if no, we are done.
-.0848	20 13 0d	jsr $0d13			jsr 	NSMShiftRight 				; shift A right, renormalising it.
+.0848	20 13 0d	jsr $0d13			jsr 	FloatShiftRight 				; shift A right, renormalising it.
 .084b	f6 72		inc $72,x			inc 	NSExponent,x 				; bump the exponent and exit
 .084d	80 2e		bra $087d			bra 	_FAExit
 .084f					_FADifferentSigns:
 .084f	20 97 0a	jsr $0a97			jsr 	FloatSubTopTwoStack 		; subtract mantissa B from A
 .0852	b5 6a		lda $6a,x			lda 	NSMantissa3,x 				; is the result negative ?
 .0854	10 06		bpl $085c			bpl 	_FACheckZero 				; if no, check for -0
-.0856	20 bc 0c	jsr $0cbc			jsr 	NSMNegate 					; netate result
-.0859	20 c3 0c	jsr $0cc3			jsr 	NSMNegateMantissa 			; negate (2'c) the mantissa
+.0856	20 bc 0c	jsr $0cbc			jsr 	FloatNegate 					; netate result
+.0859	20 c3 0c	jsr $0cc3			jsr 	FloatNegateMantissa 			; negate (2'c) the mantissa
 .085c					_FACheckZero:
 .085c	20 1c 0d	jsr $0d1c			jsr 	FloatIsZero	 				; check for -0
 .085f	d0 1c		bne $087d			bne 	_FAExit
@@ -160,7 +160,7 @@
 .0880	98		tya				tya 								; compare Y to exponent
 .0881	d5 72		cmp $72,x			cmp 	NSExponent,x 				; reached the exponent required ?
 .0883	f0 07		beq $088c			beq 	_FASEExit 					; exit if so.
-.0885	20 13 0d	jsr $0d13			jsr 	NSMShiftRight	 			; shift the mantissa right
+.0885	20 13 0d	jsr $0d13			jsr 	FloatShiftRight	 			; shift the mantissa right
 .0888	f6 72		inc $72,x			inc 	NSExponent,x 				; increment exponent
 .088a	80 f4		bra $0880			bra 	_FAShiftToExponent2
 .088c					_FASEExit:
@@ -233,13 +233,13 @@
 .08eb					Int32Divide:
 .08eb	48		pha				pha 								; save AXY
 .08ec	5a		phy				phy
-.08ed	20 dd 0c	jsr $0cdd			jsr 	NSMShiftUpTwo 				; copy S[X] to S[X+2]
+.08ed	20 dd 0c	jsr $0cdd			jsr 	FloatShiftUpTwo 				; copy S[X] to S[X+2]
 .08f0	20 f6 0c	jsr $0cf6			jsr 	NSMSetZeroMantissaOnly 		; set S[X] to zero
 .08f3	a0 20		ldy #$20			ldy 	#32 						; loop 32 times
 .08f5					_I32DivideLoop:
 .08f5	e8		inx				inx
 .08f6	e8		inx				inx
-.08f7	20 09 0d	jsr $0d09			jsr 	NSMShiftLeft				; shift S[X+2] S[X] left as a 64 bit element
+.08f7	20 09 0d	jsr $0d09			jsr 	FloatShiftLeft				; shift S[X+2] S[X] left as a 64 bit element
 .08fa	ca		dex				dex
 .08fb	ca		dex				dex
 .08fc	20 0a 0d	jsr $0d0a			jsr 	NSMRotateLeft
@@ -393,7 +393,7 @@
 .09c6					_FIPShift:
 .09c6	b5 72		lda $72,x			lda 	NSExponent,x 				; if Exponent >= 0 exit.
 .09c8	10 07		bpl $09d1			bpl 	_FIPCheckZero
-.09ca	20 13 0d	jsr $0d13			jsr 	NSMShiftRight 				; shift mantissa right
+.09ca	20 13 0d	jsr $0d13			jsr 	FloatShiftRight 				; shift mantissa right
 .09cd	f6 72		inc $72,x			inc 	NSExponent,x 				; bump exponent
 .09cf	80 f5		bra $09c6			bra 	_FIPShift
 .09d1					_FIPCheckZero:
@@ -412,7 +412,7 @@
 
 .09db					FloatMultiplyShort:
 .09db	5a		phy				phy 								; save Y
-.09dc	20 dd 0c	jsr $0cdd			jsr 	NSMShiftUpTwo 				; copy S[X] to S[X+2]
+.09dc	20 dd 0c	jsr $0cdd			jsr 	FloatShiftUpTwo 				; copy S[X] to S[X+2]
 .09df	20 f6 0c	jsr $0cf6			jsr 	NSMSetZeroMantissaOnly 		; set mantissa S[X] to zero
 .09e2	a0 00		ldy #$00			ldy 	#0 							; Y is the shift count.
 .09e4					_I32MLoop:
@@ -428,19 +428,19 @@
 .09f7	b5 6a		lda $6a,x			lda 	NSMantissa3,x 				; has MantissaA overflowed ?
 .09f9	10 06		bpl $0a01			bpl 	_I32MNoAdd
 .09fb					_I32ShiftRight:
-.09fb	20 13 0d	jsr $0d13			jsr 	NSMShiftRight 				; shift S[X] right
+.09fb	20 13 0d	jsr $0d13			jsr 	FloatShiftRight 				; shift S[X] right
 .09fe	c8		iny				iny 								; increment shift count
 .09ff	80 09		bra $0a0a			bra 	_I32MShiftUpper 			; n2 is doubled by default.
 .0a01					_I32MNoAdd:
 .0a01	34 6b		bit $6b,x			bit 	NSMantissa3+1,x				; if we can't shift S[X+1] left, shift everything right
 .0a03	70 f6		bvs $09fb			bvs 	_I32ShiftRight 				; instead.
 .0a05	e8		inx				inx
-.0a06	20 09 0d	jsr $0d09			jsr 	NSMShiftLeft 				; shift additive S[X+1] left
+.0a06	20 09 0d	jsr $0d09			jsr 	FloatShiftLeft 				; shift additive S[X+1] left
 .0a09	ca		dex				dex
 .0a0a					_I32MShiftUpper:
 .0a0a	e8		inx				inx 								; shift S[X+2] right
 .0a0b	e8		inx				inx
-.0a0c	20 13 0d	jsr $0d13			jsr 	NSMShiftRight
+.0a0c	20 13 0d	jsr $0d13			jsr 	FloatShiftRight
 .0a0f	ca		dex				dex
 .0a10	ca		dex				dex
 .0a11	80 d1		bra $09e4			bra 	_I32MLoop 					; try again.
@@ -515,7 +515,7 @@
 .0a6f					_NSNormaliseLoop:
 .0a6f	34 6a		bit $6a,x			bit 	NSMantissa3,x 				; bit 30 set ?
 .0a71	70 07		bvs $0a7a			bvs 	_NSNExit 					; exit if so with Z flag clear
-.0a73	20 09 0d	jsr $0d09			jsr 	NSMShiftLeft 				; shift mantissa left
+.0a73	20 09 0d	jsr $0d09			jsr 	FloatShiftLeft 				; shift mantissa left
 .0a76	d6 72		dec $72,x			dec 	NSExponent,x 				; adjust exponent
 .0a78	80 f5		bra $0a6f			bra 	_NSNormaliseLoop
 .0a7a					_NSNExit:
@@ -569,7 +569,7 @@
 .0ac0	10 07		bpl $0ac9			bpl 	_AddExit
 .0ac2	b5 4b		lda $4b,x			lda 	NSStatus+1,x 				; sign is that of 2nd value
 .0ac4	95 4a		sta $4a,x			sta 	NSStatus,x
-.0ac6	20 c3 0c	jsr $0cc3			jsr 	NSMNegateMantissa 			; negate the mantissa and exit
+.0ac6	20 c3 0c	jsr $0cc3			jsr 	FloatNegateMantissa 			; negate the mantissa and exit
 .0ac9					_AddExit:
 .0ac9	20 1c 0d	jsr $0d1c			jsr 	FloatIsZero 					; check for -0
 .0acc	d0 02		bne $0ad0			bne 	_AddNonZero
@@ -740,8 +740,8 @@
 .0bad	48		pha				pha
 .0bae	b5 52		lda $52,x			lda 	NSMantissa0,x
 .0bb0	48		pha				pha
-.0bb1	20 09 0d	jsr $0d09			jsr 	NSMShiftLeft 				; x 2
-.0bb4	20 09 0d	jsr $0d09			jsr 	NSMShiftLeft 				; x 4
+.0bb1	20 09 0d	jsr $0d09			jsr 	FloatShiftLeft 				; x 2
+.0bb4	20 09 0d	jsr $0d09			jsr 	FloatShiftLeft 				; x 4
 .0bb7	18		clc				clc 								; pop mantissa and add
 .0bb8	68		pla				pla
 .0bb9	75 52		adc $52,x			adc 	NSMantissa0,x
@@ -755,7 +755,7 @@
 .0bc7	68		pla				pla
 .0bc8	75 6a		adc $6a,x			adc 	NSMantissa3,x
 .0bca	95 6a		sta $6a,x			sta 	NSMantissa3,x 				; x 5
-.0bcc	20 09 0d	jsr $0d09			jsr 	NSMShiftLeft 				; x 10
+.0bcc	20 09 0d	jsr $0d09			jsr 	FloatShiftLeft 				; x 10
 .0bcf	68		pla				pla 								; add digit
 .0bd0	18		clc				clc
 .0bd1	75 52		adc $52,x			adc 	NSMantissa0,x
@@ -884,7 +884,7 @@
 .0c8e	60		rts				rts
 .0c8f					MakePlusTwoString:
 .0c8f	da		phx				phx
-.0c90	20 dd 0c	jsr $0cdd			jsr 	NSMShiftUpTwo 				; copy S[X] to S[X+2] - we will use S[X+2] for the intege part.
+.0c90	20 dd 0c	jsr $0cdd			jsr 	FloatShiftUpTwo 				; copy S[X] to S[X+2] - we will use S[X+2] for the intege part.
 .0c93	e8		inx				inx 								; access it
 .0c94	e8		inx				inx
 .0c95	20 b7 09	jsr $09b7			jsr 	FloatIntegerPart 			; make it an integer
@@ -919,12 +919,12 @@
 
 ;******  Processing file: ./modules/ifloat32/utility/utility.asm
 
-.0cbc					NSMNegate:
+.0cbc					FloatNegate:
 .0cbc	b5 4a		lda $4a,x			lda 	NSStatus,x 					; everything is sign/magnitude usually so just
 .0cbe	49 80		eor #$80			eor 	#$80  						; toggle the negative flag
 .0cc0	95 4a		sta $4a,x			sta 	NSStatus,x
 .0cc2	60		rts				rts
-.0cc3					NSMNegateMantissa:
+.0cc3					FloatNegateMantissa:
 .0cc3	38		sec				sec 								; when we want an actual 32 bit 2's complement value.
 .0cc4	a9 00		lda #$00			lda 	#0
 .0cc6	f5 52		sbc $52,x			sbc 	NSMantissa0,x
@@ -939,7 +939,7 @@
 .0cd8	f5 6a		sbc $6a,x			sbc 	NSMantissa3,x
 .0cda	95 6a		sta $6a,x			sta 	NSMantissa3,x
 .0cdc	60		rts				rts
-.0cdd					NSMShiftUpTwo:
+.0cdd					FloatShiftUpTwo:
 .0cdd	b5 52		lda $52,x			lda 	NSMantissa0,x
 .0cdf	95 54		sta $54,x			sta 	NSMantissa0+2,x
 .0ce1	b5 5a		lda $5a,x			lda 	NSMantissa1,x
@@ -967,7 +967,7 @@
 .0d04	74 62		stz $62,x			stz 	NSMantissa2,x
 .0d06	74 6a		stz $6a,x			stz 	NSMantissa3,x
 .0d08	60		rts				rts
-.0d09					NSMShiftLeft:
+.0d09					FloatShiftLeft:
 .0d09	18		clc				clc
 .0d0a					NSMRotateLeft:
 .0d0a	36 52		rol $52,x			rol 	NSMantissa0,x
@@ -975,7 +975,7 @@
 .0d0e	36 62		rol $62,x			rol		NSMantissa2,x
 .0d10	36 6a		rol $6a,x			rol		NSMantissa3,x
 .0d12	60		rts				rts
-.0d13					NSMShiftRight:
+.0d13					FloatShiftRight:
 .0d13	56 6a		lsr $6a,x			lsr 	NSMantissa3,x
 .0d15	76 62		ror $62,x			ror		NSMantissa2,x
 .0d17	76 5a		ror $5a,x			ror		NSMantissa1,x

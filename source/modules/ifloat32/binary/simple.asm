@@ -68,7 +68,7 @@ _DiffSigns:
 		bpl 	_AddExit 	
 		lda 	NSStatus+1,x 				; sign is that of 2nd value
 		sta 	NSStatus,x
-		jsr 	NSMNegateMantissa 			; negate the mantissa and exit
+		jsr 	FloatNegateMantissa 			; negate the mantissa and exit
 _AddExit:
 		jsr 	FloatIsZero 					; check for -0
 		bne 	_AddNonZero
