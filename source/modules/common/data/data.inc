@@ -48,10 +48,13 @@ BMantissa0 = $38 							; mantissa/integer A goes here
 BMantissa1 = BMantissa0+1 					; standard 32 bit mantissa, bits 31/30 are 01.
 BMantissa2 = BMantissa0+2
 BMantissa3 = BMantissa0+3
-BAExponent = BMantissa0+4 					; exponent ; 0 => integer
+BExponent = BMantissa0+4 					; exponent ; 0 => integer
 BStatus = BMantissa0+5 						; status bits
 BIntLo = BMantissa0 						; 16 bit integer usage.
 BIntHigh = BMantissa1
+
+UseAMantissa = 0
+UseBMantissa = BMantissa0-AMantissa0
 
 ; ************************************************************************************************
 ;
@@ -66,7 +69,18 @@ BIntHigh = BMantissa1
 ; ************************************************************************************************
 
 		.section storage
-
+CMantissa0:
+		.fill 	1
+CMantissa1:
+		.fill 	1
+CMantissa2:
+		.fill 	1
+CMantissa3:
+		.fill 	1
+CExponent:
+		.fill 	1
+CStatus:
+		.fill 	1
 		.send 	storage
 
 ; ************************************************************************************************

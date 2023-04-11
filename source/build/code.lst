@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.58.2974? listing file
 ; 64tass -q -Wall -c -C -L build/code.lst -l build/code.lbl -Wall -o build/floats.prg _floats.asm
-; Tue Apr 11 09:25:42 2023
+; Tue Apr 11 10:07:41 2023
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -48,6 +48,8 @@
 =61					BStatus = BMantissa0+5 						; status bits
 =$38					BIntLo = BMantissa0 						; 16 bit integer usage.
 =57					BIntHigh = BMantissa1
+=0					UseAMantissa = 0
+=8					UseBMantissa = BMantissa0-AMantissa0
 
 ;******  Return to file: _floats.asm
 
@@ -79,31 +81,73 @@
 
 .0801	a2 ff		ldx #$ff	Start:	ldx 	#$FF 						; stack reset
 .0803	9a		txs				txs
-.0804	4c 07 08	jmp $0807			jmp 	Boot
+.0804	4c 3e 08	jmp $083e			jmp 	Boot
+
+;******  Return to file: _floats.asm
+
+
+;******  Processing file: ./modules/ifloat32/operators/normalise.asm
+
+.0807					FloatNormalise:
+.0807	20 ad 08	jsr $08ad			jsr 	FloatIsZeroX 				; if zero exit
+.080a	d0 07		bne $0813			bne 	_NSNormaliseOptimise 		; if so, normalise it.
+.080c	16 35		asl $35,x			asl 	AStatus,x 					; clear the sign bit.
+.080e	76 35		ror $35,x			ror 	AStatus,x 					; (no -0)
+.0810	a9 00		lda #$00			lda 	#0 							; set Z flag
+.0812	60		rts				rts
+.0813					_NSNormaliseOptimise:
+.0813	b5 33		lda $33,x			lda 	AMantissa3,x 				; upper byte zero ?
+.0815	d0 19		bne $0830			bne 	_NSNormaliseLoop
+.0817	b5 32		lda $32,x			lda 	AMantissa2,x 				; byte normalise
+.0819	30 15		bmi $0830			bmi 	_NSNormaliseLoop 			; can't do it if bit 7 set of 2
+.081b	95 33		sta $33,x			sta 	AMantissa3,x
+.081d	b5 31		lda $31,x			lda 	AMantissa1,x
+.081f	95 32		sta $32,x			sta 	AMantissa2,x
+.0821	b5 30		lda $30,x			lda 	AMantissa0,x
+.0823	95 31		sta $31,x			sta 	AMantissa1,x
+.0825	74 30		stz $30,x			stz 	AMantissa0,x
+.0827	b5 34		lda $34,x			lda 	AExponent,x
+.0829	38		sec				sec
+.082a	e9 08		sbc #$08			sbc 	#8
+.082c	95 34		sta $34,x			sta 	AExponent,x
+.082e	80 e3		bra $0813			bra 	_NSNormaliseOptimise
+.0830					_NSNormaliseLoop:
+.0830	34 33		bit $33,x			bit 	AMantissa3,x 				; bit 30 set ?
+.0832	70 07		bvs $083b			bvs 	_NSNExit 					; exit if so with Z flag clear
+.0834	20 9a 08	jsr $089a			jsr 	FloatShiftLeftX 				; shift mantissa left
+.0837	d6 34		dec $34,x			dec 	AExponent,x 				; adjust exponent
+.0839	80 f5		bra $0830			bra 	_NSNormaliseLoop
+.083b					_NSNExit:
+.083b	a9 ff		lda #$ff			lda 	#$FF 						; clear Z flag
+.083d	60		rts				rts
 
 ;******  Return to file: _floats.asm
 
 
 ;******  Processing file: ./modules/ifloat32/testing/testing.asm
 
-.0807					Boot:
-.0807	a2 05		ldx #$05			ldx 	#5
-.0809					_CopyNumbers:
-.0809	bd 19 08	lda $0819,x			lda 	TestConstants,x
-.080c	95 30		sta $30,x			sta 	AMantissa0,x
-.080e	bd 1f 08	lda $081f,x			lda 	TestConstants+6,x
-.0811	95 38		sta $38,x			sta 	BMantissa0,x
-.0813	ca		dex				dex
-.0814	10 f3		bpl $0809			bpl 	_CopyNumbers
-.0816	4c ff ff	jmp $ffff			jmp 	$FFFF
-.0819					TestConstants:
+.083e					Boot:
+.083e	a2 05		ldx #$05			ldx 	#5
+.0840					_CopyNumbers:
+.0840	bd 5a 08	lda $085a,x			lda 	TestConstants,x
+.0843	95 30		sta $30,x			sta 	AMantissa0,x
+.0845	bd 60 08	lda $0860,x			lda 	TestConstants+6,x
+.0848	95 38		sta $38,x			sta 	BMantissa0,x
+.084a	ca		dex				dex
+.084b	10 f3		bpl $0840			bpl 	_CopyNumbers
+.084d	a2 00		ldx #$00			ldx 	#UseAMantissa
+.084f	20 07 08	jsr $0807			jsr 	FloatNormalise
+.0852	a2 08		ldx #$08			ldx 	#UseBMantissa
+.0854	20 07 08	jsr $0807			jsr 	FloatNormalise
+.0857	4c ff ff	jmp $ffff			jmp 	$FFFF
+.085a					TestConstants:
 
 ;******  Processing file: ./modules/ifloat32/testing/../generated/testnumbers.dat
 
->0819	05 00 00 00				.dword	$00000005 ; 5
->081d	00 00					.byte	$00,$00
->081f	08 00 00 00				.dword	$00000008 ; 8
->0823	00 00					.byte	$00,$00
+>085a	05 00 00 00				.dword	$00000005 ; 5
+>085e	00 00					.byte	$00,$00
+>0860	08 00 00 00				.dword	$00000008 ; 8
+>0864	00 00					.byte	$00,$00
 
 ;******  Return to file: ./modules/ifloat32/testing/testing.asm
 
@@ -111,9 +155,69 @@
 ;******  Return to file: _floats.asm
 
 
+;******  Processing file: ./modules/ifloat32/utilities/utility.asm
+
+.0866					FloatNegateX:
+.0866	b5 35		lda $35,x			lda 	AStatus,x 					; everything is sign/magnitude usually so just
+.0868	49 80		eor #$80			eor 	#$80 			 			; toggle the negative flag
+.086a	95 35		sta $35,x			sta 	AStatus,x
+.086c	60		rts				rts
+.086d					FloatNegateMantissa:
+.086d	38		sec				sec 								; when we want an actual 32 bit 2's complement value.
+.086e	a9 00		lda #$00			lda 	#0
+.0870	f5 30		sbc $30,x			sbc 	AMantissa0,x
+.0872	95 30		sta $30,x			sta 	AMantissa0,x
+.0874	a9 00		lda #$00			lda 	#0
+.0876	f5 31		sbc $31,x			sbc 	AMantissa1,x
+.0878	95 31		sta $31,x			sta 	AMantissa1,x
+.087a	a9 00		lda #$00			lda 	#0
+.087c	f5 32		sbc $32,x			sbc 	AMantissa2,x
+.087e	95 32		sta $32,x			sta 	AMantissa2,x
+.0880	a9 00		lda #$00			lda 	#0
+.0882	f5 33		sbc $33,x			sbc 	AMantissa3,x
+.0884	95 33		sta $33,x			sta 	AMantissa3,x
+.0886	60		rts				rts
+.0887					FloatSetZeroMantissaOnlyX:
+.0887	a9 00		lda #$00			lda 	#0
+.0889	80 06		bra $0891			bra 	FloatSetMantissaX
+.088b					FloatSetZeroX:
+.088b	a9 00		lda #$00			lda 	#0
+.088d					FloatSetByteX:
+.088d	74 34		stz $34,x			stz 	AExponent,x 				; zero exponent, as integer.
+.088f	74 35		stz $35,x			stz 	AStatus,x 					; status zero (integer)
+.0891					FloatSetMantissaX:
+.0891	95 30		sta $30,x			sta 	AMantissa0,x 				; mantissa
+.0893	74 31		stz $31,x			stz 	AMantissa1,x
+.0895	74 32		stz $32,x			stz 	AMantissa2,x
+.0897	74 33		stz $33,x			stz 	AMantissa3,x
+.0899	60		rts				rts
+.089a					FloatShiftLeftX:
+.089a	18		clc				clc
+.089b					FloatRotateLeftX:
+.089b	36 30		rol $30,x			rol 	AMantissa0,x
+.089d	36 31		rol $31,x			rol		AMantissa1,x
+.089f	36 32		rol $32,x			rol		AMantissa2,x
+.08a1	36 33		rol $33,x			rol		AMantissa3,x
+.08a3	60		rts				rts
+.08a4					FloatShiftRightX:
+.08a4	56 33		lsr $33,x			lsr 	AMantissa3,x
+.08a6	76 32		ror $32,x			ror		AMantissa2,x
+.08a8	76 31		ror $31,x			ror		AMantissa1,x
+.08aa	76 30		ror $30,x			ror		AMantissa0,x
+.08ac	60		rts				rts
+.08ad					FloatIsZeroX:
+.08ad	b5 33		lda $33,x			lda 	AMantissa3,x
+.08af	15 32		ora $32,x			ora		AMantissa2,x
+.08b1	15 31		ora $31,x			ora		AMantissa1,x
+.08b3	15 30		ora $30,x			ora		AMantissa0,x
+.08b5	60		rts				rts
+
+;******  Return to file: _floats.asm
+
+
 ;******  Processing file: ./modules/common/boot.end/zzEnd.asm
 
-.0825					EndProgram:
+.08b6					EndProgram:
 
 ;******  Return to file: _floats.asm
 

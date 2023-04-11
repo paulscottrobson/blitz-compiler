@@ -23,6 +23,11 @@ _CopyNumbers:
 		dex 
 		bpl 	_CopyNumbers
 
+		ldx 	#UseAMantissa
+		jsr 	FloatNormaliseX
+		ldx 	#UseBMantissa
+		jsr 	FloatNormaliseX
+
 		jmp 	$FFFF
 
 
