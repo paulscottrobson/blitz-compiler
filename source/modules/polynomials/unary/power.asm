@@ -43,7 +43,7 @@ BinaryPower:
 
 		dex  							; Exponent code.
 
-		jsr 	ExpCode 				
+		jsr 	FloatExponent				
 		clc
 		rts
 		

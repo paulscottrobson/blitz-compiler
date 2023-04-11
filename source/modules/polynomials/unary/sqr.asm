@@ -18,10 +18,10 @@
 ;
 ; ************************************************************************************************
 
-UnarySquareRoot: 
+FloatSquareRoot: 
 		jsr 	LogCode
 		dec 	NSExponent,x
-		jsr 	ExpCode
+		jsr 	FloatExponent
 		clc
 		rts
 

@@ -18,9 +18,8 @@
 ;
 ; ************************************************************************************************
 
-UnaryExponent: 	;; [exp]
-
-ExpCode:		
+FloatExponent:
+	
 		.pushfloat Const_Log2_e			; multiply by log2 e
 		jsr 	FloatMultiply 
 
@@ -52,6 +51,7 @@ ExpCode:
 		jsr 	FloatSetByte		
 		dex
 		jsr 	FloatNegate
+		inx
 		jsr 	FloatAdd
 
 		pla 							; integer part +1 and negated.

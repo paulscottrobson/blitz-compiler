@@ -21,7 +21,7 @@ class FPCompiler(object):
 						 "<>":"CompareNotEqual",">=":"CompareGreaterEqual","<=":"CompareLessEqual",
 						 "f.cmp":"FloatCompare","negate":"FloatNegate","int":"FloatIntegerPart",
 						 "sin":"FloatSine","cos":"FloatCosine","tan":"FloatTangent",
-						 "atn":"FloatArcTan",
+						 "atn":"FloatArcTan","exp":"FloatExponent",
 						 "assert":"FPAssertCheck","abs":"FPAbs",
 		}
 	#
