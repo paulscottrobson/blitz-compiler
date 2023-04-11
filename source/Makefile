@@ -27,16 +27,30 @@ HARDWARE = x16
 
 all: float
 
-float : prelim
+#
+#		Test the floating point mathematics
+#
+testmath : prelim
+	python $(SCRIPTDIR)test_binary.py >build$(S)temp$(S)float.code
+	python $(SCRIPTDIR)floatcom.py build$(S)temp$(S)float.code >modules$(S)ifloat32$(S)generated$(S)testcode.dat
+	python $(SCRIPTDIR)build.py ifloat32 polynomials machine_$(HARDWARE) -o_float.asm -mifloat32
+	$(ASM) $(ASMOPTS) _float.asm -o build$(S)float.prg
+	$(CCOPY) build$(S)float.prg $(BINDIR)
+	$(CDEL) dump*.bin
+	$(HRUNEMU) -prg build$(S)float.prg,801 -run -warp
+	python $(SCRIPTDIR)stack.py
+#
+#		Test unary functions / polynomials and the power operator.
+#
+testfuncs : prelim
 	python $(SCRIPTDIR)test_functions.py >build$(S)temp$(S)float.code
 	python $(SCRIPTDIR)floatcom.py build$(S)temp$(S)float.code >modules$(S)ifloat32$(S)generated$(S)testcode.dat
 	python $(SCRIPTDIR)build.py ifloat32 polynomials machine_$(HARDWARE) -o_float.asm -mifloat32
 	$(ASM) $(ASMOPTS) _float.asm -o build$(S)float.prg
 	$(CCOPY) build$(S)float.prg $(BINDIR)
 	$(CDEL) dump*.bin
-	$(RUNEMU) -prg build$(S)float.prg,801 -run
+	$(HRUNEMU) -prg build$(S)float.prg,801 -run -warp
 	python $(SCRIPTDIR)stack.py
-
 #
 #		Do stuff before building.
 #

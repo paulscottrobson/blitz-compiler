@@ -32,14 +32,16 @@ FloatLogarithm:
 		lda 	#(-31) & $FF 				; force into range 0.5 -> 1
 		sta 	NSExponent,x
 
+
 		.pushfloat Const_sqrt_half 			; add sqrt 0.5
 		jsr 	FloatAdd
 
-		txa 								; divide into 2.0
+
+		txa 								; divide into sqrt 2.0
 		tay
 		iny
 		jsr 	CopyFloatXY
-		dex 	
+		dex
 		.pushfloat Const_sqrt_2
 		inx
 
@@ -49,7 +51,6 @@ FloatLogarithm:
 		inx
 		lda 	#1
 		jsr 	FloatSetByte
-		dex
 		jsr 	FloatAdd
 
 		jsr 	CoreLog
@@ -70,8 +71,6 @@ _LogNotNeg:
 		pla
 		and 	#$80
 		sta 	NSStatus,x
-		dex
-
 		jsr 	FloatAdd
 
 		.pushfloat Const_ln_e 			; * log2(e)

@@ -19,7 +19,7 @@
 ; ************************************************************************************************
 
 FloatSquareRoot: 
-		jsr 	LogCode
+		jsr 	FloatLogarithm
 		dec 	NSExponent,x
 		jsr 	FloatExponent
 		clc

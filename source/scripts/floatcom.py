@@ -22,6 +22,7 @@ class FPCompiler(object):
 						 "f.cmp":"FloatCompare","negate":"FloatNegate","int":"FloatIntegerPart",
 						 "sin":"FloatSine","cos":"FloatCosine","tan":"FloatTangent",
 						 "atn":"FloatArcTan","exp":"FloatExponent","log":"FloatLogarithm",
+						 "sqr":"FloatSquareRoot","^":"FloatPower",
 						 "assert":"FPAssertCheck","abs":"FPAbs",
 		}
 	#

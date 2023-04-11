@@ -18,7 +18,7 @@
 ;
 ; ************************************************************************************************
 
-BinaryPower: 
+FloatPower: 
 		dex
 
 		txa 							; copy 0 to 2, so we can process it
@@ -31,10 +31,10 @@ BinaryPower:
 		inx 							; 2 = Log(0)
 		inx
 
-		jsr 	LogCode
+		jsr 	FloatLogarithm
 
-		dex 							; Multiply by original 1, into 1.
-		jsr 	FloatMultiply
+	
+		jsr 	FloatMultiply			; Multiply by original 1, into 1.
 
 		txa 							; copy to slot 0
 		tay
