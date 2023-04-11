@@ -25,12 +25,20 @@ EMU_REPO= ..$(S)..$(S)x16-emulator
 ROM_REPO= ..$(S)..$(S)x16-rom
 HARDWARE = x16
 
-all: float
+all: runtime
 
+#
+#		Build the runtime
+#
+runtime:prelim
+	python $(SCRIPTDIR)build.py ifloat32 polynomials runtime machine_$(HARDWARE) runtime_$(HARDWARE) -o_runtime.asm -mruntime
+	$(ASM) $(ASMOPTS) _runtime.asm -o build$(S)runtime.prg
+	$(CCOPY) build$(S)runtime.prg $(BINDIR)
+	$(CDEL) dump*.bin
 #
 #		Test the floating point mathematics
 #
-testmath : prelim
+testmaths : prelim
 	python $(SCRIPTDIR)test_binary.py >build$(S)temp$(S)float.code
 	python $(SCRIPTDIR)floatcom.py build$(S)temp$(S)float.code >modules$(S)ifloat32$(S)generated$(S)testcode.dat
 	python $(SCRIPTDIR)build.py ifloat32 polynomials machine_$(HARDWARE) -o_float.asm -mifloat32

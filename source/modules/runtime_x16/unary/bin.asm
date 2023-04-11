@@ -1,28 +1,51 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		config.inc
-;		Purpose:	Configuration for runtime
+;		Name:		bin.asm
+;		Purpose:	Binary conversion
 ;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
-;
-;		Build address
-;
-CodeStart = $801
-;
-;		Runtime p-code address
-;
-PCodeStart = $4000
-;
-;		Work area space and size
-;
-WorkArea = $8000
-WorkAreaSize = $2000
 
+		.section code
+		
+; ************************************************************************************************
+;
+;								BIN$ (integer to string)
+;
+; ************************************************************************************************
+
+UnaryBin: ;; [bin$]
+		.entercmd
+		jsr 	MakeInteger16Bit			; 16 bit int 
+		lda 	#16 						; allocate / set 16 bytes.
+		jsr 	StringAllocTemp
+		lda 	zTemp0+1
+		beq 	_UBNoHigh
+		jsr 	_UBWriteBinary
+_UBNoHigh:
+		lda 	zTemp0
+		jsr 	_UBWriteBinary
+		.exitcmd
+
+_UBWriteBinary:		
+		ldy 	#8
+_UBWLoop:
+		asl 	a
+		pha
+		lda  	#0
+		adc 	#48		
+		jsr 	StringWriteChar
+		pla
+		dey
+		bne 	_UBWLoop
+		rts
+
+
+		.send code
 
 ; ************************************************************************************************
 ;
@@ -34,4 +57,3 @@ WorkAreaSize = $2000
 ;		==== 			=====
 ;
 ; ************************************************************************************************
-

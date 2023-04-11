@@ -1,28 +1,30 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		config.inc
-;		Purpose:	Configuration for runtime
+;		Name:		runtime.asm
+;		Purpose:	Runtime interpreter main
 ;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
-;
-;		Build address
-;
-CodeStart = $801
-;
-;		Runtime p-code address
-;
-PCodeStart = $4000
-;
-;		Work area space and size
-;
-WorkArea = $8000
-WorkAreaSize = $2000
 
+		.section code
+
+Boot:	.exitemu
+
+		.send code
+
+MakeInteger16Bit: ; proper 16 bit integer on the stack
+MakeInteger8Bit:  ; 8 bit integer in A.
+WriteInteger8Bit: ; 8 bit integer from A
+
+error_range .macro
+		.endm
+
+error_value .macro
+		.endm		
 
 ; ************************************************************************************************
 ;
@@ -34,4 +36,3 @@ WorkAreaSize = $2000
 ;		==== 			=====
 ;
 ; ************************************************************************************************
-

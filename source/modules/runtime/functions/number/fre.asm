@@ -1,28 +1,38 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		config.inc
-;		Purpose:	Configuration for runtime
+;		Name:		fre.asm
+;		Purpose:	Calculate free space
 ;		Created:	11th April 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
-;
-;		Build address
-;
-CodeStart = $801
-;
-;		Runtime p-code address
-;
-PCodeStart = $4000
-;
-;		Work area space and size
-;
-WorkArea = $8000
-WorkAreaSize = $2000
 
+		.section 	code
+
+; ************************************************************************************************
+;
+;											FRE() function
+;
+; ************************************************************************************************
+
+UnaryFre:	;; [fre]
+		.entercmd
+
+		jsr 	FloatSetZero 				; zero the result (32 bit integer)
+		sec
+		lda 	stringHighMemory 			; calculate the free memory.
+		sbc 	stringLowMemory
+		sta		NSMantissa0,x
+		lda 	stringHighMemory+1
+		sbc 	stringLowMemory+1
+		sta		NSMantissa1,x
+		
+		.exitcmd
+
+		.send 	code
 
 ; ************************************************************************************************
 ;
@@ -34,4 +44,3 @@ WorkAreaSize = $2000
 ;		==== 			=====
 ;
 ; ************************************************************************************************
-

@@ -1,28 +1,39 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		config.inc
-;		Purpose:	Configuration for runtime
+;		Name:		not.asm
+;		Purpose:	NOT of TOS
 ;		Created:	11th April 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
-;
-;		Build address
-;
-CodeStart = $801
-;
-;		Runtime p-code address
-;
-PCodeStart = $4000
-;
-;		Work area space and size
-;
-WorkArea = $8000
-WorkAreaSize = $2000
 
+		.section 	code
+
+; ************************************************************************************************
+;
+;									     Not TOS
+;
+; ************************************************************************************************
+
+NotTOS:	;; [not]
+		.entercmd
+		jsr 	MakeInteger16Bit 			; 16 bit integer on the stack.
+
+		sec 								; will work for either.
+		lda 	#0 
+		sbc 	NSMantissa0,x
+		sta 	NSMantissa0,x
+
+		lda 	#0
+		sbc 	NSMantissa1,x
+		sta 	NSMantissa1,x
+
+		.exitcmd
+
+		.send 	code
 
 ; ************************************************************************************************
 ;
@@ -34,4 +45,3 @@ WorkAreaSize = $2000
 ;		==== 			=====
 ;
 ; ************************************************************************************************
-

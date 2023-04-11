@@ -1,28 +1,55 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		config.inc
-;		Purpose:	Configuration for runtime
+;		Name:		hex.asm
+;		Purpose:	Hexadecimal conversion
 ;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
-;
-;		Build address
-;
-CodeStart = $801
-;
-;		Runtime p-code address
-;
-PCodeStart = $4000
-;
-;		Work area space and size
-;
-WorkArea = $8000
-WorkAreaSize = $2000
 
+		.section code
+		
+; ************************************************************************************************
+;
+;								BIN$ (integer to string)
+;
+; ************************************************************************************************
+
+UnaryHex: ;; [hex$]
+		.entercmd
+		jsr 	MakeInteger16Bit
+		lda 	#4 							; allocate / set 4 bytes.
+		jsr 	StringAllocTemp
+		lda 	zTemp0+1
+		beq 	_UHNoHigh
+		jsr 	_UHWriteHex
+_UHNoHigh:
+		lda 	zTemp0
+		jsr 	_UHWriteHex
+		.exitcmd
+
+_UHWriteHex:		
+		pha
+		lsr 	a
+		lsr 	a
+		lsr 	a
+		lsr 	a
+		jsr 	_UHWriteNibl
+		pla
+_UHWriteNibl:				
+		and 	#15
+		cmp 	#10
+		bcc 	_UHDigit
+		adc 	#6
+_UHDigit:
+		adc 	#48
+		jsr 	StringWriteChar
+		rts
+
+		.send code
 
 ; ************************************************************************************************
 ;
@@ -34,4 +61,3 @@ WorkAreaSize = $2000
 ;		==== 			=====
 ;
 ; ************************************************************************************************
-

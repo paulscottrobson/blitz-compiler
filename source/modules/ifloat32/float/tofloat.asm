@@ -163,7 +163,7 @@ _ESTASwitchFloat:
 
 _ESTADecimalState:
 		pla 								; digit.
-		cmp 	#"." 						; fail on 2nd decimal point.
+		cmp 	#"." 						; fail on 11th decimal point.
 		beq 	_ENFail
 		;
 		inx 								; put digit into fractional part of X+1

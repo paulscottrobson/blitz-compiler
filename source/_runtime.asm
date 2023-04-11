@@ -3,13 +3,13 @@
 ;
 module_machine_x16 = 1
 ismain_machine_x16 = 0
-module_runtime = 0
-ismain_runtime = 0
+module_runtime = 1
+ismain_runtime = 1
 module_compiler_x16 = 0
 ismain_compiler_x16 = 0
 module_ifloat32 = 1
-ismain_ifloat32 = 1
-module_runtime_x16 = 0
+ismain_ifloat32 = 0
+module_runtime_x16 = 1
 ismain_runtime_x16 = 0
 module_common = 1
 ismain_common = 0
@@ -17,18 +17,27 @@ module_polynomials = 1
 ismain_polynomials = 0
 
 	.include	"modules/common/data/common.inc"
+	.include	"modules/runtime/config.inc"
 	.include	"modules/polynomials/utility/constant.inc"
+	.include	"modules/runtime/aa.testing/data.inc"
 	.include	"modules/common/data/data.inc"
 	.include	"modules/machine_x16/config/machinecode.inc"
 	.include	"modules/common/boot.end/macros.inc"
+	.include	"modules/runtime/aa.testing/runtime.inc"
 	.include	"modules/common/data/system.inc"
 	.include	"modules/ifloat32/aa.testing/testing.inc"
+	.include	"modules/runtime/constants/tokens.inc"
 	.include	"modules/common/boot.end/00start.asm"
+	.include	"modules/runtime/functions/number/abs.asm"
 	.include	"modules/ifloat32/float/addsub.asm"
+	.include	"modules/runtime/functions/number/asc.asm"
 	.include	"modules/polynomials/unary/atn.asm"
 	.include	"modules/polynomials/core/atn_core.asm"
+	.include	"modules/runtime_x16/unary/bin.asm"
+	.include	"modules/runtime/functions/strings/chr.asm"
 	.include	"modules/polynomials/generated/coefficients.asm"
 	.include	"modules/ifloat32/float/compare.asm"
+	.include	"modules/runtime/strings/concrete.asm"
 	.include	"modules/ifloat32/generated/constants.asm"
 	.include	"modules/polynomials/generated/constants.asm"
 	.include	"modules/polynomials/unary/cos.asm"
@@ -37,26 +46,42 @@ ismain_polynomials = 0
 	.include	"modules/polynomials/unary/exp.asm"
 	.include	"modules/polynomials/core/exp_core.asm"
 	.include	"modules/ifloat32/float/fractional.asm"
+	.include	"modules/runtime/functions/number/fre.asm"
 	.include	"modules/machine_x16/interface/getxpos.asm"
+	.include	"modules/runtime_x16/unary/hex.asm"
 	.include	"modules/polynomials/utility/horner.asm"
+	.include	"modules/runtime/functions/number/int.asm"
 	.include	"modules/ifloat32/float/integer.asm"
+	.include	"modules/runtime/functions/strings/len.asm"
 	.include	"modules/polynomials/utility/load.asm"
 	.include	"modules/polynomials/unary/log.asm"
 	.include	"modules/polynomials/core/log_core.asm"
 	.include	"modules/ifloat32/binary/multiply.asm"
 	.include	"modules/ifloat32/float/multiply.asm"
+	.include	"modules/runtime/functions/number/negation.asm"
 	.include	"modules/ifloat32/float/normalise.asm"
+	.include	"modules/runtime/functions/number/not.asm"
+	.include	"modules/runtime/functions/number/peek.asm"
 	.include	"modules/polynomials/unary/pi.asm"
+	.include	"modules/runtime/functions/number/pos.asm"
 	.include	"modules/polynomials/unary/power.asm"
 	.include	"modules/machine_x16/interface/printchar.asm"
+	.include	"modules/runtime/functions/number/rnd.asm"
+	.include	"modules/runtime/aa.testing/runtime.asm"
+	.include	"modules/runtime/functions/number/sgn.asm"
 	.include	"modules/ifloat32/binary/simple.asm"
 	.include	"modules/polynomials/unary/sin.asm"
 	.include	"modules/polynomials/core/sin_core.asm"
 	.include	"modules/polynomials/unary/sqr.asm"
+	.include	"modules/runtime/functions/strings/str.asm"
+	.include	"modules/runtime/strings/stralloc.asm"
+	.include	"modules/runtime/functions/strings/substring.asm"
 	.include	"modules/polynomials/unary/tan.asm"
 	.include	"modules/ifloat32/aa.testing/testing.asm"
 	.include	"modules/ifloat32/float/tofloat.asm"
 	.include	"modules/ifloat32/binary/tostring.asm"
 	.include	"modules/ifloat32/float/tostring.asm"
+	.include	"modules/runtime/functions/number/usr.asm"
 	.include	"modules/ifloat32/utility/utility.asm"
+	.include	"modules/runtime/functions/strings/val.asm"
 	.include	"modules/common/boot.end/zzEnd.asm"

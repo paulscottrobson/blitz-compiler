@@ -29,20 +29,22 @@ class Builder(object):
 	#		Scan source tre for required modules.
 	#
 	def scanForFiles(self):
-		for root,dirs,files in os.walk("."):
-			isOk = True
-			if root.find("modules") >= 0:
-				parts = root.split(os.sep)
-				if len(parts) == 3:
-					isOk = (parts[-1] in sys.argv or parts[-1] == "common") and not parts[-1].startswith("_")
-					self.defines.append("module_{0} = {1}".format(parts[-1],1 if isOk else 0))
-					self.defines.append("ismain_{0} = {1}".format(parts[-1],1 if parts[-1] == self.main else 0))
+		for root,dirs,files in os.walk("modules"):
+			isOk = False
+			parts = root.split(os.sep)
+			if len(parts) >= 2:
+				isOk = parts[1] in sys.argv or parts[1] == "common"
+			if len(parts) == 2:
+				self.defines.append("module_{0} = {1}".format(parts[-1].replace(".","_"),1 if isOk else 0))
+				self.defines.append("ismain_{0} = {1}".format(parts[-1].replace(".","_"),1 if parts[-1] == self.main else 0))
+			#print(root,isOk,parts)
 			if isOk:
 				for f in files:
-					if f.endswith(".inc"):
-						self.incFiles.append(root+os.sep+f)
-					if f.endswith(".asm") and f != self.target :
-						self.asmFiles.append(root+os.sep+f)			
+					if not f.startswith("_"):
+						if f.endswith(".inc"):
+							self.incFiles.append(root+os.sep+f)
+						if f.endswith(".asm") and f != self.target :
+							self.asmFiles.append(root+os.sep+f)			
 		self.asmFiles.sort(key = lambda x:x.split(os.sep)[-1])
 		self.incFiles.sort(key = lambda x:x.split(os.sep)[-1])
 

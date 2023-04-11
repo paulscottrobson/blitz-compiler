@@ -1,28 +1,42 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		config.inc
-;		Purpose:	Configuration for runtime
+;		Name:		asc.asm
+;		Purpose:	ASCII value of string first character
 ;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
-;
-;		Build address
-;
-CodeStart = $801
-;
-;		Runtime p-code address
-;
-PCodeStart = $4000
-;
-;		Work area space and size
-;
-WorkArea = $8000
-WorkAreaSize = $2000
 
+; ************************************************************************************************
+;
+;								  ASCII value of first character.
+;
+; ************************************************************************************************
+
+		.section code
+
+UnaryAsc: ;; [asc]
+		.entercmd
+		;
+		lda 	NSMantissa0,x 				; string address.
+		sta 	zTemp0
+		lda 	NSMantissa1,x
+		sta 	zTemp0+1
+		;
+		lda 	(zTemp0) 					; if empty string return zero
+		beq 	_UAExit
+		phy 								; otherwise first character
+		ldy 	#1
+		lda 	(zTemp0),y
+		ply
+_UAExit:
+		jsr 	WriteInteger8Bit
+		.exitcmd
+
+		.send code
 
 ; ************************************************************************************************
 ;
@@ -34,4 +48,3 @@ WorkAreaSize = $2000
 ;		==== 			=====
 ;
 ; ************************************************************************************************
-

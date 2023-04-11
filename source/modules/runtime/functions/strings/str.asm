@@ -1,29 +1,45 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		config.inc
-;		Purpose:	Configuration for runtime
+;		Name:		str.asm
+;		Purpose:	Convert number to string
 ;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
-;
-;		Build address
-;
-CodeStart = $801
-;
-;		Runtime p-code address
-;
-PCodeStart = $4000
-;
-;		Work area space and size
-;
-WorkArea = $8000
-WorkAreaSize = $2000
 
+		.section code
 
+; ************************************************************************************************
+;
+;										str$() function
+;
+; ************************************************************************************************
+
+Unary_Str: ;; [str$]
+		.entercmd
+		lda 	#8 							; maximum decimal places.
+		jsr 	FloatToString 				; do the conversion.
+		lda		#33 						; create buffer
+		jsr 	StringAllocTemp 			; allocate memory
+
+		ldy 	#1  						; copy the converted string into the buffer.
+_USCopy:
+		lda 	decimalBuffer-1,y
+		beq 	_USExit
+		sta 	(zsTemp),y
+		iny
+		bra 	_USCopy
+_USExit:		
+		tya
+		dec 	a
+		sta 	(zsTemp)
+		.exitcmd
+
+		.send 	code
+		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates
@@ -34,4 +50,3 @@ WorkAreaSize = $2000
 ;		==== 			=====
 ;
 ; ************************************************************************************************
-

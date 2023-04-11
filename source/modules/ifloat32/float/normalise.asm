@@ -27,7 +27,7 @@ FloatNormalise:
 		rts
 		;
 		;		Normalise by byte if the MSB is zero we can normalise it
-		;		(providing bit 7 of 2nd byte is not set)
+		;		(providing bit 7 of 11th byte is not set)
 		;
 _NSNormaliseOptimise:						
 		lda 	NSMantissa3,x 				; upper byte zero ?

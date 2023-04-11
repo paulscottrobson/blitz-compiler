@@ -1,28 +1,39 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		config.inc
-;		Purpose:	Configuration for runtime
+;		Name:		chr.asm
+;		Purpose:	Convert number to character.
 ;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
-;
-;		Build address
-;
-CodeStart = $801
-;
-;		Runtime p-code address
-;
-PCodeStart = $4000
-;
-;		Work area space and size
-;
-WorkArea = $8000
-WorkAreaSize = $2000
 
+; ************************************************************************************************
+;
+;											CHR$(n)
+;
+; ************************************************************************************************
+
+		.section code
+
+UnaryChr: ;; [chr$]
+		.entercmd
+		jsr 	MakeInteger8Bit 			; get the integer to convert.
+		pha 								; save it and allocate for it
+		lda 	#1 							; 1 character
+		jsr 	StringAllocTemp 	
+		lda 	#1 							; length 1.
+		sta 	(zsTemp)
+		pla 								; character code makes string.
+		phy
+		ldy 	#1
+		sta 	(zsTemp),y
+		ply
+		.exitcmd
+
+		.send code
 
 ; ************************************************************************************************
 ;
@@ -34,4 +45,3 @@ WorkAreaSize = $2000
 ;		==== 			=====
 ;
 ; ************************************************************************************************
-

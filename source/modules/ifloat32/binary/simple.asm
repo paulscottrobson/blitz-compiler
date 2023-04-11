@@ -66,7 +66,7 @@ _DiffSigns:
 		jsr 	FloatSubTopTwoStack 		; do a physical subtraction
 		bit 	NSMantissa3,x 				; result is +ve, okay
 		bpl 	_AddExit 	
-		lda 	NSStatus+1,x 				; sign is that of 2nd value
+		lda 	NSStatus+1,x 				; sign is that of 11th value
 		sta 	NSStatus,x
 		jsr 	FloatNegateMantissa 			; negate the mantissa and exit
 _AddExit:

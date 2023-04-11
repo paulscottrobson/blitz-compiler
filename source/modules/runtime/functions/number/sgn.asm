@@ -1,28 +1,46 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		config.inc
-;		Purpose:	Configuration for runtime
+;		Name:		sgn.asm
+;		Purpose:	Sign of TOS
 ;		Created:	11th April 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
-;
-;		Build address
-;
-CodeStart = $801
-;
-;		Runtime p-code address
-;
-PCodeStart = $4000
-;
-;		Work area space and size
-;
-WorkArea = $8000
-WorkAreaSize = $2000
 
+		.section 	code
+
+; ************************************************************************************************
+;
+;									 Signed part of TOS
+;
+; ************************************************************************************************
+
+SignTOS:	;; [sgn]
+		.entercmd
+		;
+		;		TODO: Needs special handler for 16 bit integers.
+		;
+		jsr 	FloatIsZero 				; if zero
+		beq 	_SGZero  					; return Int Zero
+
+		lda 	NSStatus,x 					; get status w/sign
+		pha
+		lda 	#1 							; set result to 1
+		jsr 	FloatSetByte
+		pla
+		and		#$80 						; copy the sign byte out
+		sta 	NSStatus,x  				; so it will be -1 or 1
+		bra 	_SGExit
+
+_SGZero:
+		jsr 	FloatSetZero
+_SGExit:
+		.exitcmd
+
+		.send 	code
 
 ; ************************************************************************************************
 ;
@@ -34,4 +52,3 @@ WorkAreaSize = $2000
 ;		==== 			=====
 ;
 ; ************************************************************************************************
-

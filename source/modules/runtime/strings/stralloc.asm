@@ -1,8 +1,8 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		data.inc
-;		Purpose:	Common Data
+;		Name:		stralloc.asm
+;		Purpose:	Allocate string memory
 ;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
@@ -10,71 +10,97 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-; ************************************************************************************************
-;
-;									Mandatory Zero page code
-;
-; ************************************************************************************************
-
-		.section zeropage
-
-codePtr:	 								; address of current line (allow for paging)
-		.fill 	4
-zTemp0: 									; temporary words used in the interpreter.
-		.fill 	2
-zTemp1:
-		.fill 	2
-zTemp2:
-		.fill 	2
+		.section code
 
 ; ************************************************************************************************
 ;
-;										Stack Workspace
-;
-; ************************************************************************************************
-;
-;										   Status Bits
-;
-; 	bit 7 	: sign of mantissa (if float,0 otherwise)
-; 	bit 6 	: 0 : float (may be 31 bit integer) 1 : 16 bit integer
-;	bit 5 	: 0 : numeric value ; 1 : String
-;
-; ************************************************************************************************
-;
-;							The number stack (works up from zero)
+;				Temporary string allocation reset (call if cmd manipulates strings)
 ;
 ; ************************************************************************************************
 
-NSBIs16Bit = $40 							; set if 16 bit integer
-NSBIsString = $20 							; set if string.
-
-		.align 16
-NSStatus: 									; Status bits of stack.
-		.fill 	MathStackSize
-NSMantissa0: 								; Mantissa on stack (address in 0,1 for string)
-		.fill 	MathStackSize 				; (this is my integer mantissa system)
-NSMantissa1: 								; the order of the mantissa elements is required.
-		.fill 	MathStackSize
-NSMantissa2:
-		.fill 	MathStackSize
-NSMantissa3:
-		.fill 	MathStackSize
-NSExponent: 								; Exponent , 0 = Mantissa is integer
-		.fill 	MathStackSize
-
-		.send zeropage
-
+resetStringSystem .macro
+		stz 	stringInitialised
+		.endm
 
 ; ************************************************************************************************
 ;
-;										Non Zero Page Data
+;							Initialise string system if required
 ;
 ; ************************************************************************************************
 
+StringInitialise:
+		pha
+		lda 	stringInitialised 			; already done
+		bne 	_SIExit
+
+		lda 	stringHighMemory 			; copy high memory - 512 => stringTempPointer
+		sta 	stringTempPointer
+		lda 	stringHighMemory+1
+		dec 	a
+		dec 	a
+		sta 	stringTempPointer+1
+
+		dec 	stringInitialised 			; set the initialised flag.
+_SIExit:
+		pla
+		rts
+
+; ************************************************************************************************
+;
+;								Allocate space for a string of length A.
+;
+; ************************************************************************************************
+
+StringAllocTemp:
+		jsr 	StringInitialise 			; check it is initialised.
+
+		eor 	#$FF 						; subtract A+1 from temp pointer.
+		clc
+		adc 	stringTempPointer 			; subtract 32 from temp pointer and
+		sta 	stringTempPointer 			; save in zsTemp and stackas well.
+		sta 	zsTemp
+		sta 	NSMantissa0,x
+
+		lda 	stringTempPointer+1
+		adc 	#$FF
+		sta 	stringTempPointer+1
+		sta 	zsTemp+1
+		sta 	NSMantissa1,x
+		stz 	NSMantissa2,x
+		stz 	NSMantissa3,x
+
+		lda 	#0 							; clear string.
+		sta 	(zsTemp)
+		lda 	#NSBIsString 		 		; mark as string
+		sta 	NSStatus,x
+		rts
+
+; ************************************************************************************************
+;		
+; 										Write A to String
+;
+; ************************************************************************************************
+
+StringWriteChar:
+		phy
+		pha
+		lda 	(zsTemp)
+		inc 	a
+		sta 	(zsTemp)
+		tay
+		pla
+		sta 	(zsTemp),y
+		ply
+		rts
+
+		.send code
+		
 		.section storage
-numberBuffer:
-		.fill 	34
-		.send 	storage
+stringInitialised:							; non zero if string system not set up
+		.fill 	1		
+stringTempPointer: 							; allocated temporary pointer
+		.fill 	2
+		.send storage
 
 ; ************************************************************************************************
 ;
@@ -86,4 +112,3 @@ numberBuffer:
 ;		==== 			=====
 ;
 ; ************************************************************************************************
-
