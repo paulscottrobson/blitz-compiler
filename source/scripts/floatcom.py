@@ -24,7 +24,7 @@ class FPCompiler(object):
 						 "atn":"FloatArcTan","exp":"FloatExponent","log":"FloatLogarithm",
 						 "sqr":"FloatSquareRoot","^":"FloatPower",
 						 "assert":"FPAssertCheck","abs":"FPAbs",
-		}
+	}
 	#
 	def compileGroup(self,g):
 		for x in g.split():

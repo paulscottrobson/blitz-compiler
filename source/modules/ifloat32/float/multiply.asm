@@ -21,6 +21,19 @@
 FloatMultiply:	
 
 		dex
+		lda 	NSExponent,x 				; can use optimised ?
+		ora 	NSExponent+1,x
+		ora 	NSMantissa3,x
+		ora 	NSMantissa3+1,x		
+		bne 	_FMUseFloat
+		
+		jsr 	FloatMultiplyShort			; use the int32 one.
+		clc 								; fix it up if gone out of range
+		adc 	NSExponent,x
+		sta 	NSExponent,x
+		rts
+
+_FMUseFloat:
 		jsr 	FloatNormalise		 		; normalise S[X] and exit if zero
 		beq 	_FDExit 					; return zero if zero (e.g. zero*something)
 		inx 
