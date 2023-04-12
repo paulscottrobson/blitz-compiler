@@ -62,7 +62,7 @@ _FFPExit:
 		ply	
 		rts		
 ;
-;		Clear up to 8 bits from A from the left, subtract from the todo count in Y
+;		Clear up to 8 bits from A from the left, subtract from the count remaining in Y
 ;
 _FFPPartial:
 		cpy 	#0 							; no more to do

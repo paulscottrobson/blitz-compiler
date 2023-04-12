@@ -20,9 +20,14 @@
 
 NotTOS:	;; [not]
 		.entercmd
-		;
-		; 	TODO NOT which is 1's complement or alternatively -x+1
-		;
+		stz 	NSMantissa2,x 				; chop down to 16 bit.
+		stz 	NSMantissa3,x
+
+		inc 	NSMantissa0,x 				; +1
+		bne 	_NotTOSSkip
+		inc 	NSMantissa1,x
+_NotTOSSkip:
+		jsr 	FloatNegate		 			; negate
 		.exitcmd
 
 		.send 	code

@@ -77,6 +77,7 @@ prelim:
 	python $(SCRIPTDIR)constants.py
 	python $(SCRIPTDIR)mathconstants.py
 	python $(SCRIPTDIR)coremaths.py
+	python $(SCRIPTDIR)c64tokens.py >modules$(S)common$(S)generated$(S)c64tokens.inc
 #
 #		Update tools
 #	

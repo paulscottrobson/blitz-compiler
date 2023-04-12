@@ -16,6 +16,7 @@ ismain_common = 0
 module_polynomials = 1
 ismain_polynomials = 0
 
+	.include	"modules/common/generated/c64tokens.inc"
 	.include	"modules/common/data/common.inc"
 	.include	"modules/runtime/config.inc"
 	.include	"modules/polynomials/utility/constant.inc"
@@ -26,7 +27,6 @@ ismain_polynomials = 0
 	.include	"modules/runtime/aa.runtime/runtime.inc"
 	.include	"modules/common/data/system.inc"
 	.include	"modules/ifloat32/aa.testing/testing.inc"
-	.include	"modules/runtime/constants/tokens.inc"
 	.include	"modules/common/boot.end/00start.asm"
 	.include	"modules/runtime/functions/number/abs.asm"
 	.include	"modules/ifloat32/float/addsub.asm"
