@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		runtime.asm
-;		Purpose:	Runtime interpreter main
-;		Created:	11th April 2023
+;		Name:		errors.asm
+;		Purpose:	Error handler
+;		Created:	12th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -12,12 +12,16 @@
 
 		.section code
 
-Boot:	.exitemu
+Unimplemented:
+		.debug
 
-GetInteger8Bit:
+error_range .macro
 		.debug
-GetInteger16Bit:
+		.endm
+
+error_value .macro
 		.debug
+		.endm		
 
 		.send code
 

@@ -45,6 +45,7 @@ ismain_polynomials = 0
 	.include	"modules/polynomials/unary/cos.asm"
 	.include	"modules/ifloat32/binary/divide.asm"
 	.include	"modules/ifloat32/float/divide.asm"
+	.include	"modules/runtime/errors/errors.asm"
 	.include	"modules/polynomials/unary/exp.asm"
 	.include	"modules/polynomials/core/exp_core.asm"
 	.include	"modules/ifloat32/float/fractional.asm"
