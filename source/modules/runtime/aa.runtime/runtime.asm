@@ -17,13 +17,15 @@ Boot:	.exitemu
 GetInteger8Bit:
 GetInteger16Bit:
 
-		.send code
+Unimplemented:
 
 error_range .macro
 		.endm
 
 error_value .macro
 		.endm		
+
+		.send code
 
 ; ************************************************************************************************
 ;

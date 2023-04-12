@@ -24,15 +24,16 @@ HRUNEMU = $(RUNEMU) -testbench -warp
 EMU_REPO= ..$(S)..$(S)x16-emulator
 ROM_REPO= ..$(S)..$(S)x16-rom
 HARDWARE = x16
-RTMODULES = ifloat32 polynomials runtime $(HARDWARE)_hardware $(HARDWARE)_runtime
+RTMODULES = ifloat32 polynomials runtime $(HARDWARE)_hardware $(HARDWARE)_runtime -o_runtime.asm -mruntime
 all: runtime
 
 #
 #		Build the runtime
 #
 runtime:prelim
-	python $(SCRIPTDIR)build.py $(RTMODULES)  -o_runtime.asm -mruntime
-	python $(SCRIPTDIR)pcode.py $(RTMODULES)  -o_runtime.asm -mruntime >modules$(S)common$(S)generated$(S)pcodetokens.inc
+	python $(SCRIPTDIR)build.py $(RTMODULES) 
+	python $(SCRIPTDIR)pcode.py $(RTMODULES)  >modules$(S)common$(S)generated$(S)pcodetokens.inc
+	python $(SCRIPTDIR)vectors.py $(RTMODULES) >modules$(S)runtime$(S)generated$(S)vectors.asm
 	$(ASM) $(ASMOPTS) _runtime.asm -o build$(S)runtime.prg
 	$(CCOPY) build$(S)runtime.prg $(BINDIR)
 	$(CDEL) dump*.bin

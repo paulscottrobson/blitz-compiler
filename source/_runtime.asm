@@ -24,7 +24,6 @@ ismain_polynomials = 0
 	.include	"modules/common/data/data.inc"
 	.include	"modules/x16_hardware/config/machinecode.inc"
 	.include	"modules/common/boot.end/macros.inc"
-	.include	"modules/common/generated/pcodesize.inc"
 	.include	"modules/common/generated/pcodetokens.inc"
 	.include	"modules/runtime/aa.runtime/runtime.inc"
 	.include	"modules/common/data/system.inc"
@@ -86,4 +85,5 @@ ismain_polynomials = 0
 	.include	"modules/runtime/functions/number/usr.asm"
 	.include	"modules/ifloat32/utility/utility.asm"
 	.include	"modules/runtime/functions/strings/val.asm"
+	.include	"modules/runtime/generated/vectors.asm"
 	.include	"modules/common/boot.end/zzEnd.asm"

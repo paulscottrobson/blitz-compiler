@@ -3,7 +3,7 @@
 #
 #		Name : 		pcode.py
 #		Purpose :	Runtime P-Code definition
-#		Date :		11th April 2023
+#		Date :		12th April 2023
 #		Author : 	Paul Robson .paul@robsons.org.uk
 #
 # *******************************************************************************************
@@ -14,7 +14,7 @@ from c64tokens import *
 from build import *
 
 class PCode(object):
-	def __init__(self,tokenList):
+	def __init__(self,tokenList = [C64TokenStore()]):
 		self.tokenList = tokenList
 		self.currentID = 0x80
 		self.defines = []
@@ -51,8 +51,7 @@ class PCode(object):
 
 	def doBinaryUnary(self,tokenList):
 		self.define("PCD_STARTBINARY")		
-		for t in tokenList:
-			self.addTokens(t.getBinary())
+		self.addTokens(tokenList[0].getBinary()+",>=,<>,<=")
 		self.define("PCD_ENDBINARY")		
 		self.define("PCD_STARTUNARY")		
 		for t in tokenList:
@@ -96,9 +95,10 @@ class PCode(object):
 			h.write("\t.byte\t{0:<10}\t; ${1:02x} {2}\n".format(self.commandSize[i],i,self.idToToken[i].lower()))
 		h.close()
 
-pc = PCode([C64TokenStore()])
-pc.dump()
-pc.dumpSizeTable("modules/common/generated/pcodesize.dat")
+if __name__ == "__main__":
+	pc = PCode()
+	pc.dump()
+	pc.dumpSizeTable("modules/common/generated/pcodesize.dat")
 
 # ***********************************************************************************************************************************************
 #
