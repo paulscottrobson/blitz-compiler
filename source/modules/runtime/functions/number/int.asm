@@ -20,9 +20,7 @@
 
 IntegerTOS:	;; [int]
 		.entercmd
-		;
-		;		TODO: Handle integers of both types.
-		;
+		jsr 	FloatIntegerPart
 		.exitcmd
 
 		.send 	code

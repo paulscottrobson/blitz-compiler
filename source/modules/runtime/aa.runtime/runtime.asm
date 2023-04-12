@@ -14,11 +14,10 @@
 
 Boot:	.exitemu
 
-		.send code
+GetInteger8Bit:
+GetInteger16Bit:
 
-MakeInteger16Bit: ; proper 16 bit integer on the stack
-MakeInteger8Bit:  ; 8 bit integer in A.
-WriteInteger8Bit: ; 8 bit integer from A
+		.send code
 
 error_range .macro
 		.endm

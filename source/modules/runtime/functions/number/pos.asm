@@ -21,7 +21,7 @@
 UnaryPos: ;; [pos]
 		.entercmd
 		jsr 	XGetHPos
-		jsr 	WriteInteger8Bit
+		jsr 	FloatSetByte
 		.exitcmd
 
 		.send code

@@ -20,7 +20,7 @@
 
 UnaryHex: ;; [hex$]
 		.entercmd
-		jsr 	MakeInteger16Bit
+		jsr 	GetInteger16Bit
 		lda 	#4 							; allocate / set 4 bytes.
 		jsr 	StringAllocTemp
 		lda 	zTemp0+1

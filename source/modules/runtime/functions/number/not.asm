@@ -20,17 +20,9 @@
 
 NotTOS:	;; [not]
 		.entercmd
-		jsr 	MakeInteger16Bit 			; 16 bit integer on the stack.
-
-		sec 								; will work for either.
-		lda 	#0 
-		sbc 	NSMantissa0,x
-		sta 	NSMantissa0,x
-
-		lda 	#0
-		sbc 	NSMantissa1,x
-		sta 	NSMantissa1,x
-
+		;
+		; 	TODO NOT which is 1's complement or alternatively -x+1
+		;
 		.exitcmd
 
 		.send 	code

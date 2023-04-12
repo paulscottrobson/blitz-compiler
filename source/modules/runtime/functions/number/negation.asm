@@ -20,9 +20,7 @@
 
 NegateTOS:	;; [float.negate]
 		.entercmd
-		;
-		;		TODO: Handle integers and 32 bit values.
-		;
+		jsr 	FloatNegate
 		.exitcmd
 
 		.send 	code

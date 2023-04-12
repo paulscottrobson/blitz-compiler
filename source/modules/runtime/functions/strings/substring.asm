@@ -21,7 +21,7 @@
 Unary_Left: 	;; [left$]
 		.entercmd
 		clc 								; only one parameter
-		jsr 	MakeInteger8Bit 			; push the length of the string.
+		jsr 	GetInteger8Bit 				; push the length of the string.
 		pha
 		dex
 		lda 	#0 							; push the start position.
@@ -39,7 +39,7 @@ Unary_Right: 	;; [right$]
 		.entercmd
 		lda 	#255 						; push 255, we want all the string.		
 		;
-		jsr 	MakeInteger8Bit 			; push the right length of the string.
+		jsr 	GetInteger8Bit 				; push the right length of the string.
 		pha
 		dex
 		jsr 	UnarySStringToZTemp0
@@ -64,10 +64,10 @@ _URHaveCount:
 
 Unary_Mid: 	;; [mid$]
 		.entercmd
-		jsr 	MakeInteger8Bit 				; push the length of the string required.
+		jsr 	GetInteger8Bit 				; push the length of the string required.
 		pha
 		dex
-		jsr 	MakeInteger8Bit 				; put the start position.
+		jsr 	GetInteger8Bit 				; put the start position.
 		beq 	_UMError
 		dec 	a
 		pha
@@ -144,7 +144,7 @@ SSReturnNull:
 		sta 	NSMantissa1,x
 		stz 	NSMantissa2,x
 		stz 	NSMantissa3,x
-		lda 	#NSBIsString
+		lda 	#NSSString
 		sta 	NSStatus,x
 		.exitcmd
 

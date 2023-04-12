@@ -20,9 +20,7 @@
 
 AbsoluteTOS:	;; [abs]
 		.entercmd
-		;
-		;		TODO: Needs to handle both numeric modes
-		;
+		stz 	NSStatus,x 					; dereferenced so just clear the status byte.
 		.exitcmd
 
 		.send 	code

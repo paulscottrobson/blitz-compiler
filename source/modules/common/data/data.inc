@@ -36,8 +36,9 @@ zTemp2:
 ;										   Status Bits
 ;
 ; 	bit 7 	: sign of mantissa (if float,0 otherwise)
-; 	bit 6 	: 0 : float (may be 31 bit integer) 1 : 16 bit integer
-;	bit 5 	: 0 : numeric value ; 1 : String
+; 	bit 6,5 : 00 (float, 5/6 byte if reference) type 01 (integer, 2 byte if reference) 
+;			  type 1x (string) 0x (32 bit iFloat)
+;	bit 0 	: reference
 ;
 ; ************************************************************************************************
 ;
@@ -45,8 +46,11 @@ zTemp2:
 ;
 ; ************************************************************************************************
 
-NSBIs16Bit = $40 							; set if 16 bit integer
-NSBIsString = $20 							; set if string.
+NSSString = $40 							; string vs typemask
+NSSIFloat = $00 							; ifloat vs typemask
+NSSIReference = $20 						; when set, a reference is a 16 bit reference (e.g. a%)
+NSSReference = $01 							; when set, is a reference.
+NSSTypeMask = $40 					
 
 		.align 16
 NSStatus: 									; Status bits of stack.

@@ -33,7 +33,7 @@ UnaryAsc: ;; [asc]
 		lda 	(zTemp0),y
 		ply
 _UAExit:
-		jsr 	WriteInteger8Bit
+		jsr 	FloatSetByte
 		.exitcmd
 
 		.send code

@@ -20,9 +20,9 @@
 
 UnaryPeek:	;; [peek]
 		.entercmd
-		jsr 	MakeInteger16Bit
+		jsr 	GetInteger16Bit
 		lda 	(zTemp0)
-		jsr 	WriteInteger8Bit
+		jsr 	FloatSetByte
 		.exitcmd
 
 		.send 	code

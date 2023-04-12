@@ -23,7 +23,7 @@ FloatIntegerPart:
 		;
 		lda 	NSExponent,x 				; is it integer already ?
 		beq 	_FIPExit 					; if so do nothing
-		jsr 	FloatIsZero 					; is it zero ?
+		jsr 	FloatIsZero 				; is it zero ?
 		beq 	_FIPZero 					; if so return zero.
 		;
 		jsr 	FloatNormalise 				; normalise

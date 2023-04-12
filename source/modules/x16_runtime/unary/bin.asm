@@ -20,7 +20,7 @@
 
 UnaryBin: ;; [bin$]
 		.entercmd
-		jsr 	MakeInteger16Bit			; 16 bit int 
+		jsr 	GetInteger16Bit				; 16 bit int 
 		lda 	#16 						; allocate / set 16 bytes.
 		jsr 	StringAllocTemp
 		lda 	zTemp0+1

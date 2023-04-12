@@ -71,7 +71,7 @@ StringAllocTemp:
 
 		lda 	#0 							; clear string.
 		sta 	(zsTemp)
-		lda 	#NSBIsString 		 		; mark as string
+		lda 	#NSSString 			 		; mark as string
 		sta 	NSStatus,x
 		rts
 

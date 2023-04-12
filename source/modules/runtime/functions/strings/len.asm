@@ -27,7 +27,7 @@ UnaryLen: ;; [len]
 		sta 	zTemp0+1
 		;
 		lda 	(zTemp0) 					; get length
-		jsr 	WriteInteger8Bit
+		jsr 	FloatSetByte
 
 		.exitcmd
 

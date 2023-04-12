@@ -20,9 +20,6 @@
 
 SignTOS:	;; [sgn]
 		.entercmd
-		;
-		;		TODO: Needs special handler for 16 bit integers.
-		;
 		jsr 	FloatIsZero 				; if zero
 		beq 	_SGZero  					; return Int Zero
 

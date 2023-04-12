@@ -20,7 +20,7 @@
 
 UnaryChr: ;; [chr$]
 		.entercmd
-		jsr 	MakeInteger8Bit 			; get the integer to convert.
+		lda 	NSMantissa0,x 				; get the integer to convert.
 		pha 								; save it and allocate for it
 		lda 	#1 							; 1 character
 		jsr 	StringAllocTemp 	

@@ -20,9 +20,6 @@
 
 ValUnary: ;; [val]	
 		.entercmd 							; restore stack pos
-		;
-		;		TODO: Expand 16 bit to 32 bit equivalent.
-		;
 		lda 	NSMantissa0,x
 		sta 	zTemp0
 		lda 	NSMantissa1,x
