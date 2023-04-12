@@ -30,4 +30,4 @@ print("VectorTable:")
 for i in ids:
 	p = pcodes[i]
 	s = vectors[p] if p in vectors else "Unimplemented"
-	print("\t.word\t{0:16} ; ${1:02x} {2}".format(s,i,p.lower()))
+	print("\t.word\t{0:24} ; ${1:02x} {2}".format(s,i,p.lower()))
