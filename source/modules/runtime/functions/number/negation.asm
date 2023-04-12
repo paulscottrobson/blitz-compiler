@@ -18,7 +18,7 @@
 ;
 ; ************************************************************************************************
 
-NegateTOS:	;; [float.negate]
+NegateTOS:	;; [negate]
 		.entercmd
 		jsr 	FloatNegate
 		.exitcmd

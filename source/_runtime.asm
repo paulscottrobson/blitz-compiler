@@ -24,6 +24,8 @@ ismain_polynomials = 0
 	.include	"modules/common/data/data.inc"
 	.include	"modules/x16_hardware/config/machinecode.inc"
 	.include	"modules/common/boot.end/macros.inc"
+	.include	"modules/common/generated/pcodesize.inc"
+	.include	"modules/common/generated/pcodetokens.inc"
 	.include	"modules/runtime/aa.runtime/runtime.inc"
 	.include	"modules/common/data/system.inc"
 	.include	"modules/ifloat32/aa.testing/testing.inc"
