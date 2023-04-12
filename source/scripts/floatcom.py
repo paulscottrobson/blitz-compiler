@@ -47,6 +47,15 @@ class FPCompiler(object):
 			print("\tjsr\t{0}".format(self.mapping[s]))
 			return 
 
+		if s == "repeat":
+			print("\tlda #0")
+			print("MainLoop:")
+			print("\tpha\n\tjsr\tMainBody\n\tpla")
+			print("\tdec a\n\tbne MainLoop")
+			print("\trts")
+			print("MainBody:")
+			return
+
 		assert False,"Bad command "+s
 	#
 	def compileConst(self,n):

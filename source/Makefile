@@ -57,8 +57,19 @@ testfuncs : prelim
 	$(ASM) $(ASMOPTS) _float.asm -o build$(S)float.prg
 	$(CCOPY) build$(S)float.prg $(BINDIR)
 	$(CDEL) dump*.bin
-	$(HRUNEMU) -prg build$(S)float.prg,801 -run -warp
+	$(HRUNEMU) -prg build$(S)float.prg,801 -run 
 	python $(SCRIPTDIR)stack.py
+#
+#		Benchmark the floating point mathematics
+#
+benchmark : prelim
+	python $(SCRIPTDIR)floatcom.py build$(S)benchmark.code >modules$(S)ifloat32$(S)generated$(S)testcode.dat
+	python $(SCRIPTDIR)build.py ifloat32 polynomials $(HARDWARE)_hardware -o_float.asm -mifloat32
+	$(ASM) $(ASMOPTS) _float.asm -o build$(S)float.prg
+	$(CCOPY) build$(S)float.prg $(BINDIR)
+	$(CDEL) dump*.bin
+	time -f=%e $(HRUNEMU) -prg build$(S)float.prg,801 -run
+	python $(SCRIPTDIR)stack.py	
 #
 #		Do stuff before building.
 #

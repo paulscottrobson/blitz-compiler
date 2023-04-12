@@ -26,7 +26,7 @@ class Float(object):
 		sign = 0x80 if decimal < 0 else 0x00
 		decimal = abs(decimal)
 
-		if normalise or decimal != int(decimal):
+		if normalise or decimal != int(decimal) or abs(decimal) >= 0x7FFFFFFF:
 			exponent = int(math.log(decimal,2))
 			mantissa = decimal / pow(2,exponent)
 			while mantissa < 0x40000000:

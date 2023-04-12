@@ -2,7 +2,7 @@
 ; ************************************************************************************************
 ;
 ;		Name:		simple.asm
-;		Purpose:	Simple binary operations
+;		Purpose:	Simple binary operations add/subtract
 ;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
@@ -68,22 +68,14 @@ _DiffSigns:
 		bpl 	_AddExit 	
 		lda 	NSStatus+1,x 				; sign is that of 11th value
 		sta 	NSStatus,x
-		jsr 	FloatNegateMantissa 			; negate the mantissa and exit
+		jsr 	FloatNegateMantissa 		; negate the mantissa and exit
 _AddExit:
-		jsr 	FloatIsZero 					; check for -0
+		jsr 	FloatIsZero 				; check for -0
 		bne 	_AddNonZero
 		stz 	NSStatus,x
 _AddNonZero:		
 		rts
 	
-; ************************************************************************************************
-
-FloatInt32Subract:
-		lda 	NSStatus+1,x 				; negate the second value.
-		eor 	#$80
-		sta 	NSStatus+1,x
-		bra 	FloatInt32Add 				; and do the same code as add.
-
 		.send code
 
 ; ************************************************************************************************

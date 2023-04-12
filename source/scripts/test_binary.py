@@ -12,7 +12,7 @@
 import random
 
 def randomInt():
-	return random.randint(-5000,5000)
+	return random.randint(-50000,50000)
 
 def randomFloat():
 	return random.randint(-1000000,1000000)/12347	

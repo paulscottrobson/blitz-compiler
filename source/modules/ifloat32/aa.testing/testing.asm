@@ -14,9 +14,13 @@
 
 		.if ismain_ifloat32 == 1
 Boot:	ldx 	#255
-		.include "../generated/testcode.dat"	
-
+		jsr 	TestScript
 		.exitemu
+
+TestScript:		
+		.include "../generated/testcode.dat"	
+		rts
+		
 
 ; ************************************************************************************************
 ;

@@ -19,7 +19,7 @@
 ; ************************************************************************************************
 
 FloatMultiply:	
-		pha
+
 		dex
 		jsr 	FloatNormalise		 		; normalise S[X] and exit if zero
 		beq 	_FDExit 					; return zero if zero (e.g. zero*something)
@@ -40,7 +40,6 @@ _FDSetZero:
 		jsr 	FloatSetZero 				; return 0
 _FDExit:
 		jsr 	FloatNormalise 				; normalise the result
-		pla
 		rts
 
 		.send 	code

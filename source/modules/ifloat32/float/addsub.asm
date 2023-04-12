@@ -31,9 +31,16 @@ FloatSubtract:
 ; ************************************************************************************************
 
 FloatAdd:
-		pha
-		phy
 		dex
+		lda 	NSExponent,x 				; can use optimised.
+		ora 	NSExponent+1,x
+		ora 	NSMantissa3,x
+		ora 	NSMantissa3+1,x		
+		bne 	_FAUseFloat
+		jsr 	FloatInt32Add 				; use the int32 one.
+		rts
+
+_FAUseFloat:	
 		jsr 	FloatNormalise 				; normalise S[X]
 		beq 	_FAReturn1
 
@@ -111,8 +118,6 @@ _FAReturn1:									; copy slot X+1 into slot X
 		lda 	NSStatus+1,x
 		sta 	NSStatus,x 			
 _FAExit:
-		ply
-		pla
 		rts
 
 ; ************************************************************************************************
