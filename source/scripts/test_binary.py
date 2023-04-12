@@ -20,7 +20,7 @@ def randomFloat():
 def randomString():
 	return "".join([chr(random.randint(0,25)+97) for x in range(0,random.randint(0,5))])
 
-for n in range(0,10):
+for n in range(0,20):
 	#
 	n1 = randomInt()
 	n2 = randomInt()

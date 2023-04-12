@@ -14,7 +14,7 @@ import random,math
 def randomFloat():
 	return random.randint(-1000000,1000000)/12347	
 
-for n in range(0,10):
+for n in range(0,40):
 	#
 	a1 = random.randint(-2000,2000)/100
 
