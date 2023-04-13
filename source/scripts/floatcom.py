@@ -13,6 +13,12 @@ import os,sys,math,re
 
 from floats import *
 
+# *******************************************************************************************
+#
+#			Generates 6502 Code to test floating point and polynomial routines
+#
+# *******************************************************************************************
+
 class FPCompiler(object):
 	def __init__(self):
 		self.float = Float()
@@ -67,9 +73,6 @@ class FPCompiler(object):
 	def compileFile(self,f):
 		for l in open(f).readlines():
 			self.compileGroup(l.strip())
-
-
-
 
 fc = FPCompiler()
 for f in sys.argv[1:]:

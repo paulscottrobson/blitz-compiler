@@ -19,7 +19,7 @@ BINDIR = ..$(S)bin$(S)
 SCRIPTDIR = scripts$(S)
 ASMOPTS = -q -Wall -c -C  -L build$(S)code.lst -l build$(S)code.lbl -Wall 
 EMULATOR = $(BINDIR)x16emu$(APPSTEM)
-RUNEMU = $(EMULATOR) -rom $(BINDIR)rom.bin -keymap en-gb -dump R -scale 2 -rtc -debug #-testbench
+RUNEMU = $(EMULATOR) -rom $(BINDIR)rom.bin -keymap en-gb -dump R -scale 2 -rtc -debug 
 HRUNEMU = $(RUNEMU) -testbench -warp
 EMU_REPO= ..$(S)..$(S)x16-emulator
 ROM_REPO= ..$(S)..$(S)x16-rom
@@ -32,11 +32,22 @@ all: runtime
 #
 runtime:prelim
 	python $(SCRIPTDIR)build.py $(RTMODULES) 
-	python $(SCRIPTDIR)pcode.py $(RTMODULES)  >modules$(S)common$(S)generated$(S)pcodetokens.inc
-	python $(SCRIPTDIR)vectors.py $(RTMODULES) >modules$(S)runtime$(S)generated$(S)vectors.asm
 	$(ASM) $(ASMOPTS) _runtime.asm -o build$(S)runtime.prg
 	$(CCOPY) build$(S)runtime.prg $(BINDIR)
 	$(CDEL) dump*.bin
+#
+#		Build the compiled ocode
+#
+pcode: prelim 
+	python $(SCRIPTDIR)pcom.py $(RTMODULES) >build$(S)temp$(S)pcodebin.asm
+	$(ASM) $(ASMOPTS) build$(S)temp$(S)pcodebin.asm -o build$(S)temp$(S)pcodebin.bin
+#
+#		Run the compiled pcode
+#
+debugpcode: pcode runtime prelim
+	cat build$(S)runtime.prg build$(S)temp$(S)pcodebin.bin >build$(S)temp$(S)pcodebin.prg
+	$(RUNEMU) -prg build$(S)temp$(S)pcodebin.prg,801 -run 
+
 #
 #		Test the floating point mathematics
 #
@@ -44,10 +55,10 @@ testmaths : prelim
 	python $(SCRIPTDIR)test_binary.py >build$(S)temp$(S)float.code
 	python $(SCRIPTDIR)floatcom.py build$(S)temp$(S)float.code >modules$(S)ifloat32$(S)generated$(S)testcode.dat
 	python $(SCRIPTDIR)build.py ifloat32 polynomials $(HARDWARE)_hardware -o_float.asm -mifloat32
-	$(ASM) $(ASMOPTS) _float.asm -o build$(S)float.prg
-	$(CCOPY) build$(S)float.prg $(BINDIR)
+	$(ASM) $(ASMOPTS) _float.asm -o build$(S)temp$(S)float.prg
+	$(CCOPY) build$(S)temp$(S)float.prg $(BINDIR)
 	$(CDEL) dump*.bin
-	$(HRUNEMU) -prg build$(S)float.prg,801 -run -warp
+	$(HRUNEMU) -prg build$(S)temp$(S)float.prg,801 -run -warp
 	python $(SCRIPTDIR)stack.py
 #
 #		Test unary functions / polynomials and the power operator.
@@ -56,10 +67,10 @@ testfuncs : prelim
 	python $(SCRIPTDIR)test_functions.py >build$(S)temp$(S)float.code
 	python $(SCRIPTDIR)floatcom.py build$(S)temp$(S)float.code >modules$(S)ifloat32$(S)generated$(S)testcode.dat
 	python $(SCRIPTDIR)build.py ifloat32 polynomials machine_$(HARDWARE) -o_float.asm -mifloat32
-	$(ASM) $(ASMOPTS) _float.asm -o build$(S)float.prg
-	$(CCOPY) build$(S)float.prg $(BINDIR)
+	$(ASM) $(ASMOPTS) _float.asm -o build$(S)temp$(S)float.prg
+	$(CCOPY) build$(S)temp$(S)float.prg $(BINDIR)
 	$(CDEL) dump*.bin
-	$(HRUNEMU) -prg build$(S)float.prg,801 -run 
+	$(HRUNEMU) -prg build$(S)temp$(S)float.prg,801 -run 
 	python $(SCRIPTDIR)stack.py
 #
 #		Benchmark the floating point mathematics
@@ -67,10 +78,10 @@ testfuncs : prelim
 benchmark : prelim
 	python $(SCRIPTDIR)floatcom.py build$(S)benchmark.code >modules$(S)ifloat32$(S)generated$(S)testcode.dat
 	python $(SCRIPTDIR)build.py ifloat32 polynomials $(HARDWARE)_hardware -o_float.asm -mifloat32
-	$(ASM) $(ASMOPTS) _float.asm -o build$(S)float.prg
-	$(CCOPY) build$(S)float.prg $(BINDIR)
+	$(ASM) $(ASMOPTS) _float.asm -o build$(S)temp$(S)float.prg
+	$(CCOPY) build$(S)temp$(S)float.prg $(BINDIR)
 	$(CDEL) dump*.bin
-	time -f=%e $(HRUNEMU) -prg build$(S)float.prg,801 -run
+	time -f=%e $(HRUNEMU) -prg build$(S)temp$(S)float.prg,801 -run
 	python $(SCRIPTDIR)stack.py	
 #
 #		Do stuff before building.
@@ -82,6 +93,8 @@ prelim:
 	python $(SCRIPTDIR)errors.py
 	python $(SCRIPTDIR)c64tokens.py >modules$(S)common$(S)generated$(S)c64tokens.inc
 	python $(SCRIPTDIR)genmapping.py >modules$(S)runtime$(S)generated$(S)links.asm
+	python $(SCRIPTDIR)pcode.py $(RTMODULES)  >modules$(S)common$(S)generated$(S)pcodetokens.inc
+	python $(SCRIPTDIR)vectors.py $(RTMODULES) >modules$(S)runtime$(S)generated$(S)vectors.asm
 #
 #		Update tools
 #	

@@ -42,14 +42,16 @@ VectorTable:
 	.word	CommandClr               ; $a5 clr
 	.word	CompareStrings           ; $a6 s.cmp
 	.word	FloatCompare             ; $a7 f.cmp
-	.word	UnaryHex                 ; $a8 hex$
-	.word	NegateTOS                ; $a9 negate
-	.word	NotTOS                   ; $aa not
-	.word	Unimplemented            ; $ab .shift
-	.word	Unimplemented            ; $ac .byte
-	.word	Unimplemented            ; $ad .word
-	.word	CommandFloat             ; $ae .float
-	.word	CommandPushS             ; $af .string
-	.word	Unimplemented            ; $b0 .data
-	.word	Unimplemented            ; $b1 .goto
-	.word	Unimplemented            ; $b2 .gosub
+	.word	CommandExit              ; $a8 exit
+	.word	UnaryHex                 ; $a9 hex$
+	.word	NegateTOS                ; $aa negate
+	.word	CommandNewLine           ; $ab new.line
+	.word	NotTOS                   ; $ac not
+	.word	Unimplemented            ; $ad .shift
+	.word	Unimplemented            ; $ae .byte
+	.word	Unimplemented            ; $af .word
+	.word	CommandFloat             ; $b0 .float
+	.word	CommandPushS             ; $b1 .string
+	.word	Unimplemented            ; $b2 .data
+	.word	Unimplemented            ; $b3 .goto
+	.word	Unimplemented            ; $b4 .gosub

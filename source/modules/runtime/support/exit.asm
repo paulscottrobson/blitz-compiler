@@ -1,30 +1,30 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		runtime.asm
-;		Purpose:	Runtime interpreter main
-;		Created:	11th April 2023
+;		Name:		exit.asm
+;		Purpose:	Exit emulator
+;		Created:	13th April 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section code
+		.section 	code
 
-Boot:	
-		ldx 	#$FF
-		.debug
-		jsr 	ClearMemory 				; clear memory.
-		.exitemu
+; ************************************************************************************************
+;
+;								Exit emulator command
+;
+; ************************************************************************************************
 
-GetInteger8Bit:
-		.debug
-GetInteger16Bit:
-		.debug
+CommandExit: ;; [exit]
+		.entercmd
+		stx 	zTemp0 						; stack position.
+		jmp 	$FFFF 						; exits the emulator.
 
-		.send code
-
+		.send 	code
+		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

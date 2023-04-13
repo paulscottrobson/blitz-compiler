@@ -17,6 +17,9 @@ Boot:	ldx 	#255
 		jsr 	TestScript
 		.exitemu
 
+ErrorHandler:
+		.debug		
+
 TestScript:		
 		.include "../generated/testcode.dat"	
 		rts

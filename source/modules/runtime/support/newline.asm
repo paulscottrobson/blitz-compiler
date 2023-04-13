@@ -1,30 +1,30 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		runtime.asm
-;		Purpose:	Runtime interpreter main
-;		Created:	11th April 2023
+;		Name:		newline.asm
+;		Purpose:	Newline command
+;		Created:	13th April 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section code
+		.section 	code
 
-Boot:	
-		ldx 	#$FF
-		.debug
-		jsr 	ClearMemory 				; clear memory.
-		.exitemu
+; ************************************************************************************************
+;
+;									Newline command
+;
+; ************************************************************************************************
 
-GetInteger8Bit:
-		.debug
-GetInteger16Bit:
-		.debug
+CommandNewLine: ;; [new.line]
+		.entercmd
+		.resetStringSystem
+		.exitcmd
 
-		.send code
-
+		.send 	code
+		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates
