@@ -72,9 +72,5 @@ class PCodeCompiler(object):
 		self.print("\t.byte\t{0},{1} ; {2}{3}{4}".format(base+(addr >> 9),(addr >> 1) & 0xFF,addr,type,"@" if (base & 8) == 0 else "!"))
 
 pc = PCodeCompiler()
-pc.compileString("""
-		new.line
-		0%@ 1 + 0%!
-		4@ 1 + 4!
-		restart
-""")	
+for s in sys.stdin.readlines():
+	pc.compileString(s)
