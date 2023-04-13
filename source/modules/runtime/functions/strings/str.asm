@@ -20,6 +20,7 @@
 
 Unary_Str: ;; [str$]
 		.entercmd
+		phy
 		lda 	#8 							; maximum decimal places.
 		jsr 	FloatToString 				; do the conversion.
 		lda		#33 						; create buffer
@@ -36,6 +37,7 @@ _USExit:
 		tya
 		dec 	a
 		sta 	(zsTemp)
+		ply
 		.exitcmd
 
 		.send 	code

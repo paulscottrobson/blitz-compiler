@@ -1,53 +1,66 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		macros.inc
-;		Purpose:	Standard Macros
-;		Created:	11th April 2023
+;		Name:		clr.asm
+;		Purpose:	Clear memory down
+;		Created:	13th April 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-; ************************************************************************************************
-;
-;							Insert an Emulator Breakpoint
-;
-; ************************************************************************************************
-
-debug 		.macro
-		.byte 	$DB 						; causes a break in the emulator
-		.endm
+		.section 	code
 
 ; ************************************************************************************************
 ;
-;								Set a 2 byte value in memory
+;										CLR command
 ;
 ; ************************************************************************************************
 
-set16 		.macro
-		lda 	#((\2) & $FF)
-		sta 	0+\1
-		lda 	#((\2) >> 8) & $FF
-		sta 	1+\1
-		.endm
+CommandClr: ;; [CLR]
+		.entercmd
+		jsr 	ClearMemory
+		.exitcmd
 
 ; ************************************************************************************************
 ;
-;										Exit emulation
+;					Clear workspace, reset string system, reset BASIC stack
 ;
 ; ************************************************************************************************
 
-exitemu .macro
-		stx 	zTemp0
-		jmp 	$FFFF
-		.endm
+ClearMemory:		
+		;
+		;		Zero workspace
+		;
+		.set16 zTemp0,WorkArea 							; erase the work area
+		phy
+		ldy 	#0
+_ClearLoop1:	
+		lda 	#0
+		sta 	(zTemp0),y
+		iny
+		bne 	_ClearLoop1	
+		inc 	zTemp0+1
+		lda 	zTemp0+1
+		cmp 	#(WorkArea+WorkAreaSize) >> 8
+		bne 	_ClearLoop1
+		;
+		;		Initialise strings
+		;
+		.set16 	stringHighMemory,StringTopAddress 		; reset string memory alloc pointer
+		stz 	stringInitialised 						; string system not initialised
+		;
+		;		Initialise stack
+		;
+		.set16 	runtimeStackPtr,StackTopAddress-1 		; current TOS
+		lda 	#$FF 									; duff marker in case we try to remove it.
+		sta 	(runtimeStackPtr)
+		ply
+		rts
+
+		.send 	code
 		
-todo 	.macro
-		.debug
-		.endm
-				
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

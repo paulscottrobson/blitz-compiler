@@ -3,73 +3,109 @@
 ;
 LinkFloatAdd: ;; [+]
 	.entercmd
+	phy
 	jsr	FloatAdd
+	ply
 	.exitcmd
 LinkFloatSubtract: ;; [-]
 	.entercmd
+	phy
 	jsr	FloatSubtract
+	ply
 	.exitcmd
 LinkFloatMultiply: ;; [*]
 	.entercmd
+	phy
 	jsr	FloatMultiply
+	ply
 	.exitcmd
 LinkFloatDivide: ;; [/]
 	.entercmd
+	phy
 	jsr	FloatDivide
+	ply
 	.exitcmd
 LinkFloatPower: ;; [^]
 	.entercmd
+	phy
 	jsr	FloatPower
+	ply
 	.exitcmd
 LinkCompareGreater: ;; [>]
 	.entercmd
+	phy
 	jsr	CompareGreater
+	ply
 	.exitcmd
 LinkCompareEqual: ;; [=]
 	.entercmd
+	phy
 	jsr	CompareEqual
+	ply
 	.exitcmd
 LinkCompareLess: ;; [<]
 	.entercmd
+	phy
 	jsr	CompareLess
+	ply
 	.exitcmd
 LinkCompareGreaterEqual: ;; [>=]
 	.entercmd
+	phy
 	jsr	CompareGreaterEqual
+	ply
 	.exitcmd
 LinkCompareNotEqual: ;; [<>]
 	.entercmd
+	phy
 	jsr	CompareNotEqual
+	ply
 	.exitcmd
 LinkCompareLessEqual: ;; [<=]
 	.entercmd
+	phy
 	jsr	CompareLessEqual
+	ply
 	.exitcmd
 LinkFloatSquareRoot: ;; [sqr]
 	.entercmd
+	phy
 	jsr	FloatSquareRoot
+	ply
 	.exitcmd
 LinkFloatLogarithm: ;; [log]
 	.entercmd
+	phy
 	jsr	FloatLogarithm
+	ply
 	.exitcmd
 LinkFloatExponent: ;; [exp]
 	.entercmd
+	phy
 	jsr	FloatExponent
+	ply
 	.exitcmd
 LinkFloatCosine: ;; [cos]
 	.entercmd
+	phy
 	jsr	FloatCosine
+	ply
 	.exitcmd
 LinkFloatSine: ;; [sin]
 	.entercmd
+	phy
 	jsr	FloatSine
+	ply
 	.exitcmd
 LinkFloatTangent: ;; [tan]
 	.entercmd
+	phy
 	jsr	FloatTangent
+	ply
 	.exitcmd
 LinkFloatArcTan: ;; [atn]
 	.entercmd
+	phy
 	jsr	FloatArcTan
+	ply
 	.exitcmd

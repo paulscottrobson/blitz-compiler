@@ -20,6 +20,7 @@
 
 Unary_Left: 	;; [left$]
 		.entercmd
+		phy
 		clc 								; only one parameter
 		jsr 	GetInteger8Bit 				; push the length of the string.
 		pha
@@ -37,6 +38,7 @@ Unary_Left: 	;; [left$]
 
 Unary_Right: 	;; [right$]
 		.entercmd
+		phy
 		lda 	#255 						; push 255, we want all the string.		
 		;
 		jsr 	GetInteger8Bit 				; push the right length of the string.
@@ -64,6 +66,7 @@ _URHaveCount:
 
 Unary_Mid: 	;; [mid$]
 		.entercmd
+		phy
 		jsr 	GetInteger8Bit 				; push the length of the string required.
 		pha
 		dex
@@ -94,7 +97,7 @@ SubstringMain:
 		pla 								; get the start offset
 		ply 								; get the count to do.
 		cmp 	(zTemp0) 					; if start >= length then return NULL.
-		bcs 	SSReturnNull
+		bcs 	_SSReturnNull
 		;
 		sta 	zTemp1 						; save start position.
 		sty 	zTemp1+1 					; save count
@@ -114,7 +117,7 @@ _SMIsOkay:									; zTemp1 is start offset, zTemp2 is end.
 		sec		 							; work out size
 		lda 	zTemp1+1 					
 		sbc 	zTemp1
-		beq 	SSReturnNull 				; if size = 0 then return empty string.
+		beq 	_SSReturnNull 				; if size = 0 then return empty string.
 		jsr 	StringAllocTemp 			; zsTemp & mantissa = the new string.
 		;
 		ldy 	zTemp1 						; start
@@ -135,9 +138,10 @@ _SMCopy:
 		ply 								; restore Y
 		bra 	_SMCopy
 _SMExit:
+		ply
 		.exitcmd
 
-SSReturnNull:
+_SSReturnNull:
 		lda 	#SSRNull & $FF 				; set up mantissa
 		sta 	NSMantissa0,x
 		lda 	#SSRNull >> 8
@@ -146,7 +150,7 @@ SSReturnNull:
 		stz 	NSMantissa3,x
 		lda 	#NSSString
 		sta 	NSStatus,x
-		.exitcmd
+		bra 	_SMExit
 
 SSRNull:
 		.word 	0		

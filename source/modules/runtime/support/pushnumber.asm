@@ -1,30 +1,30 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		errors.asm
-;		Purpose:	Error handler
-;		Created:	12th April 2023
+;		Name:		pushnumber.asm
+;		Purpose:	Push number onto stack 
+;		Created:	13th April 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section code
+		.section 	code
 
-Unimplemented:
-		.debug
+; ************************************************************************************************
+;
+;								Push Number <LEN> <ASCIIZCount>
+;
+; ************************************************************************************************
 
-error_range .macro
-		.debug
-		.endm
+CommandFloat: ;; [.float]
+		.entercmd
+		.todo
+		.exitcmd
 
-error_value .macro
-		.debug
-		.endm		
-
-		.send code
-
+		.send 	code
+		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

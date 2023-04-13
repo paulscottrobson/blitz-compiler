@@ -38,5 +38,7 @@ for m in mappings:
 	m = m.split()
 	print("Link{0}: ;; [{1}]".format(m[1],m[0]))
 	print("\t.entercmd")
+	print("\tphy")
 	print("\tjsr\t{0}".format(m[1]))
+	print("\tply")
 	print("\t.exitcmd")	

@@ -19,7 +19,8 @@
 		.section zeropage
 zsTemp: 									; string temporary area.
 		.fill 	2
-
+runtimeStackPtr: 							; runtime stack pointer
+		.fill 	2
 		.send zeropage
 
 

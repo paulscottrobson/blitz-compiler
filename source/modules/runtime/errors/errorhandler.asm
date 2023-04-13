@@ -1,34 +1,27 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		usr.asm
-;		Purpose:	USR() function
-;		Created:	11th April 2023
+;		Name:		errorhandler.asm
+;		Purpose:	Error handler
+;		Created:	12th April 2023
 ;		Reviewed: 	No
-;		Author : 	Paul Robson (paul@robsons.org.uk)
+;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section 	code
+		.section code
 
-; ************************************************************************************************
-;
-;											USR() function
-;
-; ************************************************************************************************
-
-UnaryUsr:	;; [usr]
-		.entercmd
-		phy
-		jsr 	_UUCallVector
-		ply
-		.exitcmd
-
-_UUCallVector:
-		jmp 	(USRRoutineAddress)
+Unimplemented:
+		jmp 	ErrorV_unimplemented
 		
-		.send 	code
+ErrorHandler:
+		pla
+		ply
+eh1:	.debug
+		jmp 	eh1			
+
+		.send code
 
 ; ************************************************************************************************
 ;

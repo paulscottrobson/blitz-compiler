@@ -12,7 +12,8 @@
 
 		.section code
 
-Boot:	.exitemu
+Boot:	ldx 	#$FF
+		.exitemu
 
 GetInteger8Bit:
 		.debug

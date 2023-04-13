@@ -20,6 +20,7 @@
 
 UnaryAsc: ;; [asc]
 		.entercmd
+		phy
 		;
 		lda 	NSMantissa0,x 				; string address.
 		sta 	zTemp0
@@ -34,6 +35,7 @@ UnaryAsc: ;; [asc]
 		ply
 _UAExit:
 		jsr 	FloatSetByte
+		ply
 		.exitcmd
 
 		.send code

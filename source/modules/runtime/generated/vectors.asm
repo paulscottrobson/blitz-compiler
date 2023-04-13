@@ -39,16 +39,17 @@ VectorTable:
 	.word	Unary_Right              ; $a2 right$
 	.word	Unary_Mid                ; $a3 mid$
 	.word	UnaryBin                 ; $a4 bin$
-	.word	CompareStrings           ; $a5 s.cmp
-	.word	FloatCompare             ; $a6 f.cmp
-	.word	UnaryHex                 ; $a7 hex$
-	.word	NegateTOS                ; $a8 negate
-	.word	NotTOS                   ; $a9 not
-	.word	Unimplemented            ; $aa .shift
-	.word	Unimplemented            ; $ab .byte
-	.word	Unimplemented            ; $ac .word
-	.word	Unimplemented            ; $ad .float
-	.word	Unimplemented            ; $ae .string
-	.word	Unimplemented            ; $af .data
-	.word	Unimplemented            ; $b0 .goto
-	.word	Unimplemented            ; $b1 .gosub
+	.word	CommandClr               ; $a5 clr
+	.word	CompareStrings           ; $a6 s.cmp
+	.word	FloatCompare             ; $a7 f.cmp
+	.word	UnaryHex                 ; $a8 hex$
+	.word	NegateTOS                ; $a9 negate
+	.word	NotTOS                   ; $aa not
+	.word	Unimplemented            ; $ab .shift
+	.word	Unimplemented            ; $ac .byte
+	.word	Unimplemented            ; $ad .word
+	.word	CommandFloat             ; $ae .float
+	.word	CommandPushS             ; $af .string
+	.word	Unimplemented            ; $b0 .data
+	.word	Unimplemented            ; $b1 .goto
+	.word	Unimplemented            ; $b2 .gosub

@@ -79,6 +79,7 @@ prelim:
 	python $(SCRIPTDIR)constants.py
 	python $(SCRIPTDIR)mathconstants.py
 	python $(SCRIPTDIR)coremaths.py
+	python $(SCRIPTDIR)errors.py
 	python $(SCRIPTDIR)c64tokens.py >modules$(S)common$(S)generated$(S)c64tokens.inc
 	python $(SCRIPTDIR)genmapping.py >modules$(S)runtime$(S)generated$(S)links.asm
 #

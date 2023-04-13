@@ -22,7 +22,11 @@ PCodeStart = $4000
 ;
 WorkArea = $8000
 WorkAreaSize = $2000
-
+;
+;		Calculate top string address, e.g. stack/string seperation
+;
+StringTopAddress = WorkArea + WorkAreaSize - (1 + (WorkAreaSize >> 4)) * 256
+StackTopAddress = WorkArea + WorkAreaSize
 
 ; ************************************************************************************************
 ;
