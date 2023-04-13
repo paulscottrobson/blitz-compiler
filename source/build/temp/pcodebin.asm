@@ -1,6 +1,10 @@
-	.byte	4                                 ;  4
+	.byte	171                               ;  new.line
+	.byte	64,0                              ;  0%@
+	.byte	1                                 ;  1
+	.byte	128                               ;  +
 	.byte	72,0                              ;  0%!
-	.byte	4                                 ;  4
-	.byte	170                               ;  negate
-	.byte	72,1                              ;  2%!
-	.byte	168                               ;  exit
+	.byte	80,2                              ;  4#@
+	.byte	1                                 ;  1
+	.byte	128                               ;  +
+	.byte	88,2                              ;  4#!
+	.byte	173                               ;  restart

@@ -46,7 +46,7 @@ pcode: prelim
 #
 debugpcode: pcode runtime prelim
 	cat build$(S)runtime.prg build$(S)temp$(S)pcodebin.bin >build$(S)temp$(S)pcodebin.prg
-	$(HRUNEMU) -prg build$(S)temp$(S)pcodebin.prg,801 -run 
+	$(RUNEMU) -prg build$(S)temp$(S)pcodebin.prg,801 -run 
 
 #
 #		Test the floating point mathematics

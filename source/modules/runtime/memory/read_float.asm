@@ -1,34 +1,58 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		config.inc
-;		Purpose:	Configuration for runtime
-;		Created:	11th April 2023
+;		Name:		read_float.asm
+;		Purpose:	Read iFloat32
+;		Created:	13th April 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
-;
-;		Build address
-;
-CodeStart = $801
-;
-;		Runtime p-code address
-;
-PCodeStart = $4000
-;
-;		Work area space and size
-;
-WorkArea = $8000
-WorkAreaSize = $1F00
-;
-;		Calculate top string address, e.g. stack/string seperation
-;
-StringTopAddress = WorkArea + WorkAreaSize - (1 + (WorkAreaSize >> 4)) * 256
-StackTopAddress = WorkArea + WorkAreaSize
-VariableStart = WorkArea
 
+		.section 	code
+
+; ************************************************************************************************
+;
+;								Write float (2 byte command)
+;
+; ************************************************************************************************
+
+ReadFloatCommand:
+		.entercmd
+		.vaddress
+
+ReadFloatZTemp0:
+		phy 								; start write
+		ldy 	#1
+		inx
+
+		lda 	(zTemp0)
+		sta 	NSMantissa0,x
+		
+		lda 	(zTemp0),y
+		sta 	NSMantissa1,x
+		iny
+
+		lda 	(zTemp0),y
+		sta 	NSMantissa2,x
+		iny
+
+		lda 	(zTemp0),y
+		sta 	NSMantissa3,x
+		iny
+
+		lda 	(zTemp0),y
+		sta 	NSExponent,x
+		iny
+
+		lda 	(zTemp0),y
+		sta 	NSStatus,x
+
+		ply
+		.exitcmd
+		.send 	code
+		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates
@@ -39,4 +63,3 @@ VariableStart = WorkArea
 ;		==== 			=====
 ;
 ; ************************************************************************************************
-

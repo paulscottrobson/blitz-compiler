@@ -1,34 +1,41 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		config.inc
-;		Purpose:	Configuration for runtime
-;		Created:	11th April 2023
+;		Name:		write_int.asm
+;		Purpose:	WriteInteger
+;		Created:	13th April 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
-;
-;		Build address
-;
-CodeStart = $801
-;
-;		Runtime p-code address
-;
-PCodeStart = $4000
-;
-;		Work area space and size
-;
-WorkArea = $8000
-WorkAreaSize = $1F00
-;
-;		Calculate top string address, e.g. stack/string seperation
-;
-StringTopAddress = WorkArea + WorkAreaSize - (1 + (WorkAreaSize >> 4)) * 256
-StackTopAddress = WorkArea + WorkAreaSize
-VariableStart = WorkArea
 
+		.section 	code
+
+; ************************************************************************************************
+;
+;							  Macro to set up working address
+;
+; ************************************************************************************************
+
+vaddress .macro
+		lda 	(codePtr),y 				; get the LSB of the halved offset.
+		sta 	zTemp0 						; save in MSB
+
+		dey 								; get the upper 3 bits
+		lda 	(codePtr),y
+		and 	#7
+		iny
+		iny
+
+		asl 	zTemp0 						; shift zTemp0:A left
+		rol 	a 							; carry will be clear.
+		adc 	#VariableStart >> 8 		; point to variable page.
+		sta 	zTemp0+1
+		.endm
+
+		.send 	code
+		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates
@@ -39,4 +46,3 @@ VariableStart = WorkArea
 ;		==== 			=====
 ;
 ; ************************************************************************************************
-

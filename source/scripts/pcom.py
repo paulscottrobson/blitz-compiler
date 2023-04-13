@@ -53,6 +53,8 @@ class PCodeCompiler(object):
 		if t is not None:
 			self.print("\t.byte\t{0} ; {1}".format(t,w))
 			return
+
+		assert False,"Unknown "+w
 	#
 	def compileInteger(self,n):
 		if n < 0:
@@ -71,6 +73,8 @@ class PCodeCompiler(object):
 
 pc = PCodeCompiler()
 pc.compileString("""
-		4 0%! -4 2%!
-		exit
+		new.line
+		0%@ 1 + 0%!
+		4@ 1 + 4!
+		restart
 """)	

@@ -16,6 +16,9 @@ Boot:
 		ldx 	#$FF
 		jsr 	ClearMemory 				; clear memory.
 
+Restart: ;; [restart]
+		ldx 	#$FF
+		txs
 		.set16 	codePtr,EndProgram+2
 		ldy 	#0	
 		;
@@ -31,7 +34,20 @@ NextCommand:
 		;		Load/Store dispatch.
 		;
 NXLoadStore:
-		.debug	
+		lsr 	a 							; / 4, so $48 => $12,
+		lsr 	a 
+		and 	#$0E
+		phx 								; get ready to jump
+		tax
+		jmp 	(ReadWriteVectors,x) 		; go via the jump table.
+
+ReadWriteVectors:
+		.word 	ReadIntegerCommand 			; read integer
+		.word 	WriteIntegerCommand 		; write integer
+		.word 	ReadFloatCommand			; read float
+		.word 	WriteFloatCommand 			; write float
+		.word 	Unimplemented 				; read string
+		.word 	Unimplemented 				; write string
 		;
 		;		Push byte on stack
 		;
@@ -72,9 +88,7 @@ NXCommand:
 		tax				 					; and jump indirect
 		jmp 	(VectorTable,x)
 
-
 		.exitemu
-
 
 GetInteger8Bit:
 		.debug
