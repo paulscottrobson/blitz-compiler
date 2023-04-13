@@ -70,6 +70,6 @@ class PCodeCompiler(object):
 
 pc = PCodeCompiler()
 pc.compileString("""
-		0 63 140 32766 -1
+		1 63 140 32766 -1
 		exit
 """)	

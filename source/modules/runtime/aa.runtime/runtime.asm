@@ -14,8 +14,12 @@
 
 Boot:	
 		ldx 	#$FF
-		.debug
 		jsr 	ClearMemory 				; clear memory.
+
+		.debug
+		.set16 	codePtr,EndProgram+2
+		ldy 	#0
+		
 		.exitemu
 
 GetInteger8Bit:
