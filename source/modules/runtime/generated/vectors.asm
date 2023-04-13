@@ -49,8 +49,8 @@ VectorTable:
 	.word	CommandNewLine           ; $ab new.line
 	.word	NotTOS                   ; $ac not
 	.word	Unimplemented            ; $ad .shift
-	.word	Unimplemented            ; $ae .byte
-	.word	Unimplemented            ; $af .word
+	.word	PushByteCommand          ; $ae .byte
+	.word	PushWordCommand          ; $af .word
 	.word	CommandFloat             ; $b0 .float
 	.word	CommandPushS             ; $b1 .string
 	.word	Unimplemented            ; $b2 .data

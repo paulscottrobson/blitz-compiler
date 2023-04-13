@@ -34,7 +34,7 @@ class PCodeCompiler(object):
 	#
 	def compileWord(self,w):
 		if re.match("^\\-?\\d+$",w):
-			self.compileInteger(w)
+			self.compileInteger(int(w))
 			return
 		#
 		if re.match("^\\d+\\%[\\@\\!]$",w):
@@ -55,8 +55,10 @@ class PCodeCompiler(object):
 			return
 	#
 	def compileInteger(self,n):
-		n = int(n) & 0xFFFF
-		if n < 64:
+		if n < 0:
+			self.compileInteger(-n)
+			self.compileWord("negate")
+		elif n < 64:
 			self.print("\t.byte\t{0} ; {0}".format(n))
 		elif n < 256:
 			self.print("\t.byte\t{0},{1} ; {1} ".format(self.pcode.getID(".BYTE"),n))
@@ -67,9 +69,8 @@ class PCodeCompiler(object):
 		assert (addr & 1) == 0
 		self.print("\t.byte\t{0},{1} ; {2}{3}{4}".format(base+(addr >> 9),(addr >> 1) & 0xFF,addr,type,"@" if (base & 8) == 0 else "!"))
 
-
 pc = PCodeCompiler()
 pc.compileString("""
-		1 63 140 32766 -1
+		4 0%! -4 2%!
 		exit
 """)	
