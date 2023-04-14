@@ -48,13 +48,12 @@ VectorTable:
 	.word	NegateTOS                ; $aa negate
 	.word	CommandNewLine           ; $ab new.line
 	.word	NotTOS                   ; $ac not
-	.word	Restart                  ; $ad restart
-	.word	Unimplemented            ; $ae .shift
-	.word	PushByteCommand          ; $af .byte
-	.word	PushWordCommand          ; $b0 .word
-	.word	CommandFloat             ; $b1 .float
-	.word	CommandPushS             ; $b2 .string
-	.word	Unimplemented            ; $b3 .data
-	.word	Unimplemented            ; $b4 .goto
-	.word	Unimplemented            ; $b5 .gosub
+	.word	Unimplemented            ; $ad .shift
+	.word	PushByteCommand          ; $ae .byte
+	.word	PushWordCommand          ; $af .word
+	.word	CommandPushN             ; $b0 .float
+	.word	CommandPushS             ; $b1 .string
+	.word	Unimplemented            ; $b2 .data
+	.word	Unimplemented            ; $b3 .goto
+	.word	Unimplemented            ; $b4 .gosub
 	.send code

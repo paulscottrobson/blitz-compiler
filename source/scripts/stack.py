@@ -25,10 +25,14 @@ if size != 0xFF:
 				(dmp.read(lbl.get("NSMantissa2")+i) << 16) + \
 				(dmp.read(lbl.get("NSMantissa3")+i) << 24) 
 		exp = dmp.read(lbl.get("NSExponent")+i)
-		sign = dmp.read(lbl.get("NSStatus")+i)	
-		dec = f.toDecimal([data,exp,sign])
+		status = dmp.read(lbl.get("NSStatus")+i)	
+		dec = f.toDecimal([data,exp,status])
 		hexa = "${0:x}".format(int(dec)) if dec == int(dec) else ""
 		c = '"'+chr(dec)+'"' if dec == int(dec) and dec > 32 and dec < 127 else "   "
-		print("\tLevel {0} [${1:08x} ${2:02x} ${3:02x}] {4:<12.4f} {5:<8} {6}".format(i,data,exp,sign,dec,hexa,c))
+		print("\tLevel {0} [${1:08x} ${2:02x} ${3:02x}] {4:<12.4f} {5:<8} {6}".format(i,data,exp,status,dec,hexa,c))
+		if (status & 0x40) != 0:
+			size = dmp.read(data)
+			string = "".join([chr(dmp.read(data+1+i)) for i in range(0,size)])
+			print("\t\t\t\"{1}\" ({0})".format(size,string))
 else:
 	print("Stack empty/underflow {0}".format(size))

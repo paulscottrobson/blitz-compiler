@@ -3,7 +3,7 @@
 ;
 ;		Name:		pushstring.asm
 ;		Purpose:	Push string constant onto stack 
-;		Created:	13th April 2023
+;		Created:	14th April 2023
 ;		Reviewed: 	No
 ;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
@@ -20,7 +20,25 @@
 
 CommandPushS: ;; [.string]
 		.entercmd
-		.todo
+		inx 								; next slot on stack		
+		;
+		clc
+		tya
+		adc 	codePtr 					; the string is inline
+		sta 	NSMantissa0,x
+		lda 	codePtr+1
+		adc 	#0
+		sta 	NSMantissa1,x
+		stz 	NSMantissa2,x
+		stz 	NSMantissa3,x
+		;
+		lda 	#NSSString
+		sta 	NSStatus,x
+		;
+		tya 								; string length +1 added to Y
+		sec 								
+		adc 	(codePtr),y 				; next instruction
+		tay
 		.exitcmd
 
 		.send 	code

@@ -207,12 +207,12 @@ _ENConstructFinal:
 		lda 	FloatScalarTable-5+4,y
 		sta 	NSExponent+2,x
 		;
-		ply
 		;
 		inx 								; multiply decimal const by decimal scalar
+		inx
 		jsr 	FloatMultiply
-		dex
 		jsr 	FloatAdd 					; add to integer part.
+		ply
 _ENCFExit:
 		clc 								; reject the digit.
 		rts

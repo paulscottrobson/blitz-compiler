@@ -16,7 +16,6 @@ Boot:
 		ldx 	#$FF
 		jsr 	ClearMemory 				; clear memory.
 
-Restart: ;; [restart]
 		ldx 	#$FF
 		txs
 		.set16 	codePtr,EndProgram+2
