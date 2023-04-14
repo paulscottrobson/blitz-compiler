@@ -249,10 +249,19 @@ class NumberBinaryTestGenerator(BinaryTestGenerator):
 		BinaryTestGenerator.__init__(self,	"IF")
 
 	def getOperations(self):
-		return { "+":"+","-":"-","*":"*","/":"/" ,"^":"^","and":"&","or":"|"}
+		return { 	"+":"+","-":"-","*":"*","/":"/" ,
+					"^":"^",
+					"and":"&","or":"|",
+					"concat":"+"
+		}
 
 	def create(self):
 		op = self.getOperation()
+
+		if op == "concat":
+			n = [self.randomString(),self.randomString()]
+			return "{0} {1} concat {2} s.cmp = ".format(self.format(n[0]),self.format(n[1]),self.format(n[0]+n[1]))
+
 		n = self.fudge([self.generate(),self.generate()],op)
 		if op == "and" or op == "or":
 			self.current = "I"
