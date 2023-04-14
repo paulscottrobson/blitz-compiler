@@ -50,7 +50,17 @@ pcode: prelim
 debugpcode: pcode runtime prelim
 	cat $(BUILD)runtime.prg $(BTEMP)pcodebin.bin >$(BTEMP)pcodebin.prg
 	$(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
+#
+#		A test_pcode.py run
+#	
+tpcode: prelim
+	python $(SCRIPTDIR)test_pcode.py >$(BTEMP)test.pcode
+	python $(SCRIPTDIR)pcom.py $(RTMODULES) <$(BTEMP)test.pcode >$(BTEMP)pcodebin.asm
+	$(ASM) $(ASMOPTS) $(BTEMP)pcodebin.asm -o $(BTEMP)pcodebin.bin
 
+testpcode: tpcode runtime prelim
+	cat $(BUILD)runtime.prg $(BTEMP)pcodebin.bin >$(BTEMP)pcodebin.prg
+	$(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run -warp
 #
 #		Test the floating point mathematics
 #

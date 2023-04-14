@@ -43,18 +43,19 @@ VectorTable:
 	.word	UnaryBin                 ; $a5 bin$
 	.word	CommandClr               ; $a6 clr
 	.word	CompareStrings           ; $a7 s.cmp
-	.word	FloatCompare             ; $a8 f.cmp
-	.word	CommandExit              ; $a9 exit
+	.word	CommandExit              ; $a8 exit
+	.word	CommandDebug             ; $a9 debug
 	.word	UnaryHex                 ; $aa hex$
-	.word	NegateTOS                ; $ab negate
-	.word	CommandNewLine           ; $ac new.line
-	.word	NotTOS                   ; $ad not
-	.word	Unimplemented            ; $ae .shift
-	.word	PushByteCommand          ; $af .byte
-	.word	PushWordCommand          ; $b0 .word
-	.word	CommandPushN             ; $b1 .float
-	.word	CommandPushS             ; $b2 .string
-	.word	Unimplemented            ; $b3 .data
-	.word	Unimplemented            ; $b4 .goto
-	.word	Unimplemented            ; $b5 .gosub
+	.word	LinkFloatCompare         ; $ab f.cmp
+	.word	NegateTOS                ; $ac negate
+	.word	CommandNewLine           ; $ad new.line
+	.word	NotTOS                   ; $ae not
+	.word	Unimplemented            ; $af .shift
+	.word	PushByteCommand          ; $b0 .byte
+	.word	PushWordCommand          ; $b1 .word
+	.word	CommandPushN             ; $b2 .float
+	.word	CommandPushS             ; $b3 .string
+	.word	Unimplemented            ; $b4 .data
+	.word	Unimplemented            ; $b5 .goto
+	.word	Unimplemented            ; $b6 .gosub
 	.send code

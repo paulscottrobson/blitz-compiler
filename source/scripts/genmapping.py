@@ -29,6 +29,7 @@ mappings = """
 		sin 	FloatSine
 		tan 	FloatTangent
 		atn		FloatArcTan
+		f.cmp 	FloatCompare
 """
 
 mappings = [x.strip() for x in mappings.split("\n") if x.strip() != ""]

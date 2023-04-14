@@ -116,4 +116,10 @@ LinkFloatArcTan: ;; [atn]
 	jsr	FloatArcTan
 	ply
 	.exitcmd
+LinkFloatCompare: ;; [f.cmp]
+	.entercmd
+	phy
+	jsr	FloatCompare
+	ply
+	.exitcmd
 	.send code

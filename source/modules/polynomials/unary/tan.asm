@@ -48,7 +48,6 @@ FloatTangent:
 		clc
 _FTExit:
 		plx	
-		dex
 		rts		
 
 

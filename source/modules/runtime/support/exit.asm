@@ -23,6 +23,11 @@ CommandExit: ;; [exit]
 		stx 	zTemp0 						; stack position.
 		jmp 	$FFFF 						; exits the emulator.
 
+CommandDebug: ;; [debug]
+		.entercmd
+		.debug
+		.exitcmd
+
 		.send 	code
 		
 ; ************************************************************************************************
