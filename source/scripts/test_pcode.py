@@ -236,6 +236,21 @@ class BinaryTestGenerator(CodeTestGenerator):
 		self.operations = self.getOperations()
 		self.operationList = [x for x in self.operations.keys()]
 
+
+
+# *******************************************************************************************
+#
+# 									Number Binary class
+#
+# *******************************************************************************************
+
+class NumberBinaryTestGenerator(BinaryTestGenerator):
+	def __init__(self):
+		BinaryTestGenerator.__init__(self,	"IF")
+
+	def getOperations(self):
+		return { "+":"+","-":"-","*":"*","/":"/" ,"^":"^","and":"&","or":"|"}
+
 	def create(self):
 		op = self.getOperation()
 		n = self.fudge([self.generate(),self.generate()],op)
@@ -260,20 +275,6 @@ class BinaryTestGenerator(CodeTestGenerator):
 			if np[1] == 0:
 				np[1] = 2		
 		return np
-
-# *******************************************************************************************
-#
-# 									Number Binary class
-#
-# *******************************************************************************************
-
-class NumberBinaryTestGenerator(BinaryTestGenerator):
-	def __init__(self):
-		BinaryTestGenerator.__init__(self,	"IF")
-
-	def getOperations(self):
-		return { "+":"+","-":"-","*":"*","/":"/" ,"^":"^","and":"&","or":"|"}
-
 
 sources = [
 			FunctionUnaryTestGenerator(),
