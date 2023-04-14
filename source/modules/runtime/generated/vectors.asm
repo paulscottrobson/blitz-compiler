@@ -17,7 +17,7 @@ VectorTable:
 	.word	LinkCompareNotEqual      ; $8b <>
 	.word	LinkCompareLessEqual     ; $8c <=
 	.word	SignTOS                  ; $8d sgn
-	.word	IntegerTOS               ; $8e int
+	.word	LinkFloatIntegerPartDown ; $8e int
 	.word	AbsoluteTOS              ; $8f abs
 	.word	UnaryUsr                 ; $90 usr
 	.word	UnaryFre                 ; $91 fre

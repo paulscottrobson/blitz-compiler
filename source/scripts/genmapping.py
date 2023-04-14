@@ -21,6 +21,7 @@ mappings = """
 		>=		CompareGreaterEqual
 		<>		CompareNotEqual
 		<=		CompareLessEqual
+		int 	FloatIntegerPartDown
 		sqr 	FloatSquareRoot
 		log 	FloatLogarithm
 		exp 	FloatExponent

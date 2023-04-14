@@ -68,6 +68,12 @@ LinkCompareLessEqual: ;; [<=]
 	jsr	CompareLessEqual
 	ply
 	.exitcmd
+LinkFloatIntegerPartDown: ;; [int]
+	.entercmd
+	phy
+	jsr	FloatIntegerPartDown
+	ply
+	.exitcmd
 LinkFloatSquareRoot: ;; [sqr]
 	.entercmd
 	phy
