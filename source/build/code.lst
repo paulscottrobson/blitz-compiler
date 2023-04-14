@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.58.2974? listing file
 ; 64tass -q -Wall -c -C -L build/code.lst -l build/code.lbl -Wall -o build/runtime.prg _runtime.asm
-; Fri Apr 14 14:47:55 2023
+; Fri Apr 14 15:04:05 2023
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -2741,55 +2741,55 @@
 ;******  Processing file: modules/ifloat32/float/tostring.asm
 
 .1572					FloatToString:
-.1572	5a		phy				phy 								; save code position
-.1573	8d 33 04	sta $0433			sta 	decimalPlaces	 			; save number of DPs.
-.1576	9c 34 04	stz $0434			stz 	dbOffset 					; offset into decimal buffer = start.
-.1579	b5 50		lda $50,x			lda 	NSStatus,x  				; is it -ve.
-.157b	10 08		bpl $1585			bpl 	_CNTSNotNegative
-.157d	29 7f		and #$7f			and 	#$7F 						; make +ve
-.157f	95 50		sta $50,x			sta 	NSStatus,x
-.1581	a9 2d		lda #$2d			lda 	#"-"
-.1583	80 02		bra $1587			bra 	_CNTMain
-.1585					_CNTSNotNegative:
-.1585	a9 20		lda #$20			lda 	#" "
-.1587					_CNTMain:
-.1587	20 ea 15	jsr $15ea			jsr 	WriteDecimalBuffer
-.158a	b5 a0		lda $a0,x			lda 	NSExponent,x 				; check if decimal
-.158c	f0 0e		beq $159c			beq 	_CNTSNotFloat
-.158e	e8		inx				inx 								; round up so we don't get too many 6.999999
-.158f	a9 01		lda #$01			lda 	#1
-.1591	20 45 16	jsr $1645			jsr 	FloatSetByte
-.1594	ca		dex				dex
-.1595	b5 a0		lda $a0,x			lda		NSExponent,x
-.1597	95 a1		sta $a1,x			sta 	NSExponent+1,x
+.1572	da		phx				phx
+.1573	5a		phy				phy 								; save code position
+.1574	8d 33 04	sta $0433			sta 	decimalPlaces	 			; save number of DPs.
+.1577	9c 34 04	stz $0434			stz 	dbOffset 					; offset into decimal buffer = start.
+.157a	b5 50		lda $50,x			lda 	NSStatus,x  				; is it -ve.
+.157c	10 08		bpl $1586			bpl 	_CNTSNotNegative
+.157e	29 7f		and #$7f			and 	#$7F 						; make +ve
+.1580	95 50		sta $50,x			sta 	NSStatus,x
+.1582	a9 2d		lda #$2d			lda 	#"-"
+.1584	80 02		bra $1588			bra 	_CNTMain
+.1586					_CNTSNotNegative:
+.1586	a9 20		lda #$20			lda 	#" "
+.1588					_CNTMain:
+.1588	20 ea 15	jsr $15ea			jsr 	WriteDecimalBuffer
+.158b	b5 a0		lda $a0,x			lda 	NSExponent,x 				; check if decimal
+.158d	f0 0d		beq $159c			beq 	_CNTSNotFloat
+.158f	e8		inx				inx 								; round up so we don't get too many 6.999999
+.1590	a9 01		lda #$01			lda 	#1
+.1592	20 45 16	jsr $1645			jsr 	FloatSetByte
+.1595	b5 9f		lda $9f,x			lda		NSExponent-1,x
+.1597	95 a0		sta $a0,x			sta 	NSExponent,x
 .1599	20 13 08	jsr $0813			jsr 	FloatAdd
 .159c					_CNTSNotFloat:
 .159c	20 cc 15	jsr $15cc			jsr 	MakePlusTwoString 			; do the integer part.
 .159f	20 a7 0c	jsr $0ca7			jsr 	FloatFractionalPart 		; get the fractional part
 .15a2	20 f4 0f	jsr $0ff4			jsr 	FloatNormalise					; normalise , exit if zero
-.15a5	f0 23		beq $15ca			beq 	_CNTSExit
+.15a5	f0 22		beq $15c9			beq 	_CNTSExit
 .15a7	a9 2e		lda #$2e			lda 	#"."
 .15a9	20 ea 15	jsr $15ea			jsr 	WriteDecimalBuffer 			; write decimal place
 .15ac					_CNTSDecimal:
 .15ac	ce 33 04	dec $0433			dec 	decimalPlaces 				; done all the decimals
-.15af	30 19		bmi $15ca			bmi 	_CNTSExit
+.15af	30 18		bmi $15c9			bmi 	_CNTSExit
 .15b1	e8		inx				inx 								; x 10.0
 .15b2	a9 0a		lda #$0a			lda 	#10
 .15b4	20 45 16	jsr $1645			jsr 	FloatSetByte
-.15b7	ca		dex				dex
-.15b8	20 b1 0f	jsr $0fb1			jsr 	FloatMultiply
-.15bb	20 cc 15	jsr $15cc			jsr 	MakePlusTwoString 			; put the integer e.g. next digit out.
-.15be	20 a7 0c	jsr $0ca7			jsr 	FloatFractionalPart 		; get the fractional part
-.15c1	20 f4 0f	jsr $0ff4			jsr 	FloatNormalise 				; normalise it.
-.15c4	b5 a0		lda $a0,x			lda 	NSExponent,x 				; gone to zero, exit.
-.15c6	c9 d0		cmp #$d0			cmp 	#$D0 						; very small remainder, so don't bother.
-.15c8	b0 e2		bcs $15ac			bcs 	_CNTSDecimal 				; keep going.
-.15ca					_CNTSExit:
-.15ca	7a		ply				ply
+.15b7	20 b1 0f	jsr $0fb1			jsr 	FloatMultiply
+.15ba	20 cc 15	jsr $15cc			jsr 	MakePlusTwoString 			; put the integer e.g. next digit out.
+.15bd	20 a7 0c	jsr $0ca7			jsr 	FloatFractionalPart 		; get the fractional part
+.15c0	20 f4 0f	jsr $0ff4			jsr 	FloatNormalise 				; normalise it.
+.15c3	b5 a0		lda $a0,x			lda 	NSExponent,x 				; gone to zero, exit.
+.15c5	c9 d0		cmp #$d0			cmp 	#$D0 						; very small remainder, so don't bother.
+.15c7	b0 e3		bcs $15ac			bcs 	_CNTSDecimal 				; keep going.
+.15c9					_CNTSExit:
+.15c9	7a		ply				ply
+.15ca	fa		plx				plx
 .15cb	60		rts				rts
 .15cc					MakePlusTwoString:
 .15cc	da		phx				phx
-.15cd	20 26 16	jsr $1626			jsr 	FloatShiftUpTwo 				; copy S[X] to S[X+2] - we will use S[X+2] for the intege part.
+.15cd	20 26 16	jsr $1626			jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2] - we will use S[X+2] for the intege part.
 .15d0	e8		inx				inx 								; access it
 .15d1	e8		inx				inx
 .15d2	20 dd 0d	jsr $0ddd			jsr 	FloatIntegerPart 			; make it an integer

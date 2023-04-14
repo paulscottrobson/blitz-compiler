@@ -1,8 +1,14 @@
 	.byte	171                               ;  new.line
 	.byte	175,57,48                         ;  57 
+	.text	176,3,"2.2"                       ;  2.2 
+	.byte	157                               ;  str$
 	.byte	42                                ;  42
-	.byte	164                               ;  bin$
-	.byte	175,10,2                          ;  10 
-	.byte	164                               ;  bin$
+	.byte	170                               ;  negate
+	.byte	157                               ;  str$
+	.text	176,5,"522.7"                     ;  522.7 
+	.byte	157                               ;  str$
+	.text	176,7,"3.14159"                   ;  -3.14159 
+	.byte	170                               ;  negate
+	.byte	157                               ;  str$
 	.byte	175,213,221                       ;  213 
 	.byte	168                               ;  exit

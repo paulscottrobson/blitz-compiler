@@ -14,11 +14,12 @@
 
 ; ************************************************************************************************
 ;
-;				Convert FPA to String in ConversionBuffer, return offset in X
+;						Convert FPA to String in ConversionBuffer
 ;
 ; ************************************************************************************************
 
 FloatToString:
+		phx
 		phy 								; save code position
 		sta 	decimalPlaces	 			; save number of DPs.
 		stz 	dbOffset 					; offset into decimal buffer = start.
@@ -39,9 +40,8 @@ _CNTMain:
 		inx 								; round up so we don't get too many 6.999999
 		lda 	#1
 		jsr 	FloatSetByte		
-		dex
-		lda		NSExponent,x
-		sta 	NSExponent+1,x
+		lda		NSExponent-1,x
+		sta 	NSExponent,x
 		jsr 	FloatAdd
 _CNTSNotFloat:
 
@@ -57,7 +57,6 @@ _CNTSDecimal:
 		inx 								; x 10.0
 		lda 	#10
 		jsr 	FloatSetByte
-		dex
 		jsr 	FloatMultiply
 		jsr 	MakePlusTwoString 			; put the integer e.g. next digit out.
 		jsr 	FloatFractionalPart 		; get the fractional part
@@ -68,6 +67,7 @@ _CNTSDecimal:
 		bcs 	_CNTSDecimal 				; keep going.
 _CNTSExit:
 		ply
+		plx
 		rts
 
 ; ************************************************************************************************
@@ -78,7 +78,7 @@ _CNTSExit:
 
 MakePlusTwoString:
 		phx
-		jsr 	FloatShiftUpTwo 				; copy S[X] to S[X+2] - we will use S[X+2] for the intege part.		
+		jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2] - we will use S[X+2] for the intege part.		
 		inx 								; access it
 		inx
 		jsr 	FloatIntegerPart 			; make it an integer

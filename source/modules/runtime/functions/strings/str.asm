@@ -24,8 +24,7 @@ Unary_Str: ;; [str$]
 		lda 	#8 							; maximum decimal places.
 		jsr 	FloatToString 				; do the conversion.
 		lda		#33 						; create buffer
-		jsr 	StringAllocTemp 			; allocate memory
-
+		jsr 	StringAllocTemp 			; allocate memory		
 		ldy 	#1  						; copy the converted string into the buffer.
 _USCopy:
 		lda 	decimalBuffer-1,y
