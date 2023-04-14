@@ -19,6 +19,7 @@
 ; ************************************************************************************************
 
 FloatTangent: 	
+		phx
 		txa 								; sin -> +1
 		tay
 		iny
@@ -31,11 +32,11 @@ FloatTangent:
 		tay
 		iny
 		iny
-		jsr 	CopyFloatXY
+		jsr 	CopyFloatXY		
 		inx
 		inx
 		jsr 	FloatCosine 				
-		
+
 		jsr 	FloatDivide 				; calculate sin/cos
 		bcs 	_FTExit 					; divide by zero
 
@@ -43,10 +44,11 @@ FloatTangent:
 		tay
 		dey
 		jsr 	CopyFloatXY 				
-		dex
 
 		clc
-_FTExit:		
+_FTExit:
+		plx	
+		dex
 		rts		
 
 

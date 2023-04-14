@@ -60,6 +60,7 @@ ismain_polynomials = 0
 	.include	"modules/polynomials/utility/horner.asm"
 	.include	"modules/runtime/functions/number/int.asm"
 	.include	"modules/ifloat32/float/integer.asm"
+	.include	"modules/runtime/support/integers.asm"
 	.include	"modules/runtime/functions/strings/len.asm"
 	.include	"modules/runtime/generated/links.asm"
 	.include	"modules/polynomials/utility/load.asm"

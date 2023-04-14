@@ -87,13 +87,6 @@ NXCommand:
 		tax				 					; and jump indirect
 		jmp 	(VectorTable,x)
 
-		.exitemu
-
-GetInteger8Bit:
-		.debug
-GetInteger16Bit:
-		.debug
-
 		.send code
 
 ; ************************************************************************************************
