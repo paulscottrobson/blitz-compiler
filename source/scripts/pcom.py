@@ -49,8 +49,10 @@ class PCodeCompiler(object):
 			self.compileAccess("$",int(w[:w.find("$")]),96 if w.endswith("@") else 104)
 			return
 		#
-		if re.match("^\\d+\\.\\d+$",w):
-			self.compileData(".float",w,w)
+		if re.match("^\\-?\\d+\\.\\d+$",w):
+			self.compileData(".float",str(abs(float(w))),w)
+			if float(w) < 0:
+				self.compileWord("negate")
 			return
 		#
 		if w.startswith('"') and w.endswith('"'):
@@ -65,6 +67,7 @@ class PCodeCompiler(object):
 		assert False,"Unknown "+w
 	#
 	def compileInteger(self,n):
+		assert abs(n) < 65535
 		if n < 0:
 			self.compileInteger(-n)
 			self.compileWord("negate")
@@ -84,4 +87,5 @@ class PCodeCompiler(object):
 
 pc = PCodeCompiler()
 for s in sys.stdin.readlines():
-	pc.compileString(s)
+	if not s.strip().startswith("#"):
+		pc.compileString(s.strip())

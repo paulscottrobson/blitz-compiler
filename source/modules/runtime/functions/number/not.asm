@@ -20,6 +20,7 @@
 
 NotTOS:	;; [not]
 		.entercmd
+		jsr 	FloatIntegerPart
 		stz 	NSMantissa2,x 				; chop down to 16 bit.
 		stz 	NSMantissa3,x
 
