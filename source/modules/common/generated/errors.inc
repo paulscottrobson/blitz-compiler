@@ -16,3 +16,6 @@ error_type .macro
 error_unimplemented .macro
 	jmp	ErrorV_unimplemented
 	.endm
+error_assert .macro
+	jmp	ErrorV_assert
+	.endm

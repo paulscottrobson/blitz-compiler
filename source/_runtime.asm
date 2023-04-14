@@ -34,6 +34,7 @@ ismain_polynomials = 0
 	.include	"modules/runtime/functions/number/abs.asm"
 	.include	"modules/ifloat32/float/addsub.asm"
 	.include	"modules/runtime/functions/number/asc.asm"
+	.include	"modules/runtime/commands/assert.asm"
 	.include	"modules/polynomials/unary/atn.asm"
 	.include	"modules/polynomials/core/atn_core.asm"
 	.include	"modules/x16_runtime/unary/bin.asm"

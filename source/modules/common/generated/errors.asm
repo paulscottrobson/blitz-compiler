@@ -4,17 +4,20 @@
 	.section code
 ErrorV_range:
 	jsr	ErrorHandler
-	.text	"out of range",0
+	.text	"OUT OF RANGE",0
 ErrorV_value:
 	jsr	ErrorHandler
-	.text	"bad value",0
+	.text	"BAD VALUE",0
 ErrorV_syntax:
 	jsr	ErrorHandler
-	.text	"syntax error",0
+	.text	"SYNTAX ERROR",0
 ErrorV_type:
 	jsr	ErrorHandler
-	.text	"type mismatch",0
+	.text	"TYPE MISMATCH",0
 ErrorV_unimplemented:
 	jsr	ErrorHandler
-	.text	"not implemented",0
+	.text	"NOT IMPLEMENTED",0
+ErrorV_assert:
+	jsr	ErrorHandler
+	.text	"ASSERT FAIL",0
 	.send code

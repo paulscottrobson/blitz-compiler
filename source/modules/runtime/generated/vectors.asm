@@ -39,21 +39,22 @@ VectorTable:
 	.word	Unary_Left               ; $a1 left$
 	.word	Unary_Right              ; $a2 right$
 	.word	Unary_Mid                ; $a3 mid$
-	.word	UnaryBin                 ; $a4 bin$
-	.word	CommandClr               ; $a5 clr
-	.word	CompareStrings           ; $a6 s.cmp
-	.word	FloatCompare             ; $a7 f.cmp
-	.word	CommandExit              ; $a8 exit
-	.word	UnaryHex                 ; $a9 hex$
-	.word	NegateTOS                ; $aa negate
-	.word	CommandNewLine           ; $ab new.line
-	.word	NotTOS                   ; $ac not
-	.word	Unimplemented            ; $ad .shift
-	.word	PushByteCommand          ; $ae .byte
-	.word	PushWordCommand          ; $af .word
-	.word	CommandPushN             ; $b0 .float
-	.word	CommandPushS             ; $b1 .string
-	.word	Unimplemented            ; $b2 .data
-	.word	Unimplemented            ; $b3 .goto
-	.word	Unimplemented            ; $b4 .gosub
+	.word	CommandAssert            ; $a4 assert
+	.word	UnaryBin                 ; $a5 bin$
+	.word	CommandClr               ; $a6 clr
+	.word	CompareStrings           ; $a7 s.cmp
+	.word	FloatCompare             ; $a8 f.cmp
+	.word	CommandExit              ; $a9 exit
+	.word	UnaryHex                 ; $aa hex$
+	.word	NegateTOS                ; $ab negate
+	.word	CommandNewLine           ; $ac new.line
+	.word	NotTOS                   ; $ad not
+	.word	Unimplemented            ; $ae .shift
+	.word	PushByteCommand          ; $af .byte
+	.word	PushWordCommand          ; $b0 .word
+	.word	CommandPushN             ; $b1 .float
+	.word	CommandPushS             ; $b2 .string
+	.word	Unimplemented            ; $b3 .data
+	.word	Unimplemented            ; $b4 .goto
+	.word	Unimplemented            ; $b5 .gosub
 	.send code

@@ -17,6 +17,7 @@ errors = """
 	syntax 		  : syntax error
 	type 		  : type mismatch 
 	unimplemented : not implemented
+	assert 		  : assert fail
 """.strip().split("\n")
 
 h1 = open("modules/common/generated/errors.inc","w")
@@ -27,7 +28,7 @@ h2.write("\t.section code\n")
 for e in errors:
 	e = [x.strip() for x in e.split(":")]
 	h1.write("error_{0} .macro\n\tjmp\tErrorV_{0}\n\t.endm\n".format(e[0]))
-	h2.write("ErrorV_{0}:\n\tjsr\tErrorHandler\n\t.text\t\"{1}\",0\n".format(e[0],e[1]))
+	h2.write("ErrorV_{0}:\n\tjsr\tErrorHandler\n\t.text\t\"{1}\",0\n".format(e[0],e[1].upper()))
 h2.write("\t.send code\n")
 h1.close()
 h2.close()
