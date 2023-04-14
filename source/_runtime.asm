@@ -85,6 +85,7 @@ ismain_polynomials = 0
 	.include	"modules/runtime/memory/read_int.asm"
 	.include	"modules/runtime/functions/number/rnd.asm"
 	.include	"modules/runtime/aa.runtime/runtime.asm"
+	.include	"modules/runtime/strings/sconcat.asm"
 	.include	"modules/runtime/functions/number/sgn.asm"
 	.include	"modules/ifloat32/binary/simple.asm"
 	.include	"modules/polynomials/unary/sin.asm"
