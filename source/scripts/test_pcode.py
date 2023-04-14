@@ -207,16 +207,11 @@ class StringSliceTestGenerator(UnaryTestGenerator):
 	def left(self,s1,start,length):
 		return ""
 
-# *******************************************************************************************
-#
-#						Test for the string target functions
-#
-# *******************************************************************************************
-
-class StringUnaryTestGenerator(UnaryTestGenerator):
-	def __init__(self):
-		UnaryTestGenerator.__init__(self,"S")
-
+sources = [
+			FunctionUnaryTestGenerator(),
+			FloatFunctionUnaryTestGenerator(),
+			StringSliceTestGenerator()
+]
 
 c = FunctionUnaryTestGenerator()
 for i in range(0,120):
