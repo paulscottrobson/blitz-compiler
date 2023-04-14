@@ -70,6 +70,8 @@ class CodeTestGenerator(object):
 			return "f.cmp = "
 		if ttype == "F":
 			return "- abs {0} f.cmp < ".format(self.format(r))
+		if ttype == "S":
+			return "s.cmp = "
 		assert False 
 
 # *******************************************************************************************
@@ -236,7 +238,13 @@ class BinaryTestGenerator(CodeTestGenerator):
 		self.operations = self.getOperations()
 		self.operationList = [x for x in self.operations.keys()]
 
-
+	def create(self):
+		op = self.getOperation()
+		n = self.fudge([self.generate(),self.generate()],op)
+		r = self.evaluate("{0} {1} {2}".format(self.format(n[0]),self.operations[op],self.format(n[1])))
+		if r == True or r == False:
+			r = -1 if r else 0
+		return "{0} {1} {2} {3} {4}".format(self.format(n[0]),self.format(n[1]),op,self.format(r),self.check())
 
 # *******************************************************************************************
 #
@@ -285,16 +293,43 @@ class NumberBinaryTestGenerator(BinaryTestGenerator):
 				np[1] = 2		
 		return np
 
+# *******************************************************************************************
+#
+# 									Comparison Generator class
+#
+# *******************************************************************************************
+
+class ComparisonBinaryTestGenerator(BinaryTestGenerator):
+	def __init__(self):
+		BinaryTestGenerator.__init__(self,	"IFS")
+
+	def getOperations(self):
+		return { 	">":">","<":"<","=":"==",
+					">=":">=","<=":"<=","<>":"!="
+		}
+
+	def create(self):
+		s = BinaryTestGenerator.create(self).split()
+		s.insert(2,"s.cmp" if s[0][0] == '"' else "f.cmp")
+		return " ".join(s)
+
+	def fudge(self,np,op):
+		if random.randint(0,6) == 0:
+			np[0] = np[1]
+		self.current = "I"
+		return np
+
 sources = [
 			FunctionUnaryTestGenerator(),
 			StringSliceTestGenerator(),
 			FloatFunctionUnaryTestGenerator(),
-			NumberBinaryTestGenerator()
+			NumberBinaryTestGenerator(),
+			ComparisonBinaryTestGenerator()
 ]
 
 
 
-for i in range(0,200):
+for i in range(0,10):
 	c = sources[random.randint(0,len(sources)-1)]
 	c.selectSource()
 	print("new.line " + c.create() + " assert")
