@@ -25,7 +25,7 @@ WorkAreaSize = $1F00
 ;
 ;		Calculate top string address, e.g. stack/string seperation
 ;
-StringTopAddress = WorkArea + WorkAreaSize - (1 + (WorkAreaSize >> 4)) * 256
+StringTopAddress = WorkArea + WorkAreaSize - (1 + (WorkAreaSize >> 12)) * 256
 StackTopAddress = WorkArea + WorkAreaSize
 VariableStart = WorkArea
 

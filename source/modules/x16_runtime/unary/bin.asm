@@ -31,7 +31,8 @@ _UBNoHigh:
 		jsr 	_UBWriteBinary
 		.exitcmd
 
-_UBWriteBinary:		
+_UBWriteBinary:	
+		phy	
 		ldy 	#8
 _UBWLoop:
 		asl 	a
@@ -42,6 +43,7 @@ _UBWLoop:
 		pla
 		dey
 		bne 	_UBWLoop
+		ply
 		rts
 
 
