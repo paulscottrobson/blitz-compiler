@@ -67,7 +67,12 @@ class PCodeCompiler(object):
 		assert False,"Unknown "+w
 	#
 	def compileInteger(self,n):
-		assert abs(n) < 65535
+		if abs(n) > 65535:
+			self.compileData(".float",str(abs(n)),n)
+			if n < 0:
+				self.compileWord("negate")
+			return
+		#
 		if n < 0:
 			self.compileInteger(-n)
 			self.compileWord("negate")

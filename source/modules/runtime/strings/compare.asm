@@ -19,6 +19,8 @@
 ; ************************************************************************************************
 
 CompareStrings: ;; [s.cmp]
+		.entercmd
+
 		dex
 		
 		lda 	NSMantissa0,x 				; copy strings to zTemp0 and zTemp1
@@ -63,7 +65,7 @@ _CSNSExit:
 		plx
 		cmp 	#0 							; set the flags.
 		jsr 	FloatSetByte 				; output the byte
-		rts				
+		.exitcmd
 
 		.send code
 
