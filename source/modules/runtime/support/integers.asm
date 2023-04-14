@@ -21,19 +21,21 @@ GetInteger8Bit:
 GetInteger16Bit:
 		jsr 	FloatIntegerPart
 		bit 	NSStatus,x
-		bmi 	_GI16Negative
+		bmi 	Negate16Bit
 		lda 	NSMantissa0,x
 		sta 	zTemp0
 		lda 	NSMantissa1,x
 		sta 	zTemp0+1
 		rts
-_GI16Negative:
+Negate16Bit:
 		sec
 		lda 	#0
 		sbc 	NSMantissa0,x
+		sta 	NSMantissa0,x
 		sta 	zTemp0
 		lda 	#0
 		sbc 	NSMantissa1,x
+		sta 	NSMantissa1,x
 		sta 	zTemp0+1
 		rts
 

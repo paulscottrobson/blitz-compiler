@@ -8,8 +8,8 @@ VectorTable:
 	.word	LinkFloatMultiply        ; $82 *
 	.word	LinkFloatDivide          ; $83 /
 	.word	LinkFloatPower           ; $84 ^
-	.word	Unimplemented            ; $85 and
-	.word	Unimplemented            ; $86 or
+	.word	BinaryAnd                ; $85 and
+	.word	BinaryOr                 ; $86 or
 	.word	LinkCompareGreater       ; $87 >
 	.word	LinkCompareEqual         ; $88 =
 	.word	LinkCompareLess          ; $89 <
