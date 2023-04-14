@@ -49,6 +49,14 @@ class PCodeCompiler(object):
 			self.compileAccess("$",int(w[:w.find("$")]),96 if w.endswith("@") else 104)
 			return
 		#
+		if re.match("^\\d+\\.\\d+$",w):
+			self.compileData(".float",w,w)
+			return
+		#
+		if w.startswith('"') and w.endswith('"'):
+			self.compileData(".string",w[1:-1].upper().replace("_"," "),w)
+			return
+		#
 		t = self.pcode.getID(w)
 		if t is not None:
 			self.print("\t.byte\t{0} ; {1}".format(t,w))
@@ -70,6 +78,9 @@ class PCodeCompiler(object):
 	def compileAccess(self,type,addr,base):
 		assert (addr & 1) == 0
 		self.print("\t.byte\t{0},{1} ; {2}{3}{4}".format(base+(addr >> 9),(addr >> 1) & 0xFF,addr,type,"@" if (base & 8) == 0 else "!"))
+	#
+	def compileData(self,cmd,data,w):
+		self.print("\t.text\t{0},{1},\"{2}\" ; {3} ".format(self.pcode.getID(cmd.upper()),len(data),data,w))
 
 pc = PCodeCompiler()
 for s in sys.stdin.readlines():
