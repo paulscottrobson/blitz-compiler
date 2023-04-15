@@ -117,6 +117,7 @@ benchmark : prelim
 #		Do stuff before building.
 #
 prelim: 
+	$(CDEL) _*.asm
 	python $(SCRIPTDIR)constants.py
 	python $(SCRIPTDIR)mathconstants.py
 	python $(SCRIPTDIR)coremaths.py

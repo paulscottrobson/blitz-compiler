@@ -13,6 +13,8 @@ module_ifloat32 = 1
 ismain_ifloat32 = 1
 module_common = 1
 ismain_common = 0
+module_compiler = 0
+ismain_compiler = 0
 module_polynomials = 1
 ismain_polynomials = 0
 
