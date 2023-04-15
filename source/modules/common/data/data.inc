@@ -48,8 +48,7 @@ zTemp2:
 
 NSSString = $40 							; string vs typemask
 NSSIFloat = $00 							; ifloat vs typemask
-NSSIReference = $20 						; when set, a reference is a 16 bit reference (e.g. a%)
-NSSReference = $01 							; when set, is a reference.
+NSSIInt16 = $20								; when set, a reference is a 16 bit reference (e.g. a%)
 NSSTypeMask = $40 					
 
 		.align 16
