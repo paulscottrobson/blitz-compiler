@@ -23,6 +23,8 @@ class Float(object):
 	#		Convert decimal to a 3 part 
 	#
 	def toFloat(self,decimal,normalise = True):
+		if decimal == 0:
+			return [0,0,0]
 		sign = 0x80 if decimal < 0 else 0x00
 		decimal = abs(decimal)
 

@@ -259,6 +259,7 @@ class NumberBinaryTestGenerator(BinaryTestGenerator):
 	def getOperations(self):
 		return { 	"+":"+","-":"-","*":"*","/":"/" ,
 					"^":"^",
+					"int.div":"int.div",
 					"and":"&","or":"|",
 					"concat":"+"
 		}
@@ -280,6 +281,9 @@ class NumberBinaryTestGenerator(BinaryTestGenerator):
 			n[1] = random.randint(1,20)/10
 			r = pow(n[0],n[1])
 			self.current = "F"
+		elif op == "int.div":
+			n[1] = 1 if math.floor(abs(n[1])) == 0 else n[1]
+			r = NumberBinaryTestGenerator.intdiv(n[0],n[1])
 		else:
 			r = self.evaluate("{0} {1} {2}".format(self.format(n[0]),self.operations[op],self.format(n[1])))
 		if abs(r) > 32768:
@@ -290,8 +294,14 @@ class NumberBinaryTestGenerator(BinaryTestGenerator):
 		if op == "/":
 			self.current = "F"
 			if np[1] == 0:
-				np[1] = 2		
+				np[1] = 2			
 		return np
+
+	@staticmethod
+	def intdiv(n1,n2):
+		sgn = n1 * n2 
+		res = int(math.floor(abs(n1)) // math.floor(abs(n2)))
+		return res if sgn >= 0 else -res
 
 # *******************************************************************************************
 #
