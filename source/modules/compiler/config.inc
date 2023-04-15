@@ -14,7 +14,7 @@
 ;
 CodeStart = $801
 ;
-;		Runtime p-code goes here
+;		Runtime p-code goes here. Needs to be on a page boundary.
 ;
 PCodeStart = $4000
 ;
