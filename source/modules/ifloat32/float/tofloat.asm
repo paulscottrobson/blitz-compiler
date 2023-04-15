@@ -206,6 +206,7 @@ _ENConstructFinal:
 		sta 	NSMantissa3+2,x
 		lda 	FloatScalarTable-5+4,y
 		sta 	NSExponent+2,x
+		stz 	NSStatus+2,x 				; make +ve
 		;
 		;
 		inx 								; multiply decimal const by decimal scalar

@@ -19,7 +19,9 @@
 ; ************************************************************************************************
 
 DivideInt32:
+		jsr 	FloatIntegerPart 			; make both integers	
 		dex
+		jsr 	FloatIntegerPart
 		jsr 	Int32Divide 				; divide
 		jsr 	NSMCopyPlusTwoToZero 		; copy result
 		jsr 	FloatCalculateSign 			; calculate result sign

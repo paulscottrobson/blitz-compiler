@@ -21,6 +21,7 @@
 CommandNewLine: ;; [new.line]
 		.entercmd
 		.resetStringSystem
+		ldx 	#$FF
 		.exitcmd
 
 		.send 	code

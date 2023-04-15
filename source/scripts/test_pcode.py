@@ -329,7 +329,7 @@ sources = [
 
 
 
-for i in range(0,10):
+for i in range(0,200):
 	c = sources[random.randint(0,len(sources)-1)]
 	c.selectSource()
 	print("new.line " + c.create() + " assert")
