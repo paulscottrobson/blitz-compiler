@@ -1,12 +1,4 @@
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e7                               ;  -53.1229
-	.dword	$ea3eecc0                        ;  -53.1229
-	.byte	180                               ;  .float
-	.byte	$e4                               ;  4.3181
-	.dword	$4516f007                        ;  4.3181
-	.byte	172                               ;  int.div
-	.byte	13                                ;  13
-	.byte	173                               ;  negate
-	.byte	129                               ;  -
+	.byte	1                                 ;  1
+	.byte	0                                 ;  0
+	.byte	131                               ;  /
 	.byte	168                               ;  exit
