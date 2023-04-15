@@ -26,8 +26,8 @@ ROM_REPO= ..$(S)..$(S)x16-rom
 HARDWARE = x16
 BUILD = build$(S)
 BTEMP = $(BUILD)temp$(S)
-
 RTMODULES = ifloat32 polynomials runtime $(HARDWARE)_hardware $(HARDWARE)_runtime -o_runtime.asm -mruntime
+
 all: runtime
 
 #
@@ -42,7 +42,7 @@ runtime:prelim
 #		Build the compiled ocode
 #
 pcode: prelim 
-	python $(SCRIPTDIR)pcom.py $(RTMODULES) <$(BTEMP)demo.pcode >$(BTEMP)pcodebin.asm
+	python $(SCRIPTDIR)pcom.py <$(BTEMP)demo.pcode >$(BTEMP)pcodebin.asm
 	$(ASM) $(ASMOPTS) $(BTEMP)pcodebin.asm -o $(BTEMP)pcodebin.bin
 #
 #		Run the compiled pcode
@@ -55,7 +55,7 @@ debugpcode: runtime prelim pcode
 #	
 tpcode: prelim
 	python $(SCRIPTDIR)test_pcode.py >$(BTEMP)test.pcode
-	python $(SCRIPTDIR)pcom.py $(RTMODULES) <$(BTEMP)test.pcode >$(BTEMP)pcodebin.asm
+	python $(SCRIPTDIR)pcom.py <$(BTEMP)test.pcode >$(BTEMP)pcodebin.asm
 	$(ASM) $(ASMOPTS) $(BTEMP)pcodebin.asm -o $(BTEMP)pcodebin.bin
 
 testpcode: runtime prelim tpcode 

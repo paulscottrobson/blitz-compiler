@@ -1,0 +1,66 @@
+# *******************************************************************************************
+# *******************************************************************************************
+#
+#		Name : 		pdis.py
+#		Purpose :	P-Code Decompiler
+#		Date :		15th April 2023
+#		Author : 	Paul Robson (paul@robsons.org.uk)
+#
+# *******************************************************************************************
+# *******************************************************************************************
+
+import os,sys,math,re
+from pcodeconst import *
+from floats import *
+
+# *******************************************************************************************
+#
+#						P-Code decompiler for testing/debugging purposes.
+#
+# *******************************************************************************************
+
+class PCodeDecompiler(object):
+	def __init__(self):
+		self.pcode = PCodeConstants()
+		self.float = Float()
+		self.code = []
+	#
+	def decompileFile(self,f):
+		self.data = [x for x in open(f,"rb").read(-1)][2:]
+		p = 0 
+		while p < len(self.data):
+			pStart = p 
+			if self.data[p] < 64:
+				s = "constant "+str(self.data[p])
+				p = p + 1
+			else:
+				s = self.pcode.getToken(self.data[p]) 
+				if s is not None:
+					p = p + 1
+					if s == ".byte":
+						s = ".byte {0}".format(self.data[p])
+						p = p + 1
+					if s == ".word":
+						s = ".word {0}".format(self.data[p]+self.data[p+1]*256)
+						p = p + 2
+					if s == ".float":
+						mantissa = (self.data[p+1] + (self.data[p+2] << 8) + (self.data[p+3] << 16) + (self.data[p+4] << 24)) & 0x7FFFFFFF
+						f = self.float.toDecimal([mantissa,self.data[p],self.data[p+4] & 0x80])
+						p = p + 5
+						s = ".float {0:.5f}".format(f)
+					if s == ".string":
+						s += " \""
+						for i in range(0,self.data[p]):
+							p = p + 1
+							s += chr(self.data[p])
+						p += 1
+						s += '"'
+				else:
+					s = "data ${0:02x}".format(self.data[p])
+					p = p + 1
+			data = " ".join(["{0:02x}".format(n) for n in self.data[pStart:p]])
+			print("{0:04x} : {2:24} : {1}".format(pStart,s,data[:24]))
+		
+pc = PCodeDecompiler()
+for f in sys.argv[1:]:
+	pc.decompileFile(f)

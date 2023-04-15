@@ -10,7 +10,7 @@
 # *******************************************************************************************
 
 import os,sys,math,re
-from pcode import *
+from pcodeconst import *
 from floats import *
 
 # *******************************************************************************************
@@ -21,7 +21,7 @@ from floats import *
 
 class PCodeCompiler(object):
 	def __init__(self):
-		self.pcode = PCode()
+		self.pcode = PCodeConstants()
 		self.float = Float()
 		self.code = []
 	#

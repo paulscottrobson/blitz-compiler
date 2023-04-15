@@ -1,4 +1,11 @@
 	.byte	1                                 ;  1
 	.byte	0                                 ;  0
-	.byte	131                               ;  /
+	.byte	180                               ;  .float
+	.byte	$e5                               ;  12.34
+	.dword	$62b851ec                        ;  12.34
+	.text	181,5,"HELLO"                     ;  "hello" 
+	.byte	169                               ;  debug
+	.byte	128                               ;  +
+	.byte	178,88                            ;  88 
+	.byte	179,113,69                        ;  113 
 	.byte	168                               ;  exit
