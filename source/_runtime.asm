@@ -13,6 +13,8 @@ module_ifloat32 = 1
 ismain_ifloat32 = 0
 module_common = 1
 ismain_common = 0
+module_compiler = 0
+ismain_compiler = 0
 module_polynomials = 1
 ismain_polynomials = 0
 
@@ -85,6 +87,7 @@ ismain_polynomials = 0
 	.include	"modules/runtime/memory/read_int.asm"
 	.include	"modules/runtime/functions/number/rnd.asm"
 	.include	"modules/runtime/aa.runtime/runtime.asm"
+	.include	"modules/x16_hardware/interface/save.asm"
 	.include	"modules/runtime/strings/sconcat.asm"
 	.include	"modules/runtime/functions/number/sgn.asm"
 	.include	"modules/ifloat32/binary/simple.asm"

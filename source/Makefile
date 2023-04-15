@@ -27,8 +27,16 @@ HARDWARE = x16
 BUILD = build$(S)
 BTEMP = $(BUILD)temp$(S)
 RTMODULES = ifloat32 polynomials runtime $(HARDWARE)_hardware $(HARDWARE)_runtime -o_runtime.asm -mruntime
+CMMODULES = compiler $(HARDWARE)_hardware $(HARDWARE)_compiler -o_blitz.asm -mcompiler
 
-all: runtime
+all: prelim compiler runtime
+
+#
+#		Build the compiler
+#		
+compiler:
+	python $(SCRIPTDIR)build.py $(CMMODULES) 
+	$(ASM) $(ASMOPTS) _blitz.asm -o $(BUILD)blitz.prg
 
 #
 #		Build the runtime
@@ -83,7 +91,7 @@ testfuncs : prelim
 	$(ASM) $(ASMOPTS) _float.asm -o $(BTEMP)float.prg
 	$(CCOPY) $(BTEMP)float.prg $(BINDIR)
 	$(CDEL) dump*.bin
-	$(HRUNEMU) -prg $(BTEMP)float.prg,801 -run 
+	$(HRUNEMU) -prg $(BTEMP)float.prg,801 -run -warp
 	python $(SCRIPTDIR)stack.py
 #
 #		Benchmark the floating point mathematics
