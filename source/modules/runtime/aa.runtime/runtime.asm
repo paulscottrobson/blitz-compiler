@@ -13,7 +13,9 @@
 		.section code
 
 Boot:	
-		ldx 	#$FF
+		ldx 	#$FF 						; reset stack.
+		txs
+
 		jsr 	ClearMemory 				; clear memory.
 
 		ldx 	#$FF
@@ -27,6 +29,10 @@ NextCommand:
 		lda 	(codePtr),y 				; get next
 		bmi 	NXCommand 					; -if -ve command
 		iny
+		bpl 	_NXCommandNoFixUp 			; fix up Y check
+		jsr 	FixUpY
+_NXCommandNoFixUp:		
+
 		cmp 	#64 						; 64..127 is load and store.
 		bcc 	PushByteA 					; 0..63 is short constants.
 		;
@@ -82,10 +88,34 @@ PushWordCommand: ;; [.word]
 		;
 NXCommand:
 		iny 								; consume command.
+		bpl 	_NXCommandNoFixUp
+		jsr 	FixUpY
+_NXCommandNoFixUp:		
 		asl 	a 							; shift left 
 		phx 								; save SP on stack
 		tax				 					; and jump indirect
 		jmp 	(VectorTable,x)
+
+; ************************************************************************************************
+;
+;		Called after Y is negative after incrementing in the two main fetches, it resets
+;		Y to zero and adds it to the codePtr ; thus we don't do lots of 16 bit increments,
+;		nor are we limited to 1/4 k of P-Code per line.
+;
+; ************************************************************************************************
+
+FixUpY:	
+		pha
+		tya
+		clc 
+		adc 	codePtr
+		sta 	codePtr
+		bcc 	_NoCPCarry
+		inc 	codePtr+1
+_NoCPCarry:
+		ldy 	#0
+		pla
+		rts
 
 		.send code
 

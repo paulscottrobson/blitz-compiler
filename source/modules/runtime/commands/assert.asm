@@ -24,17 +24,7 @@ CommandAssert: ;; [assert]
 		bne 	_CAFail
 		jsr 	FloatIsZero 				; is it zero ?
 		beq 	_CAFail
-		dex
-
-		tya
-		clc 
-		adc 	codePtr
-		sta 	codePtr
-		bcc 	_NoCPCarry
-		inc 	codePtr+1
-_NoCPCarry:
-		ldy 	#0
-				
+		dex	
 		.exitcmd
 
 _CAFail:
