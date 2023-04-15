@@ -1,8 +1,8 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		save.asm
-;		Purpose:	Write out the object data.
+;		Name:		check.asm
+;		Purpose:	Token presence check
 ;		Created:	15th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
@@ -12,41 +12,38 @@
 
 		.section code
 
+	
 ; ************************************************************************************************
 ;
-;							Save compiled code from A:00 to YX
+;									Check Next char various
 ;
 ; ************************************************************************************************
 
-XSaveMemory:
-		phx
-		phy
-		pha
-
-		lda 	#0 							; set LFS
-		ldx 	#8
-		ldy 	#0
-		jsr 	$FFBA
-
-		lda 	#8 							; set file name
-		ldx 	#SaveName & $FF
-		ldy 	#SaveName >> 8
-		jsr 	$FFBD
-
-		pla 								; set up the start address.
-		sta 	zTemp0+1
-		stz 	zTemp0
-
-		lda 	#zTemp0 					; from index.
-		ply 								; end in YX
-		plx
-		jsr 	$FFD8 						; write out.
+CheckNextComma:
+		lda	 	#","
+		bra 	CheckNextA
+CheckNextRParen:
+		lda	 	#")"
+		bra 	CheckNextA
+CheckNextLParen:
+		lda 	#"("
+CheckNextA:
+		sta 	checkCharacter 				; save test character
+_CNALoop:		
+		jsr 	GetNext 					; get next
+		cmp 	#' ' 						; skip spaces
+		beq 	_CNALoop
+		cmp 	checkCharacter 				; matches ?
+		beq 	_CNAExit
+		.error_syntax
+_CNAExit:		
 		rts
-
-SaveName:
-		.text 	"CODE.BIN"
 		.send code
 
+		.section storage
+checkCharacter:
+		.fill 	1
+		.send storage
 
 ; ************************************************************************************************
 ;

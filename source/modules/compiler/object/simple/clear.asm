@@ -1,8 +1,8 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		save.asm
-;		Purpose:	Write out the object data.
+;		Name:		clear.asm
+;		Purpose:	Clear the object code pointers
 ;		Created:	15th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
@@ -14,37 +14,15 @@
 
 ; ************************************************************************************************
 ;
-;							Save compiled code from A:00 to YX
+;								Reset the output system
 ;
 ; ************************************************************************************************
 
-XSaveMemory:
-		phx
-		phy
-		pha
-
-		lda 	#0 							; set LFS
-		ldx 	#8
-		ldy 	#0
-		jsr 	$FFBA
-
-		lda 	#8 							; set file name
-		ldx 	#SaveName & $FF
-		ldy 	#SaveName >> 8
-		jsr 	$FFBD
-
-		pla 								; set up the start address.
-		sta 	zTemp0+1
-		stz 	zTemp0
-
-		lda 	#zTemp0 					; from index.
-		ply 								; end in YX
-		plx
-		jsr 	$FFD8 						; write out.
+HWOReset:
+		stz 	objPage
+		.set16 	objPtr,PCodeStart
 		rts
 
-SaveName:
-		.text 	"CODE.BIN"
 		.send code
 
 

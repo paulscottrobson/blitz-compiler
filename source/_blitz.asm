@@ -9,7 +9,7 @@ module_runtime = 0
 ismain_runtime = 0
 module_x16_compiler = 1
 ismain_x16_compiler = 0
-module_ifloat32 = 0
+module_ifloat32 = 1
 ismain_ifloat32 = 0
 module_common = 1
 ismain_common = 0
@@ -29,15 +29,40 @@ ismain_polynomials = 0
 	.include	"modules/common/generated/pcodetokens.inc"
 	.include	"modules/compiler/storage/storage.inc"
 	.include	"modules/common/data/system.inc"
+	.include	"modules/ifloat32/aa.testing/testing.inc"
 	.include	"modules/common/boot.end/00start.asm"
+	.include	"modules/ifloat32/float/addsub.asm"
+	.include	"modules/compiler/helpers/output/byte.asm"
+	.include	"modules/compiler/helpers/input/check.asm"
+	.include	"modules/compiler/object/simple/clear.asm"
+	.include	"modules/ifloat32/float/compare.asm"
+	.include	"modules/compiler/helpers/output/constant.asm"
+	.include	"modules/ifloat32/generated/constants.asm"
+	.include	"modules/ifloat32/binary/divide.asm"
+	.include	"modules/ifloat32/float/divide.asm"
 	.include	"modules/common/generated/errors.asm"
-	.include	"modules/compiler/source/simple/get.asm"
+	.include	"modules/ifloat32/float/fractional.asm"
+	.include	"modules/compiler/helpers/input/get.asm"
 	.include	"modules/x16_hardware/interface/getxpos.asm"
+	.include	"modules/ifloat32/float/integer.asm"
+	.include	"modules/ifloat32/float/integerdown.asm"
 	.include	"modules/compiler/source/simple/line.asm"
 	.include	"modules/compiler/storage/line.asm"
+	.include	"modules/ifloat32/binary/multiply.asm"
+	.include	"modules/ifloat32/float/multiply.asm"
+	.include	"modules/compiler/source/simple/nextline.asm"
+	.include	"modules/ifloat32/float/normalise.asm"
 	.include	"modules/x16_hardware/interface/printchar.asm"
 	.include	"modules/compiler/source/simple/reset.asm"
 	.include	"modules/compiler/storage/reset.asm"
 	.include	"modules/compiler/aa.runtime/runtime.asm"
 	.include	"modules/x16_hardware/interface/save.asm"
+	.include	"modules/compiler/object/simple/save.asm"
+	.include	"modules/ifloat32/binary/simple.asm"
+	.include	"modules/ifloat32/aa.testing/testing.asm"
+	.include	"modules/ifloat32/float/tofloat.asm"
+	.include	"modules/ifloat32/binary/tostring.asm"
+	.include	"modules/ifloat32/float/tostring.asm"
+	.include	"modules/ifloat32/utility/utility.asm"
+	.include	"modules/compiler/object/simple/writebyte.asm"
 	.include	"modules/common/boot.end/zzEnd.asm"

@@ -2,7 +2,7 @@
 ; ************************************************************************************************
 ;
 ;		Name:		save.asm
-;		Purpose:	Write out the object data.
+;		Purpose:	Save the object code out
 ;		Created:	15th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
@@ -14,37 +14,17 @@
 
 ; ************************************************************************************************
 ;
-;							Save compiled code from A:00 to YX
+;								Save the object code out
 ;
 ; ************************************************************************************************
 
-XSaveMemory:
-		phx
-		phy
-		pha
-
-		lda 	#0 							; set LFS
-		ldx 	#8
-		ldy 	#0
-		jsr 	$FFBA
-
-		lda 	#8 							; set file name
-		ldx 	#SaveName & $FF
-		ldy 	#SaveName >> 8
-		jsr 	$FFBD
-
-		pla 								; set up the start address.
-		sta 	zTemp0+1
-		stz 	zTemp0
-
-		lda 	#zTemp0 					; from index.
-		ply 								; end in YX
-		plx
-		jsr 	$FFD8 						; write out.
+HWOSave:
+		lda 	#(PCodeStart >> 8)
+		ldx 	objPtr
+		ldy 	objPtr+1
+		jsr 	XSaveMemory
 		rts
 
-SaveName:
-		.text 	"CODE.BIN"
 		.send code
 
 
