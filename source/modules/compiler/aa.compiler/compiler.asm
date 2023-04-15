@@ -16,10 +16,18 @@ Boot:
 		
 		jsr 	HWIReset
 		jsr 	HWOReset
+		jsr 	GetNext
 
 MainCompileLoop:
+		jsr 	STRMarkLine 				; remember the position and number of this line.
+		lda 	#PCD_NEWCMD_LINE 			; generate new command line
+		jsr 	WriteCodeByte
+
+		;jsr 	CompileTerm
+
 		;  TODO: Check for implied assignment
 		;  TODO: Dispatch appropriately via scanned command handler.
+		;  TODO: if not end, then keep trying.
 		;  TODO: GetNextLine
 		;  Loop if not finished
 

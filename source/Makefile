@@ -41,10 +41,26 @@ compiler: prelim
 	$(CDEL) CODE.BIN
 	$(CDEL) $(BTEMP)cout.bin
 #
-#		Debug the compiler.
+#		Convert basic code to tokenised form
 #
-debugc : compiler
-	$(RUNEMU) -prg $(BUILD)blitz.prg,801 -run 
+basic:
+	petcat -w2 -o $(BTEMP)basic_code.bin -- $(BUILD)test.bas
+	cat $(BUILD)blitz.prg $(BTEMP)basic_code.bin >$(BTEMP)runcompiler.prg
+#
+#		Hex dump of BASIC code tokenised
+#
+showbasic: basic	
+	hexdump -C $(BTEMP)basic_code.bin
+#
+#		Decode compiler output (in cout.bin)
+#
+decode: basic
+	python $(SCRIPTDIR)pdis.py $(BTEMP)cout.bin	
+#
+#		Debug the compiler ; append tokenised BASIC to runtime and start it.
+#
+cdebug : compiler basic
+	$(RUNEMU) -prg $(BTEMP)runcompiler.prg,801 -run 
 	$(CCOPY) CODE.BIN $(BTEMP)cout.bin
 	$(CDEL) CODE.BIN
 #
