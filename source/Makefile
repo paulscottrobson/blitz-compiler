@@ -47,7 +47,7 @@ pcode: prelim
 #
 #		Run the compiled pcode
 #
-debugpcode: pcode runtime prelim
+debugpcode: runtime prelim pcode
 	cat $(BUILD)runtime.prg $(BTEMP)pcodebin.bin >$(BTEMP)pcodebin.prg
 	$(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
 #
@@ -58,7 +58,7 @@ tpcode: prelim
 	python $(SCRIPTDIR)pcom.py $(RTMODULES) <$(BTEMP)test.pcode >$(BTEMP)pcodebin.asm
 	$(ASM) $(ASMOPTS) $(BTEMP)pcodebin.asm -o $(BTEMP)pcodebin.bin
 
-testpcode: tpcode runtime prelim
+testpcode: runtime prelim tpcode 
 	cat $(BUILD)runtime.prg $(BTEMP)pcodebin.bin >$(BTEMP)pcodebin.prg
 	$(HRUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run -warp
 #
