@@ -18,6 +18,14 @@
 ;
 ; ************************************************************************************************
 
+DivideInt32:
+		dex
+		jsr 	Int32Divide 				; divide
+		jsr 	NSMCopyPlusTwoToZero 		; copy result
+		jsr 	FloatCalculateSign 			; calculate result sign
+		clc
+		rts
+
 NSMCopyPlusTwoToZero:		
 		lda 	NSMantissa0+2,x 			; copy result down from +2
 		sta 	NSMantissa0,x
@@ -39,8 +47,8 @@ NSMCopyPlusTwoToZero:
 Int32Divide:
 		pha 								; save AXY
 		phy
-		jsr 	FloatShiftUpTwo 				; copy S[X] to S[X+2]
-		jsr 	FloatSetZeroMantissaOnly 		; set S[X] to zero
+		jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2]
+		jsr 	FloatSetZeroMantissaOnly 	; set S[X] to zero
 
 		ldy 	#32 						; loop 32 times
 _I32DivideLoop:
@@ -51,7 +59,7 @@ _I32DivideLoop:
 		dex
 		jsr 	FloatRotateLeft
 		;		
-		jsr 	FloatDivideCheck 		; check if subtract possible
+		jsr 	FloatDivideCheck 			; check if subtract possible
 		bcc 	_I32DivideNoCarryIn
 		inc 	NSMantissa0+2,x 			; if possible, set Mantissa0[X+2].0
 _I32DivideNoCarryIn:
@@ -60,6 +68,7 @@ _I32DivideNoCarryIn:
 
 		ply 								; restore AXY and exit
 		pla
+		clc
 		rts
 
 ; ************************************************************************************************
@@ -81,7 +90,7 @@ Int32ShiftDivide:
 
 		ldy 	#31 						; loop 31 times.
 _I32SDLoop:
-		jsr 	FloatDivideCheck 		; check if subtract possible
+		jsr 	FloatDivideCheck 			; check if subtract possible
 		inx
 		inx
 		jsr 	FloatRotateLeft				; shift 64 bit FPA left, rotating carry in

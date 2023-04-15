@@ -47,16 +47,17 @@ VectorTable:
 	.word	CommandDebug             ; $a9 debug
 	.word	UnaryHex                 ; $aa hex$
 	.word	LinkFloatCompare         ; $ab f.cmp
-	.word	NegateTOS                ; $ac negate
-	.word	CommandNewLine           ; $ad new.line
-	.word	NotTOS                   ; $ae not
-	.word	StringConcatenate        ; $af concat
-	.word	Unimplemented            ; $b0 .shift
-	.word	PushByteCommand          ; $b1 .byte
-	.word	PushWordCommand          ; $b2 .word
-	.word	CommandPushN             ; $b3 .float
-	.word	CommandPushS             ; $b4 .string
-	.word	Unimplemented            ; $b5 .data
-	.word	Unimplemented            ; $b6 .goto
-	.word	Unimplemented            ; $b7 .gosub
+	.word	LinkDivideInt32          ; $ac int.div
+	.word	NegateTOS                ; $ad negate
+	.word	CommandNewLine           ; $ae new.line
+	.word	NotTOS                   ; $af not
+	.word	StringConcatenate        ; $b0 concat
+	.word	Unimplemented            ; $b1 .shift
+	.word	PushByteCommand          ; $b2 .byte
+	.word	PushWordCommand          ; $b3 .word
+	.word	CommandPushN             ; $b4 .float
+	.word	CommandPushS             ; $b5 .string
+	.word	Unimplemented            ; $b6 .data
+	.word	Unimplemented            ; $b7 .goto
+	.word	Unimplemented            ; $b8 .gosub
 	.send code

@@ -8,13 +8,15 @@
 #
 # *******************************************************************************************
 # *******************************************************************************************
-
+#
+#		Columns are : Operator, Function and Check Carry on Exit
+#
 mappings = """
 		+		FloatAdd
 		- 		FloatSubtract
 		* 		FloatMultiply
-		/ 		FloatDivide
-		^ 		FloatPower
+		/ 		FloatDivide 				*
+		^ 		FloatPower 					*
 		>		CompareGreater
 		=		CompareEqual
 		<		CompareLess
@@ -22,14 +24,15 @@ mappings = """
 		<>		CompareNotEqual
 		<=		CompareLessEqual
 		int 	FloatIntegerPartDown
-		sqr 	FloatSquareRoot
-		log 	FloatLogarithm
+		sqr 	FloatSquareRoot 			*
+		log 	FloatLogarithm 				*
 		exp 	FloatExponent
 		cos		FloatCosine
 		sin 	FloatSine
 		tan 	FloatTangent
-		atn		FloatArcTan
+		atn		FloatArcTan 				*
 		f.cmp 	FloatCompare
+		int.div DivideInt32 				*
 """
 
 mappings = [x.strip() for x in mappings.split("\n") if x.strip() != ""]
@@ -43,6 +46,15 @@ for m in mappings:
 	print("\t.entercmd")
 	print("\tphy")
 	print("\tjsr\t{0}".format(m[1]))
+	if len(m) == 3:
+		print("\tbcs\tMapRangeError")
 	print("\tply")
 	print("\t.exitcmd")	
+
+	if m[0] == "sqr":
+		print("MapRangeError:")
+		print("\t.error_range")
+
+
+
 print("\t.send code")

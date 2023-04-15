@@ -24,12 +24,14 @@ LinkFloatDivide: ;; [/]
 	.entercmd
 	phy
 	jsr	FloatDivide
+	bcs	MapRangeError
 	ply
 	.exitcmd
 LinkFloatPower: ;; [^]
 	.entercmd
 	phy
 	jsr	FloatPower
+	bcs	MapRangeError
 	ply
 	.exitcmd
 LinkCompareGreater: ;; [>]
@@ -78,12 +80,16 @@ LinkFloatSquareRoot: ;; [sqr]
 	.entercmd
 	phy
 	jsr	FloatSquareRoot
+	bcs	MapRangeError
 	ply
 	.exitcmd
+MapRangeError:
+	.error_range
 LinkFloatLogarithm: ;; [log]
 	.entercmd
 	phy
 	jsr	FloatLogarithm
+	bcs	MapRangeError
 	ply
 	.exitcmd
 LinkFloatExponent: ;; [exp]
@@ -114,12 +120,20 @@ LinkFloatArcTan: ;; [atn]
 	.entercmd
 	phy
 	jsr	FloatArcTan
+	bcs	MapRangeError
 	ply
 	.exitcmd
 LinkFloatCompare: ;; [f.cmp]
 	.entercmd
 	phy
 	jsr	FloatCompare
+	ply
+	.exitcmd
+LinkDivideInt32: ;; [int.div]
+	.entercmd
+	phy
+	jsr	DivideInt32
+	bcs	MapRangeError
 	ply
 	.exitcmd
 	.send code
