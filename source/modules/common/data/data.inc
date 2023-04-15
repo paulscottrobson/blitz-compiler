@@ -38,7 +38,6 @@ zTemp2:
 ; 	bit 7 	: sign of mantissa (if float,0 otherwise)
 ; 	bit 6,5 : 00 (float, 5/6 byte if reference) type 01 (integer, 2 byte if reference) 
 ;			  type 1x (string) 0x (32 bit iFloat)
-;	bit 0 	: reference
 ;
 ; ************************************************************************************************
 ;

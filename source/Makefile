@@ -37,12 +37,16 @@ all: prelim compiler runtime
 compiler: prelim
 	python $(SCRIPTDIR)build.py $(CMMODULES) 
 	$(ASM) $(ASMOPTS) _blitz.asm -o $(BUILD)blitz.prg
+	$(CDEL) dump.bin
+	$(CDEL) CODE.BIN
+	$(CDEL) $(BTEMP)cout.bin
 #
 #		Debug the compiler.
 #
 debugc : compiler
 	$(RUNEMU) -prg $(BUILD)blitz.prg,801 -run 
-
+	$(CCOPY) CODE.BIN $(BTEMP)cout.bin
+	$(CDEL) CODE.BIN
 #
 #		Build the runtime
 #

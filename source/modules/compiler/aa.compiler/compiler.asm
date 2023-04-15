@@ -1,8 +1,8 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		runtime.asm
-;		Purpose:	Runtime interpreter main
+;		Name:		compiler.asm
+;		Purpose:	Compiler main
 ;		Created:	15th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
@@ -13,13 +13,9 @@
 		.section code
 
 Boot:	
-		ldx 	#$FF
-		txs
 		
-h1:		bra 	h1
-
-		;  TODO: Clear data area.
-		;  TODO: Reset System
+		jsr 	HWIReset
+		jsr 	HWOReset
 MainCompileLoop:
 		;  TODO: Check for implied assignment
 		;  TODO: Dispatch appropriately via scanned command handler.
@@ -29,6 +25,12 @@ MainCompileLoop:
 		;  TODO: Patch up GOTO, GOSUB and (possibly) IF
 		;  TODO: Possibly append variable map ?
 		;  TODO: Write code out to disk
+
+		lda 	#42
+		jsr 	WriteCodeByte
+		jsr 	HWOSave
+		jmp 	$FFFF
+		rts
 
 ErrorHandler:
 		.debug
