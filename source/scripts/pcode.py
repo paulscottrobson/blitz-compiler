@@ -42,7 +42,7 @@ class PCode(object):
 		self.extra(".shift",1)
 		self.extra(".byte",1)
 		self.extra(".word",2)
-		self.extra(".float",0xFF)
+		self.extra(".float",5)
 		self.extra(".string",0xFF)
 		self.extra(".data",0xFF)
 		self.extra(".goto",3)
@@ -124,7 +124,7 @@ if __name__ == "__main__":
 #							.SHIFT nn   		1		Shifted action word
 #							.BYTE nn 			1 		Load unsigned int
 #							.WORD ll hh 		2 		Load 16 bit integer
-#							.FLOAT ll ss 		$FF		Float as string .$FF => length in first byte
+#							.FLOAT ex mtp 		$FF		Float as exponent,mantissa with sign in mantissa[3].7
 #							.STRING ll ss 		$FF		ASCIIZ string
 #							.DATA ll ss 		$FF		Packed data statements
 #							.GOTO pp ll hh		3 		Go to page .0=default / offset from the current page beginning.

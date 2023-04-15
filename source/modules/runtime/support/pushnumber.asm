@@ -14,41 +14,40 @@
 
 ; ************************************************************************************************
 ;
-;								Push Number <LEN> <ASCIIZCount>
+;								Push Number <EXP> <MANTISSA W/SIGN>
 ;
 ; ************************************************************************************************
 
 CommandPushN: ;; [.float]
 		.entercmd
+
 		inx 								; next slot on stack		
-		lda 	(codePtr),y 				; get count
-		sta 	numCharCount
+
+		lda 	(codePtr),y 				; exponent
+		sta 	NSExponent,x
 		iny
 
-		lda 	(codePtr),y 				; do first.
-		jsr 	FloatEncodeStart
+		lda 	(codePtr),y 				; mantissa
+		sta 	NSMantissa0,x
 		iny
-
-_PushNLoop:	
-		dec 	numCharCount 				; done all ?
-		beq 	_PushNExit
-		lda 	(codePtr),y 				; get next.
+		lda 	(codePtr),y 				
+		sta 	NSMantissa1,x
 		iny
-		jsr 	FloatEncodeContinue 		; encode it
-		bra 	_PushNLoop 					; go round again.
-
-_PushNExit:		
-		lda 	#0 							; forces completion
-		jsr 	FloatEncodeContinue
+		lda 	(codePtr),y 				
+		sta 	NSMantissa2,x
+		iny
+		lda 	(codePtr),y 				
+		pha
+		and 	#$7F
+		sta 	NSMantissa3,x
+		pla 								; sign in mantissa3:7
+		and 	#$80
+		sta 	NSStatus,x
+		iny
 		.exitcmd
 
 		.send 	code
 		
-		.section storage
-numCharCount:
-		.fill 	1
-		.send storage
-
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

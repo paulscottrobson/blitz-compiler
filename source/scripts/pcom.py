@@ -11,6 +11,7 @@
 
 import os,sys,math,re
 from pcode import *
+from floats import *
 
 # *******************************************************************************************
 #
@@ -21,6 +22,7 @@ from pcode import *
 class PCodeCompiler(object):
 	def __init__(self):
 		self.pcode = PCode()
+		self.float = Float()
 		self.code = []
 	#
 	def compileString(self,s):
@@ -50,9 +52,7 @@ class PCodeCompiler(object):
 			return
 		#
 		if re.match("^\\-?\\d+\\.\\d+$",w):
-			self.compileData(".float",str(abs(float(w))),w)
-			if float(w) < 0:
-				self.compileWord("negate")
+			self.compileFloat(float(w))
 			return
 		#
 		if w.startswith('"') and w.endswith('"'):
@@ -68,9 +68,7 @@ class PCodeCompiler(object):
 	#
 	def compileInteger(self,n):
 		if abs(n) > 65535:
-			self.compileData(".float",str(abs(n)),n)
-			if n < 0:
-				self.compileWord("negate")
+			self.compileFloat(n)
 			return
 		#
 		if n < 0:
@@ -82,6 +80,12 @@ class PCodeCompiler(object):
 			self.print("\t.byte\t{0},{1} ; {1} ".format(self.pcode.getID(".BYTE"),n))
 		else:
 			self.print("\t.byte\t{0},{1},{2} ; {1} ".format(self.pcode.getID(".WORD"),n & 0xFF,n >> 8))
+	#
+	def compileFloat(self,f):
+		d = self.float.toFloat(f)
+		self.compileWord(".float")
+		self.print("\t.byte\t${0:02x} ; {1}".format(d[1],f))
+		self.print("\t.dword\t${0:08x} ; {1}".format(d[0] | (0x80000000 if d[2] != 0 else 0),f))
 	#
 	def compileAccess(self,type,addr,base):
 		assert (addr & 1) == 0
