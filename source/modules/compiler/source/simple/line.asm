@@ -1,8 +1,8 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		runtime.asm
-;		Purpose:	Runtime interpreter main
+;		Name:		line.asm
+;		Purpose:	Get current line # to YA
 ;		Created:	15th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
@@ -12,28 +12,21 @@
 
 		.section code
 
-Boot:	
-		ldx 	#$FF
-		txs
-		
-h1:		bra 	h1
+; ************************************************************************************************
+;
+;								Get current line # into YA
+;
+; ************************************************************************************************
 
-		;  TODO: Clear data area.
-		;  TODO: Reset System
-MainCompileLoop:
-		;  TODO: Check for implied assignment
-		;  TODO: Dispatch appropriately via scanned command handler.
-		;  TODO: GetNextLine
-		;  Loop if not finished
-
-		;  TODO: Patch up GOTO, GOSUB and (possibly) IF
-		;  TODO: Possibly append variable map ?
-		;  TODO: Write code out to disk
-
-ErrorHandler:
-		.debug
-		bra 	ErrorHandler
-
+HWILineNumber:
+		ldy 	#2
+		lda 	(srcPtr),y
+		iny
+		pha
+		lda 	(srcPtr),y
+		tay
+		pla
+		rts
 		.send code
 
 ; ************************************************************************************************

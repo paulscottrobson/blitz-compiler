@@ -1,8 +1,8 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		runtime.asm
-;		Purpose:	Runtime interpreter main
+;		Name:		reset.asm
+;		Purpose:	Reset information storage
 ;		Created:	15th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
@@ -12,29 +12,29 @@
 
 		.section code
 
-Boot:	
-		ldx 	#$FF
-		txs
-		
-h1:		bra 	h1
+; ************************************************************************************************
+;
+;								Reset the storage (variables,line#)
+;
+; ************************************************************************************************
 
-		;  TODO: Clear data area.
-		;  TODO: Reset System
-MainCompileLoop:
-		;  TODO: Check for implied assignment
-		;  TODO: Dispatch appropriately via scanned command handler.
-		;  TODO: GetNextLine
-		;  Loop if not finished
-
-		;  TODO: Patch up GOTO, GOSUB and (possibly) IF
-		;  TODO: Possibly append variable map ?
-		;  TODO: Write code out to disk
-
-ErrorHandler:
-		.debug
-		bra 	ErrorHandler
+STRReset:
+		.set16 	lineNumberTable,WorkArea+WorkAreaSize
+		.set16  variableListEnd,WorkArea
+		.storage_access
+		stz 	variableListEnd
+		.storage_release
+		rts
 
 		.send code
+
+
+		.section storage
+lineNumberTable:							; line number table, works down.
+		.fill 	2		
+variableListEnd:							; known variables, works up.
+		.fill 	2		
+		.send storage
 
 ; ************************************************************************************************
 ;

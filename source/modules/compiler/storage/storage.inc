@@ -1,8 +1,8 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		runtime.asm
-;		Purpose:	Runtime interpreter main
+;		Name:		storage.inc
+;		Purpose:	Storage access macros
 ;		Created:	15th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
@@ -10,31 +10,11 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section code
+storage_access .macro
+		.endm
 
-Boot:	
-		ldx 	#$FF
-		txs
-		
-h1:		bra 	h1
-
-		;  TODO: Clear data area.
-		;  TODO: Reset System
-MainCompileLoop:
-		;  TODO: Check for implied assignment
-		;  TODO: Dispatch appropriately via scanned command handler.
-		;  TODO: GetNextLine
-		;  Loop if not finished
-
-		;  TODO: Patch up GOTO, GOSUB and (possibly) IF
-		;  TODO: Possibly append variable map ?
-		;  TODO: Write code out to disk
-
-ErrorHandler:
-		.debug
-		bra 	ErrorHandler
-
-		.send code
+storage_release .macro
+		.endm
 
 ; ************************************************************************************************
 ;

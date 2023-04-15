@@ -34,7 +34,7 @@ all: prelim compiler runtime
 #
 #		Build the compiler
 #		
-compiler:
+compiler: prelim
 	python $(SCRIPTDIR)build.py $(CMMODULES) 
 	$(ASM) $(ASMOPTS) _blitz.asm -o $(BUILD)blitz.prg
 #

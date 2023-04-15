@@ -20,4 +20,7 @@ ErrorV_unimplemented:
 ErrorV_assert:
 	jsr	ErrorHandler
 	.text	"ASSERT FAIL",0
+ErrorV_line:
+	jsr	ErrorHandler
+	.text	"UNKNOWN LINE NUMBER",0
 	.send code

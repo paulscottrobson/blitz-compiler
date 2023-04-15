@@ -19,3 +19,6 @@ error_unimplemented .macro
 error_assert .macro
 	jmp	ErrorV_assert
 	.endm
+error_line .macro
+	jmp	ErrorV_line
+	.endm

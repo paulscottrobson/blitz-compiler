@@ -1,8 +1,8 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		runtime.asm
-;		Purpose:	Runtime interpreter main
+;		Name:		nextline.asm
+;		Purpose:	Set up for next line.
 ;		Created:	15th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
@@ -12,27 +12,36 @@
 
 		.section code
 
-Boot:	
-		ldx 	#$FF
-		txs
-		
-h1:		bra 	h1
+; ************************************************************************************************
+;
+;						Set pointers to next line in srcPtr. CS if ok, CC if EOF
+;
+; ************************************************************************************************
 
-		;  TODO: Clear data area.
-		;  TODO: Reset System
-MainCompileLoop:
-		;  TODO: Check for implied assignment
-		;  TODO: Dispatch appropriately via scanned command handler.
-		;  TODO: GetNextLine
-		;  Loop if not finished
 
-		;  TODO: Patch up GOTO, GOSUB and (possibly) IF
-		;  TODO: Possibly append variable map ?
-		;  TODO: Write code out to disk
+HWINextLine:	
+		lda 	(inputPtr) 					; check if reached end of program.
+		ldy 	#1
+		ora 	(inputPtr),y
+		beq 	_HWIGFail
 
-ErrorHandler:
-		.debug
-		bra 	ErrorHandler
+		clc 								; advance following link.
+		lda 	(inputPtr)
+		adc 	offsetAdjust
+		pha
+		lda 	(inputPtr),y 	
+		adc 	offsetAdjust+1
+		sta 	inputPtr+1
+		pla
+		sta 	inputPtr
+
+		jsr 	HWISetTokenisedCodePtr 		; set srcPtr accordingly.
+		sec
+		rts
+
+_HWIGFail:
+		clc
+		rts
 
 		.send code
 
