@@ -1,5 +1,5 @@
 ; ************************************************************************************************
-	; ************************************************************************************************
+; ************************************************************************************************
 ;
 ;		Name:		constant.asm
 ;		Purpose:	Output integer constants
@@ -21,9 +21,10 @@
 PushIntegerYA:
 		cpy 	#0 							; 0-255
 		beq 	PushIntegerA
+		pha
 		lda 	#PCD_CMD_WORD 				; send .word
 		jsr 	WriteCodeByte 	
-		txa 								; then LSB
+		pla 								; then LSB
 		jsr 	WriteCodeByte 	
 		tya 								; then MSB
 		jsr 	WriteCodeByte 	
@@ -37,6 +38,29 @@ PushIntegerA:
 		jsr 	WriteCodeByte 	
 		pla
 _PIWriteA:		
+		jsr 	WriteCodeByte
+		rts
+
+; ************************************************************************************************
+;
+;										Push TOS Float
+;
+; ************************************************************************************************
+
+PushFloat:
+		lda 	#PCD_CMD_FLOAT 				; write CMD_FLOAT
+		jsr 	WriteCodeByte
+		lda 	NSExponent,x 				; and the data
+		jsr 	WriteCodeByte
+		lda 	NSMantissa0,x
+		jsr 	WriteCodeByte
+		lda 	NSMantissa1,x
+		jsr 	WriteCodeByte
+		lda 	NSMantissa2,x
+		jsr 	WriteCodeByte
+		lda 	NSStatus,x 					; with sign packed in byte 3 MSB
+		and 	#$80
+		ora 	NSMantissa3,x
 		jsr 	WriteCodeByte
 		rts
 

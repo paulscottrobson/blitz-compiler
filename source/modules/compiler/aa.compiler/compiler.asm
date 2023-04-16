@@ -23,7 +23,7 @@ MainCompileLoop:
 		lda 	#PCD_NEWCMD_LINE 			; generate new command line
 		jsr 	WriteCodeByte
 
-		;jsr 	CompileTerm
+		jsr 	CompileTerm
 
 		;  TODO: Check for implied assignment
 		;  TODO: Dispatch appropriately via scanned command handler.
@@ -35,7 +35,7 @@ MainCompileLoop:
 		;  TODO: Possibly append variable map ?
 		;  TODO: Write code out to disk
 
-		lda 	#42
+		lda 	#PCD_EXIT
 		jsr 	WriteCodeByte
 		jsr 	HWOSave
 		jmp 	$FFFF

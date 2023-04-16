@@ -30,10 +30,30 @@
 ; ************************************************************************************************
 
 CompileTerm:
-		.debug
 		jsr 	GetNextNonSpace 			; get first non space character.
+		jsr 	CharIsDigit 				; found a number
+		bcs 	_CTDigit
+		cmp 	#"."
+		beq 	_CTDigit
 
+		.error_syntax
+		;
+		;		Compile a number
+		;
+_CTDigit:			
+		jsr 	ParseConstant 				; parse out an number, first is in A already.
+		bcc	 	_CTFloat 					; have a float or long int.
+		jsr 	PushIntegerYA 				; code to push on stack
+		lda 	#NSSIFloat 					; return a iFloat32
 		rts
+_CTFloat:
+		jsr 	PushFloat  					; code to push float
+		lda 	#NSSIFloat 					; return a iFloat32
+		rts		
+
+
+
+
 
 		.send code
 
