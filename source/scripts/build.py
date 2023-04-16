@@ -22,6 +22,7 @@ class Builder(object):
 		self.defines = []
 		self.incFiles = []
 		self.asmFiles = []
+		self.defFiles = []
 		self.target = [x[2:] for x in sys.argv if x.startswith("-o")][0]
 		self.main = [x[2:] for x in sys.argv if x.startswith("-m")][0]
 		self.scanForFiles()
@@ -37,7 +38,7 @@ class Builder(object):
 			if len(parts) == 2:
 				self.defines.append("module_{0} = {1}".format(parts[-1].replace(".","_"),1 if isOk else 0))
 				self.defines.append("ismain_{0} = {1}".format(parts[-1].replace(".","_"),1 if parts[-1] == self.main else 0))
-			#print(root,isOk,parts)
+			#print(root,isOk,files)
 			if isOk:
 				for f in files:
 					if not f.startswith("_"):
@@ -45,7 +46,11 @@ class Builder(object):
 							self.incFiles.append(root+os.sep+f)
 						if f.endswith(".asm") and f != self.target :
 							self.asmFiles.append(root+os.sep+f)			
+						if f.endswith(".def"):
+							self.defFiles.append(root+os.sep+f)
+
 		self.asmFiles.sort(key = lambda x:x.split(os.sep)[-1])
+		self.defFiles.sort(key = lambda x:x.split(os.sep)[-1])
 		self.incFiles.sort(key = lambda x:x.split(os.sep)[-1])
 
 	def createFile(self):
@@ -60,6 +65,8 @@ class Builder(object):
 		return self.incFiles
 	def getASMFiles(self):
 		return self.asmFiles
+	def getDEFFiles(self):
+		return self.defFiles
 
 if __name__ == "__main__":
  	Builder().createFile()

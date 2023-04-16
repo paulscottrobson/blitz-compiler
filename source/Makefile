@@ -142,6 +142,7 @@ prelim:
 	python $(SCRIPTDIR)genmapping.py >modules$(S)runtime$(S)generated$(S)links.asm
 	python $(SCRIPTDIR)pcode.py $(RTMODULES)  >modules$(S)common$(S)generated$(S)pcodetokens.inc
 	python $(SCRIPTDIR)vectors.py $(RTMODULES) >modules$(S)runtime$(S)generated$(S)vectors.asm
+	python $(SCRIPTDIR)gencom.py $(CMMODULES) 
 #
 #		Update tools
 #	
