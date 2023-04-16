@@ -1,1 +1,1 @@
-10 print -42
+10 print "a"+"b"

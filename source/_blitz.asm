@@ -43,6 +43,7 @@ ismain_polynomials = 0
 	.include	"modules/ifloat32/binary/divide.asm"
 	.include	"modules/ifloat32/float/divide.asm"
 	.include	"modules/common/generated/errors.asm"
+	.include	"modules/compiler/evaluate/expression.asm"
 	.include	"modules/ifloat32/float/fractional.asm"
 	.include	"modules/compiler/helpers/input/get.asm"
 	.include	"modules/x16_hardware/interface/getxpos.asm"

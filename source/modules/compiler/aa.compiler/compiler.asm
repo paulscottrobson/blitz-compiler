@@ -23,7 +23,7 @@ MainCompileLoop:
 		lda 	#PCD_NEWCMD_LINE 			; generate new command line
 		jsr 	WriteCodeByte
 
-		jsr 	CompileTerm
+		jsr 	CompileExpressionAt0
 
 		;  TODO: Check for implied assignment
 		;  TODO: Dispatch appropriately via scanned command handler.
