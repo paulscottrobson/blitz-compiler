@@ -1,1 +1,1 @@
-10 print "hello "+"world"
+10 print 2 = 3

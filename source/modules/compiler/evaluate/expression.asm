@@ -106,6 +106,27 @@ _ECANotConcat:
 		pla 								; restore operator
 		sta 	zTemp0+1 					; save it in zTemp0+1.
 		;
+		;		Check if we need f.cmp or s.cmp
+		;
+		cmp 	#C64_GREATER 				; check for not compare
+		bcc 	_ECANotCompare
+
+		ply 								; get type into Y
+		phy 
+		pha 								; save operator
+
+		tya 								; get type
+		ldy 	#PCD_SCMD_CMP 				; Y is the token to use
+		and 	#NSSTypeMask 				
+		cmp 	#NSSString
+		beq 	_ECANotString
+		ldy 	#PCD_FCMD_CMP
+_ECANotString:		
+		tya									; output token Y
+		jsr 	WriteCodeByte
+		pla 								; restore operator.
+_ECANotCompare:		
+		;
 		;		Compile the operator, which may be wrong (e.g. multiplying strings)
 		;
 		clc 								; convert to P-Code and compile.
@@ -121,7 +142,7 @@ _ECANotConcat:
 		;
 		lda 	zTemp0 						; get type back
 		cmp 	#NSSString 					; if it is a number, then all operators work.
-		bne 	_ECALoop 			
+		bne 	_ECAGoLoop 			
 		;
 		;		For strings only, check the command is valid (e.g. only + and comparators)
 		;
@@ -135,6 +156,7 @@ _ECAType: 									; types mixed ?
 
 _ECAOkay:
 		lda 	#NSSString 					; current is string, go round again.
+_ECAGoLoop:		
 		jmp 	_ECALoop
 
 ; ************************************************************************************************
