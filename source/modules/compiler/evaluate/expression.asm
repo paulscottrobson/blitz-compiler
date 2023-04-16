@@ -94,7 +94,7 @@ _ECAHaveFullToken:
 		pla 								; restore operator
 		sta 	zTemp0+1 					; save it in zTemp0+1.
 		;
-		;		Compile the operator, which may be wrong.
+		;		Compile the operator, which may be wrong (e.g. multiplying strings)
 		;
 		clc 								; convert to P-Code and compile.
 		adc 	#(PCD_PLUS-C64_PLUS) & $FF 	; it might be invalid at this point
@@ -147,7 +147,6 @@ PrecedenceTable:
 		.byte 	2 					; '<>'
 
 		.send code
-
 
 ; ************************************************************************************************
 ;

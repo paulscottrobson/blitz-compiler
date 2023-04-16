@@ -92,6 +92,7 @@ _CTStringLoop:
 		jsr 	GetNext
 		bra 	_CTStringLoop
 _CTStringDone:
+		jsr 	GetNext 					; consume closing quote.
 		lda 	#PCD_CMD_STRING 			; output command and buffer
 		jsr 	WriteCodeByte
 		jsr 	BufferOutput
