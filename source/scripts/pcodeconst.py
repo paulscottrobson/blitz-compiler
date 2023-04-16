@@ -31,6 +31,7 @@ class PCodeConstants(object):
 
 	def getToken(self,i):
 		return self.idToToken[i] if i in self.idToToken else None
+		
 	def getID(self,t):
 		t = t.strip().lower()
 		return self.tokenToID[t] if t in self.tokenToID else None

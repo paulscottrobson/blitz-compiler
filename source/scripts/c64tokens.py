@@ -9,6 +9,8 @@
 # *******************************************************************************************
 # *******************************************************************************************
 
+import os,re,sys
+
 # *******************************************************************************************
 #
 #										C64 token class
@@ -20,7 +22,12 @@ class C64TokenStore(object):
 	def __init__(self):
 		self.idToToken = {}
 		self.tokenToID = {}
-		for s in self.get().split("|"):
+		self.append(self.get())
+		self.append(self.getX16())
+
+	def append(self,src):
+		src = src.replace(" ","").replace("\t","").replace("\n","")
+		for s in src.split("|"):
 			m = s.upper().split(":")
 			self.idToToken[int(m[0])] = m[1]
 			self.tokenToID[m[1]] = int(m[0])
@@ -29,7 +36,7 @@ class C64TokenStore(object):
 		ids = [x for x in self.idToToken.keys()]
 		ids.sort()
 		for i in ids:
-			print("{0}_{1:20} = {2:3} ; ${2:0x} {3}".format(self.getHeader(),self.tidy(self.idToToken[i]),i,self.idToToken[i].lower()))
+			print("{0}_{1:20} = ${2:x} ; ${2:0x} {3}".format(self.getHeader(),self.tidy(self.idToToken[i]),i,self.idToToken[i].lower()))
 
 	def tidy(self,s):
 		s = s.replace("+","PLUS").replace("-","MINUS").replace("*","TIMES").replace("/","DIVIDE").replace("^","POWER")
@@ -43,6 +50,7 @@ class C64TokenStore(object):
 
 	def getToken(self,i):
 		return self.idToToken[i] if i in self.idToToken else None
+
 	def getID(self,t):
 		t = t.strip().upper()
 		return self.tokenToID[t] if t in self.tokenToID else None
@@ -60,7 +68,18 @@ class C64TokenStore(object):
 				|153:PRINT|154:CONT|155:LIST|156:CLR|157:CMD|158:SYS|159:OPEN|160:CLOSE|161:GET|162:NEW|163:TAB(|164:TO|165:FN|166:SPC(
 				|167:THEN|168:NOT|169:STEP|170:+|171:-|172:*|173:/|174:^|175:AND|176:OR|177:>|178:=|179:<|180:SGN|181:INT|182:ABS|183:USR
 				|184:FRE|185:POS|186:SQR|187:RND|188:LOG|189:EXP|190:COS|191:SIN|192:TAN|193:ATN|194:PEEK|195:LEN|196:STR$|197:VAL|198:ASC
-				|199:CHR$|200:LEFT$|201:RIGHT$|202:MID$|203:GO""".replace(" ","").replace("\t","").replace("\n","")
+				|199:CHR$|200:LEFT$|201:RIGHT$|202:MID$|203:GO"""
+
+	#
+	#		X16 keywords sequential from $CE80
+	#
+	def getX16(self):
+		s = """MON|DOS|OLD|GEOS|VPOKE|VLOAD|SCREEN|PSET|LINE|FRAME|RECT|CHAR|MOUSE|
+			   COLOR|TEST|RESET|CLS|CODEX|LOCATE|BOOT|KEYMAP|BLOAD|BVLOAD|BVERIFY|
+			   BANK|VPEEK|MX|MY|MB|JOY|HEX$|BIN$"""
+
+		s = s.replace("\n","").replace(" ","").replace("\t","").split("|")
+		return "|".join(["{0}:{1}".format(i+0xCE80,s[i]) for i in range(0,len(s))])
 
 
 if __name__ == "__main__":
