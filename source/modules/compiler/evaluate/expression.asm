@@ -73,8 +73,20 @@ _ECAAddEqual:
 _ECAToNotEqual:		
 		inx
 		inx
-		jsr 	GetNext 					; consume the = or > in >= <= <>
+		jsr 	GetNext 					; consume the = or > in >= <= <>		
 _ECAHaveFullToken:		
+		;
+		;		Check for + string => concat
+		;
+		cpx 	#C64_PLUS
+		bne 	_ECANotConcat
+		pla 								; get type back
+		pha
+		and 	#NSSTypeMask
+		cmp 	#NSSString
+		bne 	_ECANotConcat
+		ldx 	#(PCD_CONCAT-(PCD_PLUS-C64_PLUS)) & $FF
+_ECANotConcat:		
 		;
 		;		Now have the correct token in X.
 		;
@@ -123,7 +135,7 @@ _ECAType: 									; types mixed ?
 
 _ECAOkay:
 		lda 	#NSSString 					; current is string, go round again.
-		bra 	_ECALoop
+		jmp 	_ECALoop
 
 ; ************************************************************************************************
 ;

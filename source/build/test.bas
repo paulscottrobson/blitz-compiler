@@ -1,1 +1,1 @@
-10 print "a"+"b"+"c"+"2"
+10 print "hello "+"world"

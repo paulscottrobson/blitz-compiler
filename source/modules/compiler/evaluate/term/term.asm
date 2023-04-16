@@ -46,7 +46,8 @@ CompileTerm:
 		cmp 	#"$"
 		beq 	_CTOtherBase
 
-		; TODO: Parenthesis here
+		cmp 	#"(" 						; check parenthesis
+		beq 	_CTBrackets
 
 		cmp 	#"A" 						; check variable/array ?
 		bcc 	_CTSyntax
@@ -57,6 +58,15 @@ CompileTerm:
 		
 _CTSyntax:
 		.error_syntax
+		;
+		;		Handle parenthesis
+		;
+_CTBrackets:
+		jsr 	CompileExpressionAt0		
+		pha
+		jsr 	CheckNextRParen
+		pla
+		rts
 		;
 		;		Handle other base
 		;
