@@ -31,6 +31,8 @@ ismain_polynomials = 0
 	.include	"modules/ifloat32/aa.testing/testing.inc"
 	.include	"modules/common/boot.end/00start.asm"
 	.include	"modules/ifloat32/float/addsub.asm"
+	.include	"modules/compiler/evaluate/term/altbase.asm"
+	.include	"modules/compiler/evaluate/term/buffer.asm"
 	.include	"modules/compiler/helpers/output/byte.asm"
 	.include	"modules/compiler/helpers/input/check.asm"
 	.include	"modules/compiler/object/simple/clear.asm"

@@ -31,12 +31,54 @@
 
 CompileTerm:
 		jsr 	GetNextNonSpace 			; get first non space character.
+		bmi 	_CTUnaryFunctions
+
 		jsr 	CharIsDigit 				; found a number
 		bcs 	_CTDigit
 		cmp 	#"."
 		beq 	_CTDigit
 
+		cmp 	#'"' 						; found a string ?
+		beq 	_CTString
+
+		cmp 	#C64_MINUS 					; negation of term.
+		beq 	_CTNegation
+
+		cmp 	#"%"						; binary or hexadecimal ?
+		beq 	_CTOtherBase
+		cmp 	#"$"
+		beq 	_CTOtherBase
+
+		; TODO: Parenthesis here
+
+		cmp 	#"A" 						; check variable/array ?
+		bcc 	_CTSyntax
+		cmp 	#"Z"+1
+		bcs 	_CTSyntax
+
+		; TODO: Variables here
+_CTSyntax:
 		.error_syntax
+		;
+		;		Handle other base
+		;
+_CTOtherBase:
+		jsr 	InlineNonDecimal 			; non decimal constant handler		
+		lda 	#NSSIFloat 					; return a iFloat32
+		rts
+		;
+		;		Negate a number
+		;	
+_CTNegation:
+		jsr 	CompileTerm 				; compile a term.
+		cmp 	#NSSIFloat 					; if not an ifloat32
+		bne 	_CTType 					; error
+		lda 	#PCD_NEGATE 				; compile negate
+		jsr 	WriteCodeByte		
+		lda 	#NSSIFloat 					; return a iFloat32
+		rts
+_CTType:
+		.error_type		
 		;
 		;		Compile a number
 		;
@@ -50,9 +92,32 @@ _CTFloat:
 		jsr 	PushFloat  					; code to push float
 		lda 	#NSSIFloat 					; return a iFloat32
 		rts		
-
-
-
+		;
+		;		Compile a string
+		;
+_CTString:
+		jsr 	BufferClear 				; copy it to the buffer
+_CTStringLoop:
+		jsr 	LookNext 					; reached EOL/EOS
+		beq 	_CTSyntax
+		cmp 	#'"'
+		beq 	_CTStringDone
+		;
+		jsr 	BufferWrite 				; write and consume
+		jsr 	GetNext
+		bra 	_CTStringLoop
+_CTStringDone:
+		lda 	#PCD_CMD_STRING 			; output command and buffer
+		jsr 	WriteCodeByte
+		jsr 	BufferOutput
+		lda 	#NSSString 					; string type
+		rts		
+		;
+		;		Handle unary functions
+		;
+_CTUnaryFunctions:		
+		
+		; 	TODO: Run against a generation list.
 
 
 		.send code
