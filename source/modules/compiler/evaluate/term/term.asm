@@ -41,9 +41,6 @@ CompileTerm:
 		cmp 	#'"' 						; found a string ?
 		beq 	_CTString
 
-		cmp 	#C64_MINUS 					; negation of term.
-		beq 	_CTNegation
-
 		cmp 	#"%"						; binary or hexadecimal ?
 		beq 	_CTOtherBase
 		cmp 	#"$"
@@ -57,6 +54,7 @@ CompileTerm:
 		bcs 	_CTSyntax
 
 		; TODO: Variables here
+		
 _CTSyntax:
 		.error_syntax
 		;
@@ -66,21 +64,6 @@ _CTOtherBase:
 		jsr 	InlineNonDecimal 			; non decimal constant handler		
 		lda 	#NSSInteger 				; return a iFloat32 integer
 		rts
-		;
-		;		Negate a number
-		;	
-_CTNegation:
-		jsr 	CompileTerm 				; compile a term.
-		pha
-		and 	#NSSTypeMask 				; if not an ifloat32 of some sort.
-		cmp 	#NSSIFloat
-		beq 	_CTType 					; error
-		lda 	#PCD_NEGATE 				; compile negate
-		jsr 	WriteCodeByte		
-		pla 								; return original type.
-		rts
-_CTType:
-		.error_type		
 		;
 		;		Compile a number
 		;
@@ -115,11 +98,30 @@ _CTStringDone:
 		lda 	#NSSString 					; string type
 		rts		
 		;
-		;		Handle unary functions
+		;		Handle unary functions and negation, as - is a C64 token
 		;
 _CTUnaryFunctions:		
-		
+		cmp 	#C64_MINUS 					; negation of term.
+		beq 	_CTNegation
+
 		; 	TODO: Run against a generation list.
+
+		;
+		;		Negate a number
+		;	
+_CTNegation:
+		jsr 	CompileTerm 				; compile a term.
+		pha
+		and 	#NSSTypeMask 				; if not an ifloat32 of some sort.
+		cmp 	#NSSIFloat
+		bne 	_CTType 					; error
+		lda 	#PCD_NEGATE 				; compile negate
+		jsr 	WriteCodeByte		
+		pla 								; return original type.
+		rts
+_CTType:
+		.error_type		
+		
 
 
 		.send code
