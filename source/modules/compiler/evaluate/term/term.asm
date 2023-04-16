@@ -64,18 +64,20 @@ _CTSyntax:
 		;
 _CTOtherBase:
 		jsr 	InlineNonDecimal 			; non decimal constant handler		
-		lda 	#NSSIFloat 					; return a iFloat32
+		lda 	#NSSInteger 				; return a iFloat32 integer
 		rts
 		;
 		;		Negate a number
 		;	
 _CTNegation:
 		jsr 	CompileTerm 				; compile a term.
-		cmp 	#NSSIFloat 					; if not an ifloat32
-		bne 	_CTType 					; error
+		pha
+		and 	#NSSTypeMask 				; if not an ifloat32 of some sort.
+		cmp 	#NSSIFloat
+		beq 	_CTType 					; error
 		lda 	#PCD_NEGATE 				; compile negate
 		jsr 	WriteCodeByte		
-		lda 	#NSSIFloat 					; return a iFloat32
+		pla 								; return original type.
 		rts
 _CTType:
 		.error_type		
@@ -86,7 +88,7 @@ _CTDigit:
 		jsr 	ParseConstant 				; parse out an number, first is in A already.
 		bcc	 	_CTFloat 					; have a float or long int.
 		jsr 	PushIntegerYA 				; code to push on stack
-		lda 	#NSSIFloat 					; return a iFloat32
+		lda 	#NSSInteger 				; return a iFloat32 integer
 		rts
 _CTFloat:
 		jsr 	PushFloat  					; code to push float
