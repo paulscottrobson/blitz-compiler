@@ -54,8 +54,14 @@ CompileTerm:
 		cmp 	#"Z"+1
 		bcs 	_CTSyntax
 
-		; TODO: Variables here
-		
+		jsr 	IdentifyVariable 			; figure out what it is.
+		pha 								; save type on stack
+		clc 								; read it
+		jsr 	GetSetVariable 			
+		pla
+		and 	#NSSTypeMask 				; reduce to basic type
+		rts	
+
 _CTSyntax:
 		.error_syntax
 		;
