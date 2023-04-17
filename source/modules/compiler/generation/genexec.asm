@@ -45,7 +45,7 @@ _GEExecuteVectors:
 		.word 	_GEXNop 					; 0  (no operation)
 		.word 	_GEXToken1 					; 1  (compile 1 byte token)
 		.word 	_GEXToken2 					; 2  (compile 2 byte token)
-		.word 	_GEXNop 					; 3
+		.word 	_GEXExecute 				; 3  (run arbitrary code)
 		.word 	_GEXNop 					; 4
 		.word 	_GEXNop 					; 5
 		.word 	_GEXExitNumber 				; 6  exit return ifloat32 type
@@ -144,6 +144,36 @@ _GEXString:
 
 _GEXType:
 		.error_type
+
+; ------------------------------------------------------------------------------------------------
+;										Execute 6502 code
+; ------------------------------------------------------------------------------------------------
+
+_GEXExecute:
+		jsr 	_GEFetchZTemp0 				; get vector		
+		sta 	zTemp2 		
+		jsr 	_GEFetchZTemp0
+		sta 	zTemp2+1 		
+
+		ldx 	zTemp0 						; push generation exec on to stack for reentrancy
+		phx
+		ldx 	zTemp0+1
+		phx
+
+		jsr 	_GECallZTemp2 				; execute code
+
+		plx 								; recover generation exec
+		stx 	zTemp0+1
+		plx
+		stx 	zTemp0
+		rts		
+
+_GECallZTemp2:
+		jmp 	(zTemp2)		
+
+; ------------------------------------------------------------------------------------------------
+;								Compile expression preserve state
+; ------------------------------------------------------------------------------------------------
 
 _GEXCompileExpression:
 		ldx 	zTemp0 						; push generation exec on to stack for reentrancy
