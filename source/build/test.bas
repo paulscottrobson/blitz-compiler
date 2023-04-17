@@ -1,1 +1,1 @@
-10 print str$(42)
+10 print mid$("hello",3)

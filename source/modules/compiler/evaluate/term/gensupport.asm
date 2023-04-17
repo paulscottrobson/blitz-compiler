@@ -24,12 +24,12 @@ MidParameterCompile:
 		cmp 	#")" 						; ), use default
 		beq 	_MidDefault
 		;
-		dey 								; three parameters
-		jsr 	CheckNextComma 				
+		cmp 	#","
+		bne 	_MidSyntax
 		jsr 	CompileExpressionAt0
 		and 	#NSSTypeMask
 		cmp 	#NSSIFloat
-		beq 	_MidFail
+		bne 	_MidFail
 		jsr 	CheckNextRParen
 		bra 	_MidComplete
 _MidDefault:
@@ -39,6 +39,8 @@ _MidComplete:
 		rts
 _MidFail:
 		.error_type
+_MidSyntax:
+		.error_syntax		
 
 ; ************************************************************************************************
 ;

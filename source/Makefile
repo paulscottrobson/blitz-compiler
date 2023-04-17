@@ -57,10 +57,15 @@ showbasic: basic
 decode: basic
 	python $(SCRIPTDIR)pdis.py $(BTEMP)cout.bin	
 #
-#		Debug the compiler ; append tokenised BASIC to runtime and start it.
+#		Run/Debug the compiler ; append tokenised BASIC to runtime and start it.
 #
 cdebug : compiler basic
 	$(RUNEMU) -prg $(BTEMP)runcompiler.prg,801 -run 
+	$(CCOPY) CODE.BIN $(BTEMP)cout.bin
+	$(CDEL) CODE.BIN
+#
+crun : compiler basic
+	$(HRUNEMU) -prg $(BTEMP)runcompiler.prg,801 -run 
 	$(CCOPY) CODE.BIN $(BTEMP)cout.bin
 	$(CDEL) CODE.BIN
 #
