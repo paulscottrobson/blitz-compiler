@@ -35,6 +35,8 @@ MainCompileLoop:
 		;  TODO: Possibly append variable map ?
 		;  TODO: Write code out to disk
 
+
+SaveCodeAndExit:
 		lda 	#PCD_EXIT
 		jsr 	WriteCodeByte
 		jsr 	HWOSave

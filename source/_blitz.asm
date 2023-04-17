@@ -46,6 +46,8 @@ ismain_polynomials = 0
 	.include	"modules/compiler/evaluate/expression.asm"
 	.include	"modules/ifloat32/float/fractional.asm"
 	.include	"modules/compiler/generation/gendata.asm"
+	.include	"modules/compiler/generation/generator.asm"
+	.include	"modules/compiler/generation/genexec.asm"
 	.include	"modules/compiler/helpers/input/get.asm"
 	.include	"modules/x16_hardware/interface/getxpos.asm"
 	.include	"modules/ifloat32/float/integer.asm"

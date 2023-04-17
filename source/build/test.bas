@@ -1,1 +1,1 @@
-10 print 2 = 3
+10 print str$(42)

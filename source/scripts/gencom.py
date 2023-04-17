@@ -103,7 +103,7 @@ class GenCompiler(object):
 			return m.group(2)
 
 		elif cmd == "S" or cmd == "N":						# S/N end.
-			self.gen.append(6 if cmd == "S" else 7,True)
+			self.gen.append(6 if cmd == "N" else 7,True)
 
 		elif self.simple.find(cmd) >= 0: 					# (), and %#$
 			self.gen.append(self.simple.find(cmd)+8)

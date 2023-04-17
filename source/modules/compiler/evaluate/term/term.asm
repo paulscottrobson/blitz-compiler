@@ -115,8 +115,11 @@ _CTUnaryFunctions:
 		cmp 	#C64_MINUS 					; negation of term.
 		beq 	_CTNegation
 
-		; 	TODO: Run against a generation list.
-
+		ldx 	#UnaryTables & $FF 			; check vs unary tables.
+		ldy 	#UnaryTables >> 8
+		jsr 	GeneratorProcess
+		bcc		_CTSyntax 	
+		rts
 		;
 		;		Negate a number
 		;	

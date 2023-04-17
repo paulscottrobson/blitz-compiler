@@ -110,7 +110,8 @@ _ECANotConcat:
 		;
 		cmp 	#C64_GREATER 				; check for not compare
 		bcc 	_ECANotCompare
-
+		cmp 	#C64_GREATER+6
+		bcs 	_ECANotCompare
 		ply 								; get type into Y
 		phy 
 		pha 								; save operator

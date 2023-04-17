@@ -60,7 +60,7 @@ decode: basic
 #		Debug the compiler ; append tokenised BASIC to runtime and start it.
 #
 cdebug : compiler basic
-	$(HRUNEMU) -prg $(BTEMP)runcompiler.prg,801 -run 
+	$(RUNEMU) -prg $(BTEMP)runcompiler.prg,801 -run 
 	$(CCOPY) CODE.BIN $(BTEMP)cout.bin
 	$(CDEL) CODE.BIN
 #
