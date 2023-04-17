@@ -21,13 +21,13 @@
 StringConcrete:	
 		stz 	stringInitialised	 		; initialise next usage
 
-		sty 	zTemp0+1 					; save pointer to new string
-		sta 	zTemp0
+		sty 	zTemp2+1 					; save pointer to new string
+		sta 	zTemp2
 		;
-		lda 	(zTemp0) 					; length required
+		lda 	(zTemp2) 					; length required
 		lsr 	a 							; allow half as much for expansion.
 		clc
-		adc 	(zTemp0)
+		adc 	(zTemp2)
 		bcc 	_SCNoOverflow
 		lda 	#255
 _SCNoOverflow:

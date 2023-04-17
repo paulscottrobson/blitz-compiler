@@ -47,13 +47,15 @@ NXLoadStore:
 		jmp 	(ReadWriteVectors,x) 		; go via the jump table.
 
 ReadWriteVectors:
-		.word 	ReadIntegerCommand 			; read integer
-		.word 	WriteIntegerCommand 		; write integer
 		.word 	ReadFloatCommand			; read float
 		.word 	WriteFloatCommand 			; write float
-		.word 	Unimplemented 				; read string
-		.word 	Unimplemented 				; write string
-		;
+		.word 	ReadIntegerCommand 			; read integer
+		.word 	WriteIntegerCommand 		; write integer
+		.word 	ReadStringCommand 			; read string
+		.word 	WriteStringCommand 			; write string
+		.word 	Unimplemented 				
+		.word 	Unimplemented 		
+		;		
 		;		Push byte on stack
 		;
 PushByteCommand: ;; [.byte]			
