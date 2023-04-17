@@ -23,6 +23,7 @@ WriteIntegerCommand:
 		.vaddress
 
 WriteIntegerZTemp0:
+		.floatinteger
 		phy 								; start write
 		ldy 	#1
 		lda 	NSStatus,x 					; negate 2's comp if -ve

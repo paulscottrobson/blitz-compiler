@@ -66,7 +66,7 @@ class Generator(object):
 
 class GenCompiler(object):
 	def __init__(self):
-		self.simple = "(),__%#$"
+		self.simple = "(),___#$"
 		self.pcodeTokens = PCodeConstants()
 
 	def compileFile(self,f):

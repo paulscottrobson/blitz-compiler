@@ -1,37 +1,26 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		chr.asm
-;		Purpose:	Convert number to character.
-;		Created:	11th April 2023
+;		Name:		integers.asm
+;		Purpose:	Integer value read/write
+;		Created:	14th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-; ************************************************************************************************
-;
-;											CHR$(n)
-;
-; ************************************************************************************************
-
 		.section code
 
-UnaryChr: ;; [chr$]
-		.entercmd
-		jsr 	GetInteger8Bit 				; get integer to convert.
-		pha 								; save it and allocate for it
-		lda 	#1 							; 1 character
-		jsr 	StringAllocTemp 	
-		lda 	#1 							; length 1.
-		sta 	(zsTemp)
-		pla 								; character code makes string.
-		phy
-		ldy 	#1
-		sta 	(zsTemp),y
-		ply
-		.exitcmd
+; ************************************************************************************************
+;
+;										Faster make-integer
+;
+; ************************************************************************************************
+
+floatinteger .macro
+		jsr 	FloatIntegerPart
+		.endm
 
 		.send code
 

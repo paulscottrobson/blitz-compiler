@@ -14,12 +14,12 @@
 
 
 GetInteger8Bit:
-		jsr 	FloatIntegerPart
+		.floatinteger
 		lda 	NSMantissa0,x
 		rts
 
 GetInteger16Bit:
-		jsr 	FloatIntegerPart
+		.floatinteger
 		bit 	NSStatus,x
 		bmi 	Negate16Bit
 		lda 	NSMantissa0,x

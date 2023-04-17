@@ -55,7 +55,7 @@ _GEExecuteVectors:
 		.word 	_GEXComma					; A  check , follows
 		.word 	_GEXNop 					; B
 		.word 	_GEXNop 					; C
-		.word 	_GEXInteger 				; D  compile get an integer
+		.word 	_GEXNop 					; D  
 		.word 	_GEXNumber 					; E  compile get any number
 		.word 	_GEXString 					; F  compile get any string
 
@@ -118,13 +118,6 @@ _GEXSyntax:
 ; ------------------------------------------------------------------------------------------------
 ;								 		Fetch, various types.
 ; ------------------------------------------------------------------------------------------------
-
-_GEXInteger: 	
-		jsr 	_GEXCompileExpression 		; compile expression
-		cmp  	#NSSIFloat+NSSInteger 		; check integer value.
-		bne 	_GEXType 	
-		clc
-		rts
 
 _GEXNumber: 	
 		jsr 	_GEXCompileExpression 		; compile expression

@@ -1,19 +1,75 @@
 	.byte	174                               ;  new.line
-	.text	181,1,"X"                         ;  "x" 
+	.byte	180                               ;  .float
+	.byte	$df                               ;  0.2
+	.dword	$66666666                        ;  0.2
+	.byte	153                               ;  tan
+	.byte	180                               ;  .float
+	.byte	$df                               ;  0.2027
+	.dword	$67c84b5e                        ;  0.2027
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e7                               ;  49.5133
+	.dword	$6306cf42                        ;  49.5133
+	.byte	152                               ;  sin
+	.byte	180                               ;  .float
+	.byte	$e1                               ;  -0.6832
+	.dword	$d77318fc                        ;  -0.6832
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,172,35                        ;  172 
+	.byte	179,64,46                         ;  64 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
 	.byte	0                                 ;  0
-	.byte	161                               ;  left$
-	.text	181,0,""                          ;  "" 
-	.byte	167                               ;  s.cmp
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,65,99                         ;  65 
+	.byte	179,56,88                         ;  56 
+	.byte	131                               ;  /
+	.byte	180                               ;  .float
+	.byte	$e2                               ;  1.1251
+	.dword	$4801a36e                        ;  1.1251
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	39                                ;  39
+	.byte	160                               ;  chr$
+	.byte	159                               ;  asc
+	.byte	39                                ;  39
+	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e6                               ;  29.8591
-	.dword	$776fb7e9                        ;  29.8591
+	.byte	$e5                               ;  -11.8248
+	.dword	$de9930be                        ;  -11.8248
 	.byte	151                               ;  cos
 	.byte	180                               ;  .float
-	.byte	$db                               ;  0.014
-	.dword	$72b020c5                        ;  0.014
+	.byte	$e1                               ;  0.7374
+	.dword	$5e631f8a                        ;  0.7374
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -24,28 +80,39 @@
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e7                               ;  -53.0748
-	.dword	$ea264c30                        ;  -53.0748
+	.byte	$e4                               ;  -5.1427
+	.dword	$d2487fcc                        ;  -5.1427
 	.byte	180                               ;  .float
-	.byte	$e5                               ;  -15.6109
-	.dword	$fce31f8a                        ;  -15.6109
+	.byte	$e3                               ;  -2.5857
+	.dword	$d2be0ded                        ;  -2.5857
+	.byte	172                               ;  int.div
+	.byte	2                                 ;  2
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
 	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,26,4                          ;  26 
+	.byte	179,13,70                         ;  13 
+	.byte	173                               ;  negate
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
 	.byte	0                                 ;  0
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e7                               ;  58.3879
-	.dword	$74c69ad4                        ;  58.3879
+	.byte	$e2                               ;  -1.92
+	.dword	$fae147ae                        ;  -1.92
+	.byte	150                               ;  exp
 	.byte	180                               ;  .float
-	.byte	$e7                               ;  46.3036
-	.dword	$5c9b7176                        ;  46.3036
-	.byte	129                               ;  -
-	.byte	180                               ;  .float
-	.byte	$e5                               ;  12.0843
-	.dword	$60aca57a                        ;  12.0843
+	.byte	$df                               ;  0.1466
+	.dword	$4b0f27bb                        ;  0.1466
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -55,9 +122,302 @@
 	.byte	137                               ;  <
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,1,"B"                         ;  "b" 
-	.text	181,3,"TPC"                       ;  "tpc" 
+	.byte	179,219,5                         ;  219 
+	.byte	173                               ;  negate
+	.byte	179,143,30                        ;  143 
+	.byte	128                               ;  +
+	.byte	179,180,24                        ;  180 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e6                               ;  -29.1776
+	.dword	$f4b5dcc6                        ;  -29.1776
+	.byte	151                               ;  cos
+	.byte	180                               ;  .float
+	.byte	$e1                               ;  -0.619
+	.dword	$cf3b645a                        ;  -0.619
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,32,61                         ;  32 
+	.byte	179,136,52                        ;  136 
+	.byte	173                               ;  negate
+	.byte	171                               ;  f.cmp
+	.byte	135                               ;  >
+	.byte	1                                 ;  1
+	.byte	173                               ;  negate
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e7                               ;  -37.105
+	.dword	$ca35c28f                        ;  -37.105
+	.byte	152                               ;  sin
+	.byte	180                               ;  .float
+	.byte	$e1                               ;  0.5598
+	.dword	$47a786c2                        ;  0.5598
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,3,"BWK"                       ;  "bwk" 
+	.byte	3                                 ;  3
+	.byte	162                               ;  right$
+	.text	181,3,"BWK"                       ;  "bwk" 
 	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e8                               ;  73.3499
+	.dword	$4959930c                        ;  73.3499
+	.byte	151                               ;  cos
+	.byte	180                               ;  .float
+	.byte	$e0                               ;  -0.4596
+	.dword	$f5a85879                        ;  -0.4596
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,5,"RBSRW"                     ;  "rbsrw" 
+	.byte	4                                 ;  4
+	.byte	4                                 ;  4
+	.byte	163                               ;  mid$
+	.text	181,2,"RW"                        ;  "rw" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,232,62                        ;  232 
+	.byte	173                               ;  negate
+	.byte	179,242,108                       ;  242 
+	.byte	129                               ;  -
+	.byte	179,218,171                       ;  218 
+	.byte	173                               ;  negate
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e3                               ;  2.48
+	.dword	$4f5c28f6                        ;  2.48
+	.byte	180                               ;  .float
+	.byte	$e2                               ;  1.3
+	.dword	$53333333                        ;  1.3
+	.byte	132                               ;  ^
+	.byte	180                               ;  .float
+	.byte	$e3                               ;  3.2568
+	.dword	$6837b4a2                        ;  3.2568
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e1                               ;  -0.58
+	.dword	$ca3d70a4                        ;  -0.58
+	.byte	150                               ;  exp
+	.byte	180                               ;  .float
+	.byte	$e1                               ;  0.5599
+	.dword	$47aacd9f                        ;  0.5599
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,0,54                          ;  0 
+	.byte	173                               ;  negate
+	.byte	179,73,78                         ;  73 
+	.byte	129                               ;  -
+	.byte	179,73,132                        ;  73 
+	.byte	173                               ;  negate
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,1,"N"                         ;  "n" 
+	.byte	156                               ;  len
+	.byte	1                                 ;  1
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	178,118                           ;  118 
+	.byte	160                               ;  chr$
+	.byte	159                               ;  asc
+	.byte	178,118                           ;  118 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,3,"IQN"                       ;  "iqn" 
+	.text	181,3,"IQN"                       ;  "iqn" 
+	.byte	167                               ;  s.cmp
+	.byte	137                               ;  <
+	.byte	0                                 ;  0
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,237,84                        ;  237 
+	.byte	179,7,98                          ;  7 
+	.byte	172                               ;  int.div
+	.byte	0                                 ;  0
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e8                               ;  -65.6103
+	.dword	$c19c3c9f                        ;  -65.6103
+	.byte	180                               ;  .float
+	.byte	$e8                               ;  -65.6103
+	.dword	$c19c3c9f                        ;  -65.6103
+	.byte	171                               ;  f.cmp
+	.byte	139                               ;  <>
+	.byte	0                                 ;  0
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,7,"64.8527"                   ;  "64.8527" 
+	.byte	158                               ;  val
+	.byte	180                               ;  .float
+	.byte	$e8                               ;  64.8527
+	.dword	$40da4a8c                        ;  64.8527
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e6                               ;  -27.9312
+	.dword	$efb98c7e                        ;  -27.9312
+	.byte	180                               ;  .float
+	.byte	$e5                               ;  11.9451
+	.dword	$5f8f9097                        ;  11.9451
+	.byte	130                               ;  *
+	.byte	180                               ;  .float
+	.byte	$ea                               ;  -333.641
+	.dword	$d3690625                        ;  -333.641
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,250,33                        ;  250 
+	.byte	173                               ;  negate
+	.byte	179,148,115                       ;  148 
+	.byte	173                               ;  negate
+	.byte	171                               ;  f.cmp
+	.byte	138                               ;  >=
+	.byte	1                                 ;  1
+	.byte	173                               ;  negate
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,6,"-20523"                    ;  "-20523" 
+	.byte	158                               ;  val
+	.byte	180                               ;  .float
+	.byte	$f0                               ;  -20523.0
+	.dword	$d02b0000                        ;  -20523.0
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,4,"FHJQ"                      ;  "fhjq" 
+	.byte	5                                 ;  5
+	.byte	162                               ;  right$
+	.text	181,4,"FHJQ"                      ;  "fhjq" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e7                               ;  61.967
+	.dword	$7bef1aa0                        ;  61.967
+	.byte	147                               ;  sqr
+	.byte	180                               ;  .float
+	.byte	$e4                               ;  7.8719
+	.dword	$7df34d6a                        ;  7.8719
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e0                               ;  0.48
+	.dword	$7ae147ae                        ;  0.48
+	.byte	154                               ;  atn
+	.byte	180                               ;  .float
+	.byte	$e0                               ;  0.4475
+	.dword	$728f5c29                        ;  0.4475
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e7                               ;  39.3974
+	.dword	$4ecb7803                        ;  39.3974
+	.byte	180                               ;  .float
+	.byte	$e6                               ;  -22.7248
+	.dword	$dae631f9                        ;  -22.7248
+	.byte	171                               ;  f.cmp
 	.byte	139                               ;  <>
 	.byte	1                                 ;  1
 	.byte	173                               ;  negate
@@ -65,33 +425,61 @@
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,5,"RZPWZ"                     ;  "rzpwz" 
-	.text	181,3,"KNN"                       ;  "knn" 
-	.byte	167                               ;  s.cmp
-	.byte	140                               ;  <=
-	.byte	0                                 ;  0
+	.text	181,4,"KRER"                      ;  "krer" 
+	.byte	156                               ;  len
+	.byte	4                                 ;  4
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,2,"SS"                        ;  "ss" 
+	.text	181,3,"WFJ"                       ;  "wfj" 
 	.byte	2                                 ;  2
 	.byte	161                               ;  left$
-	.text	181,2,"SS"                        ;  "ss" 
+	.text	181,2,"WF"                        ;  "wf" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,1,"C"                         ;  "c" 
+	.byte	0                                 ;  0
+	.byte	162                               ;  right$
+	.text	181,0,""                          ;  "" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,2,"DO"                        ;  "do" 
+	.text	181,2,"OY"                        ;  "oy" 
+	.byte	176                               ;  concat
+	.text	181,4,"DOOY"                      ;  "dooy" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,3,"KHY"                       ;  "khy" 
+	.byte	4                                 ;  4
+	.byte	3                                 ;  3
+	.byte	163                               ;  mid$
+	.text	181,0,""                          ;  "" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,5,"MXEHU"                     ;  "mxehu" 
+	.text	181,0,""                          ;  "" 
+	.byte	176                               ;  concat
+	.text	181,5,"MXEHU"                     ;  "mxehu" 
 	.byte	167                               ;  s.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e8                               ;  -74.9958
-	.dword	$cafeecc0                        ;  -74.9958
+	.byte	$e7                               ;  36.7472
+	.dword	$497e9100                        ;  36.7472
+	.byte	151                               ;  cos
 	.byte	180                               ;  .float
-	.byte	$e1                               ;  -0.7356
-	.dword	$de28240b                        ;  -0.7356
-	.byte	131                               ;  /
-	.byte	180                               ;  .float
-	.byte	$e8                               ;  101.9519
-	.dword	$65f3afb8                        ;  101.9519
+	.byte	$e1                               ;  0.5801
+	.dword	$4a40b780                        ;  0.5801
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -102,12 +490,12 @@
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e2                               ;  1.74
-	.dword	$6f5c28f6                        ;  1.74
-	.byte	150                               ;  exp
+	.byte	$e5                               ;  11.4749
+	.dword	$5bcc985f                        ;  11.4749
+	.byte	147                               ;  sqr
 	.byte	180                               ;  .float
-	.byte	$e4                               ;  5.6973
-	.dword	$5b28240b                        ;  5.6973
+	.byte	$e3                               ;  3.3875
+	.dword	$6c666666                        ;  3.3875
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -117,287 +505,137 @@
 	.byte	137                               ;  <
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,3,"PGM"                       ;  "pgm" 
-	.text	181,0,""                          ;  "" 
-	.byte	167                               ;  s.cmp
-	.byte	135                               ;  >
-	.byte	1                                 ;  1
+	.byte	179,195,66                        ;  195 
+	.byte	173                               ;  negate
+	.byte	179,61,11                         ;  61 
+	.byte	173                               ;  negate
+	.byte	133                               ;  and
+	.byte	179,255,75                        ;  255 
 	.byte	173                               ;  negate
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,125,35                        ;  125 
+	.byte	173                               ;  negate
+	.byte	179,24,42                         ;  24 
+	.byte	173                               ;  negate
+	.byte	133                               ;  and
+	.byte	179,128,43                        ;  128 
+	.byte	173                               ;  negate
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e1                               ;  0.6967
+	.dword	$592d7732                        ;  0.6967
+	.byte	180                               ;  .float
+	.byte	$e1                               ;  0.7
+	.dword	$5999999a                        ;  0.7
+	.byte	132                               ;  ^
+	.byte	180                               ;  .float
+	.byte	$e1                               ;  0.7765
+	.dword	$63645a1d                        ;  0.7765
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e8                               ;  80.97
+	.dword	$50f851ec                        ;  80.97
+	.byte	149                               ;  log
+	.byte	180                               ;  .float
+	.byte	$e4                               ;  4.3941
+	.dword	$464e3bcd                        ;  4.3941
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.text	181,1,"W"                         ;  "w" 
-	.byte	159                               ;  asc
-	.byte	178,87                            ;  87 
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,242,61                        ;  242 
-	.byte	179,56,77                         ;  56 
-	.byte	173                               ;  negate
-	.byte	172                               ;  int.div
-	.byte	0                                 ;  0
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e1                               ;  0.634
-	.dword	$5126e979                        ;  0.634
-	.byte	154                               ;  atn
-	.byte	180                               ;  .float
-	.byte	$e1                               ;  0.565
-	.dword	$4851eb85                        ;  0.565
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,0,""                          ;  "" 
-	.byte	0                                 ;  0
+	.byte	2                                 ;  2
 	.byte	161                               ;  left$
-	.text	181,0,""                          ;  "" 
+	.text	181,1,"W"                         ;  "w" 
 	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,3,"ISF"                       ;  "isf" 
-	.byte	4                                 ;  4
-	.byte	161                               ;  left$
-	.text	181,3,"ISF"                       ;  "isf" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,239,17                        ;  239 
-	.byte	179,69,21                         ;  69 
-	.byte	133                               ;  and
-	.byte	179,69,17                         ;  69 
-	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.text	181,0,""                          ;  "" 
-	.text	181,2,"HX"                        ;  "hx" 
-	.byte	176                               ;  concat
-	.text	181,2,"HX"                        ;  "hx" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,1,"K"                         ;  "k" 
-	.byte	0                                 ;  0
+	.byte	1                                 ;  1
 	.byte	162                               ;  right$
 	.text	181,0,""                          ;  "" 
 	.byte	167                               ;  s.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e2                               ;  -1.96
-	.dword	$fd70a3d7                        ;  -1.96
-	.byte	150                               ;  exp
-	.byte	180                               ;  .float
-	.byte	$df                               ;  0.1409
-	.dword	$48240b78                        ;  0.1409
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,195,21                        ;  195 
-	.byte	173                               ;  negate
-	.byte	179,168,68                        ;  168 
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	135                               ;  >
-	.byte	1                                 ;  1
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,0,""                          ;  "" 
+	.text	181,2,"IK"                        ;  "ik" 
 	.byte	156                               ;  len
-	.byte	0                                 ;  0
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,3,"OLM"                       ;  "olm" 
 	.byte	2                                 ;  2
-	.byte	3                                 ;  3
-	.byte	163                               ;  mid$
-	.text	181,2,"LM"                        ;  "lm" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,122,58                        ;  122 
-	.byte	173                               ;  negate
-	.byte	179,126,110                       ;  126 
-	.byte	173                               ;  negate
-	.byte	129                               ;  -
-	.byte	179,4,52                          ;  4 
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  17.1275
-	.dword	$44828f5c                        ;  17.1275
-	.byte	180                               ;  .float
-	.byte	$e7                               ;  -48.9685
-	.dword	$e1efdf3b                        ;  -48.9685
-	.byte	130                               ;  *
-	.byte	180                               ;  .float
-	.byte	$eb                               ;  -838.708
-	.dword	$e8d6a7f0                        ;  -838.708
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,41,53                         ;  41 
-	.byte	179,62,47                         ;  62 
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	0                                 ;  0
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e0                               ;  0.39
-	.dword	$63d70a3d                        ;  0.39
-	.byte	150                               ;  exp
-	.byte	180                               ;  .float
-	.byte	$e2                               ;  1.477
-	.dword	$5e872b02                        ;  1.477
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,2,"RT"                        ;  "rt" 
-	.text	181,2,"RT"                        ;  "rt" 
-	.byte	167                               ;  s.cmp
-	.byte	138                               ;  >=
-	.byte	1                                 ;  1
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,0,""                          ;  "" 
+	.text	181,4,"FDPL"                      ;  "fdpl" 
 	.byte	1                                 ;  1
 	.byte	162                               ;  right$
-	.text	181,0,""                          ;  "" 
+	.text	181,1,"L"                         ;  "l" 
 	.byte	167                               ;  s.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	179,15,96                         ;  15 
+	.byte	179,168,25                        ;  168 
 	.byte	173                               ;  negate
-	.byte	179,138,117                       ;  138 
+	.byte	175                               ;  not
+	.byte	179,169,25                        ;  169 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,5,"JZVDE"                     ;  "jzvde" 
+	.byte	6                                 ;  6
+	.byte	162                               ;  right$
+	.text	181,5,"JZVDE"                     ;  "jzvde" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,155,120                       ;  155 
+	.byte	173                               ;  negate
+	.byte	179,160,114                       ;  160 
 	.byte	133                               ;  and
-	.byte	179,128,21                        ;  128 
+	.byte	179,32,2                          ;  32 
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,2,"ZP"                        ;  "zp" 
-	.text	181,3,"UQU"                       ;  "uqu" 
-	.byte	176                               ;  concat
-	.text	181,5,"ZPUQU"                     ;  "zpuqu" 
+	.text	181,1,"D"                         ;  "d" 
+	.text	181,1,"H"                         ;  "h" 
 	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,91,99                         ;  91 
-	.byte	173                               ;  negate
-	.byte	179,3,94                          ;  3 
-	.byte	171                               ;  f.cmp
-	.byte	140                               ;  <=
+	.byte	137                               ;  <
 	.byte	1                                 ;  1
 	.byte	173                               ;  negate
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,1,"U"                         ;  "u" 
-	.byte	2                                 ;  2
-	.byte	0                                 ;  0
-	.byte	163                               ;  mid$
-	.text	181,0,""                          ;  "" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,239,100                       ;  239 
-	.byte	173                               ;  negate
+	.byte	180                               ;  .float
+	.byte	$e7                               ;  44.5858
+	.dword	$592bedfa                        ;  44.5858
 	.byte	157                               ;  str$
 	.byte	158                               ;  val
-	.byte	179,239,100                       ;  239 
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e5                               ;  8.047
-	.dword	$40604189                        ;  8.047
-	.byte	180                               ;  .float
-	.byte	$e7                               ;  -47.4822
-	.dword	$def6e2eb                        ;  -47.4822
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	0                                 ;  0
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,0,""                          ;  "" 
-	.byte	1                                 ;  1
-	.byte	0                                 ;  0
-	.byte	163                               ;  mid$
-	.text	181,0,""                          ;  "" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,1,"I"                         ;  "i" 
-	.byte	159                               ;  asc
-	.byte	178,73                            ;  73 
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  19.99
-	.dword	$4ff5c28f                        ;  19.99
-	.byte	149                               ;  log
-	.byte	180                               ;  .float
-	.byte	$e3                               ;  2.9952
-	.dword	$5fd8adac                        ;  2.9952
+	.byte	$e7                               ;  44.5858
+	.dword	$592bedfa                        ;  44.5858
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -407,44 +645,85 @@
 	.byte	137                               ;  <
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,1,"V"                         ;  "v" 
-	.byte	159                               ;  asc
-	.byte	178,86                            ;  86 
+	.byte	179,12,4                          ;  12 
+	.byte	179,40,19                         ;  40 
+	.byte	130                               ;  *
+	.byte	180                               ;  .float
+	.byte	$f8                               ;  5080544
+	.dword	$4d85e000                        ;  5080544
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e6                               ;  29.2421
+	.dword	$74f7e910                        ;  29.2421
+	.byte	180                               ;  .float
+	.byte	$dc                               ;  -0.0264
+	.dword	$ec22680a                        ;  -0.0264
+	.byte	131                               ;  /
+	.byte	180                               ;  .float
+	.byte	$ec                               ;  -1107.6553
+	.dword	$c53a7c1c                        ;  -1107.6553
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e5                               ;  8.8924
+	.dword	$4723a29c                        ;  8.8924
+	.byte	142                               ;  int
+	.byte	8                                 ;  8
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,166,51                        ;  166 
+	.byte	173                               ;  negate
+	.byte	143                               ;  abs
+	.byte	179,166,51                        ;  166 
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,5,"RAVDL"                     ;  "ravdl" 
-	.text	181,5,"SPARI"                     ;  "spari" 
-	.byte	167                               ;  s.cmp
-	.byte	137                               ;  <
-	.byte	1                                 ;  1
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,43,41                         ;  43 
-	.byte	179,126,109                       ;  126 
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
+	.text	181,4,"EMVE"                      ;  "emve" 
 	.byte	0                                 ;  0
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,38,112                        ;  38 
-	.byte	173                               ;  negate
-	.byte	175                               ;  not
-	.byte	179,39,112                        ;  39 
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,3,"ZGT"                       ;  "zgt" 
-	.text	181,5,"PECXT"                     ;  "pecxt" 
+	.byte	161                               ;  left$
+	.text	181,0,""                          ;  "" 
 	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,4,"CJFY"                      ;  "cjfy" 
+	.byte	1                                 ;  1
+	.byte	161                               ;  left$
+	.text	181,1,"C"                         ;  "c" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e7                               ;  54.4314
+	.dword	$6cdce076                        ;  54.4314
+	.byte	180                               ;  .float
+	.byte	$e8                               ;  -73.5519
+	.dword	$c98d4952                        ;  -73.5519
+	.byte	171                               ;  f.cmp
 	.byte	135                               ;  >
 	.byte	1                                 ;  1
 	.byte	173                               ;  negate
@@ -452,176 +731,62 @@
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,5,"NKPQF"                     ;  "nkpqf" 
-	.byte	156                               ;  len
-	.byte	5                                 ;  5
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,4,"VSKB"                      ;  "vskb" 
-	.text	181,0,""                          ;  "" 
-	.byte	167                               ;  s.cmp
-	.byte	138                               ;  >=
+	.byte	179,199,103                       ;  199 
+	.byte	141                               ;  sgn
 	.byte	1                                 ;  1
-	.byte	173                               ;  negate
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	179,122,74                        ;  122 
+	.byte	179,75,2                          ;  75 
 	.byte	173                               ;  negate
-	.byte	175                               ;  not
-	.byte	179,123,74                        ;  123 
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,3,"UGF"                       ;  "ugf" 
-	.text	181,3,"DKQ"                       ;  "dkq" 
-	.byte	167                               ;  s.cmp
-	.byte	135                               ;  >
-	.byte	1                                 ;  1
+	.byte	179,151,52                        ;  151 
 	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,72,99                         ;  72 
-	.byte	173                               ;  negate
-	.byte	179,55,70                         ;  55 
-	.byte	134                               ;  or
-	.byte	179,65,33                         ;  65 
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e0                               ;  0.37
-	.dword	$5eb851ec                        ;  0.37
-	.byte	153                               ;  tan
-	.byte	180                               ;  .float
-	.byte	$e0                               ;  0.3879
-	.dword	$634d6a16                        ;  0.3879
 	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e1                               ;  0.71
-	.dword	$5ae147ae                        ;  0.71
-	.byte	154                               ;  atn
-	.byte	180                               ;  .float
-	.byte	$e1                               ;  0.6174
-	.dword	$4f06f694                        ;  0.6174
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,5,"DMXGU"                     ;  "dmxgu" 
-	.byte	6                                 ;  6
-	.byte	6                                 ;  6
-	.byte	163                               ;  mid$
-	.text	181,0,""                          ;  "" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,4,"JPPH"                      ;  "jpph" 
-	.text	181,4,"JPPH"                      ;  "jpph" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	1                                 ;  1
-	.byte	173                               ;  negate
+	.byte	179,76,50                         ;  76 
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,2,"SL"                        ;  "sl" 
+	.byte	180                               ;  .float
+	.byte	$e3                               ;  -3.9035
+	.dword	$fce978d5                        ;  -3.9035
+	.byte	180                               ;  .float
+	.byte	$e6                               ;  -20.5461
+	.dword	$d22f34d7                        ;  -20.5461
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	0                                 ;  0
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,3,"VQV"                       ;  "vqv" 
 	.byte	3                                 ;  3
-	.byte	162                               ;  right$
-	.text	181,2,"SL"                        ;  "sl" 
+	.byte	1                                 ;  1
+	.byte	163                               ;  mid$
+	.text	181,1,"V"                         ;  "v" 
 	.byte	167                               ;  s.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	179,222,102                       ;  222 
-	.byte	179,81,124                        ;  81 
-	.byte	134                               ;  or
-	.byte	179,223,126                       ;  223 
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,1,"L"                         ;  "l" 
-	.byte	159                               ;  asc
-	.byte	178,76                            ;  76 
+	.byte	180                               ;  .float
+	.byte	$e5                               ;  -13.6012
+	.dword	$eccf41f2                        ;  -13.6012
+	.byte	141                               ;  sgn
+	.byte	1                                 ;  1
+	.byte	173                               ;  negate
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e2                               ;  1.52
-	.dword	$6147ae14                        ;  1.52
-	.byte	150                               ;  exp
-	.byte	180                               ;  .float
-	.byte	$e4                               ;  4.5722
-	.dword	$4927bb30                        ;  4.5722
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,2,"FB"                        ;  "fb" 
-	.byte	2                                 ;  2
-	.byte	162                               ;  right$
-	.text	181,2,"FB"                        ;  "fb" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,77,72                         ;  77 
-	.byte	173                               ;  negate
-	.byte	179,27,113                        ;  27 
-	.byte	173                               ;  negate
-	.byte	172                               ;  int.div
-	.byte	0                                 ;  0
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,147,48                        ;  147 
-	.byte	173                               ;  negate
-	.byte	179,211,61                        ;  211 
-	.byte	173                               ;  negate
-	.byte	129                               ;  -
-	.byte	179,64,13                         ;  64 
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e8                               ;  -65.0842
-	.dword	$c1158e22                        ;  -65.0842
+	.byte	$e5                               ;  -15.4398
+	.dword	$fb84b5dd                        ;  -15.4398
 	.byte	151                               ;  cos
 	.byte	180                               ;  .float
-	.byte	$e1                               ;  -0.63
-	.dword	$d0a3d70a                        ;  -0.63
+	.byte	$e1                               ;  -0.9643
+	.dword	$fb6e2eb2                        ;  -0.9643
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -632,12 +797,12 @@
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e2                               ;  -1.39
-	.dword	$d8f5c28f                        ;  -1.39
-	.byte	150                               ;  exp
+	.byte	$e2                               ;  1.813
+	.dword	$74083127                        ;  1.813
+	.byte	154                               ;  atn
 	.byte	180                               ;  .float
-	.byte	$df                               ;  0.2491
-	.dword	$7f8a0903                        ;  0.2491
+	.byte	$e2                               ;  1.0667
+	.dword	$4444d014                        ;  1.0667
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -647,37 +812,54 @@
 	.byte	137                               ;  <
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e2                               ;  1.0
-	.dword	$40000000                        ;  1.0
-	.byte	150                               ;  exp
-	.byte	180                               ;  .float
-	.byte	$e3                               ;  2.7183
-	.dword	$56fc5048                        ;  2.7183
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
+	.text	181,5,"MHSOP"                     ;  "mhsop" 
+	.byte	6                                 ;  6
+	.byte	4                                 ;  4
+	.byte	163                               ;  mid$
+	.text	181,0,""                          ;  "" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	179,5,39                          ;  5 
-	.byte	179,56,23                         ;  56 
-	.byte	172                               ;  int.div
+	.text	181,0,""                          ;  "" 
+	.text	181,3,"UAM"                       ;  "uam" 
+	.byte	167                               ;  s.cmp
+	.byte	137                               ;  <
 	.byte	1                                 ;  1
+	.byte	173                               ;  negate
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
+	.text	181,2,"UK"                        ;  "uk" 
+	.byte	3                                 ;  3
+	.byte	162                               ;  right$
+	.text	181,2,"UK"                        ;  "uk" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,2,"LF"                        ;  "lf" 
+	.byte	156                               ;  len
+	.byte	2                                 ;  2
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,2,"JD"                        ;  "jd" 
+	.byte	2                                 ;  2
+	.byte	3                                 ;  3
+	.byte	163                               ;  mid$
+	.text	181,1,"D"                         ;  "d" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,7,"34.3576"                   ;  "34.3576" 
+	.byte	158                               ;  val
 	.byte	180                               ;  .float
-	.byte	$e2                               ;  1.662
-	.dword	$6a5e353f                        ;  1.662
-	.byte	154                               ;  atn
-	.byte	180                               ;  .float
-	.byte	$e2                               ;  1.0291
-	.dword	$41dcc63f                        ;  1.0291
+	.byte	$e7                               ;  34.3576
+	.dword	$44b71759                        ;  34.3576
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -688,8 +870,171 @@
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e7                               ;  51.5921
-	.dword	$672f27bb                        ;  51.5921
+	.byte	$e2                               ;  1.855
+	.dword	$76b851ec                        ;  1.855
+	.byte	154                               ;  atn
+	.byte	180                               ;  .float
+	.byte	$e2                               ;  1.0764
+	.dword	$44e3bcd3                        ;  1.0764
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,8,"-42.3535"                  ;  "-42.3535" 
+	.byte	158                               ;  val
+	.byte	180                               ;  .float
+	.byte	$e7                               ;  -42.3535
+	.dword	$d4b4fdf4                        ;  -42.3535
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,107,14                        ;  107 
+	.byte	175                               ;  not
+	.byte	179,106,14                        ;  106 
+	.byte	173                               ;  negate
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,81,37                         ;  81 
+	.byte	179,185,86                        ;  185 
+	.byte	173                               ;  negate
+	.byte	172                               ;  int.div
+	.byte	0                                 ;  0
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,8,38                          ;  8 
+	.byte	175                               ;  not
+	.byte	179,7,38                          ;  7 
+	.byte	173                               ;  negate
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,1,"D"                         ;  "d" 
+	.byte	159                               ;  asc
+	.byte	178,68                            ;  68 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,51,76                         ;  51 
+	.byte	173                               ;  negate
+	.byte	143                               ;  abs
+	.byte	179,51,76                         ;  51 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,4,"JLMH"                      ;  "jlmh" 
+	.byte	2                                 ;  2
+	.byte	5                                 ;  5
+	.byte	163                               ;  mid$
+	.text	181,3,"LMH"                       ;  "lmh" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,155,34                        ;  155 
+	.byte	173                               ;  negate
+	.byte	179,4,28                          ;  4 
+	.byte	173                               ;  negate
+	.byte	134                               ;  or
+	.byte	3                                 ;  3
+	.byte	173                               ;  negate
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,1,"O"                         ;  "o" 
+	.byte	159                               ;  asc
+	.byte	178,79                            ;  79 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,9,43                          ;  9 
+	.byte	173                               ;  negate
+	.byte	175                               ;  not
+	.byte	179,10,43                         ;  10 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,3,"LSB"                       ;  "lsb" 
+	.byte	2                                 ;  2
+	.byte	162                               ;  right$
+	.text	181,2,"SB"                        ;  "sb" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,132,108                       ;  132 
+	.byte	173                               ;  negate
+	.byte	175                               ;  not
+	.byte	179,133,108                       ;  133 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,40,106                        ;  40 
+	.byte	173                               ;  negate
+	.byte	179,220,2                         ;  220 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	0                                 ;  0
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,141,104                       ;  141 
+	.byte	179,23,58                         ;  23 
+	.byte	173                               ;  negate
+	.byte	133                               ;  and
+	.byte	179,137,64                        ;  137 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,128,21                        ;  128 
+	.byte	173                               ;  negate
+	.byte	179,221,100                       ;  221 
+	.byte	131                               ;  /
+	.byte	180                               ;  .float
+	.byte	$df                               ;  -0.2132
+	.dword	$ed288ce7                        ;  -0.2132
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,2,"DO"                        ;  "do" 
+	.byte	1                                 ;  1
+	.byte	3                                 ;  3
+	.byte	163                               ;  mid$
+	.text	181,2,"DO"                        ;  "do" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,131,36                        ;  131 
 	.byte	141                               ;  sgn
 	.byte	1                                 ;  1
 	.byte	171                               ;  f.cmp
@@ -697,13 +1042,12 @@
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e7                               ;  45.5873
-	.dword	$5b2cb296                        ;  45.5873
-	.byte	157                               ;  str$
-	.byte	158                               ;  val
+	.byte	$e7                               ;  -37.1138
+	.dword	$ca3a43fe                        ;  -37.1138
+	.byte	151                               ;  cos
 	.byte	180                               ;  .float
-	.byte	$e7                               ;  45.5873
-	.dword	$5b2cb296                        ;  45.5873
+	.byte	$e1                               ;  0.8335
+	.dword	$6ab020c5                        ;  0.8335
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -714,12 +1058,12 @@
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e0                               ;  0.3
-	.dword	$4ccccccd                        ;  0.3
-	.byte	153                               ;  tan
+	.byte	$e1                               ;  -0.65
+	.dword	$d3333333                        ;  -0.65
+	.byte	150                               ;  exp
 	.byte	180                               ;  .float
-	.byte	$e0                               ;  0.3093
-	.dword	$4f2e48e9                        ;  0.3093
+	.byte	$e1                               ;  0.522
+	.dword	$42d0e560                        ;  0.522
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -727,6 +1071,75 @@
 	.dword	$51eb851f                        ;  0.01
 	.byte	171                               ;  f.cmp
 	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e1                               ;  -0.73
+	.dword	$dd70a3d7                        ;  -0.73
+	.byte	150                               ;  exp
+	.byte	180                               ;  .float
+	.byte	$e0                               ;  0.4819
+	.dword	$7b5dcc64                        ;  0.4819
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,229,125                       ;  229 
+	.byte	179,45,114                        ;  45 
+	.byte	134                               ;  or
+	.byte	179,237,127                       ;  237 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e8                               ;  72.49
+	.dword	$487d70a4                        ;  72.49
+	.byte	151                               ;  cos
+	.byte	180                               ;  .float
+	.byte	$e1                               ;  -0.9729
+	.dword	$fc87fcb9                        ;  -0.9729
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e1                               ;  -0.7516
+	.dword	$e0346dc6                        ;  -0.7516
+	.byte	180                               ;  .float
+	.byte	$e5                               ;  14.7137
+	.dword	$75b5a858                        ;  14.7137
+	.byte	171                               ;  f.cmp
+	.byte	140                               ;  <=
+	.byte	1                                 ;  1
+	.byte	173                               ;  negate
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,1,"F"                         ;  "f" 
+	.byte	159                               ;  asc
+	.byte	178,70                            ;  70 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,3,"TWU"                       ;  "twu" 
+	.byte	2                                 ;  2
+	.byte	161                               ;  left$
+	.text	181,2,"TW"                        ;  "tw" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
@@ -746,12 +1159,12 @@
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e7                               ;  51.9061
-	.dword	$67cfec57                        ;  51.9061
+	.byte	$e3                               ;  2.305
+	.dword	$49c28f5c                        ;  2.305
 	.byte	147                               ;  sqr
 	.byte	180                               ;  .float
-	.byte	$e4                               ;  7.2046
-	.dword	$73460aa6                        ;  7.2046
+	.byte	$e2                               ;  1.5182
+	.dword	$612a3055                        ;  1.5182
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -761,156 +1174,59 @@
 	.byte	137                               ;  <
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,5,"VXHSK"                     ;  "vxhsk" 
-	.byte	6                                 ;  6
+	.byte	180                               ;  .float
+	.byte	$e0                               ;  0.26
+	.dword	$428f5c29                        ;  0.26
+	.byte	153                               ;  tan
+	.byte	180                               ;  .float
+	.byte	$e0                               ;  0.266
+	.dword	$44189375                        ;  0.266
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e7                               ;  34.4333
+	.dword	$44ddd97f                        ;  34.4333
+	.byte	180                               ;  .float
+	.byte	$e7                               ;  -53.6916
+	.dword	$eb621965                        ;  -53.6916
+	.byte	171                               ;  f.cmp
+	.byte	139                               ;  <>
 	.byte	1                                 ;  1
-	.byte	163                               ;  mid$
-	.text	181,0,""                          ;  "" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e2                               ;  -1.76
-	.dword	$f0a3d70a                        ;  -1.76
-	.byte	150                               ;  exp
-	.byte	180                               ;  .float
-	.byte	$df                               ;  0.172
-	.dword	$5810624e                        ;  0.172
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,1,"Z"                         ;  "z" 
-	.text	181,0,""                          ;  "" 
-	.byte	176                               ;  concat
-	.text	181,1,"Z"                         ;  "z" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,68,21                         ;  68 
-	.byte	175                               ;  not
-	.byte	179,67,21                         ;  67 
 	.byte	173                               ;  negate
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  24.0461
-	.dword	$602f34d7                        ;  24.0461
-	.byte	151                               ;  cos
-	.byte	180                               ;  .float
-	.byte	$e0                               ;  0.4655
-	.dword	$772b020c                        ;  0.4655
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,4,"GZWF"                      ;  "gzwf" 
-	.byte	1                                 ;  1
-	.byte	162                               ;  right$
-	.text	181,1,"F"                         ;  "f" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,124,109                       ;  124 
-	.byte	173                               ;  negate
-	.byte	175                               ;  not
-	.byte	179,125,109                       ;  125 
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,1,"K"                         ;  "k" 
+	.byte	40                                ;  40
+	.byte	160                               ;  chr$
 	.byte	159                               ;  asc
-	.byte	178,75                            ;  75 
+	.byte	40                                ;  40
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	179,223,32                        ;  223 
-	.byte	173                               ;  negate
-	.byte	179,241,75                        ;  241 
-	.byte	129                               ;  -
-	.byte	179,208,108                       ;  208 
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e8                               ;  -79.5401
-	.dword	$cf8a43fe                        ;  -79.5401
-	.byte	180                               ;  .float
-	.byte	$e4                               ;  6.0922
-	.dword	$6179a6b5                        ;  6.0922
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	0                                 ;  0
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,3,"QMU"                       ;  "qmu" 
-	.text	181,3,"QBU"                       ;  "qbu" 
-	.byte	176                               ;  concat
-	.text	181,6,"QMUQBU"                    ;  "qmuqbu" 
+	.text	181,5,"SSVPX"                     ;  "ssvpx" 
+	.byte	4                                 ;  4
+	.byte	161                               ;  left$
+	.text	181,4,"SSVP"                      ;  "ssvp" 
 	.byte	167                               ;  s.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,4,"XGGQ"                      ;  "xggq" 
-	.text	181,3,"RIN"                       ;  "rin" 
-	.byte	176                               ;  concat
-	.text	181,7,"XGGQRIN"                   ;  "xggqrin" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,3,"FMN"                       ;  "fmn" 
-	.text	181,5,"GYZPQ"                     ;  "gyzpq" 
-	.byte	167                               ;  s.cmp
-	.byte	137                               ;  <
-	.byte	1                                 ;  1
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e7                               ;  57.5044
-	.dword	$730240b8                        ;  57.5044
+	.byte	$e7                               ;  39.578
+	.dword	$4f27ef9e                        ;  39.578
+	.byte	147                               ;  sqr
 	.byte	180                               ;  .float
-	.byte	$e7                               ;  46.7045
-	.dword	$5d68b439                        ;  46.7045
-	.byte	171                               ;  f.cmp
-	.byte	135                               ;  >
-	.byte	1                                 ;  1
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  -16.8905
-	.dword	$c38fdf3b                        ;  -16.8905
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  16.8905
-	.dword	$438fdf3b                        ;  16.8905
+	.byte	$e4                               ;  6.2911
+	.dword	$64a85879                        ;  6.2911
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -920,152 +1236,32 @@
 	.byte	137                               ;  <
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e5                               ;  14.9581
-	.dword	$77aa3055                        ;  14.9581
-	.byte	180                               ;  .float
-	.byte	$e5                               ;  14.9581
-	.dword	$77aa3055                        ;  14.9581
+	.byte	179,50,8                          ;  50 
+	.byte	179,34,26                         ;  34 
 	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	1                                 ;  1
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,4,"CTTQ"                      ;  "cttq" 
-	.text	181,5,"BHYGX"                     ;  "bhygx" 
-	.byte	176                               ;  concat
-	.text	181,9,"CTTQBHYGX"                 ;  "cttqbhygx" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  -24.9913
-	.dword	$e3f71759                        ;  -24.9913
-	.byte	180                               ;  .float
-	.byte	$e4                               ;  -7.0508
-	.dword	$f0d013a9                        ;  -7.0508
-	.byte	131                               ;  /
-	.byte	180                               ;  .float
-	.byte	$e3                               ;  3.5445
-	.dword	$716c8b44                        ;  3.5445
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,253,14                        ;  253 
-	.byte	179,175,4                         ;  175 
-	.byte	173                               ;  negate
-	.byte	131                               ;  /
-	.byte	180                               ;  .float
-	.byte	$e3                               ;  -3.2002
-	.dword	$e66809d5                        ;  -3.2002
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,1,"M"                         ;  "m" 
-	.text	181,3,"OJS"                       ;  "ojs" 
-	.byte	167                               ;  s.cmp
 	.byte	138                               ;  >=
 	.byte	0                                 ;  0
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  22.5997
-	.dword	$5a6617c2                        ;  22.5997
-	.byte	142                               ;  int
-	.byte	22                                ;  22
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,3,"UYN"                       ;  "uyn" 
-	.byte	4                                 ;  4
-	.byte	162                               ;  right$
-	.text	181,3,"UYN"                       ;  "uyn" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,5,"SZQXT"                     ;  "szqxt" 
-	.text	181,4,"FTPO"                      ;  "ftpo" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	0                                 ;  0
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,5,"25505"                     ;  "25505" 
+	.byte	179,70,77                         ;  70 
+	.byte	173                               ;  negate
+	.byte	157                               ;  str$
 	.byte	158                               ;  val
-	.byte	180                               ;  .float
-	.byte	$f0                               ;  25505.0
-	.dword	$63a10000                        ;  25505.0
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,1,"P"                         ;  "p" 
-	.byte	1                                 ;  1
-	.byte	1                                 ;  1
-	.byte	163                               ;  mid$
-	.text	181,1,"P"                         ;  "p" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	33                                ;  33
-	.byte	160                               ;  chr$
-	.byte	159                               ;  asc
-	.byte	33                                ;  33
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,0,""                          ;  "" 
-	.text	181,2,"IR"                        ;  "ir" 
-	.byte	167                               ;  s.cmp
-	.byte	139                               ;  <>
-	.byte	1                                 ;  1
+	.byte	179,70,77                         ;  70 
 	.byte	173                               ;  negate
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,4,"DZTG"                      ;  "dztg" 
-	.byte	156                               ;  len
-	.byte	4                                 ;  4
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e8                               ;  -71.144
-	.dword	$c724dd2f                        ;  -71.144
-	.byte	142                               ;  int
-	.byte	178,72                            ;  72 
-	.byte	173                               ;  negate
+	.byte	$e0                               ;  0.27
+	.dword	$451eb852                        ;  0.27
+	.byte	153                               ;  tan
+	.byte	180                               ;  .float
+	.byte	$e0                               ;  0.2768
+	.dword	$46dc5d64                        ;  0.2768
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -1075,14 +1271,16 @@
 	.byte	137                               ;  <
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	179,54,1                          ;  54 
-	.byte	173                               ;  negate
-	.byte	179,245,52                        ;  245 
-	.byte	173                               ;  negate
-	.byte	130                               ;  *
 	.byte	180                               ;  .float
-	.byte	$f8                               ;  4202670
-	.dword	$4020ae00                        ;  4202670
+	.byte	$e3                               ;  2.66
+	.dword	$551eb852                        ;  2.66
+	.byte	180                               ;  .float
+	.byte	$e2                               ;  1.4
+	.dword	$5999999a                        ;  1.4
+	.byte	132                               ;  ^
+	.byte	180                               ;  .float
+	.byte	$e3                               ;  3.934
+	.dword	$7de353f8                        ;  3.934
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -1092,138 +1290,32 @@
 	.byte	137                               ;  <
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,3,"TER"                       ;  "ter" 
-	.byte	4                                 ;  4
+	.text	181,4,"LENS"                      ;  "lens" 
+	.byte	2                                 ;  2
+	.byte	161                               ;  left$
+	.text	181,2,"LE"                        ;  "le" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,185,25                        ;  185 
+	.byte	173                               ;  negate
+	.byte	179,128,8                         ;  128 
+	.byte	173                               ;  negate
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
 	.byte	0                                 ;  0
-	.byte	163                               ;  mid$
-	.text	181,0,""                          ;  "" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  29.5331
-	.dword	$7621e4f7                        ;  29.5331
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  -27.5115
-	.dword	$ee0bc6a8                        ;  -27.5115
-	.byte	131                               ;  /
-	.byte	180                               ;  .float
-	.byte	$e2                               ;  -1.0735
-	.dword	$c4b43958                        ;  -1.0735
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e7                               ;  -63.8012
-	.dword	$ff9a36e3                        ;  -63.8012
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  -30.1686
-	.dword	$f8aca57a                        ;  -30.1686
-	.byte	171                               ;  f.cmp
-	.byte	140                               ;  <=
-	.byte	1                                 ;  1
-	.byte	173                               ;  negate
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e8                               ;  76.7042
-	.dword	$4cb44674                        ;  76.7042
-	.byte	142                               ;  int
-	.byte	178,76                            ;  76 
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	39                                ;  39
-	.byte	160                               ;  chr$
-	.byte	159                               ;  asc
-	.byte	39                                ;  39
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,110,37                        ;  110 
-	.byte	173                               ;  negate
-	.byte	179,61,58                         ;  61 
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	1                                 ;  1
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,153,66                        ;  153 
-	.byte	179,43,58                         ;  43 
-	.byte	171                               ;  f.cmp
-	.byte	135                               ;  >
-	.byte	1                                 ;  1
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,48,10                         ;  48 
-	.byte	173                               ;  negate
-	.byte	179,253,32                        ;  253 
-	.byte	134                               ;  or
-	.byte	179,3,10                          ;  3 
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e1                               ;  0.557
-	.dword	$474bc6a8                        ;  0.557
-	.byte	154                               ;  atn
-	.byte	180                               ;  .float
-	.byte	$e1                               ;  0.5082
-	.dword	$410cb296                        ;  0.5082
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  -30.8444
-	.dword	$fb60aa65                        ;  -30.8444
-	.byte	180                               ;  .float
-	.byte	$e8                               ;  -72.2934
-	.dword	$c84b1c43                        ;  -72.2934
-	.byte	171                               ;  f.cmp
-	.byte	139                               ;  <>
-	.byte	1                                 ;  1
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e2                               ;  1.52
-	.dword	$6147ae14                        ;  1.52
+	.byte	$e1                               ;  -0.96
+	.dword	$fae147ae                        ;  -0.96
 	.byte	150                               ;  exp
 	.byte	180                               ;  .float
-	.byte	$e4                               ;  4.5722
-	.dword	$4927bb30                        ;  4.5722
+	.byte	$e0                               ;  0.3829
+	.dword	$6205bc02                        ;  0.3829
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -1233,45 +1325,75 @@
 	.byte	137                               ;  <
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	179,12,62                         ;  12 
+	.text	181,3,"CCL"                       ;  "ccl" 
+	.text	181,5,"WXBNH"                     ;  "wxbnh" 
+	.byte	167                               ;  s.cmp
+	.byte	135                               ;  >
+	.byte	0                                 ;  0
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e5                               ;  -11.7278
+	.dword	$ddd288ce                        ;  -11.7278
+	.byte	180                               ;  .float
+	.byte	$e7                               ;  42.9894
+	.dword	$55fa92a3                        ;  42.9894
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	0                                 ;  0
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e5                               ;  -10.4333
+	.dword	$d37765fe                        ;  -10.4333
+	.byte	152                               ;  sin
+	.byte	180                               ;  .float
+	.byte	$e1                               ;  0.846
+	.dword	$6c49ba5e                        ;  0.846
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,4,"QZSG"                      ;  "qzsg" 
+	.byte	5                                 ;  5
+	.byte	0                                 ;  0
+	.byte	163                               ;  mid$
+	.text	181,0,""                          ;  "" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,29,22                         ;  29 
 	.byte	141                               ;  sgn
 	.byte	1                                 ;  1
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e7                               ;  32.1452
-	.dword	$404a57a8                        ;  32.1452
-	.byte	152                               ;  sin
-	.byte	180                               ;  .float
-	.byte	$e1                               ;  0.6663
-	.dword	$55495183                        ;  0.6663
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
+	.byte	178,96                            ;  96 
+	.byte	160                               ;  chr$
+	.byte	159                               ;  asc
+	.byte	178,96                            ;  96 
 	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,1,"J"                         ;  "j" 
-	.byte	1                                 ;  1
-	.byte	162                               ;  right$
-	.text	181,1,"J"                         ;  "j" 
-	.byte	167                               ;  s.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	179,247,55                        ;  247 
-	.byte	173                               ;  negate
-	.byte	179,154,43                        ;  154 
-	.byte	173                               ;  negate
-	.byte	131                               ;  /
 	.byte	180                               ;  .float
-	.byte	$e2                               ;  1.2836
-	.dword	$5226809d                        ;  1.2836
+	.byte	$00                               ;  0.0
+	.dword	$00000000                        ;  0.0
+	.byte	150                               ;  exp
+	.byte	180                               ;  .float
+	.byte	$e2                               ;  1.0
+	.dword	$40000000                        ;  1.0
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -1281,53 +1403,51 @@
 	.byte	137                               ;  <
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e7                               ;  61.9811
-	.dword	$7bf652bd                        ;  61.9811
-	.byte	180                               ;  .float
-	.byte	$e7                               ;  -63.5918
-	.dword	$ff2f0069                        ;  -63.5918
+	.byte	179,104,38                        ;  104 
+	.byte	173                               ;  negate
+	.byte	179,232,23                        ;  232 
 	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
+	.byte	135                               ;  >
 	.byte	0                                 ;  0
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	178,64                            ;  64 
-	.byte	160                               ;  chr$
-	.byte	159                               ;  asc
-	.byte	178,64                            ;  64 
+	.byte	180                               ;  .float
+	.byte	$e8                               ;  72.2113
+	.dword	$483617c2                        ;  72.2113
+	.byte	180                               ;  .float
+	.byte	$e8                               ;  72.8216
+	.dword	$48d25461                        ;  72.8216
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	0                                 ;  0
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,0,""                          ;  "" 
+	.text	181,2,"PZ"                        ;  "pz" 
+	.byte	176                               ;  concat
+	.text	181,2,"PZ"                        ;  "pz" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,111,28                        ;  111 
+	.byte	143                               ;  abs
+	.byte	179,111,28                        ;  111 
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e7                               ;  54.7547
-	.dword	$6d82680a                        ;  54.7547
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  22.6725
-	.dword	$5ab0a3d7                        ;  22.6725
-	.byte	130                               ;  *
-	.byte	180                               ;  .float
-	.byte	$ec                               ;  1241.4259
-	.dword	$4d96d07d                        ;  1241.4259
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e1                               ;  0.701
-	.dword	$59ba5e35                        ;  0.701
+	.byte	$e2                               ;  1.315
+	.dword	$5428f5c3                        ;  1.315
 	.byte	154                               ;  atn
 	.byte	180                               ;  .float
-	.byte	$e1                               ;  0.6114
-	.dword	$4e425aee                        ;  0.6114
+	.byte	$e1                               ;  0.9206
+	.dword	$75d63886                        ;  0.9206
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -1337,33 +1457,13 @@
 	.byte	137                               ;  <
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,0,""                          ;  "" 
-	.byte	1                                 ;  1
-	.byte	0                                 ;  0
-	.byte	163                               ;  mid$
-	.text	181,0,""                          ;  "" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,50,44                         ;  50 
-	.byte	173                               ;  negate
-	.byte	179,91,80                         ;  91 
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	0                                 ;  0
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e8                               ;  74.505
-	.dword	$4a8147ae                        ;  74.505
-	.byte	147                               ;  sqr
+	.byte	$df                               ;  0.17
+	.dword	$570a3d71                        ;  0.17
+	.byte	153                               ;  tan
 	.byte	180                               ;  .float
-	.byte	$e5                               ;  8.6316
-	.dword	$450d844d                        ;  8.6316
+	.byte	$df                               ;  0.1717
+	.dword	$57e90ff9                        ;  0.1717
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -1373,50 +1473,59 @@
 	.byte	137                               ;  <
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	178,96                            ;  96 
-	.byte	160                               ;  chr$
-	.byte	159                               ;  asc
-	.byte	178,96                            ;  96 
+	.byte	179,176,111                       ;  176 
+	.byte	179,204,18                        ;  204 
+	.byte	134                               ;  or
+	.byte	179,252,127                       ;  252 
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,1,"E"                         ;  "e" 
-	.text	181,2,"WV"                        ;  "wv" 
+	.text	181,4,"BVXI"                      ;  "bvxi" 
+	.text	181,0,""                          ;  "" 
+	.byte	176                               ;  concat
+	.text	181,4,"BVXI"                      ;  "bvxi" 
 	.byte	167                               ;  s.cmp
-	.byte	138                               ;  >=
-	.byte	0                                 ;  0
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,4,"LRIL"                      ;  "lril" 
+	.text	181,1,"O"                         ;  "o" 
+	.byte	176                               ;  concat
+	.text	181,5,"LRILO"                     ;  "lrilo" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,167,102                       ;  167 
+	.byte	175                               ;  not
+	.byte	179,166,102                       ;  166 
+	.byte	173                               ;  negate
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,1,"V"                         ;  "v" 
-	.byte	0                                 ;  0
-	.byte	161                               ;  left$
+	.byte	180                               ;  .float
+	.byte	$e8                               ;  89.88
+	.dword	$59e147ae                        ;  89.88
+	.byte	149                               ;  log
+	.byte	180                               ;  .float
+	.byte	$e4                               ;  4.4985
+	.dword	$47f9db23                        ;  4.4985
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,5,"ACRIN"                     ;  "acrin" 
 	.text	181,0,""                          ;  "" 
 	.byte	167                               ;  s.cmp
 	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,1,"Z"                         ;  "z" 
 	.byte	0                                 ;  0
-	.byte	162                               ;  right$
-	.text	181,0,""                          ;  "" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,154,105                       ;  154 
-	.byte	157                               ;  str$
-	.byte	158                               ;  val
-	.byte	179,154,105                       ;  154 
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,1,"L"                         ;  "l" 
-	.byte	159                               ;  asc
-	.byte	178,76                            ;  76 
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
@@ -1428,105 +1537,86 @@
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,0,""                          ;  "" 
-	.byte	156                               ;  len
-	.byte	0                                 ;  0
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e7                               ;  60.35
-	.dword	$78b33333                        ;  60.35
-	.byte	149                               ;  log
-	.byte	180                               ;  .float
-	.byte	$e4                               ;  4.1002
-	.dword	$419a6b51                        ;  4.1002
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e8                               ;  -68.3435
-	.dword	$c457ef9e                        ;  -68.3435
-	.byte	180                               ;  .float
-	.byte	$e3                               ;  3.9049
-	.dword	$7cf4f0d8                        ;  3.9049
-	.byte	130                               ;  *
-	.byte	180                               ;  .float
-	.byte	$ea                               ;  -266.8745
-	.dword	$c2b7f7cf                        ;  -266.8745
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e7                               ;  50.73
-	.dword	$6575c28f                        ;  50.73
-	.byte	149                               ;  log
-	.byte	180                               ;  .float
-	.byte	$e3                               ;  3.9265
-	.dword	$7da5e354                        ;  3.9265
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	178,74                            ;  74 
-	.byte	160                               ;  chr$
-	.byte	159                               ;  asc
-	.byte	178,74                            ;  74 
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  23.3981
-	.dword	$5d97a787                        ;  23.3981
-	.byte	152                               ;  sin
-	.byte	180                               ;  .float
-	.byte	$e1                               ;  -0.9866
-	.dword	$fe48e8a7                        ;  -0.9866
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,192,42                        ;  192 
-	.byte	179,53,82                         ;  53 
+	.byte	179,68,80                         ;  68 
 	.byte	173                               ;  negate
-	.byte	133                               ;  and
-	.byte	179,192,40                        ;  192 
+	.byte	179,68,41                         ;  68 
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	1                                 ;  1
+	.byte	173                               ;  negate
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,3,"LBG"                       ;  "lbg" 
+	.text	181,4,"AAEH"                      ;  "aaeh" 
+	.byte	176                               ;  concat
+	.text	181,7,"LBGAAEH"                   ;  "lbgaaeh" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,114,37                        ;  114 
+	.byte	179,200,25                        ;  200 
+	.byte	129                               ;  -
+	.byte	179,170,11                        ;  170 
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e8                               ;  -66.7797
-	.dword	$c2c79a6b                        ;  -66.7797
+	.byte	$e2                               ;  1.241
+	.dword	$4f6c8b44                        ;  1.241
+	.byte	154                               ;  atn
 	.byte	180                               ;  .float
-	.byte	$e8                               ;  -66.7797
-	.dword	$c2c79a6b                        ;  -66.7797
+	.byte	$e1                               ;  0.8925
+	.dword	$723d70a4                        ;  0.8925
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
 	.byte	171                               ;  f.cmp
-	.byte	138                               ;  >=
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,0,""                          ;  "" 
+	.byte	0                                 ;  0
+	.byte	161                               ;  left$
+	.text	181,0,""                          ;  "" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,1,"T"                         ;  "t" 
+	.byte	159                               ;  asc
+	.byte	178,84                            ;  84 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,191,114                       ;  191 
+	.byte	173                               ;  negate
+	.byte	141                               ;  sgn
+	.byte	1                                 ;  1
+	.byte	173                               ;  negate
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,109,44                        ;  109 
+	.byte	173                               ;  negate
+	.byte	179,38,65                         ;  38 
+	.byte	128                               ;  +
+	.byte	179,185,20                        ;  185 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,4,"FMFX"                      ;  "fmfx" 
+	.text	181,4,"FMFX"                      ;  "fmfx" 
+	.byte	167                               ;  s.cmp
+	.byte	140                               ;  <=
 	.byte	1                                 ;  1
 	.byte	173                               ;  negate
 	.byte	171                               ;  f.cmp
@@ -1534,15 +1624,15 @@
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e7                               ;  53.8248
-	.dword	$6ba64c30                        ;  53.8248
+	.byte	$e8                               ;  -73.2013
+	.dword	$c9338866                        ;  -73.2013
 	.byte	180                               ;  .float
-	.byte	$e7                               ;  -57.4477
-	.dword	$f2e538ef                        ;  -57.4477
+	.byte	$e7                               ;  54.9927
+	.dword	$6dfc432d                        ;  54.9927
 	.byte	129                               ;  -
 	.byte	180                               ;  .float
-	.byte	$e8                               ;  111.2725
-	.dword	$6f45c28f                        ;  111.2725
+	.byte	$e9                               ;  -128.194
+	.dword	$c018d4fe                        ;  -128.194
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -1552,13 +1642,23 @@
 	.byte	137                               ;  <
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	179,86,29                         ;  86 
-	.byte	173                               ;  negate
-	.byte	179,91,51                         ;  91 
-	.byte	131                               ;  /
+	.text	181,1,"W"                         ;  "w" 
+	.text	181,1,"W"                         ;  "w" 
+	.byte	167                               ;  s.cmp
+	.byte	137                               ;  <
+	.byte	0                                 ;  0
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e1                               ;  -0.5712
-	.dword	$c91d14e4                        ;  -0.5712
+	.byte	$e7                               ;  -46.6277
+	.dword	$dd4161e5                        ;  -46.6277
+	.byte	157                               ;  str$
+	.byte	158                               ;  val
+	.byte	180                               ;  .float
+	.byte	$e7                               ;  -46.6277
+	.dword	$dd4161e5                        ;  -46.6277
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -1566,6 +1666,22 @@
 	.dword	$51eb851f                        ;  0.01
 	.byte	171                               ;  f.cmp
 	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,2,"HX"                        ;  "hx" 
+	.byte	2                                 ;  2
+	.byte	161                               ;  left$
+	.text	181,2,"HX"                        ;  "hx" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,163,33                        ;  163 
+	.byte	179,216,9                         ;  216 
+	.byte	134                               ;  or
+	.byte	179,251,41                        ;  251 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.text	181,1,"Q"                         ;  "q" 
@@ -1576,11 +1692,12 @@
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e5                               ;  -9.919
-	.dword	$cf5a1cac                        ;  -9.919
-	.byte	142                               ;  int
-	.byte	10                                ;  10
-	.byte	173                               ;  negate
+	.byte	$e8                               ;  74.9922
+	.dword	$4afe00d2                        ;  74.9922
+	.byte	151                               ;  cos
+	.byte	180                               ;  .float
+	.byte	$e1                               ;  0.9187
+	.dword	$7597f62b                        ;  0.9187
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -1588,122 +1705,26 @@
 	.dword	$51eb851f                        ;  0.01
 	.byte	171                               ;  f.cmp
 	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  30.2176
-	.dword	$78ded289                        ;  30.2176
-	.byte	141                               ;  sgn
-	.byte	1                                 ;  1
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,0,""                          ;  "" 
-	.byte	0                                 ;  0
-	.byte	162                               ;  right$
-	.text	181,0,""                          ;  "" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e7                               ;  -62.5011
-	.dword	$fd00902e                        ;  -62.5011
-	.byte	180                               ;  .float
-	.byte	$e8                               ;  74.7741
-	.dword	$4ac62b6b                        ;  74.7741
-	.byte	171                               ;  f.cmp
-	.byte	140                               ;  <=
-	.byte	1                                 ;  1
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,2,"QV"                        ;  "qv" 
-	.text	181,2,"PY"                        ;  "py" 
-	.byte	176                               ;  concat
-	.text	181,4,"QVPY"                      ;  "qvpy" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,5,"EBWDT"                     ;  "ebwdt" 
-	.byte	6                                 ;  6
-	.byte	3                                 ;  3
-	.byte	163                               ;  mid$
-	.text	181,0,""                          ;  "" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,218,17                        ;  218 
-	.byte	157                               ;  str$
-	.byte	158                               ;  val
-	.byte	179,218,17                        ;  218 
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  18.8498
-	.dword	$4b6631f9                        ;  18.8498
-	.byte	180                               ;  .float
-	.byte	$e8                               ;  73.25
-	.dword	$49400000                        ;  73.25
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	0                                 ;  0
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e4                               ;  4.1648
-	.dword	$42a30553                        ;  4.1648
-	.byte	141                               ;  sgn
-	.byte	1                                 ;  1
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.text	181,1,"C"                         ;  "c" 
-	.byte	159                               ;  asc
-	.byte	178,67                            ;  67 
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  23.4689
-	.dword	$5de02752                        ;  23.4689
-	.byte	180                               ;  .float
-	.byte	$e5                               ;  12.44
-	.dword	$63851eb8                        ;  12.44
-	.byte	171                               ;  f.cmp
-	.byte	138                               ;  >=
-	.byte	1                                 ;  1
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,0,""                          ;  "" 
 	.byte	1                                 ;  1
 	.byte	161                               ;  left$
-	.text	181,0,""                          ;  "" 
+	.text	181,1,"C"                         ;  "c" 
 	.byte	167                               ;  s.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	179,2,109                         ;  2 
-	.byte	173                               ;  negate
-	.byte	179,179,62                        ;  179 
-	.byte	173                               ;  negate
-	.byte	128                               ;  +
-	.byte	179,181,171                       ;  181 
-	.byte	173                               ;  negate
+	.byte	180                               ;  .float
+	.byte	$e3                               ;  2.1933
+	.dword	$462f837b                        ;  2.1933
+	.byte	180                               ;  .float
+	.byte	$df                               ;  0.2
+	.dword	$66666666                        ;  0.2
+	.byte	132                               ;  ^
+	.byte	180                               ;  .float
+	.byte	$e2                               ;  1.1701
+	.dword	$4ae2eb1c                        ;  1.1701
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -1713,76 +1734,46 @@
 	.byte	137                               ;  <
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	179,244,66                        ;  244 
-	.byte	175                               ;  not
-	.byte	179,243,66                        ;  243 
-	.byte	173                               ;  negate
+	.byte	180                               ;  .float
+	.byte	$e7                               ;  41.2928
+	.dword	$5295e9e2                        ;  41.2928
+	.byte	180                               ;  .float
+	.byte	$e3                               ;  3.0127
+	.dword	$606809d5                        ;  3.0127
+	.byte	129                               ;  -
+	.byte	180                               ;  .float
+	.byte	$e7                               ;  38.2801
+	.dword	$4c8f6944                        ;  38.2801
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
 	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,5,"MPEDQ"                     ;  "mpedq" 
-	.byte	3                                 ;  3
-	.byte	162                               ;  right$
-	.text	181,3,"EDQ"                       ;  "edq" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,4,"SRVZ"                      ;  "srvz" 
-	.byte	3                                 ;  3
-	.byte	2                                 ;  2
-	.byte	163                               ;  mid$
-	.text	181,2,"VZ"                        ;  "vz" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
+	.byte	137                               ;  <
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e7                               ;  46.2924
-	.dword	$5c95b574                        ;  46.2924
+	.byte	$e8                               ;  70.9486
+	.dword	$46f2d773                        ;  70.9486
 	.byte	180                               ;  .float
-	.byte	$e7                               ;  62.7356
-	.dword	$7d78a090                        ;  62.7356
+	.byte	$e3                               ;  2.4117
+	.dword	$4d2ca57a                        ;  2.4117
 	.byte	171                               ;  f.cmp
 	.byte	138                               ;  >=
-	.byte	0                                 ;  0
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,92,4                          ;  92 
-	.byte	141                               ;  sgn
 	.byte	1                                 ;  1
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,98,84                         ;  98 
-	.byte	179,170,99                        ;  170 
 	.byte	173                               ;  negate
-	.byte	133                               ;  and
-	.byte	179,66,20                         ;  66 
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,3,"STX"                       ;  "stx" 
-	.byte	1                                 ;  1
-	.byte	0                                 ;  0
-	.byte	163                               ;  mid$
-	.text	181,0,""                          ;  "" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e7                               ;  50.9133
-	.dword	$65d39c0f                        ;  50.9133
-	.byte	147                               ;  sqr
+	.byte	$e2                               ;  1.231
+	.dword	$4ec8b439                        ;  1.231
+	.byte	154                               ;  atn
 	.byte	180                               ;  .float
-	.byte	$e4                               ;  7.1354
-	.dword	$722a9931                        ;  7.1354
+	.byte	$e1                               ;  0.8886
+	.dword	$71bda512                        ;  0.8886
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -1792,78 +1783,40 @@
 	.byte	137                               ;  <
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,1,"X"                         ;  "x" 
-	.byte	159                               ;  asc
-	.byte	178,88                            ;  88 
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e7                               ;  38.1377
-	.dword	$4c46809d                        ;  38.1377
-	.byte	147                               ;  sqr
-	.byte	180                               ;  .float
-	.byte	$e4                               ;  6.1756
-	.dword	$62cf41f2                        ;  6.1756
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e7                               ;  -44.8891
-	.dword	$d9c7381d                        ;  -44.8891
-	.byte	141                               ;  sgn
-	.byte	1                                 ;  1
+	.byte	179,6,72                          ;  6 
 	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,175,71                        ;  175 
-	.byte	173                               ;  negate
-	.byte	179,207,98                        ;  207 
-	.byte	171                               ;  f.cmp
-	.byte	139                               ;  <>
-	.byte	1                                 ;  1
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,93,47                         ;  93 
-	.byte	173                               ;  negate
-	.byte	179,112,68                        ;  112 
+	.byte	179,219,21                        ;  219 
 	.byte	173                               ;  negate
 	.byte	134                               ;  or
-	.byte	179,77,4                          ;  77 
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,244,113                       ;  244 
-	.byte	173                               ;  negate
-	.byte	179,107,62                        ;  107 
-	.byte	173                               ;  negate
-	.byte	172                               ;  int.div
 	.byte	1                                 ;  1
+	.byte	173                               ;  negate
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e0                               ;  0.37
-	.dword	$5eb851ec                        ;  0.37
+	.byte	$e0                               ;  0.494
+	.dword	$7e76c8b4                        ;  0.494
+	.byte	154                               ;  atn
+	.byte	180                               ;  .float
+	.byte	$e0                               ;  0.4588
+	.dword	$7573eab3                        ;  0.4588
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e0                               ;  0.27
+	.dword	$451eb852                        ;  0.27
 	.byte	153                               ;  tan
 	.byte	180                               ;  .float
-	.byte	$e0                               ;  0.3879
-	.dword	$634d6a16                        ;  0.3879
+	.byte	$e0                               ;  0.2768
+	.dword	$46dc5d64                        ;  0.2768
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -1873,360 +1826,38 @@
 	.byte	137                               ;  <
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  28.1758
-	.dword	$70b404ea                        ;  28.1758
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  28.1758
-	.dword	$70b404ea                        ;  28.1758
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
+	.text	181,1,"P"                         ;  "p" 
+	.byte	159                               ;  asc
+	.byte	178,80                            ;  80 
 	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,2,"RG"                        ;  "rg" 
-	.byte	2                                 ;  2
-	.byte	161                               ;  left$
-	.text	181,2,"RG"                        ;  "rg" 
-	.byte	167                               ;  s.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	179,44,87                         ;  44 
-	.byte	179,100,24                        ;  100 
+	.byte	179,238,57                        ;  238 
+	.byte	179,28,45                         ;  28 
 	.byte	173                               ;  negate
-	.byte	131                               ;  /
-	.byte	180                               ;  .float
-	.byte	$e3                               ;  -3.574
-	.dword	$f25e353f                        ;  -3.574
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,4,"XROA"                      ;  "xroa" 
-	.text	181,0,""                          ;  "" 
-	.byte	167                               ;  s.cmp
-	.byte	135                               ;  >
-	.byte	1                                 ;  1
+	.byte	134                               ;  or
+	.byte	179,18,4                          ;  18 
 	.byte	173                               ;  negate
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e1                               ;  0.669
-	.dword	$55a1cac1                        ;  0.669
-	.byte	154                               ;  atn
-	.byte	180                               ;  .float
-	.byte	$e1                               ;  0.5896
-	.dword	$4b780347                        ;  0.5896
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,3,"OPZ"                       ;  "opz" 
-	.byte	2                                 ;  2
-	.byte	4                                 ;  4
-	.byte	163                               ;  mid$
-	.text	181,2,"PZ"                        ;  "pz" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,3,"KZP"                       ;  "kzp" 
-	.byte	4                                 ;  4
-	.byte	161                               ;  left$
-	.text	181,3,"KZP"                       ;  "kzp" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,0,""                          ;  "" 
-	.byte	1                                 ;  1
-	.byte	161                               ;  left$
-	.text	181,0,""                          ;  "" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e8                               ;  75.8549
-	.dword	$4bdadaba                        ;  75.8549
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  -22.5839
-	.dword	$da55e9e2                        ;  -22.5839
-	.byte	171                               ;  f.cmp
-	.byte	140                               ;  <=
-	.byte	0                                 ;  0
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e0                               ;  0.277
-	.dword	$46e978d5                        ;  0.277
-	.byte	154                               ;  atn
-	.byte	180                               ;  .float
-	.byte	$e0                               ;  0.2702
-	.dword	$452bd3c3                        ;  0.2702
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e8                               ;  94.36
-	.dword	$5e5c28f6                        ;  94.36
-	.byte	149                               ;  log
-	.byte	180                               ;  .float
-	.byte	$e4                               ;  4.5471
-	.dword	$48c0ebee                        ;  4.5471
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e8                               ;  -66.9981
-	.dword	$c2ff837b                        ;  -66.9981
-	.byte	180                               ;  .float
-	.byte	$e3                               ;  3.2913
-	.dword	$69525461                        ;  3.2913
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	0                                 ;  0
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,3,"MIW"                       ;  "miw" 
-	.byte	1                                 ;  1
+	.text	181,2,"TR"                        ;  "tr" 
+	.byte	3                                 ;  3
 	.byte	162                               ;  right$
-	.text	181,1,"W"                         ;  "w" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,1,"V"                         ;  "v" 
-	.text	181,0,""                          ;  "" 
-	.byte	176                               ;  concat
-	.text	181,1,"V"                         ;  "v" 
+	.text	181,2,"TR"                        ;  "tr" 
 	.byte	167                               ;  s.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
 	.byte	180                               ;  .float
-	.byte	$e7                               ;  -54.2683
-	.dword	$ec895e9e                        ;  -54.2683
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  19.7485
-	.dword	$4efe76c9                        ;  19.7485
-	.byte	130                               ;  *
-	.byte	180                               ;  .float
-	.byte	$ec                               ;  -1071.7175
-	.dword	$c2fb7ae1                        ;  -1071.7175
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e6                               ;  21.6726
-	.dword	$56b0be0e                        ;  21.6726
-	.byte	180                               ;  .float
-	.byte	$e8                               ;  76.2395
-	.dword	$4c3d4fdf                        ;  76.2395
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	1                                 ;  1
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,0,""                          ;  "" 
-	.byte	0                                 ;  0
-	.byte	162                               ;  right$
-	.text	181,0,""                          ;  "" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,0,""                          ;  "" 
-	.byte	1                                 ;  1
-	.byte	162                               ;  right$
-	.text	181,0,""                          ;  "" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,248,58                        ;  248 
-	.byte	179,83,24                         ;  83 
-	.byte	129                               ;  -
-	.byte	179,165,34                        ;  165 
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,33,66                         ;  33 
-	.byte	173                               ;  negate
-	.byte	179,19,20                         ;  19 
-	.byte	173                               ;  negate
-	.byte	130                               ;  *
-	.byte	180                               ;  .float
-	.byte	$fc                               ;  86998131
-	.dword	$52f7c730                        ;  86998131
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e7                               ;  -47.0816
-	.dword	$de29c77a                        ;  -47.0816
-	.byte	152                               ;  sin
-	.byte	180                               ;  .float
-	.byte	$dd                               ;  -0.0423
-	.dword	$d6a161e5                        ;  -0.0423
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,40,94                         ;  40 
-	.byte	157                               ;  str$
-	.byte	158                               ;  val
-	.byte	179,40,94                         ;  40 
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e5                               ;  -12.2447
-	.dword	$e1f52546                        ;  -12.2447
-	.byte	142                               ;  int
-	.byte	13                                ;  13
-	.byte	173                               ;  negate
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,4,"ANIW"                      ;  "aniw" 
-	.byte	2                                 ;  2
-	.byte	161                               ;  left$
-	.text	181,2,"AN"                        ;  "an" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,22,17                         ;  22 
-	.byte	173                               ;  negate
-	.byte	179,66,47                         ;  66 
-	.byte	173                               ;  negate
-	.byte	128                               ;  +
-	.byte	179,88,64                         ;  88 
-	.byte	173                               ;  negate
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,5,"DGFTV"                     ;  "dgftv" 
-	.byte	1                                 ;  1
-	.byte	4                                 ;  4
-	.byte	163                               ;  mid$
-	.text	181,4,"DGFT"                      ;  "dgft" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,127,123                       ;  127 
-	.byte	179,16,113                        ;  16 
-	.byte	133                               ;  and
-	.byte	179,16,113                        ;  16 
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.text	181,5,"BHXIO"                     ;  "bhxio" 
-	.byte	1                                 ;  1
-	.byte	162                               ;  right$
-	.text	181,1,"O"                         ;  "o" 
-	.byte	167                               ;  s.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	179,86,77                         ;  86 
-	.byte	179,16,110                        ;  16 
-	.byte	171                               ;  f.cmp
-	.byte	135                               ;  >
-	.byte	0                                 ;  0
-	.byte	171                               ;  f.cmp
-	.byte	136                               ;  =
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e8                               ;  76.79
-	.dword	$4cca3d71                        ;  76.79
-	.byte	149                               ;  log
-	.byte	180                               ;  .float
-	.byte	$e4                               ;  4.3411
-	.dword	$45752546                        ;  4.3411
-	.byte	129                               ;  -
-	.byte	143                               ;  abs
-	.byte	180                               ;  .float
-	.byte	$db                               ;  0.01
-	.dword	$51eb851f                        ;  0.01
-	.byte	171                               ;  f.cmp
-	.byte	137                               ;  <
-	.byte	164                               ;  assert
-	.byte	174                               ;  new.line
-	.byte	180                               ;  .float
-	.byte	$e1                               ;  0.55
-	.dword	$46666666                        ;  0.55
+	.byte	$df                               ;  0.21
+	.dword	$6b851eb8                        ;  0.21
 	.byte	150                               ;  exp
 	.byte	180                               ;  .float
-	.byte	$e2                               ;  1.7333
-	.dword	$6eee6320                        ;  1.7333
+	.byte	$e2                               ;  1.2337
+	.dword	$4ef4f0d8                        ;  1.2337
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float
@@ -2236,27 +1867,426 @@
 	.byte	137                               ;  <
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,3,"XWZ"                       ;  "xwz" 
-	.byte	2                                 ;  2
+	.byte	180                               ;  .float
+	.byte	$e6                               ;  31.8602
+	.dword	$7f70d845                        ;  31.8602
+	.byte	147                               ;  sqr
+	.byte	180                               ;  .float
+	.byte	$e4                               ;  5.6445
+	.dword	$5a4fdf3b                        ;  5.6445
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,4,"TWQL"                      ;  "twql" 
+	.text	181,0,""                          ;  "" 
+	.byte	176                               ;  concat
+	.text	181,4,"TWQL"                      ;  "twql" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e8                               ;  68.4715
+	.dword	$4478b439                        ;  68.4715
+	.byte	151                               ;  cos
+	.byte	180                               ;  .float
+	.byte	$e1                               ;  0.8
+	.dword	$66666666                        ;  0.8
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,4,"EGTD"                      ;  "egtd" 
+	.byte	1                                 ;  1
+	.byte	162                               ;  right$
+	.text	181,1,"D"                         ;  "d" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,246,98                        ;  246 
+	.byte	179,137,116                       ;  137 
+	.byte	173                               ;  negate
+	.byte	172                               ;  int.div
 	.byte	0                                 ;  0
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,1,"A"                         ;  "a" 
+	.byte	159                               ;  asc
+	.byte	178,65                            ;  65 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,242,73                        ;  242 
+	.byte	179,228,58                        ;  228 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	0                                 ;  0
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,92,53                         ;  92 
+	.byte	173                               ;  negate
+	.byte	179,176,66                        ;  176 
+	.byte	172                               ;  int.div
+	.byte	0                                 ;  0
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,20,111                        ;  20 
+	.byte	175                               ;  not
+	.byte	179,19,111                        ;  19 
+	.byte	173                               ;  negate
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,3,"HXY"                       ;  "hxy" 
+	.text	181,1,"V"                         ;  "v" 
+	.byte	167                               ;  s.cmp
+	.byte	138                               ;  >=
+	.byte	0                                 ;  0
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e1                               ;  0.6353
+	.dword	$515182aa                        ;  0.6353
+	.byte	157                               ;  str$
+	.byte	158                               ;  val
+	.byte	180                               ;  .float
+	.byte	$e1                               ;  0.6353
+	.dword	$515182aa                        ;  0.6353
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,3,"OAK"                       ;  "oak" 
+	.byte	1                                 ;  1
+	.byte	2                                 ;  2
 	.byte	163                               ;  mid$
+	.text	181,2,"OA"                        ;  "oa" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e5                               ;  12.2665
+	.dword	$6221cac1                        ;  12.2665
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$e5                               ;  12.2665
+	.dword	$6221cac1                        ;  12.2665
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,2,"YY"                        ;  "yy" 
+	.text	181,2,"VN"                        ;  "vn" 
+	.byte	167                               ;  s.cmp
+	.byte	138                               ;  >=
+	.byte	1                                 ;  1
+	.byte	173                               ;  negate
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e7                               ;  33.7671
+	.dword	$4388c155                        ;  33.7671
+	.byte	152                               ;  sin
+	.byte	180                               ;  .float
+	.byte	$e1                               ;  0.7106
+	.dword	$5af4f0d8                        ;  0.7106
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,93,38                         ;  93 
+	.byte	179,69,81                         ;  69 
+	.byte	133                               ;  and
+	.byte	178,69                            ;  69 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e8                               ;  65.9809
+	.dword	$41fb1c43                        ;  65.9809
+	.byte	180                               ;  .float
+	.byte	$e7                               ;  -43.0575
+	.dword	$d61d70a4                        ;  -43.0575
+	.byte	130                               ;  *
+	.byte	180                               ;  .float
+	.byte	$ed                               ;  -2840.9726
+	.dword	$d8c7c7e3                        ;  -2840.9726
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,1,"M"                         ;  "m" 
+	.text	181,5,"AAIDV"                     ;  "aaidv" 
+	.byte	167                               ;  s.cmp
+	.byte	138                               ;  >=
+	.byte	1                                 ;  1
+	.byte	173                               ;  negate
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,5,"YFUML"                     ;  "yfuml" 
+	.byte	2                                 ;  2
+	.byte	1                                 ;  1
+	.byte	163                               ;  mid$
+	.text	181,1,"F"                         ;  "f" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,139,77                        ;  139 
+	.byte	179,50,60                         ;  50 
+	.byte	173                               ;  negate
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	0                                 ;  0
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,4,"ARPU"                      ;  "arpu" 
+	.byte	1                                 ;  1
+	.byte	161                               ;  left$
+	.text	181,1,"A"                         ;  "a" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,1,"@"                         ;  "@" 
+	.byte	159                               ;  asc
+	.byte	178,64                            ;  64 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,4,"WASM"                      ;  "wasm" 
+	.byte	4                                 ;  4
+	.byte	162                               ;  right$
+	.text	181,4,"WASM"                      ;  "wasm" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,1,"R"                         ;  "r" 
+	.byte	159                               ;  asc
+	.byte	178,82                            ;  82 
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,2,"PQ"                        ;  "pq" 
+	.text	181,3,"IMX"                       ;  "imx" 
+	.byte	176                               ;  concat
+	.text	181,5,"PQIMX"                     ;  "pqimx" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e8                               ;  77.5997
+	.dword	$4d9985f0                        ;  77.5997
+	.byte	180                               ;  .float
+	.byte	$e6                               ;  -27.4918
+	.dword	$edf79a6b                        ;  -27.4918
+	.byte	128                               ;  +
+	.byte	180                               ;  .float
+	.byte	$e7                               ;  50.1079
+	.dword	$64373eab                        ;  50.1079
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e6                               ;  23.18
+	.dword	$5cb851ec                        ;  23.18
+	.byte	141                               ;  sgn
+	.byte	1                                 ;  1
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,2,"ED"                        ;  "ed" 
+	.text	181,4,"WJJH"                      ;  "wjjh" 
+	.byte	167                               ;  s.cmp
+	.byte	140                               ;  <=
+	.byte	1                                 ;  1
+	.byte	173                               ;  negate
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e5                               ;  -8.2951
+	.dword	$c25c5d64                        ;  -8.2951
+	.byte	180                               ;  .float
+	.byte	$e7                               ;  -53.7846
+	.dword	$eb91b717                        ;  -53.7846
+	.byte	131                               ;  /
+	.byte	180                               ;  .float
+	.byte	$df                               ;  0.1542
+	.dword	$4ef34d6a                        ;  0.1542
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,3,"FGT"                       ;  "fgt" 
+	.byte	4                                 ;  4
+	.byte	161                               ;  left$
+	.text	181,3,"FGT"                       ;  "fgt" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.text	181,0,""                          ;  "" 
+	.byte	0                                 ;  0
+	.byte	161                               ;  left$
 	.text	181,0,""                          ;  "" 
 	.byte	167                               ;  s.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,1,"V"                         ;  "v" 
-	.byte	159                               ;  asc
-	.byte	178,86                            ;  86 
+	.text	181,0,""                          ;  "" 
+	.byte	0                                 ;  0
+	.byte	162                               ;  right$
+	.text	181,0,""                          ;  "" 
+	.byte	167                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,39,116                        ;  39 
+	.byte	173                               ;  negate
+	.byte	179,42,95                         ;  42 
+	.byte	130                               ;  *
+	.byte	180                               ;  .float
+	.byte	$ff                               ;  -724404070
+	.dword	$d65b0ecc                        ;  -724404070
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,43,5                          ;  43 
+	.byte	173                               ;  negate
+	.byte	157                               ;  str$
+	.byte	158                               ;  val
+	.byte	179,43,5                          ;  43 
+	.byte	173                               ;  negate
 	.byte	171                               ;  f.cmp
 	.byte	136                               ;  =
 	.byte	164                               ;  assert
 	.byte	174                               ;  new.line
-	.text	181,8,"-34.3804"                  ;  "-34.3804" 
+	.byte	180                               ;  .float
+	.byte	$de                               ;  -0.11
+	.dword	$f0a3d70a                        ;  -0.11
+	.byte	150                               ;  exp
+	.byte	180                               ;  .float
+	.byte	$e1                               ;  0.8958
+	.dword	$72a9930c                        ;  0.8958
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e8                               ;  -69.3322
+	.dword	$c5550b0f                        ;  -69.3322
+	.byte	157                               ;  str$
 	.byte	158                               ;  val
 	.byte	180                               ;  .float
-	.byte	$e7                               ;  -34.3804
-	.dword	$c4c2c3ca                        ;  -34.3804
+	.byte	$e8                               ;  -69.3322
+	.dword	$c5550b0f                        ;  -69.3322
+	.byte	129                               ;  -
+	.byte	143                               ;  abs
+	.byte	180                               ;  .float
+	.byte	$db                               ;  0.01
+	.dword	$51eb851f                        ;  0.01
+	.byte	171                               ;  f.cmp
+	.byte	137                               ;  <
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	179,113,6                         ;  113 
+	.byte	179,112,16                        ;  112 
+	.byte	171                               ;  f.cmp
+	.byte	135                               ;  >
+	.byte	0                                 ;  0
+	.byte	171                               ;  f.cmp
+	.byte	136                               ;  =
+	.byte	164                               ;  assert
+	.byte	174                               ;  new.line
+	.byte	180                               ;  .float
+	.byte	$e3                               ;  3.0867
+	.dword	$62c63f14                        ;  3.0867
+	.byte	180                               ;  .float
+	.byte	$e1                               ;  0.9
+	.dword	$73333333                        ;  0.9
+	.byte	132                               ;  ^
+	.byte	180                               ;  .float
+	.byte	$e3                               ;  2.7577
+	.dword	$583f1412                        ;  2.7577
 	.byte	129                               ;  -
 	.byte	143                               ;  abs
 	.byte	180                               ;  .float

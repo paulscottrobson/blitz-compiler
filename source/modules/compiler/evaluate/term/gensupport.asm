@@ -29,7 +29,7 @@ MidParameterCompile:
 		jsr 	CompileExpressionAt0
 		and 	#NSSTypeMask
 		cmp 	#NSSIFloat
-		bne 	_MidFail
+		bne 	MidFailType
 		jsr 	CheckNextRParen
 		bra 	_MidComplete
 _MidDefault:
@@ -37,10 +37,11 @@ _MidDefault:
 		jsr 	PushIntegerA
 _MidComplete:
 		rts
-_MidFail:
-		.error_type
 _MidSyntax:
 		.error_syntax		
+
+MidFailType:
+		.error_type
 
 ; ************************************************************************************************
 ;
@@ -53,6 +54,9 @@ NotUnaryCompile:
 											; precedence of comparators
 		lda 	PrecedenceTable+C64_EQUAL-C64_PLUS		
 		jsr 	CompileExpressionAtA 		; evaluate at that level
+		and 	#NSSTypeMask 				; check compile returns number.
+		cmp 	#NSSIFloat
+		bne 	MidFailType
 		lda 	#PCD_NOT 					; and NOT it.
 		jsr 	WriteCodeByte		
 		rts

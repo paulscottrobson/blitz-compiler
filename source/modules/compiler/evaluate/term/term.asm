@@ -72,7 +72,7 @@ _CTBrackets:
 		;
 _CTOtherBase:
 		jsr 	InlineNonDecimal 			; non decimal constant handler		
-		lda 	#NSSInteger 				; return a iFloat32 integer
+		lda 	#NSSIFloat					; return a iFloat32 integer
 		rts
 		;
 		;		Compile a number
@@ -81,7 +81,7 @@ _CTDigit:
 		jsr 	ParseConstant 				; parse out an number, first is in A already.
 		bcc	 	_CTFloat 					; have a float or long int.
 		jsr 	PushIntegerYA 				; code to push on stack
-		lda 	#NSSInteger 				; return a iFloat32 integer
+		lda 	#NSSIFloat					; return a iFloat32 integer
 		rts
 _CTFloat:
 		jsr 	PushFloat  					; code to push float
