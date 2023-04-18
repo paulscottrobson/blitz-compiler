@@ -49,6 +49,7 @@ NSSString = $40 							; string vs typemask
 NSSIFloat = $00 							; ifloat vs typemask
 NSSIInt16 = $20								; when set, a reference is a 16 bit reference (e.g. a%)
 NSSTypeMask = $40 					
+NSSArray = $80  							; array (in variable code)
 
 		.align 16
 NSStatus: 									; Status bits of stack.

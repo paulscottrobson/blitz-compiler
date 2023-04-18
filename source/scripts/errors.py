@@ -19,6 +19,8 @@ errors = """
 	unimplemented : not implemented
 	assert 		  : assert fail
 	line 		  : unknown line number
+	internal	  : internal error
+	
 """.strip().split("\n")
 
 h1 = open("modules/common/generated/errors.inc","w")

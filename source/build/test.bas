@@ -1,1 +1,1 @@
-10 print mid$("hello",3)
+10 print c%

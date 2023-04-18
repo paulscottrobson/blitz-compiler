@@ -23,4 +23,7 @@ ErrorV_assert:
 ErrorV_line:
 	jsr	ErrorHandler
 	.text	"UNKNOWN LINE NUMBER",0
+ErrorV_internal:
+	jsr	ErrorHandler
+	.text	"INTERNAL ERROR",0
 	.send code

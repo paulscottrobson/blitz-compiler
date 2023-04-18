@@ -22,3 +22,6 @@ error_assert .macro
 error_line .macro
 	jmp	ErrorV_line
 	.endm
+error_internal .macro
+	jmp	ErrorV_internal
+	.endm

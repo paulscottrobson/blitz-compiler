@@ -3,7 +3,7 @@
 ;
 ;		Name:		readwrite.asm
 ;		Purpose:	Generate code to read/write variables
-;		Created:	17th April 2023
+;		Created:	18th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
