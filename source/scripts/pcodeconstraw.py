@@ -3,4 +3,4 @@
 #
 class PCodeConstantsRaw(object):
 	def get(self):
-		return "128:+|129:-|130:*|131:/|132:^|133:and|134:or|135:>|136:=|137:<|138:>=|139:<>|140:<=|141:sgn|142:int|143:abs|144:usr|145:fre|146:pos|147:sqr|148:rnd|149:log|150:exp|151:cos|152:sin|153:tan|154:atn|155:peek|156:len|157:str$|158:val|159:asc|160:chr$|161:left$|162:right$|163:mid$|164:assert|165:bin$|166:clr|167:s.cmp|168:exit|169:debug|170:hex$|171:f.cmp|172:int.div|173:negate|174:new.line|175:not|176:concat|177:.shift|178:.byte|179:.word|180:.float|181:.string|182:.data|183:.goto|184:.gosub"
+		return "128:+|129:-|130:*|131:/|132:^|133:and|134:or|135:>|136:=|137:<|138:>=|139:<>|140:<=|141:sgn|142:int|143:abs|144:usr|145:fre|146:pos|147:sqr|148:rnd|149:log|150:exp|151:cos|152:sin|153:tan|154:atn|155:peek|156:len|157:str$|158:val|159:asc|160:chr$|161:left$|162:right$|163:mid$|164:assert|165:bin$|166:print.chr|167:clr|168:s.cmp|169:exit|170:debug|171:hex$|172:f.cmp|173:int.div|174:negate|175:new.line|176:not|177:concat|178:print.spc|179:.shift|180:.byte|181:.word|182:.float|183:.string|184:.data|185:.goto|186:.gosub"
