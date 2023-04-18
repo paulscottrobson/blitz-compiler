@@ -51,6 +51,7 @@ ismain_polynomials = 0
 	.include	"modules/compiler/evaluate/term/gensupport.asm"
 	.include	"modules/compiler/helpers/input/get.asm"
 	.include	"modules/x16_hardware/interface/getxpos.asm"
+	.include	"modules/compiler/commands/goto.asm"
 	.include	"modules/compiler/variables/identify.asm"
 	.include	"modules/ifloat32/float/integer.asm"
 	.include	"modules/ifloat32/float/integerdown.asm"
