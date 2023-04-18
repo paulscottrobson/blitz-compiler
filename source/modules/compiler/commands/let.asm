@@ -22,7 +22,13 @@ CommandLET:
 		jsr 	GetNextNonSpace 			; get the first character
 CommandLETHaveFirst:
 		.debug
-
+		jsr 	IdentifyVariable 			; identify variable to assign to
+		phx 								; save target on the stack.
+		phy
+		pha
+		lda 	#"=" 						; check next is =
+		jsr 	CheckNextA
+		jsr 	CompileExpressionAt0 		; evaluate the RHS.
 		jmp 	$FFFF
 		.send code
 

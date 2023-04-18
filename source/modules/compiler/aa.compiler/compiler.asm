@@ -25,7 +25,6 @@ MainCompileLoop:
 		jsr 	WriteCodeByte
 
 _MCLSameLine:
-		.debug
 		jsr 	GetNextNonSpace 			; get the first character.
 		beq 	_MCLNextLine 				; end of line.
 		cmp 	#":"						; if : then loop back.
@@ -47,7 +46,8 @@ _MCLSyntax: 								; syntax error.
 _MCLCheckAssignment:
 		jsr 	CharIsAlpha 				; if not alpha then syntax error
 		bcc 	_MCLSyntax
-		jmp 	CommandLETHaveFirst  		; LET first character.
+		jsr 	CommandLETHaveFirst  		; LET first character, do assign
+		bra		_MCLSameLine 				; loop back.
 
 _MCLNextLine:		
 		jsr 	HWINextLine 				; go to the next line.
