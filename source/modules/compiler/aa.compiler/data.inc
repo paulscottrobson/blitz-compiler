@@ -20,7 +20,7 @@
 objPage: 									; current object code page
 		.fill 	1		
 objPtr: 									; object code pointer.
-		.fill 	1		
+		.fill 	2		
 		.send zeropage
 
 
