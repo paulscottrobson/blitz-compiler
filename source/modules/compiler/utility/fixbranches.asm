@@ -45,7 +45,6 @@ _FBFixGotoGosub:
 		pla
 		jsr 	STRFindLine			 		; find where it is
 
-
 		phy	 								; patch the GOTO/GOSUB
 		pha
 
