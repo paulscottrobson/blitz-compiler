@@ -101,7 +101,7 @@ pcode: prelim
 #
 debugpcode: runtime prelim pcode
 	$(CAT) $(BUILD)runtime.prg $(BTEMP)pcodebin.bin $(BTEMP)pcodebin.prg
-	$(HRUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
+	$(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
 #
 #		A test_pcode.py run
 #	
