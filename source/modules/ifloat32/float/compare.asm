@@ -68,9 +68,13 @@ CompareGreaterEqual:
 ; ************************************************************************************************
 
 FloatCompare:	
+		lda 	NSExponent,x 				; float comparison.
+		ora 	NSExponent-1,x 				; integer if both integer.
+		pha
+
 		jsr 	FloatSubtract 				; Calculate S[X]-S[X+1]
 		;
-		lda 	NSExponent,x 				; float comparison.
+		pla
 		bne 	_FCCompareFloat 			
 		;
 		;		Integer comparison, check for *exactly* 0.
@@ -82,15 +86,15 @@ FloatCompare:
 		beq 	_FCExit 					; if zero, return zero
 		bra 	_FCSign
 
-_FCCompareFloat:		
+_FCCompareFloat:	
 		;
 		;		At this point the mantissae are equal. If we were comparing integers
-		; 		then this should be zero - if float we ignore the lowest 13 bits, which gives
-		;		an approximation for equality of 1 part in 2^19
+		; 		then this should be zero - if float we ignore the lowest 12 bits, which gives
+		;		an approximation for equality of 1 part in 2^18
 		; 		This is about 1 part in 500,000 - so it is "almost equal".
 		;			
 		lda 	NSMantissa1,x 			 	; so we ignore this - by changing bits checked
-		and 	#$F8
+		and 	#$F0
 		ora 	NSMantissa2,x
 		ora 	NSMantissa3,x
 		beq 	_FCExit 					; zero, so approximately identical

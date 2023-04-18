@@ -117,13 +117,13 @@ testpcode: runtime prelim tpcode
 #		Test the floating point mathematics
 #
 testmaths : prelim
-	python $(SCRIPTDIR)test_binary.py >$(BTEMP)float.code
+	#python $(SCRIPTDIR)test_binary.py >$(BTEMP)float.code
 	python $(SCRIPTDIR)floatcom.py $(BTEMP)float.code >modules$(S)ifloat32$(S)generated$(S)testcode.dat
 	python $(SCRIPTDIR)build.py ifloat32 polynomials $(HARDWARE)_hardware -o_float.asm -mifloat32
 	$(ASM) $(ASMOPTS) _float.asm -o $(BTEMP)float.prg
 	$(CCOPY) $(BTEMP)float.prg $(BINDIR)
 	$(CDEL) dump*.bin
-	$(RUNEMU) -prg $(BTEMP)float.prg,801 -run -warp
+	$(HRUNEMU) -prg $(BTEMP)float.prg,801 -run -warp
 	python $(SCRIPTDIR)stack.py
 #
 #		Test unary functions / polynomials and the power operator.
