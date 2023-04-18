@@ -1,1 +1,1 @@
-10 print z+b%+asc(c$)
+10 let x = 42

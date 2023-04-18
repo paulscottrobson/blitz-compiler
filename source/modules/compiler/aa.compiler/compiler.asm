@@ -13,32 +13,53 @@
 		.section code
 
 Boot:	
-		
+	
 		jsr 	HWIReset
 		jsr 	HWOReset
-		jsr 	GetNext
-
+		;
+		;		Main compilation loop
+		;
 MainCompileLoop:
 		jsr 	STRMarkLine 				; remember the position and number of this line.
 		lda 	#PCD_NEWCMD_LINE 			; generate new command line
 		jsr 	WriteCodeByte
 
-		jsr 	CompileExpressionAt0
+_MCLSameLine:
+		.debug
+		jsr 	GetNextNonSpace 			; get the first character.
+		beq 	_MCLNextLine 				; end of line.
+		cmp 	#":"						; if : then loop back.
+		beq 	_MCLSameLine
 
-		;  TODO: Check for implied assignment
-		;  TODO: Dispatch appropriately via scanned command handler.
-		;  TODO: if not end, then keep trying.
-		;  TODO: GetNextLine
-		;  Loop if not finished
+		cmp 	#0 							; if ASCII then check for implied LET.		
+		bpl 	_MCLCheckAssignment 
 
-		;  TODO: Patch up GOTO, GOSUB and (possibly) IF
-		;  TODO: Possibly append variable map ?
-		;  TODO: Write code out to disk
+		ldx 	#CommandTables & $FF 		; do command tables.
+		ldy 	#CommandTables >> 8
+		jsr 	GeneratorProcess
+		bcs 	_MCLSameLine 				; keep trying to compile the line.
 
+_MCLSyntax: 								; syntax error.
+		.error_syntax
+		;
+		;		Implied assignment ?
+		;
+_MCLCheckAssignment:
+		jsr 	CharIsAlpha 				; if not alpha then syntax error
+		bcc 	_MCLSyntax
+		jmp 	CommandLETHaveFirst  		; LET first character.
 
+_MCLNextLine:		
+		jsr 	HWINextLine 				; go to the next line.
+		bcs 	MainCompileLoop 			; found one, keep compile.
+		;
+		;		End of compile, fix up GOTO/GOSUB etc., save it and exit.
+		;
 SaveCodeAndExit:
 		lda 	#PCD_EXIT
 		jsr 	WriteCodeByte
+		;  TODO: Patch up GOTO, GOSUB and (possibly) IF
+		;  TODO: Possibly append variable map ?
 		jsr 	HWOSave
 		jmp 	$FFFF
 		rts
