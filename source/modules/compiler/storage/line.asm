@@ -19,6 +19,7 @@
 ; ************************************************************************************************
 
 STRMarkLine:
+		.debug
 		sec 								; allocate 5 bytes (line #, page+address)
 		lda 	lineNumberTable 			; and copy to zTemp0
 		sbc 	#5

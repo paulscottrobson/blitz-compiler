@@ -20,10 +20,10 @@
 
 HWILineNumber:
 		ldy 	#2
-		lda 	(srcPtr),y
+		lda 	(inputPtr),y
 		iny
 		pha
-		lda 	(srcPtr),y
+		lda 	(inputPtr),y
 		tay
 		pla
 		rts

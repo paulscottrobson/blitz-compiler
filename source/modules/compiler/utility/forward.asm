@@ -21,7 +21,6 @@
 MoveObjectForward:
 
 		lda 	(objPtr) 					; get next
-		.debug
 
 		sec 								; return CS if complete
 		cmp 	#$FF  						
@@ -47,14 +46,13 @@ MoveObjectForward:
 		lda 	(objPtr),y
 		tax 								; into X.
 
-		pha 								; add 2 to the object pointer
-		lda 	objPtr
+		clc
+		lda 	objPtr						; add 2 to the object pointer
 		adc 	#2
 		sta 	objPtr
 		bcc 	_MOFNoCarry1
 		inc 	objPtr+1
 _MOFNoCarry1:		
-		pla
 		bra 	_MOFAdvanceX
 
 _MOFAdvance1:

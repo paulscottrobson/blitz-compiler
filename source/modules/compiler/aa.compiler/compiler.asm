@@ -13,6 +13,7 @@
 		.section code
 
 Boot:	
+		jsr 	STRReset
 		jsr 	HWIReset
 		jsr 	HWOReset
 		;

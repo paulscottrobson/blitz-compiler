@@ -65,6 +65,12 @@ class PCodeDecompiler(object):
 							s += chr(self.data[p])
 						p += 1
 						s += '"'
+					if s == ".goto" or s == ".gosub"	:
+						page = self.data[p]
+						offset = self.data[p+1]+(self.data[p+2] << 8)
+						addr = (p + offset) & 0xFFFF
+						s = "{0} ${1:02x}:{2:04x} [${3:04x}]".format(s,page,addr,offset)
+						p += 3
 				else:
 					s = "data ${0:02x}".format(self.data[p])
 					p = p + 1
