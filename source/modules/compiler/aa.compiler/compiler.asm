@@ -55,10 +55,14 @@ _MCLNextLine:
 		;		End of compile, fix up GOTO/GOSUB etc., save it and exit.
 		;
 SaveCodeAndExit:
-		lda 	#PCD_EXIT
+		lda 	#PCD_EXIT 					; add an END
 		jsr 	WriteCodeByte
-		;  TODO: Patch up GOTO, GOSUB and (possibly) IF
+		lda 	#$FF 						; add end marker
+		jsr 	WriteCodeByte
+		jsr 	FixBranches 				; fix up GOTO/GOSUB etc.
+		;
 		;  TODO: Possibly append variable map ?
+		;
 		jsr 	HWOSave
 		jmp 	$FFFF
 		rts
