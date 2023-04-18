@@ -25,3 +25,6 @@ error_line .macro
 error_internal .macro
 	jmp	ErrorV_internal
 	.endm
+error_divzero .macro
+	jmp	ErrorV_divzero
+	.endm

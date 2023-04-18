@@ -16,6 +16,13 @@ Unimplemented:
 		jmp 	ErrorV_unimplemented
 		
 ErrorHandler:
+		tya
+		clc
+		adc 	codePtr
+		sta 	codePtr
+		bcc 	_EHNoCarry
+		inc 	codePtr+1
+_EHNoCarry:		
 		pla
 		ply
 		sta 	zTemp0

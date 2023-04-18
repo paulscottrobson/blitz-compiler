@@ -47,13 +47,15 @@ for m in mappings:
 	print("\tphy")
 	print("\tjsr\t{0}".format(m[1]))
 	if len(m) == 3:
-		print("\tbcs\tMapRangeError")
+		print("\tbcs\t{0}".format("DivZeroError" if m[0] == "/" else "MapRangeError"))
 	print("\tply")
 	print("\t.exitcmd")	
 
 	if m[0] == "sqr":
 		print("MapRangeError:")
 		print("\t.error_range")
+		print("DivZeroError:")
+		print("\t.error_divzero")
 
 
 

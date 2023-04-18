@@ -20,6 +20,7 @@ errors = """
 	assert 		  : assert fail
 	line 		  : unknown line number
 	internal	  : internal error
+	divzero 	  : divide by zero
 	
 """.strip().split("\n")
 

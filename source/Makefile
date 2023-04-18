@@ -112,7 +112,7 @@ tpcode: prelim
 
 testpcode: runtime prelim tpcode 
 	$(CAT) $(BUILD)runtime.prg $(BTEMP)pcodebin.bin $(BTEMP)pcodebin.prg
-	$(HRUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run -warp
+	$(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run -warp
 #
 #		Test the floating point mathematics
 #

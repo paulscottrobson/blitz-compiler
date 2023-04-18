@@ -26,4 +26,7 @@ ErrorV_line:
 ErrorV_internal:
 	jsr	ErrorHandler
 	.text	"INTERNAL ERROR",0
+ErrorV_divzero:
+	jsr	ErrorHandler
+	.text	"DIVIDE BY ZERO",0
 	.send code
