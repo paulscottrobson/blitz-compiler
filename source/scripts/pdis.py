@@ -33,6 +33,16 @@ class PCodeDecompiler(object):
 			if self.data[p] < 64:
 				s = "constant "+str(self.data[p])
 				p = p + 1
+			elif self.data[p] < 112:
+				opcode = self.data[p]
+				dtype = "#%$"[(opcode-64) >> 4]
+				action = "!" if (opcode & 8) != 0 else "@"
+				address = (((opcode & 7) << 8) | self.data[p+1]) << 1
+				name = ""
+				if address <= 256:
+					name = "("+chr(address // 10+97)+("$%#"[(address % 10) >> 1])+")"
+				s = "{0}{1}{2} {3}".format(address,dtype,action,name)
+				p += 2
 			else:
 				s = self.pcode.getToken(self.data[p]) 
 				if s is not None:

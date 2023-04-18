@@ -21,6 +21,42 @@
 ; ************************************************************************************************
 
 GetSetVariable:
+		php 								; save direction on stack
+		cpy 	#$FF 						; array ?
+		beq 	_GSVArray
+		;
+		; 		64-79 is float, 80-95 is integer, 96-111 is string. So we multiply the
+		;		type bits 5 & 6 byte 16 - but they are already multiplied by 32, so
+		;
+		and 	#NSSTypeMask 				; get type bits
+		lsr 	a 							; divide by 2
+		ora 	#64 						; and set bit 6.
+		;
+		plp
+		bcc 	_GSVNotWrite
+		ora 	#8  						; set bit 3 if it is write.
+_GSVNotWrite:
+		sta 	zTemp0
+		;
+		tya 	 							; shift X/Y right as the address stored is halved
+		lsr 	a
+		tay 	
+		txa 
+		ror 	a
+		tax
+		;
+		tya 								; lower 3 bits of YX are ORed into the opcode
+		ora 	zTemp0 						; which is the first byte of the opcode
+		jsr 	WriteCodeByte
+		;
+		txa 								; and the lower 8 bits of YX are the second byte
+		jsr 	WriteCodeByte
+		rts
+		;
+		;		Handle arrays.
+		;
+_GSVArray:
+		.error_unimplemented		
 		rts
 
 		.send code

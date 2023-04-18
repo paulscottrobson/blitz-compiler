@@ -1,1 +1,1 @@
-10 print c%
+10 print z+b%+asc(c$)
