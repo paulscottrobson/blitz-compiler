@@ -58,6 +58,6 @@ VectorTable:
 	.word	CommandPushN             ; $b4 .float
 	.word	CommandPushS             ; $b5 .string
 	.word	Unimplemented            ; $b6 .data
-	.word	Unimplemented            ; $b7 .goto
+	.word	CommandGoto              ; $b7 .goto
 	.word	Unimplemented            ; $b8 .gosub
 	.send code

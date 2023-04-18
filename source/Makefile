@@ -17,7 +17,8 @@ endif
 
 BINDIR = ..$(S)bin$(S)
 SCRIPTDIR = scripts$(S)
-ASMOPTS = -q -Wall -c -C  -L $(BUILD)code.lst -l $(BUILD)code.lbl -Wall 
+ASMCTRLS = -q -Wall -c -C 
+ASMOPTS =  $(ASMCTRLS) -L $(BUILD)code.lst -l $(BUILD)code.lbl 
 EMULATOR = $(BINDIR)x16emu$(APPSTEM)
 RUNEMU = $(EMULATOR) -rom $(BINDIR)rom.bin -keymap en-gb -dump R -scale 2 -rtc -debug 
 HRUNEMU = $(RUNEMU) -testbench -warp
@@ -94,7 +95,7 @@ runtime:prelim
 #
 pcode: prelim 
 	python $(SCRIPTDIR)pcom.py <$(BTEMP)demo.pcode >$(BTEMP)pcodebin.asm
-	$(ASM) $(ASMOPTS) $(BTEMP)pcodebin.asm -o $(BTEMP)pcodebin.bin
+	$(ASM) $(ASMCTRLS) $(BTEMP)pcodebin.asm -o $(BTEMP)pcodebin.bin
 #
 #		Run the compiled pcode
 #
