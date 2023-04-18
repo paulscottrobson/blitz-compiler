@@ -57,3 +57,8 @@ class MemoryDump(object):
 		d = [self.readLong(addr),self.read(addr+4),self.read(addr+5)]
 		return self.f.toDecimal(d)
 		
+	def readString(self,addr):
+		if addr == 0:
+			return '""'
+		s = "".join([chr(self.read(addr+n+3)) for n in range(0,self.read(addr+2))])
+		return "\"{2}\" [@${0:02x} ML:{1}]".format(addr,self.read(addr),s)

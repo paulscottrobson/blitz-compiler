@@ -76,6 +76,11 @@ rdebug: runtime cdebug
 	$(CAT) $(BUILD)runtime.prg $(BTEMP)cout.bin $(BTEMP)pcodebin.prg
 	$(CDEL) dump*.bin
 	$(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
+
+rrun: runtime crun
+	$(CAT) $(BUILD)runtime.prg $(BTEMP)cout.bin $(BTEMP)pcodebin.prg
+	$(CDEL) dump*.bin
+	$(HRUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
 #
 #		Build the runtime
 #
@@ -169,3 +174,8 @@ tools:
 #
 stack:
 	python $(SCRIPTDIR)stack.py
+#
+#		Show variables (A-Z only)
+#
+variables:
+	python $(SCRIPTDIR)variables.py
