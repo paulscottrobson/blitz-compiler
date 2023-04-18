@@ -24,11 +24,14 @@ NotTOS:	;; [not]
 		stz 	NSMantissa2,x 				; chop down to 16 bit.
 		stz 	NSMantissa3,x
 
-		inc 	NSMantissa0,x 				; +1
-		bne 	_NotTOSSkip
-		inc 	NSMantissa1,x
-_NotTOSSkip:
 		jsr 	FloatNegate		 			; negate
+
+		inx 								; and add 1.
+		lda 	#1
+		jsr 	FloatSetByte
+		jsr 	FloatAdd
+
+_NotTOSSkip:
 		.exitcmd
 
 		.send 	code

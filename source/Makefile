@@ -101,7 +101,7 @@ pcode: prelim
 #
 debugpcode: runtime prelim pcode
 	$(CAT) $(BUILD)runtime.prg $(BTEMP)pcodebin.bin $(BTEMP)pcodebin.prg
-	$(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
+	$(HRUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
 #
 #		A test_pcode.py run
 #	
@@ -123,7 +123,7 @@ testmaths : prelim
 	$(ASM) $(ASMOPTS) _float.asm -o $(BTEMP)float.prg
 	$(CCOPY) $(BTEMP)float.prg $(BINDIR)
 	$(CDEL) dump*.bin
-	$(HRUNEMU) -prg $(BTEMP)float.prg,801 -run -warp
+	$(RUNEMU) -prg $(BTEMP)float.prg,801 -run -warp
 	python $(SCRIPTDIR)stack.py
 #
 #		Test unary functions / polynomials and the power operator.

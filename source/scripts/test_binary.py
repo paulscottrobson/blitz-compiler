@@ -25,7 +25,7 @@ for n in range(0,20):
 	n1 = randomInt()
 	n2 = randomInt()
 	print("{0}  {1} + {2} f.cmp = assert".format(n1,n2,n1+n2))
-	if False:
+	if True:
 		print("{0}  {1} - {2} f.cmp = assert".format(n1,n2,n1-n2))
 		print("{0}  {1} * {2} f.cmp = assert".format(n1,n2,n1*n2))
 		if n2 != 0 and True:
@@ -42,7 +42,7 @@ for n in range(0,20):
 		print("{0}  {1} f.cmp <= {2} f.cmp = assert".format(n1,n2,-1 if n1 <= n2 else 0))
 
 
-	if False:
+	if True:
 		n1 = randomFloat()
 		n2 = randomFloat()
 		print("{0:.8f}  {1:.8f} + {2:.8f} f.cmp = assert".format(n1,n2,n1+n2))
@@ -51,9 +51,11 @@ for n in range(0,20):
 		if n2 != 0:
 			print("{0:.8f}  {1:.8f} / {2:.8f} f.cmp = assert".format(n1,n2,n1/n2))
 
-	if False:
+	if True:
+		n1 = randomFloat()
+		n2 = randomFloat()
 		if random.randint(0,4):
-			f1 = f2
+			n1 = n2
 		print("{0:.8f}  {1:.8f} f.cmp > {2} f.cmp = assert".format(n1,n2,-1 if n1 > n2 else 0))
 		print("{0:.8f}  {1:.8f} f.cmp >= {2} f.cmp = assert".format(n1,n2,-1 if n1 >= n2 else 0))
 		print("{0:.8f}  {1:.8f} f.cmp < {2} f.cmp = assert".format(n1,n2,-1 if n1 < n2 else 0))

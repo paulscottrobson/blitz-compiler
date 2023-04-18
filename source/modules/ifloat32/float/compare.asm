@@ -70,6 +70,20 @@ CompareGreaterEqual:
 FloatCompare:	
 		jsr 	FloatSubtract 				; Calculate S[X]-S[X+1]
 		;
+		lda 	NSExponent,x 				; float comparison.
+		bne 	_FCCompareFloat 			
+		;
+		;		Integer comparison, check for *exactly* 0.
+		;
+		lda 	NSMantissa0,x
+		ora 	NSMantissa1,x
+		ora 	NSMantissa2,x
+		ora 	NSMantissa3,x
+		beq 	_FCExit 					; if zero, return zero
+		bra 	_FCSign
+
+_FCCompareFloat:		
+		;
 		;		At this point the mantissae are equal. If we were comparing integers
 		; 		then this should be zero - if float we ignore the lowest 13 bits, which gives
 		;		an approximation for equality of 1 part in 2^19
@@ -83,6 +97,7 @@ FloatCompare:
 		;
 		;		Not equal, so get result from sign.
 		;
+_FCSign:		
 		lda 	#1 							; return +1 if result>0
 		bit 	NSStatus,x
 		bpl 	_FCExit
