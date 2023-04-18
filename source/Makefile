@@ -28,6 +28,7 @@ BUILD = build$(S)
 BTEMP = $(BUILD)temp$(S)
 RTMODULES = ifloat32 polynomials runtime $(HARDWARE)_hardware $(HARDWARE)_runtime -o_runtime.asm -mruntime
 CMMODULES = compiler ifloat32 $(HARDWARE)_hardware $(HARDWARE)_compiler -o_blitz.asm -mcompiler
+CAT = python $(SCRIPTDIR)cat.py
 
 all: prelim compiler runtime
 
@@ -45,7 +46,7 @@ compiler: prelim
 #
 basic:
 	petcat -w2 -o $(BTEMP)basic_code.bin -- $(BUILD)test.bas
-	cat $(BUILD)blitz.prg $(BTEMP)basic_code.bin >$(BTEMP)runcompiler.prg
+	$(CAT) $(BUILD)blitz.prg $(BTEMP)basic_code.bin $(BTEMP)runcompiler.prg
 #
 #		Hex dump of BASIC code tokenised
 #
@@ -86,7 +87,7 @@ pcode: prelim
 #		Run the compiled pcode
 #
 debugpcode: runtime prelim pcode
-	cat $(BUILD)runtime.prg $(BTEMP)pcodebin.bin >$(BTEMP)pcodebin.prg
+	$(CAT) $(BUILD)runtime.prg $(BTEMP)pcodebin.bin $(BTEMP)pcodebin.prg
 	$(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
 #
 #		A test_pcode.py run
@@ -97,7 +98,7 @@ tpcode: prelim
 	$(ASM) $(ASMOPTS) $(BTEMP)pcodebin.asm -o $(BTEMP)pcodebin.bin
 
 testpcode: runtime prelim tpcode 
-	cat $(BUILD)runtime.prg $(BTEMP)pcodebin.bin >$(BTEMP)pcodebin.prg
+	$(CAT) $(BUILD)runtime.prg $(BTEMP)pcodebin.bin $(BTEMP)pcodebin.prg
 	$(HRUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run -warp
 #
 #		Test the floating point mathematics
