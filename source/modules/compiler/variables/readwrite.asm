@@ -28,7 +28,7 @@ GetSetVariable:
 		; 		64-79 is float, 80-95 is integer, 96-111 is string. So we multiply the
 		;		type bits 5 & 6 byte 16 - but they are already multiplied by 32, so
 		;
-		and 	#NSSTypeMask 				; get type bits
+		and 	#NSSTypeMask+NSSIInt16 		; get type bits
 		lsr 	a 							; divide by 2
 		ora 	#64 						; and set bit 6.
 		;

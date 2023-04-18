@@ -70,6 +70,13 @@ crun : compiler basic
 	$(CCOPY) CODE.BIN $(BTEMP)cout.bin
 	$(CDEL) CODE.BIN
 #
+#		Compile and Run
+#
+rdebug: runtime cdebug
+	$(CAT) $(BUILD)runtime.prg $(BTEMP)cout.bin $(BTEMP)pcodebin.prg
+	$(CDEL) dump*.bin
+	$(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
+#
 #		Build the runtime
 #
 runtime:prelim
