@@ -29,4 +29,7 @@ ErrorV_internal:
 ErrorV_divzero:
 	jsr	ErrorHandler
 	.text	"DIVIDE BY ZERO",0
+ErrorV_structure:
+	jsr	ErrorHandler
+	.text	"STRUCTURE IMBALANCE",0
 	.send code

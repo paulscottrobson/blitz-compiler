@@ -19,7 +19,9 @@
 		.section zeropage
 
 codePtr:	 								; address of current line (allow for paging)
-		.fill 	4
+		.fill 	2
+codePage:
+		.fill 	1		
 zTemp0: 									; temporary words used in the interpreter.
 		.fill 	2
 zTemp1:

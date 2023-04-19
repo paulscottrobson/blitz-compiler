@@ -28,3 +28,6 @@ error_internal .macro
 error_divzero .macro
 	jmp	ErrorV_divzero
 	.endm
+error_structure .macro
+	jmp	ErrorV_structure
+	.endm

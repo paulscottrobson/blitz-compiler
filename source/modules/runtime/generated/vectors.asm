@@ -67,4 +67,6 @@ VectorTable:
 	.word	Unimplemented            ; $bd .data
 	.word	CommandGoto              ; $be .goto
 	.word	CommandGosub             ; $bf .gosub
+	.word	CommandGotoZ             ; $c0 .goto.z
+	.word	CommandGotoNZ            ; $c1 .goto.nz
 	.send code

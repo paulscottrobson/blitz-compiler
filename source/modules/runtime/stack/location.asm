@@ -1,77 +1,56 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		goto.asm
-;		Purpose:	Goto command
-;		Created:	18th April 2023
+;		Name:		location.asm
+;		Purpose:	Save/Restore location on stack.
+;		Created:	19th April 2023
 ;		Reviewed: 	No
 ;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section 	code
-
 ; ************************************************************************************************
 ;
-;								Goto <Page and Address follows>
-;	 							   (Page currently not used)
+;					Normalise position so it Y = 0 and save at stack offset +1
 ;
 ; ************************************************************************************************
 
-CommandGoto: ;; [.goto]
-		.entercmd
-		;
-		;		Come here to actually do the GOTO.
-		;
-PerformGOTO:		
+StackSaveCurrentPosition:
+		jsr 	FixUpY 						; codePtr,Y is corrected so Y = 0
+		phy
+		ldy 	#1
+		lda 	codePage
+		sta 	(runtimeStackPtr),y
 		iny
-		iny 								; push MSB of offset on stack
-		lda 	(codePtr),y
-		pha
-		dey 								; point LSB of offset
+		lda 	codePtr
+		sta 	(runtimeStackPtr),y
+		iny
+		lda 	codePtr+1
+		sta 	(runtimeStackPtr),y
+		ply
+		rts
 
-		clc 								; add LSB
-		lda 	(codePtr),y
-		adc 	codePtr
+; ************************************************************************************************
+;
+;										Close a frame
+;
+; ************************************************************************************************
+
+StackLoadCurrentPosition:
+		ldy 	#1
+		lda 	(runtimeStackPtr),y
+		sta 	codePage
+		iny
+		lda 	(runtimeStackPtr),y
 		sta 	codePtr
-
-		pla 								; restore offset MSB and add
-		adc 	codePtr+1
-		sta 	codePtr+1		
-
-		dey 								; fix up.
-		.exitcmd
-
-; ************************************************************************************************
-;
-;									Conditional Gotos
-;
-; ************************************************************************************************
-
-CommandGotoZ: ;; [.goto.z]
-		jsr 	FloatIsZero
-		dex 
-		cmp 	#0
-		beq 	PerformGOTO
 		iny
-		iny
-		iny
+		lda 	(runtimeStackPtr),y
+		sta 	codePtr+1
+		ldy 	#0
 		rts
 
-CommandGotoNZ: ;; [.goto.nz]
-		jsr 	FloatIsZero
-		dex 
-		cmp 	#0
-		bne 	PerformGOTO
-		iny
-		iny
-		iny
-		rts
-
-		.send 	code
-		
-; ************************************************************************************************
+; **********************(*************************************************************************
 ;
 ;									Changes and Updates
 ;

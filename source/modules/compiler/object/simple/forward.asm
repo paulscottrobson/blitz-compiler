@@ -70,7 +70,7 @@ _MOFExit:
 		rts
 
 _MOFSizeTable:
-		.include "../../common/generated/pcodesize.dat"
+		.include "../../../common/generated/pcodesize.dat"
 
 		.send code
 

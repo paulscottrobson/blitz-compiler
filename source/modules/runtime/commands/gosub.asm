@@ -20,13 +20,20 @@
 
 CommandGosub: ;; [.gosub]
 		.entercmd
-
-
-		.exitcmd
+		lda 	#FRAME_GOSUB
+		jsr 	StackOpenFrame
+		jsr 	StackSaveCurrentPosition
+		jmp 	PerformGOTO
 
 CommandReturn: ;; [return]
 		.entercmd
-
+		lda 	#FRAME_GOSUB
+		jsr 	StackCheckFrame
+		jsr 	StackLoadCurrentPosition
+		iny
+		iny
+		iny
+		jsr 	StackCloseFrame
 		.exitcmd
 
 

@@ -26,6 +26,10 @@ _FBLoop:
 		beq 	_FBFixGotoGosub
 		cmp 	#PCD_CMD_GOSUB
 		beq 	_FBFixGotoGosub
+		cmp 	#PCD_CMD_GOTOCMD_Z 			; patch the conditional GOTOs for Z/NZ TOS.
+		beq 	_FBFixGotoGosub
+		cmp 	#PCD_CMD_GOTOCMD_NZ
+		beq 	_FBFixGotoGosub
 _FBNext:		
 		jsr 	MoveObjectForward 			; move forward in object code.
 		bcc 	_FBLoop 					; not finished

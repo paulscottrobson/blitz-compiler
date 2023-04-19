@@ -1,75 +1,71 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		goto.asm
-;		Purpose:	Goto command
-;		Created:	18th April 2023
+;		Name:		frames.asm
+;		Purpose:	Stack frame routines
+;		Created:	19th April 2023
 ;		Reviewed: 	No
 ;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section 	code
+		.section code
 
 ; ************************************************************************************************
 ;
-;								Goto <Page and Address follows>
-;	 							   (Page currently not used)
+;										Open a frame
 ;
 ; ************************************************************************************************
 
-CommandGoto: ;; [.goto]
-		.entercmd
+StackOpenFrame:
+		pha 								; save frame marker
+		and 	#$1F 						; bytes required.
+		sta 	zTemp0
 		;
-		;		Come here to actually do the GOTO.
+		sec 								; subtract from runtime stack pointer.
+		lda		runtimeStackPtr
+		sbc 	zTemp0
+		sta 	runtimeStackPtr
+		lda		runtimeStackPtr+1
+		sbc 	#0
+		sta 	runtimeStackPtr+1
 		;
-PerformGOTO:		
-		iny
-		iny 								; push MSB of offset on stack
-		lda 	(codePtr),y
-		pha
-		dey 								; point LSB of offset
-
-		clc 								; add LSB
-		lda 	(codePtr),y
-		adc 	codePtr
-		sta 	codePtr
-
-		pla 								; restore offset MSB and add
-		adc 	codePtr+1
-		sta 	codePtr+1		
-
-		dey 								; fix up.
-		.exitcmd
-
-; ************************************************************************************************
-;
-;									Conditional Gotos
-;
-; ************************************************************************************************
-
-CommandGotoZ: ;; [.goto.z]
-		jsr 	FloatIsZero
-		dex 
-		cmp 	#0
-		beq 	PerformGOTO
-		iny
-		iny
-		iny
+		pla 								; put frame marker at +0
+		sta 	(runtimeStackPtr)
 		rts
 
-CommandGotoNZ: ;; [.goto.nz]
-		jsr 	FloatIsZero
-		dex 
-		cmp 	#0
-		bne 	PerformGOTO
-		iny
-		iny
-		iny
+; ************************************************************************************************
+;
+;										Close a frame
+;
+; ************************************************************************************************
+
+StackCloseFrame:
+		lda 	(runtimeStackPtr)			; get frame marker
+		and 	#$1F 						; size
+		clc
+		adc 	runtimeStackPtr
+		sta 	runtimeStackPtr
+		bcc 	_SCFNoCarry
+		inc 	runtimeStackPtr+1
+_SCFNoCarry:
 		rts
 
-		.send 	code
+; ************************************************************************************************
+;
+;										Check a frame
+;
+; ************************************************************************************************
+
+StackCheckFrame:
+		cmp 	(runtimeStackPtr) 			; matches current frame
+		bne 	_SCFFail
+		rts
+_SCFFail:
+		.error_structure
+
+		.send code
 		
 ; ************************************************************************************************
 ;

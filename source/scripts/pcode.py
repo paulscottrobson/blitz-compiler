@@ -47,6 +47,8 @@ class PCode(object):
 		self.extra(".data",0xFF)
 		self.extra(".goto",3)
 		self.extra(".gosub",3)
+		self.extra(".goto.z",3)
+		self.extra(".goto.nz",3)
 		self.define("PCD_ENDSYSTEM")		
 
 	def doBinaryUnary(self,tokenList):
@@ -92,7 +94,7 @@ class PCode(object):
 		print()
 		for i in range(0x80,self.currentID):
 			s = self.tokenList[0].tidy(self.idToToken[i])
-			print("{0:16} = ${1:02x} ; {2}".format("PCD_"+s.upper().replace(".","CMD_"),i,self.idToToken[i].lower()))
+			print("{0:20} = ${1:02x} ; {2}".format("PCD_"+s.upper().replace(".","CMD_"),i,self.idToToken[i].lower()))
 
 	def dumpSizeTable(self,f):
 		h = open(f,"w")

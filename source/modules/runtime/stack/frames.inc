@@ -1,76 +1,23 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		goto.asm
-;		Purpose:	Goto command
-;		Created:	18th April 2023
+;		Name:		frames.inc
+;		Purpose:	Stack frames
+;		Created:	19th April 2023
 ;		Reviewed: 	No
 ;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section 	code
-
 ; ************************************************************************************************
 ;
-;								Goto <Page and Address follows>
-;	 							   (Page currently not used)
+;						Upper 3 bits : identifier, lower 5 : total frame size
 ;
 ; ************************************************************************************************
 
-CommandGoto: ;; [.goto]
-		.entercmd
-		;
-		;		Come here to actually do the GOTO.
-		;
-PerformGOTO:		
-		iny
-		iny 								; push MSB of offset on stack
-		lda 	(codePtr),y
-		pha
-		dey 								; point LSB of offset
-
-		clc 								; add LSB
-		lda 	(codePtr),y
-		adc 	codePtr
-		sta 	codePtr
-
-		pla 								; restore offset MSB and add
-		adc 	codePtr+1
-		sta 	codePtr+1		
-
-		dey 								; fix up.
-		.exitcmd
-
-; ************************************************************************************************
-;
-;									Conditional Gotos
-;
-; ************************************************************************************************
-
-CommandGotoZ: ;; [.goto.z]
-		jsr 	FloatIsZero
-		dex 
-		cmp 	#0
-		beq 	PerformGOTO
-		iny
-		iny
-		iny
-		rts
-
-CommandGotoNZ: ;; [.goto.nz]
-		jsr 	FloatIsZero
-		dex 
-		cmp 	#0
-		bne 	PerformGOTO
-		iny
-		iny
-		iny
-		rts
-
-		.send 	code
-		
+FRAME_GOSUB = $E4 							; Gosub has 4 bytes
+	
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

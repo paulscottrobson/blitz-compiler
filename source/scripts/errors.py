@@ -21,6 +21,7 @@ errors = """
 	line 		  : unknown line number
 	internal	  : internal error
 	divzero 	  : divide by zero
+	structure 	  : structure imbalance
 	
 """.strip().split("\n")
 
