@@ -83,7 +83,7 @@ rdebug: runtime cdebug
 rrun: runtime crun
 	$(CAT) $(BUILD)runtime.prg $(BTEMP)cout.bin $(BTEMP)pcodebin.prg
 	$(CDEL) dump*.bin
-	$(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
+	$(TIME) $(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
 #
 #		Build the runtime
 #
@@ -148,7 +148,7 @@ benchmark : prelim
 	$(ASM) $(ASMOPTS) _float.asm -o $(BTEMP)float.prg
 	$(CCOPY) $(BTEMP)float.prg $(BINDIR)
 	$(CDEL) dump*.bin
-	$(TIME) -f=%e $(HRUNEMU) -prg $(BTEMP)float.prg,801 -run
+	$(HRUNEMU) -prg $(BTEMP)float.prg,801 -run
 	python $(SCRIPTDIR)stack.py	
 #
 #		Do stuff before building.

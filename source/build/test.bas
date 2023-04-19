@@ -1,5 +1,5 @@
-	100 a = 0
-	105 print "start"
-	110 a = a + 1
-	130 if a < 100000 goto 110
-	140 print "end"
+10 print "start"
+20 let k%=0
+30 let k%=k%+1
+50 if k%<31000 then 30
+70 print "end"
