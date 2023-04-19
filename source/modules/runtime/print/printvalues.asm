@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		spctabprint.asm
-;		Purpose:	Print SPC()/TAB()/TABSTOP functionality
-;		Created:	18th April 2023
+;		Name:		printvalues.asm
+;		Purpose:	Print String/Number
+;		Created:	19th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -14,60 +14,60 @@
 
 ; ************************************************************************************************
 ;
-;						  		Print to next TAB stop
+;						  				Print number
 ;
 ; ************************************************************************************************
 
-PrintTab: ;; [print.tab]
+PrintNumber: ;; [print.n]
 		.entercmd
-		jsr 	XGetHPos
-_PTMod10: 									; subtract 10 till borrow
-		sec
-		sbc 	#10
-		bcs 	_PTMod10		
-		eor 	#255 						; subtract from 10 effectively. negate it
-		inc 	a 							; if modulus is 0, then this will be -10 => 10
-		bra 	PrintSpaceLoop
-
-; ************************************************************************************************
-;
-;						  		Print to TAB() e.g. position
-;
-; ************************************************************************************************
-
-PrintPos: ;; [print.pos]
-		.entercmd
-		jsr		XGetHPos 					; get current position
-		sta 	zTemp0
-		sec 								; calculate spaces required
-		lda 	NSMantissa0,x 				
-		dex
-		sbc 	zTemp0
-		bcs 	PrintSpaceLoop 				; if >= 0 then do that many spaces
-		.exitcmd
-
-; ************************************************************************************************
-;
-;						  			Print SPC(S[X])
-;
-; ************************************************************************************************
-
-PrintSpace: ;; [print.spc]
-		.entercmd
-		lda 	NSMantissa0,x 	
-		dex
-PrintSpaceLoop:	
-		cmp 	#0
-		beq 	_PSExit
-		pha
-		lda 	#" "
+		jsr 	FloatToString 				; to number in decimal buffer
+		dex 								; drop
+		phx
+		ldx 	#0 							; print buffer.
+_PNLoop:
+		lda 	decimalBuffer,x
 		jsr 	VectorPrintCharacter
-		pla
-		dec 	a
-		bra 	PrintSpaceLoop
-_PSExit:
+		inx
+		lda	 	decimalBuffer,x
+		bne 	_PNLoop
+		lda 	#32 						; trailing space
+		jsr 	VectorPrintCharacter
+		plx
 		.exitcmd
-		
+
+; ************************************************************************************************
+;
+;						  				Print string
+;
+; ************************************************************************************************
+
+PrintString: ;; [print.s]
+		.entercmd
+		lda 	NSMantissa0,x 				; point zTemp0 to string
+		sta 	zTemp0
+		lda 	NSMantissa1,x
+		sta 	zTemp0+1
+		dex 								; drop
+		phx
+		phy
+		lda 	(zTemp0) 					; X = count
+		tax
+		ldy 	#1 							; Y = position
+_PSLoop:
+		cpx 	#0 							; complete ?
+		beq 	_PSExit
+		dex 								; dec count
+		lda 	(zTemp0),y 					; print char and bump
+		jsr 	VectorPrintCharacter
+		iny
+		bra 	_PSLoop
+
+_PSExit:
+		ply
+		plx
+		.exitcmd
+
+
 		.send code
 
 ; ************************************************************************************************

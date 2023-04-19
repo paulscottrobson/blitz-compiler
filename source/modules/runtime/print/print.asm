@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		charprint.asm
-;		Purpose:	Print top of stack as character
-;		Created:	18th April 2023
+;		Name:		print.asm
+;		Purpose:	Print Indirection Control etc.
+;		Created:	19th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -14,16 +14,13 @@
 
 ; ************************************************************************************************
 ;
-;						  			Print CHR$(S[X])
+;						  				Print Character
 ;
 ; ************************************************************************************************
 
-PrintCharacter: ;; [print.chr]
-		.entercmd
-		lda 	NSMantissa0,x 	
-		dex
-		jsr 	VectorPrintCharacter
-		.exitcmd
+VectorPrintCharacter:
+		jmp 	XPrintCharacter
+
 		
 		.send code
 

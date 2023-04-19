@@ -52,14 +52,18 @@ VectorTable:
 	.word	NegateTOS                ; $ae negate
 	.word	CommandNewLine           ; $af new.line
 	.word	NotTOS                   ; $b0 not
-	.word	StringConcatenate        ; $b1 concat
-	.word	PrintSpace               ; $b2 print.spc
-	.word	Unimplemented            ; $b3 .shift
-	.word	PushByteCommand          ; $b4 .byte
-	.word	PushWordCommand          ; $b5 .word
-	.word	CommandPushN             ; $b6 .float
-	.word	CommandPushS             ; $b7 .string
-	.word	Unimplemented            ; $b8 .data
-	.word	CommandGoto              ; $b9 .goto
-	.word	Unimplemented            ; $ba .gosub
+	.word	PrintNumber              ; $b1 print.n
+	.word	PrintString              ; $b2 print.s
+	.word	StringConcatenate        ; $b3 concat
+	.word	PrintTab                 ; $b4 print.tab
+	.word	PrintPos                 ; $b5 print.pos
+	.word	PrintSpace               ; $b6 print.spc
+	.word	Unimplemented            ; $b7 .shift
+	.word	PushByteCommand          ; $b8 .byte
+	.word	PushWordCommand          ; $b9 .word
+	.word	CommandPushN             ; $ba .float
+	.word	CommandPushS             ; $bb .string
+	.word	Unimplemented            ; $bc .data
+	.word	CommandGoto              ; $bd .goto
+	.word	Unimplemented            ; $be .gosub
 	.send code

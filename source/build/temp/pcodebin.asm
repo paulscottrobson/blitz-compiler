@@ -1,10 +1,20 @@
+	.byte	180                               ;  print.tab
 	.byte	42                                ;  42
 	.byte	166                               ;  print.chr
-	.byte	4                                 ;  4
-	.byte	178                               ;  print.spc
+	.byte	180                               ;  print.tab
 	.byte	42                                ;  42
 	.byte	166                               ;  print.chr
-	.byte	1                                 ;  1
-	.byte	0                                 ;  0
-	.byte	131                               ;  /
+	.text	187,5,"HELLO"                     ;  "hello" 
+	.byte	178                               ;  print.s
+	.byte	13                                ;  13
+	.byte	166                               ;  print.chr
+	.byte	42                                ;  42
+	.byte	166                               ;  print.chr
+	.byte	185,57,48                         ;  57 
+	.byte	174                               ;  negate
+	.byte	177                               ;  print.n
+	.byte	42                                ;  42
+	.byte	166                               ;  print.chr
+	.byte	13                                ;  13
+	.byte	166                               ;  print.chr
 	.byte	169                               ;  exit
