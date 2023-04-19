@@ -30,10 +30,15 @@ CommandIF:
 		jsr 	CharIsDigit
 		bcs 	_CIGoto2
 
-		; TODO: JMPZ Next line.
-
-		.debug
-
+		lda 	#PCD_CMD_SKIPEOLCMD_Z
+		jsr 	WriteCodeByte
+		lda 	#0
+		jsr 	WriteCodeByte
+		lda 	#3
+		jsr 	WriteCodeByte
+		lda 	#0
+		jsr 	WriteCodeByte
+		rts
 
 _CIGoto:	
 		jsr 	GetNext

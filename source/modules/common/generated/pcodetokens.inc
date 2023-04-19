@@ -74,5 +74,5 @@ PCD_CMD_STRING       = $bc ; .string
 PCD_CMD_DATA         = $bd ; .data
 PCD_CMD_GOTO         = $be ; .goto
 PCD_CMD_GOSUB        = $bf ; .gosub
-PCD_CMD_GOTOCMD_Z    = $c0 ; .goto.z
+PCD_CMD_SKIPEOLCMD_Z = $c0 ; .skipeol.z
 PCD_CMD_GOTOCMD_NZ   = $c1 ; .goto.nz

@@ -47,7 +47,7 @@ class PCode(object):
 		self.extra(".data",0xFF)
 		self.extra(".goto",3)
 		self.extra(".gosub",3)
-		self.extra(".goto.z",3)
+		self.extra(".skipeol.z",3)
 		self.extra(".goto.nz",3)
 		self.define("PCD_ENDSYSTEM")		
 
