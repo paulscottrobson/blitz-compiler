@@ -81,7 +81,7 @@ rdebug: runtime cdebug
 rrun: runtime crun
 	$(CAT) $(BUILD)runtime.prg $(BTEMP)cout.bin $(BTEMP)pcodebin.prg
 	$(CDEL) dump*.bin
-	$(HRUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
+	$(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
 #
 #		Build the runtime
 #

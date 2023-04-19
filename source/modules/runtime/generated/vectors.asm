@@ -46,24 +46,25 @@ VectorTable:
 	.word	CompareStrings           ; $a8 s.cmp
 	.word	CommandExit              ; $a9 exit
 	.word	CommandDebug             ; $aa debug
-	.word	UnaryHex                 ; $ab hex$
-	.word	LinkFloatCompare         ; $ac f.cmp
-	.word	LinkDivideInt32          ; $ad int.div
-	.word	NegateTOS                ; $ae negate
-	.word	CommandNewLine           ; $af new.line
-	.word	NotTOS                   ; $b0 not
-	.word	PrintNumber              ; $b1 print.n
-	.word	PrintString              ; $b2 print.s
-	.word	StringConcatenate        ; $b3 concat
-	.word	PrintTab                 ; $b4 print.tab
-	.word	PrintPos                 ; $b5 print.pos
-	.word	PrintSpace               ; $b6 print.spc
-	.word	Unimplemented            ; $b7 .shift
-	.word	PushByteCommand          ; $b8 .byte
-	.word	PushWordCommand          ; $b9 .word
-	.word	CommandPushN             ; $ba .float
-	.word	CommandPushS             ; $bb .string
-	.word	Unimplemented            ; $bc .data
-	.word	CommandGoto              ; $bd .goto
-	.word	Unimplemented            ; $be .gosub
+	.word	CommandReturn            ; $ab return
+	.word	UnaryHex                 ; $ac hex$
+	.word	LinkFloatCompare         ; $ad f.cmp
+	.word	LinkDivideInt32          ; $ae int.div
+	.word	NegateTOS                ; $af negate
+	.word	CommandNewLine           ; $b0 new.line
+	.word	NotTOS                   ; $b1 not
+	.word	PrintNumber              ; $b2 print.n
+	.word	PrintString              ; $b3 print.s
+	.word	StringConcatenate        ; $b4 concat
+	.word	PrintTab                 ; $b5 print.tab
+	.word	PrintPos                 ; $b6 print.pos
+	.word	PrintSpace               ; $b7 print.spc
+	.word	Unimplemented            ; $b8 .shift
+	.word	PushByteCommand          ; $b9 .byte
+	.word	PushWordCommand          ; $ba .word
+	.word	CommandPushN             ; $bb .float
+	.word	CommandPushS             ; $bc .string
+	.word	Unimplemented            ; $bd .data
+	.word	CommandGoto              ; $be .goto
+	.word	CommandGosub             ; $bf .gosub
 	.send code

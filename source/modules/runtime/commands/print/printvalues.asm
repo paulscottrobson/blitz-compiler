@@ -20,6 +20,7 @@
 
 PrintNumber: ;; [print.n]
 		.entercmd
+		lda 	#7
 		jsr 	FloatToString 				; to number in decimal buffer
 		dex 								; drop
 		phx

@@ -1,3 +1,6 @@
-10 a = a + 1
-20 a% = a% + 1
-30 goto 10
+100 gosub 1000
+110 print "back"
+120 gosub 1000
+130 print 1/0
+1000 print "hello world !"
+1010 return

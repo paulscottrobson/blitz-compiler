@@ -1,50 +1,31 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		goto.asm
-;		Purpose:	Goto command
-;		Created:	18th April 2023
+;		Name:		gosub.asm
+;		Purpose:	Gosub/Return command
+;		Created:	19th April 2023
 ;		Reviewed: 	No
-;		Author : 	Paul Robson (paul@robsons.org.uk)
+;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section 	code
+		.section code
 
 ; ************************************************************************************************
 ;
-;								Goto <Page and Address follows>
-;	 							   (Page currently not used)
+;											GOTO
 ;
 ; ************************************************************************************************
 
-CommandGoto: ;; [.goto]
-		.entercmd
-		;
-		;		Come here to actually do the GOTO.
-		;
-PerformGOTO:		
-		iny
-		iny 								; push MSB of offset on stack
-		lda 	(codePtr),y
-		pha
-		dey 								; point LSB of offset
+CommandGOSUB: 
+		lda 	#PCD_CMD_GOSUB
+		jsr 	CompileBranchCommand
+		rts
 
-		clc 								; add LSB
-		lda 	(codePtr),y
-		adc 	codePtr
-		sta 	codePtr
+		.send code
 
-		pla 								; restore offset MSB and add
-		adc 	codePtr+1
-		sta 	codePtr+1		
 
-		dey 								; fix up.
-		.exitcmd
-
-		.send 	code
-		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates
