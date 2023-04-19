@@ -1,8 +1,8 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		if.asm
-;		Purpose:	If command
+;		Name:		next.asm
+;		Purpose:	Get next line number
 ;		Created:	19th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
@@ -14,39 +14,31 @@
 
 ; ************************************************************************************************
 ;
-;											IF
+;									Get *following* line number
 ;
 ; ************************************************************************************************
 
-CommandIF: 		
-		jsr 	LookNextNonSpace 			; what follows the tests ?
-		cmp 	#C64_GOTO 					; IF .. GOTO
-		beq 	_CIGoto
-		;
-		lda 	#C64_THEN 					; should be THEN
-		jsr 	CheckNextA
-		;
-		jsr 	LookNextNonSpace 			; THEN <number>
-		jsr 	CharIsDigit
-		bcs 	_CIGoto2
+HWIGetNextLineNumber:
+		clc 								; advance following link into zTemp0
+		ldy 	#1
+		lda 	(inputPtr)
+		adc 	offsetAdjust
+		sta 	zTemp0
+		lda 	(inputPtr),y 	
+		adc 	offsetAdjust+1
+		sta 	zTemp0+1
 
-		lda 	#PCD_CMD_GOTOCMD_Z
-		jsr 	WriteCodeByte
-		lda 	#0
-		jsr 	WriteCodeByte
-		jsr 	HWIGetNextLineNumber 		; Get the *next* line number => YA
-		jsr 	WriteCodeByte
-		tya
-		jsr 	WriteCodeByte
+		iny
+		lda 	(zTemp0),y
+		pha
+		iny
+		lda 	(zTemp0),y
+		tay
+		pla
 		rts
 
-_CIGoto:	
-		jsr 	GetNext
-_CIGoto2:		
-		lda 	#PCD_CMD_GOTOCMD_NZ
-		jsr 	CompileBranchCommand
-		rts
 		.send code
+
 
 
 ; ************************************************************************************************

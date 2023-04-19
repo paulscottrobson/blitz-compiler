@@ -49,7 +49,7 @@ PerformGOTO:
 ;
 ; ************************************************************************************************
 
-CommandGotoZ: ;; [.skipeol.z]
+CommandGotoZ: ;; [.goto.z]
 		.entercmd
 		jsr 	FloatIsZero
 		dex 

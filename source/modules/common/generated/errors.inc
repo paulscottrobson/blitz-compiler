@@ -31,3 +31,6 @@ error_divzero .macro
 error_structure .macro
 	jmp	ErrorV_structure
 	.endm
+error_stop .macro
+	jmp	ErrorV_stop
+	.endm

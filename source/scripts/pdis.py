@@ -65,7 +65,7 @@ class PCodeDecompiler(object):
 							s += chr(self.data[p])
 						p += 1
 						s += '"'
-					if s.startswith(".goto") or s == ".gosub" or s == ".skipeol.z":
+					if s.startswith(".goto") or s == ".gosub":
 						page = self.data[p]
 						offset = self.data[p+1]+(self.data[p+2] << 8)
 						addr = (p + offset) & 0xFFFF

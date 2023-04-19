@@ -1,54 +1,31 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		if.asm
-;		Purpose:	If command
+;		Name:		stop.asm
+;		Purpose:	Stop command
 ;		Created:	19th April 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section code
+		.section 	code
 
 ; ************************************************************************************************
 ;
-;											IF
+;										STOP command
 ;
 ; ************************************************************************************************
 
-CommandIF: 		
-		jsr 	LookNextNonSpace 			; what follows the tests ?
-		cmp 	#C64_GOTO 					; IF .. GOTO
-		beq 	_CIGoto
-		;
-		lda 	#C64_THEN 					; should be THEN
-		jsr 	CheckNextA
-		;
-		jsr 	LookNextNonSpace 			; THEN <number>
-		jsr 	CharIsDigit
-		bcs 	_CIGoto2
+CommandStop: ;; [stop]
+		.entercmd
+		.error_stop
 
-		lda 	#PCD_CMD_GOTOCMD_Z
-		jsr 	WriteCodeByte
-		lda 	#0
-		jsr 	WriteCodeByte
-		jsr 	HWIGetNextLineNumber 		; Get the *next* line number => YA
-		jsr 	WriteCodeByte
-		tya
-		jsr 	WriteCodeByte
-		rts
+; ************************************************************************************************
 
-_CIGoto:	
-		jsr 	GetNext
-_CIGoto2:		
-		lda 	#PCD_CMD_GOTOCMD_NZ
-		jsr 	CompileBranchCommand
-		rts
-		.send code
-
-
+		.send 	code
+		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

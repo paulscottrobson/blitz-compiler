@@ -64,6 +64,7 @@ ismain_polynomials = 0
 	.include	"modules/compiler/storage/line.asm"
 	.include	"modules/ifloat32/binary/multiply.asm"
 	.include	"modules/ifloat32/float/multiply.asm"
+	.include	"modules/compiler/source/simple/next.asm"
 	.include	"modules/compiler/source/simple/nextline.asm"
 	.include	"modules/ifloat32/float/normalise.asm"
 	.include	"modules/compiler/evaluate/term/parsenumber.asm"

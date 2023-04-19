@@ -44,29 +44,31 @@ VectorTable:
 	.word	PrintCharacter           ; $a6 print.chr
 	.word	CommandClr               ; $a7 clr
 	.word	CompareStrings           ; $a8 s.cmp
-	.word	CommandExit              ; $a9 exit
-	.word	CommandDebug             ; $aa debug
-	.word	CommandReturn            ; $ab return
-	.word	UnaryHex                 ; $ac hex$
-	.word	LinkFloatCompare         ; $ad f.cmp
-	.word	LinkDivideInt32          ; $ae int.div
-	.word	NegateTOS                ; $af negate
-	.word	CommandNewLine           ; $b0 new.line
-	.word	NotTOS                   ; $b1 not
-	.word	PrintNumber              ; $b2 print.n
-	.word	PrintString              ; $b3 print.s
-	.word	StringConcatenate        ; $b4 concat
-	.word	PrintTab                 ; $b5 print.tab
-	.word	PrintPos                 ; $b6 print.pos
-	.word	PrintSpace               ; $b7 print.spc
-	.word	Unimplemented            ; $b8 .shift
-	.word	PushByteCommand          ; $b9 .byte
-	.word	PushWordCommand          ; $ba .word
-	.word	CommandPushN             ; $bb .float
-	.word	CommandPushS             ; $bc .string
-	.word	Unimplemented            ; $bd .data
-	.word	CommandGoto              ; $be .goto
-	.word	CommandGosub             ; $bf .gosub
-	.word	CommandGotoZ             ; $c0 .skipeol.z
-	.word	CommandGotoNZ            ; $c1 .goto.nz
+	.word	CommandEnd               ; $a9 end
+	.word	CommandExit              ; $aa exit
+	.word	CommandDebug             ; $ab debug
+	.word	CommandReturn            ; $ac return
+	.word	UnaryHex                 ; $ad hex$
+	.word	LinkFloatCompare         ; $ae f.cmp
+	.word	LinkDivideInt32          ; $af int.div
+	.word	NegateTOS                ; $b0 negate
+	.word	CommandNewLine           ; $b1 new.line
+	.word	NotTOS                   ; $b2 not
+	.word	PrintNumber              ; $b3 print.n
+	.word	PrintString              ; $b4 print.s
+	.word	StringConcatenate        ; $b5 concat
+	.word	PrintTab                 ; $b6 print.tab
+	.word	PrintPos                 ; $b7 print.pos
+	.word	PrintSpace               ; $b8 print.spc
+	.word	CommandStop              ; $b9 stop
+	.word	Unimplemented            ; $ba .shift
+	.word	PushByteCommand          ; $bb .byte
+	.word	PushWordCommand          ; $bc .word
+	.word	CommandPushN             ; $bd .float
+	.word	CommandPushS             ; $be .string
+	.word	Unimplemented            ; $bf .data
+	.word	CommandGoto              ; $c0 .goto
+	.word	CommandGosub             ; $c1 .gosub
+	.word	CommandGotoZ             ; $c2 .goto.z
+	.word	CommandGotoNZ            ; $c3 .goto.nz
 	.send code

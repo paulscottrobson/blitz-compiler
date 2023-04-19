@@ -28,18 +28,13 @@ _FBLoop:
 		beq 	_FBFixGotoGosub
 		cmp 	#PCD_CMD_GOTOCMD_NZ 		; patch the conditional GOTOs for Z/NZ TOS.
 		beq 	_FBFixGotoGosub
-;		cmp 	#PCD_CMD_SKIPEOLCMD_Z 		; patch the skip to EOL if zero
-;		beq 	_FBFixSkipEOL
+		cmp 	#PCD_CMD_GOTOCMD_Z 
+		beq 	_FBFixGotoGosub
 _FBNext:		
 		jsr 	MoveObjectForward 			; move forward in object code.
 		bcc 	_FBLoop 					; not finished
 _FBExit:		
 		rts
-;
-;		Found Skip to EOL if zero
-;
-_FBFixSkipEOL:
-		.debug
 ;
 ;		Found GOTO/GOSUB - look it up in the line# table and fix it up.
 ;
@@ -52,9 +47,8 @@ _FBFixGotoGosub:
 		lda 	(objPtr),y
 		tay
 		pla
-		jsr 	STRFindLine			 		; find where it is
+		jsr 	STRFindLine			 		; find where it is X:YA
 
-_FBPatchYA:
 		phy	 								; patch the GOTO/GOSUB
 		pha
 

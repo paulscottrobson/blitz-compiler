@@ -32,4 +32,7 @@ ErrorV_divzero:
 ErrorV_structure:
 	jsr	ErrorHandler
 	.text	"STRUCTURE IMBALANCE",0
+ErrorV_stop:
+	jsr	ErrorHandler
+	.text	"PROGRAM HALTED",0
 	.send code
