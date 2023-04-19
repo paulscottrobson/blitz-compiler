@@ -56,6 +56,7 @@ ismain_polynomials = 0
 	.include	"modules/compiler/commands/gosub.asm"
 	.include	"modules/compiler/commands/goto.asm"
 	.include	"modules/compiler/variables/identify.asm"
+	.include	"modules/compiler/commands/if.asm"
 	.include	"modules/ifloat32/float/integer.asm"
 	.include	"modules/ifloat32/float/integerdown.asm"
 	.include	"modules/compiler/commands/let.asm"

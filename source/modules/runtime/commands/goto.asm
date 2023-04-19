@@ -50,6 +50,7 @@ PerformGOTO:
 ; ************************************************************************************************
 
 CommandGotoZ: ;; [.goto.z]
+		.entercmd
 		jsr 	FloatIsZero
 		dex 
 		cmp 	#0
@@ -57,9 +58,10 @@ CommandGotoZ: ;; [.goto.z]
 		iny
 		iny
 		iny
-		rts
+		.exitcmd
 
 CommandGotoNZ: ;; [.goto.nz]
+		.entercmd
 		jsr 	FloatIsZero
 		dex 
 		cmp 	#0
@@ -67,7 +69,7 @@ CommandGotoNZ: ;; [.goto.nz]
 		iny
 		iny
 		iny
-		rts
+		.exitcmd
 
 		.send 	code
 		

@@ -11,8 +11,10 @@
 
 ifeq ($(OS),Windows_NT)
 include ..\documents\common.make
+TIME=
 else
 include ../documents/common.make
+TIME=time -f=%e 
 endif
 
 BINDIR = ..$(S)bin$(S)
@@ -21,7 +23,7 @@ ASMCTRLS = -q -Wall -c -C
 ASMOPTS =  $(ASMCTRLS) -L $(BUILD)code.lst -l $(BUILD)code.lbl 
 EMULATOR = $(BINDIR)x16emu$(APPSTEM)
 RUNEMU = $(EMULATOR) -rom $(BINDIR)rom.bin -keymap en-gb -dump R -scale 2 -rtc -debug 
-HRUNEMU = $(RUNEMU) -testbench -warp
+HRUNEMU = $(RUNEMU) -testbench 
 EMU_REPO= ..$(S)..$(S)x16-emulator
 ROM_REPO= ..$(S)..$(S)x16-rom
 HARDWARE = x16
@@ -146,7 +148,7 @@ benchmark : prelim
 	$(ASM) $(ASMOPTS) _float.asm -o $(BTEMP)float.prg
 	$(CCOPY) $(BTEMP)float.prg $(BINDIR)
 	$(CDEL) dump*.bin
-	time -f=%e $(HRUNEMU) -prg $(BTEMP)float.prg,801 -run
+	$(TIME) -f=%e $(HRUNEMU) -prg $(BTEMP)float.prg,801 -run
 	python $(SCRIPTDIR)stack.py	
 #
 #		Do stuff before building.
