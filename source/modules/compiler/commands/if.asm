@@ -34,7 +34,12 @@ CommandIF:
 		jsr 	WriteCodeByte
 		lda 	#0
 		jsr 	WriteCodeByte
+
 		jsr 	HWIGetNextLineNumber 		; Get the *next* line number => YA
+		bcs 	_CINotLastLine 				; if last line, write $FFFF out , illegal line#
+		lda 	#$FF
+		tay
+_CINotLastLine:		
 		jsr 	WriteCodeByte
 		tya
 		jsr 	WriteCodeByte

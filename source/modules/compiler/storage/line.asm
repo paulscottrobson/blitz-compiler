@@ -31,8 +31,6 @@ STRMarkLine:
 		sta 	zTemp0+1
 
 		.storage_access
-
-		phy
 		jsr 	HWILineNumber 				; get line #
 		sta 	(zTemp0) 					; save it in +0,+1
 		tya
@@ -51,7 +49,6 @@ STRMarkLine:
 		sta 	(zTemp0),y
 
 		.storage_release
-		ply
 		rts
 
 ; ************************************************************************************************

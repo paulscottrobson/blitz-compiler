@@ -15,7 +15,7 @@
 ; ************************************************************************************************
 ;
 ;									Get *following* line number
-;							   If the last line, should return $FFFF
+;							   If the last line, should CC, CS if okay.
 ;
 ; ************************************************************************************************
 
@@ -23,12 +23,16 @@ HWIGetNextLineNumber:
 		clc 								; advance following link into zTemp0
 		ldy 	#1
 		lda 	(inputPtr)
-		beq 	_HWIEndOfProgram 			; no following line ?
 		adc 	offsetAdjust
 		sta 	zTemp0
 		lda 	(inputPtr),y 	
 		adc 	offsetAdjust+1
 		sta 	zTemp0+1
+
+		ldy 	#1 							; check not end of program.
+		lda 	(zTemp0),y
+		clc
+		beq 	_HWIGNLNExit
 
 		iny
 		lda 	(zTemp0),y
@@ -37,12 +41,10 @@ HWIGetNextLineNumber:
 		lda 	(zTemp0),y
 		tay
 		pla
+		sec
+_HWIGNLNExit:		
 		rts
 
-_HWIEndOfProgram:
-		lda 	#$FF
-		tay
-		rts		
 
 		.send code
 
