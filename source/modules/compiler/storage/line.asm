@@ -14,12 +14,12 @@
 
 ; ************************************************************************************************
 ;
-;								Store current position, current line
+;								Store current position, line YA
 ;
 ; ************************************************************************************************
 
 STRMarkLine:
-
+		pha
 		sec 								; allocate 5 bytes (line #, page+address)
 		lda 	lineNumberTable 			; and copy to zTemp0
 		sbc 	#5
@@ -31,7 +31,7 @@ STRMarkLine:
 		sta 	zTemp0+1
 
 		.storage_access
-		jsr 	HWILineNumber 				; get line #
+		pla
 		sta 	(zTemp0) 					; save it in +0,+1
 		tya
 		ldy 	#1

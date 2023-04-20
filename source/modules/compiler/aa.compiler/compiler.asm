@@ -20,6 +20,7 @@ Boot:
 		;		Main compilation loop
 		;
 MainCompileLoop:
+		jsr 	HWILineNumber 				; get line #
 		jsr 	STRMarkLine 				; remember the position and number of this line.
 		lda 	#PCD_NEWCMD_LINE 			; generate new command line
 		jsr 	WriteCodeByte
@@ -56,6 +57,9 @@ _MCLNextLine:
 		;		End of compile, fix up GOTO/GOSUB etc., save it and exit.
 		;
 SaveCodeAndExit:
+		lda 	#$FF 						; fake line number $FFFF for forward THEN.
+		tay
+		jsr 	STRMarkLine
 		lda 	#PCD_EXIT 					; add an END
 		jsr 	WriteCodeByte
 		lda 	#$FF 						; add end marker
