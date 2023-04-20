@@ -26,7 +26,20 @@ FloatMultiply:
 		ora 	NSMantissa3,x
 		ora 	NSMantissa3+1,x		
 		bne 	_FMUseFloat
-		
+
+		lda 	NSStatus,x 					; check if it is 8 bit unsigned
+		ora 	NSStatus+1,x		
+		and 	#$80
+		ora 	NSMantissa2,x
+		ora 	NSMantissa1,x
+		ora 	NSMantissa2+1,x
+		ora 	NSMantissa1+1,x
+		bne 	_FMInt32
+
+		jsr 	FloatInt8Multiply 			; use fast 8x8 multiply.
+		rts
+
+_FMInt32:
 		jsr 	FloatMultiplyShort			; use the int32 one.
 		clc 								; fix it up if gone out of range
 		adc 	NSExponent,x
