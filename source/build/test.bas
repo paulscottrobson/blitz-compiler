@@ -1,2 +1,3 @@
-10 print a
-20 print ti
+
+20 print int(ti/60)
+40 goto 20

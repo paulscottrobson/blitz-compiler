@@ -61,14 +61,15 @@ VectorTable:
 	.word	PrintPos                 ; $b7 print.pos
 	.word	PrintSpace               ; $b8 print.spc
 	.word	CommandStop              ; $b9 stop
-	.word	Unimplemented            ; $ba .shift
-	.word	PushByteCommand          ; $bb .byte
-	.word	PushWordCommand          ; $bc .word
-	.word	CommandPushN             ; $bd .float
-	.word	CommandPushS             ; $be .string
-	.word	Unimplemented            ; $bf .data
-	.word	CommandGoto              ; $c0 .goto
-	.word	CommandGosub             ; $c1 .gosub
-	.word	CommandGotoZ             ; $c2 .goto.z
-	.word	CommandGotoNZ            ; $c3 .goto.nz
+	.word	TimeTOS                  ; $ba ti
+	.word	Unimplemented            ; $bb .shift
+	.word	PushByteCommand          ; $bc .byte
+	.word	PushWordCommand          ; $bd .word
+	.word	CommandPushN             ; $be .float
+	.word	CommandPushS             ; $bf .string
+	.word	Unimplemented            ; $c0 .data
+	.word	CommandGoto              ; $c1 .goto
+	.word	CommandGosub             ; $c2 .gosub
+	.word	CommandGotoZ             ; $c3 .goto.z
+	.word	CommandGotoNZ            ; $c4 .goto.nz
 	.send code

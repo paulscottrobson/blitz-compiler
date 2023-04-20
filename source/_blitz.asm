@@ -73,6 +73,7 @@ ismain_polynomials = 0
 	.include	"modules/compiler/commands/print.asm"
 	.include	"modules/x16_hardware/interface/printchar.asm"
 	.include	"modules/compiler/variables/readwrite.asm"
+	.include	"modules/x16_hardware/interface/readwriteclock.asm"
 	.include	"modules/compiler/commands/rem.asm"
 	.include	"modules/compiler/source/simple/reset.asm"
 	.include	"modules/compiler/storage/reset.asm"

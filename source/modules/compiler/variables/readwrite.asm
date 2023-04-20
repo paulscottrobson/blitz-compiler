@@ -22,6 +22,8 @@
 
 GetSetVariable:
 		php 								; save direction on stack
+		cpx 	#6
+		beq 	_GSVReadWriteClock
 		cpy 	#$FF 						; array ?
 		beq 	_GSVArray
 		;
@@ -57,7 +59,18 @@ _GSVNotWrite:
 		;
 _GSVArray:
 		.error_unimplemented		
+		;
+		;		Handle clock read/write
+		;
+_GSVReadWriteClock:
+		plp
+		bcs 	_GSVSyntax		
+		lda 	#PCD_TI
+		jsr 	WriteCodeByte
 		rts
+
+_GSVSyntax:
+		.error_syntax
 
 		.send code
 
