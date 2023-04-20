@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		nextline.asm
-;		Purpose:	Set up for next line.
-;		Created:	15th April 2023
+;		Name:		nextnumber.asm
+;		Purpose:	Get next line number
+;		Created:	19th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -14,37 +14,39 @@
 
 ; ************************************************************************************************
 ;
-;						Set pointers to next line in srcPtr. CS if ok, CC if EOF
+;									Get *following* line number
+;							   If the last line, should return $FFFF
 ;
 ; ************************************************************************************************
 
-
-HWINextLine:	
+HWIGetNextLineNumber:
+		clc 								; advance following link into zTemp0
 		ldy 	#1
-		clc 								; advance following link.
 		lda 	(inputPtr)
+		beq 	_HWIEndOfProgram 			; no following line ?
 		adc 	offsetAdjust
-		pha
+		sta 	zTemp0
 		lda 	(inputPtr),y 	
 		adc 	offsetAdjust+1
-		sta 	inputPtr+1
+		sta 	zTemp0+1
+
+		iny
+		lda 	(zTemp0),y
+		pha
+		iny
+		lda 	(zTemp0),y
+		tay
 		pla
-		sta 	inputPtr
-
-		lda 	(inputPtr) 					; check if reached end of program.
-		ldy 	#1
-		ora 	(inputPtr),y
-		beq 	_HWIGFail
-
-		jsr 	HWISetTokenisedCodePtr 		; set srcPtr accordingly.
-		sec
 		rts
 
-_HWIGFail:
-		clc
-		rts
+_HWIEndOfProgram:
+		lda 	#$FF
+		tay
+		rts		
 
 		.send code
+
+
 
 ; ************************************************************************************************
 ;

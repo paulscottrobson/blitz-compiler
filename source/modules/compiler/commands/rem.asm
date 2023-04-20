@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		next.asm
-;		Purpose:	Get next line number
-;		Created:	19th April 2023
+;		Name:		rem.asm
+;		Purpose:	Handle remark (ignore to EOL)
+;		Created:	20th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -14,31 +14,19 @@
 
 ; ************************************************************************************************
 ;
-;									Get *following* line number
+;								REM consumes the rest of the line.
 ;
 ; ************************************************************************************************
 
-HWIGetNextLineNumber:
-		clc 								; advance following link into zTemp0
-		ldy 	#1
-		lda 	(inputPtr)
-		adc 	offsetAdjust
-		sta 	zTemp0
-		lda 	(inputPtr),y 	
-		adc 	offsetAdjust+1
-		sta 	zTemp0+1
-
-		iny
-		lda 	(zTemp0),y
-		pha
-		iny
-		lda 	(zTemp0),y
-		tay
-		pla
+CommandREM: 
+		jsr 	LookNext
+		beq 	_CRExit
+		jsr 	GetNext
+		bra 	CommandREM
+_CRExit:		
 		rts
 
 		.send code
-
 
 
 ; ************************************************************************************************
