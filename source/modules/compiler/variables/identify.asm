@@ -19,6 +19,8 @@
 ; 	
 ;	The address is an offset from the data area, not a physical address
 ;
+;	TI returns $0006/Float and TI$ returns $0008/String
+;
 ; ************************************************************************************************
 
 		.section code
@@ -75,6 +77,29 @@ _IVCheckSimple:
 		and 	#NSSArray 
 		ora 	zTemp1+1
 		beq 	_IVIsSimple
+		;
+		;		Check for TI $1409 and TI$ $5409 which return 6 and 8 as addresses.
+		;
+		lda 	zTemp1+1
+		cmp 	#$09	 					; both end $09 e.g. I
+		bne 	_IVComplex
+		lda 	zTemp1
+		cmp 	#$14 						; TI is $14
+		beq 	_IVTIFloat
+		cmp 	#$54 						; TI$ is $54
+		bne 	_IVComplex
+		ldx 	#8 							; TI$ returns string at 8
+		ldy 	#0
+		lda 	#NSSString
+		rts
+_IVTIFloat: 								; TI returns ifloat at 6
+		ldx 	#6
+		ldy 	#0
+		lda 	#NSSIFloat
+		rts
+
+		nop			
+_IVComplex:			
 		.error_unimplemented 				; TODO: Handle complex variables.
 		;
 		;		Simple object.
