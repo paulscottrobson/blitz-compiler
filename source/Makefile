@@ -75,12 +75,12 @@ crun : compiler basic
 #
 #		Compile and Run
 #
-rdebug: runtime cdebug
+rdebug: cdebug runtime 
 	$(CAT) $(BUILD)runtime.prg $(BTEMP)cout.bin $(BTEMP)pcodebin.prg
 	$(CDEL) dump*.bin
 	$(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
 
-rrun: runtime crun
+rrun: crun runtime 
 	$(CAT) $(BUILD)runtime.prg $(BTEMP)cout.bin $(BTEMP)pcodebin.prg
 	$(CDEL) dump*.bin
 	$(TIME) $(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 

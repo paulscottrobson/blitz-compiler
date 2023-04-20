@@ -1,3 +1,3 @@
 
-20 print int(ti/60)
-40 goto 20
+10 for i = 1 to 10:print i
+20 stop

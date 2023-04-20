@@ -60,6 +60,7 @@ ismain_polynomials = 0
 	.include	"modules/runtime/support/exit.asm"
 	.include	"modules/polynomials/unary/exp.asm"
 	.include	"modules/polynomials/core/exp_core.asm"
+	.include	"modules/runtime/commands/for.asm"
 	.include	"modules/ifloat32/float/fractional.asm"
 	.include	"modules/runtime/stack/frames.asm"
 	.include	"modules/runtime/functions/number/fre.asm"

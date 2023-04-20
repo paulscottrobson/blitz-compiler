@@ -45,6 +45,7 @@ ismain_polynomials = 0
 	.include	"modules/common/generated/errors.asm"
 	.include	"modules/compiler/evaluate/expression.asm"
 	.include	"modules/compiler/utility/fixbranches.asm"
+	.include	"modules/compiler/commands/for.asm"
 	.include	"modules/compiler/object/simple/forward.asm"
 	.include	"modules/ifloat32/float/fractional.asm"
 	.include	"modules/compiler/generation/gendata.asm"
