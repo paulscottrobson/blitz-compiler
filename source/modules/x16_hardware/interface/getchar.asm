@@ -22,6 +22,7 @@ XGetCharacter:
 		phx
 		phy
 		jsr 	$FFE4
+		.debug
 		ply
 		plx
 		rts
