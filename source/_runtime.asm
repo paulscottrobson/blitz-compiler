@@ -89,6 +89,7 @@ ismain_polynomials = 0
 	.include	"modules/runtime/functions/number/peek.asm"
 	.include	"modules/x16_hardware/interface/peekpoke.asm"
 	.include	"modules/polynomials/unary/pi.asm"
+	.include	"modules/runtime/commands/poke.asm"
 	.include	"modules/runtime/functions/number/pos.asm"
 	.include	"modules/polynomials/unary/power.asm"
 	.include	"modules/runtime/commands/print/print.asm"
