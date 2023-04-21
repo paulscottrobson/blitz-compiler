@@ -24,7 +24,7 @@ CommandGet: ;; [get]
 		lda 	#1 							; 1 character space
 		jsr 	StringAllocTemp 	
 
-		jsr 	XGetCharacter 				; get character
+		jsr 	VectorGetCharacter 			; get a character
 		cmp 	#0
 		beq 	_CGNone
 

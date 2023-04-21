@@ -14,15 +14,50 @@
 
 ; ************************************************************************************************
 ;
+;									Set Print Channel, return old in A
+;
+; ************************************************************************************************
+
+SetPrintChannel:
+		phx
+		ldx 	currentChannel
+		sta 	currentChannel
+		txa
+		plx
+		rts
+
+; ************************************************************************************************
+;
 ;						  				Print Character
 ;
 ; ************************************************************************************************
 
 VectorPrintCharacter:
-		jmp 	XPrintCharacter
+		phx
+		ldx 	currentChannel
+		jsr 	XPrintCharacterToChannel
+		plx
+		rts
 
-		
+; ************************************************************************************************
+;
+;						  				Get Character
+;
+; ************************************************************************************************
+
+VectorGetCharacter:
+		phx
+		ldx 	currentChannel
+		jsr 	XGetCharacterFromChannel
+		plx
+		rts
+
 		.send code
+
+		.section storage
+currentChannel:
+		.fill 	1
+		.send storage
 
 ; ************************************************************************************************
 ;

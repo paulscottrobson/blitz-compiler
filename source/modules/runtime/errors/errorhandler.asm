@@ -27,19 +27,20 @@ _EHNoCarry:
 		ply
 		sta 	zTemp0
 		sty 	zTemp0+1
+		ldx 	#0 							; output to channel #0 
 		ldy 	#1
 _EHDisplayMsg:
 		lda 	(zTemp0),y
-		jsr 	XPrintCharacter
+		jsr 	XPrintCharacterToChannel
 		iny
 		lda 	(zTemp0),y
 		bne 	_EHDisplayMsg
 		lda 	#32
-		jsr 	XPrintCharacter
+		jsr 	XPrintCharacterToChannel
 		lda 	#64
-		jsr 	XPrintCharacter
+		jsr 	XPrintCharacterToChannel
 		lda 	#32
-		jsr 	XPrintCharacter
+		jsr 	XPrintCharacterToChannel
 
 		lda 	codePtr+1
 		jsr 	_EHDisplayHex
@@ -62,7 +63,7 @@ _EHDisplayNibble:
 		adc 	#6
 _EHNotHex:
 		adc 	#48
-		jmp 	XPrintCharacter
+		jmp 	XPrintCharacterToChannel
 						
 		.send code
 

@@ -14,11 +14,13 @@
 		
 ; ************************************************************************************************
 ;
-;								Print character A : 13 should be CR, 32 space
+;						Print character A to Channel X: 13 should be CR, 32 space
+;
+;										Channel 0 is the screen.
 ;
 ; ************************************************************************************************
 
-XPrintCharacter:
+XPrintCharacterToChannel:
 		pha
 		phx
 		phy

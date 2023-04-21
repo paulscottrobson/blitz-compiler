@@ -16,10 +16,11 @@ Boot:
 		ldx 	#$FF 						; reset stack.
 		txs
 
+	 	lda 	#0 							; set default output channel.
+	 	jsr		SetPrintChannel
+
 		jsr 	ClearMemory 				; clear memory.
 
-		ldx 	#$FF
-		txs
 		.set16 	codePtr,EndProgram+2
 		ldy 	#0	
 		;

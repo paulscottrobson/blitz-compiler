@@ -14,11 +14,12 @@
 		
 ; ************************************************************************************************
 ;
-;						Get Keystroke if available, else return 0
+;						Get Input from Channel if available, else return 0
+;										0 is the Keyboard
 ;
 ; ************************************************************************************************
 
-XGetCharacter:
+XGetCharacterFromChannel:
 		phx
 		phy
 		jsr 	$FFE4
