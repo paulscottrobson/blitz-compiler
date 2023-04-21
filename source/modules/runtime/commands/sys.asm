@@ -1,29 +1,61 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		00start.asm
-;		Purpose:	Start up code.
-;		Created:	11th April 2023
+;		Name:		sys.asm
+;		Purpose:	Sys command
+;		Created:	21st April 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section code
+		.section 	code
 
 ; ************************************************************************************************
 ;
-;									 Main Program
+;										POKE command
 ;
 ; ************************************************************************************************
 
-Start:	jmp 	Boot
-		rts 								; waste one byte to test SYS.
+CommandSYS: ;; [sys]
+		.entercmd
+		.debug
+		phx 								; save XY
+		phy
+		lda 	NSMantissa1,x 				; get call address => zTemp0
+		sta 	zTemp0+1 			
+		lda 	NSMantissa0,x
+		sta 	zTemp0
 
-		.send code
+		ldx 	SYS_Reg_X 					; load registers
+		ldy 	SYS_Reg_Y
+		lda 	SYS_Reg_S
+		pha
+		lda 	SYS_Reg_A
+		plp
 
+		jsr 	_CSZTemp0
 
+		php
+		stx 	SYS_Reg_X 					; load registers
+		sty 	SYS_Reg_Y
+		sta 	SYS_Reg_A
+		pla
+		sta 	SYS_Reg_S
+
+		ply 								; restore YX and drop 2
+		plx
+		dex
+		.exitcmd
+
+_CSZTemp0:
+		jmp 	(zTemp0)
+
+; ************************************************************************************************
+
+		.send 	code
+		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates
