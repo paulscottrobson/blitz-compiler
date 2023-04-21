@@ -64,6 +64,8 @@ ismain_polynomials = 0
 	.include	"modules/ifloat32/float/fractional.asm"
 	.include	"modules/runtime/stack/frames.asm"
 	.include	"modules/runtime/functions/number/fre.asm"
+	.include	"modules/runtime/commands/get.asm"
+	.include	"modules/x16_hardware/interface/getchar.asm"
 	.include	"modules/x16_hardware/interface/getxpos.asm"
 	.include	"modules/runtime/commands/gosub.asm"
 	.include	"modules/runtime/commands/goto.asm"
