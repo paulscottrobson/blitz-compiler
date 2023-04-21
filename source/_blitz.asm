@@ -66,6 +66,7 @@ ismain_polynomials = 0
 	.include	"modules/ifloat32/binary/mult8x8.asm"
 	.include	"modules/ifloat32/binary/multiply.asm"
 	.include	"modules/ifloat32/float/multiply.asm"
+	.include	"modules/compiler/commands/next.asm"
 	.include	"modules/compiler/source/simple/nextline.asm"
 	.include	"modules/compiler/source/simple/nextnumber.asm"
 	.include	"modules/ifloat32/float/normalise.asm"

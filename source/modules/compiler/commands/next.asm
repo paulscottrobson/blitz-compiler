@@ -1,61 +1,49 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		read_float.asm
-;		Purpose:	Read iFloat32
-;		Created:	13th April 2023
+;		Name:		nex.asm
+;		Purpose:	NEXT compile
+;		Created:	20th April 2023
 ;		Reviewed: 	No
-;		Author : 	Paul Robson (paul@robsons.org.uk)
+;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section 	code
+		.section code
 
 ; ************************************************************************************************
 ;
-;								Write float (2 byte command)
+;										Compile NEXT command
+;
+;								   Creates [Reference|$FFFF] NEXT
 ;
 ; ************************************************************************************************
 
-ReadFloatCommand:
-		.entercmd
-		.vaddress
-		jsr 	ReadFloatZTemp0
-		.exitcmd
-
-ReadFloatZTemp0:
-		phy 								; start write
-		ldy 	#1
-		inx
-
-		lda 	(zTemp0)
-		sta 	NSMantissa0,x
-		
-		lda 	(zTemp0),y
-		sta 	NSMantissa1,x
-		iny
-
-		lda 	(zTemp0),y
-		sta 	NSMantissa2,x
-		iny
-
-		lda 	(zTemp0),y
-		sta 	NSMantissa3,x
-		iny
-
-		lda 	(zTemp0),y
-		sta 	NSExponent,x
-		iny
-
-		lda 	(zTemp0),y
-		sta 	NSStatus,x
-
-		ply
+CommandNEXT: 
+		;
+		;		NEXT [variable]
+		;
+		jsr 	LookNextNonSpace 			; first letter of index variable, should be.
+		jsr 	CharIsAlpha 				; if not alpha , error
+		bcc 	_CNNoReferenceGiven
+		jsr 	GetNext
+		jsr 	IdentifyVariable 			; figure out the reference.
+		txa 								; reference in YA
+		jsr 	PushIntegerYA 				; write it out.
+		bra 	_CNParametersDone
+_CNNoReferenceGiven:
+		lda 	#255 						; write out -1 no
+		tay
+		jsr 	PushIntegerYA 				; write it out.
+_CNParametersDone:
+		lda 	#PCD_NEXT  					; compile FOR word.
+		jsr 	WriteCodeByte
 		rts
 
-		.send 	code
-		
+		.send code
+
+
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

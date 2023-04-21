@@ -54,23 +54,24 @@ VectorTable:
 	.word	LinkDivideInt32          ; $b0 int.div
 	.word	NegateTOS                ; $b1 negate
 	.word	CommandNewLine           ; $b2 new.line
-	.word	NotTOS                   ; $b3 not
-	.word	PrintNumber              ; $b4 print.n
-	.word	PrintString              ; $b5 print.s
-	.word	StringConcatenate        ; $b6 concat
-	.word	PrintTab                 ; $b7 print.tab
-	.word	PrintPos                 ; $b8 print.pos
-	.word	PrintSpace               ; $b9 print.spc
-	.word	CommandStop              ; $ba stop
-	.word	TimeTOS                  ; $bb ti
-	.word	Unimplemented            ; $bc .shift
-	.word	PushByteCommand          ; $bd .byte
-	.word	PushWordCommand          ; $be .word
-	.word	CommandPushN             ; $bf .float
-	.word	CommandPushS             ; $c0 .string
-	.word	Unimplemented            ; $c1 .data
-	.word	CommandGoto              ; $c2 .goto
-	.word	CommandGosub             ; $c3 .gosub
-	.word	CommandGotoZ             ; $c4 .goto.z
-	.word	CommandGotoNZ            ; $c5 .goto.nz
+	.word	CommandNext              ; $b3 next
+	.word	NotTOS                   ; $b4 not
+	.word	PrintNumber              ; $b5 print.n
+	.word	PrintString              ; $b6 print.s
+	.word	StringConcatenate        ; $b7 concat
+	.word	PrintTab                 ; $b8 print.tab
+	.word	PrintPos                 ; $b9 print.pos
+	.word	PrintSpace               ; $ba print.spc
+	.word	CommandStop              ; $bb stop
+	.word	TimeTOS                  ; $bc ti
+	.word	Unimplemented            ; $bd .shift
+	.word	PushByteCommand          ; $be .byte
+	.word	PushWordCommand          ; $bf .word
+	.word	CommandPushN             ; $c0 .float
+	.word	CommandPushS             ; $c1 .string
+	.word	Unimplemented            ; $c2 .data
+	.word	CommandGoto              ; $c3 .goto
+	.word	CommandGosub             ; $c4 .gosub
+	.word	CommandGotoZ             ; $c5 .goto.z
+	.word	CommandGotoNZ            ; $c6 .goto.nz
 	.send code

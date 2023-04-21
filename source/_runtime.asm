@@ -83,6 +83,7 @@ ismain_polynomials = 0
 	.include	"modules/ifloat32/float/multiply.asm"
 	.include	"modules/runtime/functions/number/negation.asm"
 	.include	"modules/runtime/support/newline.asm"
+	.include	"modules/runtime/commands/next.asm"
 	.include	"modules/ifloat32/float/normalise.asm"
 	.include	"modules/runtime/functions/number/not.asm"
 	.include	"modules/runtime/functions/number/peek.asm"

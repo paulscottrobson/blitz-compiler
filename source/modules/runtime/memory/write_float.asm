@@ -21,6 +21,8 @@
 WriteFloatCommand:
 		.entercmd
 		.vaddress
+		jsr 	WriteFloatZTemp0
+		.exitcmd
 
 WriteFloatZTemp0:
 		phy 								; ldart write
@@ -50,7 +52,7 @@ WriteFloatZTemp0:
 
 		dex
 		ply
-		.exitcmd
+		rts
 		.send 	code
 		
 ; ************************************************************************************************

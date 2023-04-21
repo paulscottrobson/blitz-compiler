@@ -45,7 +45,6 @@ CommandFor: ;; [for]
 		lda 	NSMantissa1,x
 		clc
 		and 	#$7F 						; throw the type bit.
-		adc 	#VariableStart >> 8 		; point to variable page.
 		sta 	(runtimeStackPtr),y
 		dex 								; throw reference.
 
@@ -83,7 +82,7 @@ CopyTOSToOffsetY:
 ;		0	FOR Marker 				[1]
 ;		1 	Page/Position for loop 	[3]
 ;		4 	Control 				[1] 	Integer/Int16:7 ; optimised:6
-;		5 	Index Variable 			[2]  	Address (6/2)
+;		5 	Index Variable 			[2]  	Offset Address 
 ;		7 	Step (+1 optimise) 		[6]
 ;		13	Terminal Value.	 		[6]
 ;
