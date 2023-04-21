@@ -2,7 +2,7 @@
 ; ************************************************************************************************
 ;
 ;		Name:		get.asm
-;		Purpose:	Get 1 character from input stream
+;		Purpose:	Get from input
 ;		Created:	21st April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
@@ -10,33 +10,34 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-; ************************************************************************************************
-;
-;								GET char to stack as string
-;
-; ************************************************************************************************
-
 		.section code
 
-CommandGet: ;; [get]
-		.entercmd
-		inx
-		lda 	#1 							; 1 character space
-		jsr 	StringAllocTemp 	
+; ************************************************************************************************
+;
+;						Get input
+;
+; ************************************************************************************************
 
-		jsr 	XGetCharacter 				; get character
-		beq 	_CGNone
+CommandGET:
+		jsr 	GetNextNonSpace 			; get the first character
+		jsr 	IdentifyVariable 			; identify variable to assign to
+		pha
+		and 	#NSSTypeMask 				; check if it is a string
+		cmp 	#NSSString
+		bne 	_CGType
 
-		phy
-		ldy 	#1 							; store char
-		sta 	(zsTemp),y
-		tya 								; store length.
-		sta 	(zsTemp)
-		ply
-_CGNone:		
-		.exitcmd
+		lda 	#PCD_GET 					; compile GET
+		jsr 	WriteCodeByte
+		sec
+		pla
+		jsr		GetSetVariable
+		rts
+
+_CGType:
+		.error_type
 
 		.send code
+
 
 ; ************************************************************************************************
 ;

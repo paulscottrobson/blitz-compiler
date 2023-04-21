@@ -1,2 +1,10 @@
-	.byte	173                               ;  get
-	.byte	170                               ;  exit
+	.text	197,5,"START"                     ;  "start" 
+	.byte	184                               ;  print.s
+	.text	197,1,"Y"                         ;  "y" 
+	.text	197,1,"X"                         ;  "x" 
+	.byte	168                               ;  s.cmp
+	.byte	136                               ;  =
+	.byte	183                               ;  print.n
+	.text	197,3,"END"                       ;  "end" 
+	.byte	184                               ;  print.s
+	.byte	189                               ;  stop

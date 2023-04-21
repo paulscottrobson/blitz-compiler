@@ -21,7 +21,6 @@
 ReadStringCommand:
 		.entercmd
 		.vaddress
-
 ReadStringZTemp0:
 		phy 								; start write
 		inx 								; prepare
@@ -36,7 +35,8 @@ ReadStringZTemp0:
 		adc 	#2 							; this points to actual data
 		sta 	NSMantissa0,x 				; if address 0 the MSB will still be 0
 
-		lda 	(zTemp0)
+		ldy 	#1
+		lda 	(zTemp0),y
 		adc 	#0
 		sta 	NSMantissa1,x 				; +ve read
 

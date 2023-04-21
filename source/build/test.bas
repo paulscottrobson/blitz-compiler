@@ -1,2 +1,3 @@
-10 wait 6502,4,3
-20 stop
+5 get a$
+10 if a$<>"" then print "(";a$;")",asc(a$);
+20 goto 5

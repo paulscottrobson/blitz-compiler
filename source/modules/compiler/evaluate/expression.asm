@@ -156,6 +156,12 @@ _ECAType: 									; types mixed ?
 		.error_type
 
 _ECAOkay:
+		lda 	zTemp0+1 					; check +
+		cmp 	#C64_PLUS
+		beq 	_ECAIsString
+		lda 	#NSSIFloat 					; compare returns number.
+		jmp 	_ECALoop
+_ECAIsString:		
 		lda 	#NSSString 					; current is string, go round again.
 _ECAGoLoop:		
 		jmp 	_ECALoop
