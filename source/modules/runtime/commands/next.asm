@@ -23,7 +23,7 @@ CommandNext: ;; [next]
 
 		lda 	#FRAME_FOR 					; check in a FOR 
 		jsr 	StackCheckFrame
-		jsr 	FixUpY 						; so we can use Y
+		jsr 	FixUpY 						; so we can use Y		
 		;
 		;		Index variable check ?
 		;
@@ -43,6 +43,12 @@ CommandNext: ;; [next]
 _CNNIndexFail:		
 		.error_structure		
 _CNNoIndexVariable:
+		dex
+
+		ldy 	#4 							; check for optimised NEXT
+		lda 	(runtimeStackPtr),y
+		and 	#$40	 					; bit 6
+		bne 	_CNOptimisedNext
 		;
 		;		Increment the index, overwrite index reference with index value
 		;		
@@ -56,7 +62,6 @@ _CNNoIndexVariable:
 		adc 	#VariableStart >> 8 		; point to variable page.
 		pha
 		sta 	zTemp0+1
-		dex
 		jsr 	ReadFloatZTemp0 			; read current index onto stack.
 		;		
 		ldy 	#7  						; read step onto stack +1
@@ -106,7 +111,58 @@ _CNExitFor:
 		jsr 	StackCloseFrame 			; remove the frame and exit
 		ldy 	#0
 		.exitcmd
-		
+;
+; 		Optimised next code.
+;
+_CNOptimisedNext:
+		ldy 	#5 							; copy address to zTemp0, save for write back
+		lda 	(runtimeStackPtr),y
+		sta 	zTemp0
+		iny
+		lda 	(runtimeStackPtr),y
+		clc 
+		adc 	#VariableStart >> 8 		; point to variable page.
+		sta 	zTemp0+1
+		;
+		;		Increment it - we don't worry about carry out because the test is unsigned.
+		;
+		ldy 	#7 							; STEP value
+		lda 	(runtimeStackPtr),y
+		ldy 	#$FF		
+_CNOIncrement:
+		iny
+		clc
+		adc 	(zTemp0),y
+		sta 	(zTemp0),y
+		beq 	_CNOIncrement
+		;
+		;		Point zTemp1 to the terminal value, easier access
+		;
+		clc
+		lda 	runtimeStackPtr
+		adc 	#13
+		sta 	zTemp1
+		lda 	runtimeStackPtr+1
+		adc 	#0
+		sta 	zTemp1+1
+		;
+		;		Calculate terminal - value, when this goes -ve loop over.
+		;
+		ldy 	#0
+		lda 	(zTemp1),y 					; byte 0
+		cmp 	(zTemp0),y
+		iny
+		lda 	(zTemp1),y 					; byte 1
+		sbc 	(zTemp0),y
+		iny
+		lda 	(zTemp1),y 					; byte 2
+		sbc 	(zTemp0),y
+		iny
+		lda 	(zTemp1),y 					; byte 3
+		sbc 	(zTemp0),y
+		bcc	 	_CNExitFor
+		bra 	_CNLoopBack
+
 ; ************************************************************************************************
 ;
 ;								Copy Stack frame offset Y to TOS
