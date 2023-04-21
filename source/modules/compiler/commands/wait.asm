@@ -1,62 +1,45 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		sys.asm
-;		Purpose:	Sys command
+;		Name:		wait.asm
+;		Purpose:	Handle Wait (optional parameter)
 ;		Created:	21st April 2023
 ;		Reviewed: 	No
-;		Author : 	Paul Robson (paul@robsons.org.uk)
+;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section 	code
+		.section code
 
 ; ************************************************************************************************
 ;
-;										POKE command
+;										WAIT a,b [already done]
 ;
 ; ************************************************************************************************
 
-CommandSYS: ;; [sys]
-		.entercmd
-		phx 								; save XY
-		phy
-		jsr 	FloatIntegerPart
+CommandWAIT: 
+		jsr 	LookNextNonSpace
+		cmp 	#","
+		beq 	_CWThirdParameter
+		lda 	#0
+		jsr 	PushIntegerA
+_CWExit:		
+		lda 	#PCD_WAIT
+		jsr 	WriteCodeByte
+		rts
 
-		lda 	NSMantissa1,x 				; get call address => zTemp0
-		sta 	zTemp0+1 			
-		lda 	NSMantissa0,x
-		sta 	zTemp0
+_CWThirdParameter:
+		jsr 	GetNext
+		jsr 	CompileExpressionAtA
+		and 	#NSSTypeMask
+		cmp 	#NSSIFloat
+		beq 	_CWExit
+		.error_type
 
-		ldx 	SYS_Reg_X 					; load registers
-		ldy 	SYS_Reg_Y
-		lda 	SYS_Reg_S
-		pha
-		lda 	SYS_Reg_A
-		plp
+		.send code
 
-		jsr 	_CSZTemp0
 
-		php
-		stx 	SYS_Reg_X 					; load registers
-		sty 	SYS_Reg_Y
-		sta 	SYS_Reg_A
-		pla
-		sta 	SYS_Reg_S
-
-		ply 								; restore YX and drop 2
-		plx
-		dex
-		.exitcmd
-
-_CSZTemp0:
-		jmp 	(zTemp0)
-
-; ************************************************************************************************
-
-		.send 	code
-		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

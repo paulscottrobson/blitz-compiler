@@ -1,8 +1,8 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		sys.asm
-;		Purpose:	Sys command
+;		Name:		wait.asm
+;		Purpose:	Wait command
 ;		Created:	21st April 2023
 ;		Reviewed: 	No
 ;		Author : 	Paul Robson (paul@robsons.org.uk)
@@ -14,44 +14,27 @@
 
 ; ************************************************************************************************
 ;
-;										POKE command
+;										WAIT command
 ;
 ; ************************************************************************************************
 
-CommandSYS: ;; [sys]
+CommandWAIT: ;; [wait]
 		.entercmd
-		phx 								; save XY
-		phy
-		jsr 	FloatIntegerPart
-
-		lda 	NSMantissa1,x 				; get call address => zTemp0
-		sta 	zTemp0+1 			
-		lda 	NSMantissa0,x
+		lda 	NSMantissa0-2,x 			; get wait address
 		sta 	zTemp0
+		lda 	NSMantissa1-2,x
+		sta 	zTemp0+1
+_WaitLoop:
+		lda 	(zTemp0) 					; read it
+		and 	NSMantissa0-1,x		 		; and with mask
+		eor 	NSMantissa0-0,x 			; toggle
+		beq 	_WaitLoop 					; keep going if zero
 
-		ldx 	SYS_Reg_X 					; load registers
-		ldy 	SYS_Reg_Y
-		lda 	SYS_Reg_S
-		pha
-		lda 	SYS_Reg_A
-		plp
-
-		jsr 	_CSZTemp0
-
-		php
-		stx 	SYS_Reg_X 					; load registers
-		sty 	SYS_Reg_Y
-		sta 	SYS_Reg_A
-		pla
-		sta 	SYS_Reg_S
-
-		ply 								; restore YX and drop 2
-		plx
+		dex 								; drop 3.
+		dex
 		dex
 		.exitcmd
 
-_CSZTemp0:
-		jmp 	(zTemp0)
 
 ; ************************************************************************************************
 

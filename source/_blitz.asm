@@ -88,5 +88,6 @@ ismain_polynomials = 0
 	.include	"modules/ifloat32/binary/tostring.asm"
 	.include	"modules/ifloat32/float/tostring.asm"
 	.include	"modules/ifloat32/utility/utility.asm"
+	.include	"modules/compiler/commands/wait.asm"
 	.include	"modules/compiler/object/simple/writebyte.asm"
 	.include	"modules/common/boot.end/zzEnd.asm"

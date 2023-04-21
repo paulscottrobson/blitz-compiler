@@ -126,6 +126,7 @@ ismain_polynomials = 0
 	.include	"modules/ifloat32/utility/utility.asm"
 	.include	"modules/runtime/functions/strings/val.asm"
 	.include	"modules/runtime/generated/vectors.asm"
+	.include	"modules/runtime/commands/wait.asm"
 	.include	"modules/runtime/memory/write_float.asm"
 	.include	"modules/runtime/memory/write_int.asm"
 	.include	"modules/runtime/memory/write_string.asm"
