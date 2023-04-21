@@ -40,14 +40,42 @@ CommandFor: ;; [for]
 		lda 	NSMantissa0,x 				; copy the reference address
 		ldy 	#5 							; adjusted to be a real address
 		sta 	(runtimeStackPtr),y
-
+		sta 	zTemp0 						; also to zTemp0
 		iny
 		lda 	NSMantissa1,x
 		clc
 		and 	#$7F 						; throw the type bit.
 		sta 	(runtimeStackPtr),y
+		adc 	#VariableStart >> 8 		; point to variable page.
+		sta 	zTemp0+1
 		dex 								; throw reference.
+		;
+		;		We look for optimisation options. Here we have optimisation
+		; 		if the index value, step value, and terminal value are all
+		; 		positive integers - we can do it much more quickly.
+		;
+		ldy 	#5 							; check the index, step and terminal values
+		lda 	(zTemp0),y 					; are all +ve integers, sign bits first.
+		ldy 	#12 
+		ora 	(runtimeStackPtr),y
+		ldy 	#18
+		ora 	(runtimeStackPtr),y
+		and 	#$80 						; only interested in sign bit.
+		;
+		dey 								; now the exponents.
+		ora 	(zTemp0),y
+		ldy 	#11
+		ora 	(runtimeStackPtr),y
+		ldy 	#17
+		ora 	(runtimeStackPtr),y
+		beq 	_CFNoOptimise 		
 
+		ldy 	#4 							; set the runtime stack pointer optimisation flag.
+		lda 	(runtimeStackPtr),y
+		ora 	#$40
+		sta 	(runtimeStackPtr),y
+
+_CFNoOptimise:
 		ldy 	#0
 		.exitcmd	
 
