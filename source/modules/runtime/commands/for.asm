@@ -52,7 +52,7 @@ CommandFor: ;; [for]
 		;
 		;		We look for optimisation options. Here we have optimisation
 		; 		if the index value, step value, and terminal value are all
-		; 		positive integers - we can do it much more quickly.
+		; 		positive integers, step is 1 byte - we can do it much more quickly.
 		;
 		ldy 	#5 							; check the index, step and terminal values
 		lda 	(zTemp0),y 					; are all +ve integers, sign bits first.
@@ -68,7 +68,15 @@ CommandFor: ;; [for]
 		ora 	(runtimeStackPtr),y
 		ldy 	#17
 		ora 	(runtimeStackPtr),y
-		beq 	_CFNoOptimise 		
+
+		ldy 	#8 							; step must be 1 byte.
+		ora 	(runtimeStackPtr),y
+		iny
+		ora 	(runtimeStackPtr),y
+		iny
+		ora 	(runtimeStackPtr),y
+
+		bne 	_CFNoOptimise 	
 
 		ldy 	#4 							; set the runtime stack pointer optimisation flag.
 		lda 	(runtimeStackPtr),y
