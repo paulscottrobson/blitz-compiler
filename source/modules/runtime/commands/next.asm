@@ -128,10 +128,10 @@ _CNOptimisedNext:
 		;
 		ldy 	#7 							; STEP value
 		lda 	(runtimeStackPtr),y
-		ldy 	#$FF		
+		ldy 	#$FF
+		clc		
 _CNOIncrement:
 		iny
-		clc
 		adc 	(zTemp0),y
 		sta 	(zTemp0),y
 		beq 	_CNOIncrement
