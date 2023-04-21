@@ -40,6 +40,7 @@ ismain_polynomials = 0
 	.include	"modules/compiler/aa.compiler/compiler.asm"
 	.include	"modules/compiler/helpers/output/constant.asm"
 	.include	"modules/ifloat32/generated/constants.asm"
+	.include	"modules/compiler/commands/data.asm"
 	.include	"modules/ifloat32/binary/divide.asm"
 	.include	"modules/ifloat32/float/divide.asm"
 	.include	"modules/common/generated/errors.asm"

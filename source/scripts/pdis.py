@@ -61,13 +61,13 @@ class PCodeDecompiler(object):
 						f = self.float.toDecimal([mantissa,self.data[p],self.data[p+4] & 0x80])
 						p = p + 5
 						s = ".float {0:.5f}".format(f)
-					if s == ".string":
-						s += " \""
+					if s == ".string" or s == ".data":
+						s += " {{"
 						for i in range(0,self.data[p]):
 							p = p + 1
 							s += chr(self.data[p])
 						p += 1
-						s += '"'
+						s += '}}'
 					if s.startswith(".goto") or s == ".gosub":
 						page = self.data[p]
 						offset = self.data[p+1]+(self.data[p+2] << 8)

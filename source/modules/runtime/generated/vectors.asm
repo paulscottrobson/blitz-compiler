@@ -73,7 +73,7 @@ VectorTable:
 	.word	PushWordCommand          ; $c3 .word
 	.word	CommandPushN             ; $c4 .float
 	.word	CommandPushS             ; $c5 .string
-	.word	Unimplemented            ; $c6 .data
+	.word	CommandData              ; $c6 .data
 	.word	CommandGoto              ; $c7 .goto
 	.word	CommandGosub             ; $c8 .gosub
 	.word	CommandGotoZ             ; $c9 .goto.z

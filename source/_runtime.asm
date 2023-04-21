@@ -52,6 +52,7 @@ ismain_polynomials = 0
 	.include	"modules/ifloat32/generated/constants.asm"
 	.include	"modules/polynomials/generated/constants.asm"
 	.include	"modules/polynomials/unary/cos.asm"
+	.include	"modules/runtime/support/data.asm"
 	.include	"modules/ifloat32/binary/divide.asm"
 	.include	"modules/ifloat32/float/divide.asm"
 	.include	"modules/runtime/commands/end.asm"
