@@ -22,7 +22,7 @@ XGetCharacter:
 		phx
 		phy
 		jsr 	$FFE4
-		.debug
+_NoKey:		
 		ply
 		plx
 		rts

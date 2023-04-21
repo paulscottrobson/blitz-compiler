@@ -25,6 +25,7 @@ CommandGet: ;; [get]
 		jsr 	StringAllocTemp 	
 
 		jsr 	XGetCharacter 				; get character
+		cmp 	#0
 		beq 	_CGNone
 
 		phy
