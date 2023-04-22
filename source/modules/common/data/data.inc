@@ -21,7 +21,11 @@
 codePtr:	 								; address of current line (allow for paging)
 		.fill 	2
 codePage:
-		.fill 	1		
+		.fill 	1	
+objPtr: 									; address in code.
+		.fill 	2
+objPage:
+		.fill 	1			
 zTemp0: 									; temporary words used in the interpreter.
 		.fill 	2
 zTemp1:

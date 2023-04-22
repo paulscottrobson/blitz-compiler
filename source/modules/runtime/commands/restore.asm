@@ -24,16 +24,14 @@ CommandRestore: ;; [restore]
 		.exitcmd
 
 RestoreCode:
-		.set16 	dataPtr,EndProgram+2 		; reset pointer and page
-		stz  	dataPage
+		.set16 	objPtr,EndProgram+2 		; reset pointer and page
+		stz  	objPage
 		stz 	dataRemaining 				; no data remaining.
 		rts
 
 		.send 	code
 
 		.section storage
-dataPage: 									; current data pointer
-		.fill 	1
 dataRemaining: 								; number of bytes remaining in current data statement
 		.fill 	1		 					; 0 if not in data statement
 		.send storage

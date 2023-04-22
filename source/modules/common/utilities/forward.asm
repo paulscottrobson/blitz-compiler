@@ -78,7 +78,7 @@ _MOFENoCarry:
 		rts		
 
 _MOFSizeTable:
-		.include "../../../common/generated/pcodesize.dat"
+		.include "../generated/pcodesize.dat"
 
 		.send code
 
