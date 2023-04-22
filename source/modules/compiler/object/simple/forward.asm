@@ -28,22 +28,22 @@ MoveObjectForward:
 		cmp 	#$40 						; 00-3F
 		bcc 	_MOFAdvance1 				; forward 1
 
-		ldx 	#2 							; 40-7F
+		ldy 	#2 							; 40-7F
 		cmp 	#$80 						; forward 2
-		bcc 	_MOFAdvanceX 				
+		bcc 	_MOFAdvanceY 				
 
 		cmp 	#PCD_STARTSYSTEM 			; 80 - System tokens.
 		bcc 	_MOFAdvance1 				; forward 1
 
-		tax 								; read the size.
+		tay 								; read the size.
 		lda 	_MOFSizeTable-PCD_STARTSYSTEM,x
-		tax
-		inx 								; add 1 for the system token.
-		bne 	_MOFAdvanceX 				; if 0, was $FF thus a string/data skip.
+		tay
+		iny 								; add 1 for the system token.
+		bne 	_MOFAdvanceY 				; if 0, was $FF thus a string/data skip.
 
 		ldy 	#1 							; get length byte
 		lda 	(objPtr),y
-		tax 								; into X.
+		tay 								; into Y.
 
 		clc
 		lda 	objPtr						; add 2 to the object pointer
@@ -52,12 +52,12 @@ MoveObjectForward:
 		bcc 	_MOFNoCarry1
 		inc 	objPtr+1
 _MOFNoCarry1:		
-		bra 	_MOFAdvanceX
+		bra 	_MOFAdvanceY
 
 _MOFAdvance1:
-		ldx 	#1
-_MOFAdvanceX:				
-		txa 								; add X to objPtr
+		ldy 	#1
+_MOFAdvanceY:				
+		tya 								; add X to objPtr
 		clc
 		adc 	objPtr
 		sta 	objPtr
