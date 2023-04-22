@@ -30,6 +30,8 @@ print("\t.section code")
 print("VectorTable:")
 for i in ids:
 	p = pcodes[i]
+	if i > 256 and (i & 0xFF) == 0x80:
+		print("\n\nShiftVectorTable:")
 	s = vectors[p] if p in vectors else "Unimplemented"
 	print("\t.word\t{0:24} ; ${1:02x} {2}".format(s,i,p.lower()))
 print("\t.send code")
