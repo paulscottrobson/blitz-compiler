@@ -22,7 +22,7 @@ errors = """
 	internal	  : internal error
 	divzero 	  : divide by zero
 	structure 	  : structure imbalance
-	stop 		  : program halted
+	stop 		  : program stopped
 	data		  : out of data
 """.strip().split("\n")
 

@@ -19,7 +19,8 @@ for f in Builder().getASMFiles():
 		if s.find(";;") >= 0:
 			m = re.match("^(.*?)\\:\\s*\\;\\;\\s*\\[(.*)\\]\\s*$",s)
 			assert m is not None,"Bad line "+s
-			vectors[m.group(2).lower()] = m.group(1)
+			v = m.group(2).lower() 
+			vectors[v[1:] if v.startswith("!") else v] = m.group(1)
 
 pcodes = PCode().idToToken
 ids = [x for x in pcodes.keys()]		

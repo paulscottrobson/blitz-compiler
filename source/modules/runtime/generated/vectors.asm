@@ -65,7 +65,7 @@ VectorTable:
 	.word	PrintSpace               ; $bb print.spc
 	.word	TimeTOS                  ; $bc ti
 	.word	CommandWAIT              ; $bd wait
-	.word	Unimplemented            ; $be .shift
+	.word	CommandShift             ; $be .shift
 	.word	PushByteCommand          ; $bf .byte
 	.word	PushWordCommand          ; $c0 .word
 	.word	CommandPushN             ; $c1 .float
@@ -75,10 +75,13 @@ VectorTable:
 	.word	CommandGosub             ; $c5 .gosub
 	.word	CommandGotoZ             ; $c6 .goto.z
 	.word	CommandGotoNZ            ; $c7 .goto.nz
-	.word	Unimplemented            ; $be80 assert
-	.word	Unimplemented            ; $be81 clr
-	.word	Unimplemented            ; $be82 end
-	.word	Unimplemented            ; $be83 restore
-	.word	Unimplemented            ; $be84 stop
-	.word	Unimplemented            ; $be85 sys
+
+
+ShiftVectorTable:
+	.word	CommandAssert            ; $be80 assert
+	.word	CommandClr               ; $be81 clr
+	.word	CommandEnd               ; $be82 end
+	.word	CommandRestore           ; $be83 restore
+	.word	CommandStop              ; $be84 stop
+	.word	CommandSYS               ; $be85 sys
 	.send code

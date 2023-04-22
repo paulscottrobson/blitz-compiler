@@ -34,7 +34,7 @@ ErrorV_structure:
 	.text	"STRUCTURE IMBALANCE",0
 ErrorV_stop:
 	jsr	ErrorHandler
-	.text	"PROGRAM HALTED",0
+	.text	"PROGRAM STOPPED",0
 ErrorV_data:
 	jsr	ErrorHandler
 	.text	"OUT OF DATA",0
