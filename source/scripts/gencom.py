@@ -116,10 +116,11 @@ class GenCompiler(object):
 		n = self.pcodeTokens.getID(t)
 		if n >= 256:
 			self.gen.append(2)
-			self.gen.appendWord(n)
+			n = (n >> 8) | ((n & 0xFF) << 8)
+			self.gen.appendWord(str(n))
 		else:
 			self.gen.append(1)
-			self.gen.appendByte(n)
+			self.gen.appendByte(str(n))
 		assert n is not None,"Unknown pcode "+t
 
 if __name__ == "__main__":

@@ -61,6 +61,9 @@ class PCodeDecompiler(object):
 						f = self.float.toDecimal([mantissa,self.data[p],self.data[p+4] & 0x80])
 						p = p + 5
 						s = ".float {0:.5f}".format(f)
+					if s == ".shift":
+						s = self.pcode.getToken((self.data[p-1] << 8)| self.data[p])+" <shift>"
+						p = p + 1
 					if s == ".string" or s == ".data":
 						s += " {"
 						for i in range(0,self.data[p]):

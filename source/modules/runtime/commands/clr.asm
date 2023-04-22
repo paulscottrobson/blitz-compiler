@@ -18,7 +18,7 @@
 ;
 ; ************************************************************************************************
 
-CommandClr: ;; [CLR]
+CommandClr: ;; [!CLR]
 		.entercmd
 		jsr 	ClearMemory
 		.exitcmd

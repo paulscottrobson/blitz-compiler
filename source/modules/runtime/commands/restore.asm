@@ -18,7 +18,7 @@
 ;
 ; ************************************************************************************************
 
-CommandRestore: ;; [restore]
+CommandRestore: ;; [!restore]
 		.entercmd
 		jsr 	RestoreCode
 		.exitcmd
