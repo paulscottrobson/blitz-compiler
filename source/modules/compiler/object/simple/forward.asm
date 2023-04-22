@@ -21,7 +21,7 @@
 MoveObjectForward:
 
 		lda 	(objPtr) 					; get next
-
+		
 		cmp 	#$FF  						
 		beq 	_MOFEnd
 
@@ -36,7 +36,7 @@ MoveObjectForward:
 		bcc 	_MOFAdvance1 				; forward 1
 
 		tay 								; read the size.
-		lda 	_MOFSizeTable-PCD_STARTSYSTEM,x
+		lda 	_MOFSizeTable-PCD_STARTSYSTEM,y
 		tay
 		iny 								; add 1 for the system token.
 		bne 	_MOFAdvanceY 				; if 0, was $FF thus a string/data skip.
