@@ -77,6 +77,7 @@ ismain_polynomials = 0
 	.include	"modules/x16_hardware/interface/peekpoke.asm"
 	.include	"modules/compiler/commands/print.asm"
 	.include	"modules/x16_hardware/interface/printchar.asm"
+	.include	"modules/compiler/commands/read.asm"
 	.include	"modules/compiler/variables/readwrite.asm"
 	.include	"modules/x16_hardware/interface/readwriteclock.asm"
 	.include	"modules/compiler/commands/rem.asm"

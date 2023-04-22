@@ -60,22 +60,25 @@ VectorTable:
 	.word	CommandPOKE              ; $b6 poke
 	.word	PrintNumber              ; $b7 print.n
 	.word	PrintString              ; $b8 print.s
-	.word	StringConcatenate        ; $b9 concat
-	.word	PrintTab                 ; $ba print.tab
-	.word	PrintPos                 ; $bb print.pos
-	.word	PrintSpace               ; $bc print.spc
-	.word	CommandStop              ; $bd stop
-	.word	CommandSYS               ; $be sys
-	.word	TimeTOS                  ; $bf ti
-	.word	CommandWAIT              ; $c0 wait
-	.word	Unimplemented            ; $c1 .shift
-	.word	PushByteCommand          ; $c2 .byte
-	.word	PushWordCommand          ; $c3 .word
-	.word	CommandPushN             ; $c4 .float
-	.word	CommandPushS             ; $c5 .string
-	.word	CommandData              ; $c6 .data
-	.word	CommandGoto              ; $c7 .goto
-	.word	CommandGosub             ; $c8 .gosub
-	.word	CommandGotoZ             ; $c9 .goto.z
-	.word	CommandGotoNZ            ; $ca .goto.nz
+	.word	CommandRead              ; $b9 read
+	.word	CommandReadString        ; $ba read$
+	.word	CommandRestore           ; $bb restore
+	.word	StringConcatenate        ; $bc concat
+	.word	PrintTab                 ; $bd print.tab
+	.word	PrintPos                 ; $be print.pos
+	.word	PrintSpace               ; $bf print.spc
+	.word	CommandStop              ; $c0 stop
+	.word	CommandSYS               ; $c1 sys
+	.word	TimeTOS                  ; $c2 ti
+	.word	CommandWAIT              ; $c3 wait
+	.word	Unimplemented            ; $c4 .shift
+	.word	PushByteCommand          ; $c5 .byte
+	.word	PushWordCommand          ; $c6 .word
+	.word	CommandPushN             ; $c7 .float
+	.word	CommandPushS             ; $c8 .string
+	.word	CommandData              ; $c9 .data
+	.word	CommandGoto              ; $ca .goto
+	.word	CommandGosub             ; $cb .gosub
+	.word	CommandGotoZ             ; $cc .goto.z
+	.word	CommandGotoNZ            ; $cd .goto.nz
 	.send code

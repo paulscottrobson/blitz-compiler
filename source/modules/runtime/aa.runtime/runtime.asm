@@ -21,11 +21,14 @@ Boot:
 
 		jsr 	ClearMemory 				; clear memory.
 
-		.set16 	codePtr,EndProgram+2
-		ldy 	#0	
+		.set16 	codePtr,EndProgram+2 		; also used in RESTORE
+		stz 	codePage
+
+		jsr 	CommandRestore 				; which we now call
 		;
 		;		Main Run Loop
 		;
+		ldy 	#0	
 NextCommand:
 		lda 	(codePtr),y 				; get next
 		bmi 	NXCommand 					; -if -ve command

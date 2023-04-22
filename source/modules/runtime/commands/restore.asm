@@ -1,46 +1,43 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		data.inc
-;		Purpose:	Common Data
-;		Created:	11th April 2023
+;		Name:		restore.asm
+;		Purpose:	Restore Data Pointer
+;		Created:	21st April 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-; ************************************************************************************************
-;
-;									Mandatory Zero page code
-;
-; ************************************************************************************************
-
-		.section zeropage
-zsTemp: 									; string temporary area.
-		.fill 	2
-runtimeStackPtr: 							; runtime stack pointer
-		.fill 	2
-dataPtr: 									; data pointer.
-		.fill 	2		
-		.send zeropage
-
+		.section 	code
 
 ; ************************************************************************************************
 ;
-;										Non Zero Page Data
+;										ASSERT command
 ;
 ; ************************************************************************************************
+
+CommandRestore: ;; [restore]
+		.entercmd
+		jsr 	RestoreCode
+		.exitcmd
+
+RestoreCode:
+		.set16 	dataPtr,EndProgram+2 		; reset pointer and page
+		stz  	dataPage
+		stz 	dataRemaining 				; no data remaining.
+		rts
+
+		.send 	code
 
 		.section storage
-
-stringLowMemory:
-		.fill 	2		
-stringHighMemory:
-		.fill 	2
-
-		.send 	storage
-
+dataPage: 									; current data pointer
+		.fill 	1
+dataRemaining: 								; number of bytes remaining in current data statement
+		.fill 	1		 					; 0 if not in data statement
+		.send storage
+		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates
@@ -51,4 +48,3 @@ stringHighMemory:
 ;		==== 			=====
 ;
 ; ************************************************************************************************
-

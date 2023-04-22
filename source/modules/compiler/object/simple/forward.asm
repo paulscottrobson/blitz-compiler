@@ -22,9 +22,8 @@ MoveObjectForward:
 
 		lda 	(objPtr) 					; get next
 
-		sec 								; return CS if complete
 		cmp 	#$FF  						
-		beq 	_MOFExit
+		beq 	_MOFEnd
 
 		cmp 	#$40 						; 00-3F
 		bcc 	_MOFAdvance1 				; forward 1
@@ -66,8 +65,17 @@ _MOFAdvanceX:
 		inc 	objPtr+1
 _MOFNoCarry2:		
 		clc 								; not completed.
-_MOFExit:		
 		rts
+		;
+		;		At the end so advance past $FF end marker and return CS.
+		;
+_MOFEnd:
+		inc 	objPtr
+		bne 	_MOFENoCarry
+		inc 	objPtr+1
+_MOFENoCarry:
+		sec
+		rts		
 
 _MOFSizeTable:
 		.include "../../../common/generated/pcodesize.dat"

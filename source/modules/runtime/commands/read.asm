@@ -1,46 +1,31 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		data.inc
-;		Purpose:	Common Data
-;		Created:	11th April 2023
+;		Name:		read.asm
+;		Purpose:	Data extraction functions
+;		Created:	22nd April 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-; ************************************************************************************************
-;
-;									Mandatory Zero page code
-;
-; ************************************************************************************************
-
-		.section zeropage
-zsTemp: 									; string temporary area.
-		.fill 	2
-runtimeStackPtr: 							; runtime stack pointer
-		.fill 	2
-dataPtr: 									; data pointer.
-		.fill 	2		
-		.send zeropage
-
+		.section 	code
 
 ; ************************************************************************************************
 ;
-;										Non Zero Page Data
+;						Extracts from Data as a string/number
 ;
 ; ************************************************************************************************
 
-		.section storage
+CommandRead: ;; [read]
+		.entercmd
 
-stringLowMemory:
-		.fill 	2		
-stringHighMemory:
-		.fill 	2
-
-		.send 	storage
-
+CommandReadString: ;; [read$]
+		.entercmd
+		
+		.send code
+		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates
@@ -51,4 +36,3 @@ stringHighMemory:
 ;		==== 			=====
 ;
 ; ************************************************************************************************
-

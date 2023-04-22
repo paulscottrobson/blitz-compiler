@@ -1,45 +1,53 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		data.inc
-;		Purpose:	Common Data
-;		Created:	11th April 2023
+;		Name:		read.asm
+;		Purpose:	Compile READ Statements
+;		Created:	22nd April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-; ************************************************************************************************
-;
-;									Mandatory Zero page code
-;
-; ************************************************************************************************
-
-		.section zeropage
-zsTemp: 									; string temporary area.
-		.fill 	2
-runtimeStackPtr: 							; runtime stack pointer
-		.fill 	2
-dataPtr: 									; data pointer.
-		.fill 	2		
-		.send zeropage
-
+		.section code
 
 ; ************************************************************************************************
 ;
-;										Non Zero Page Data
+;										Compile a READ
 ;
 ; ************************************************************************************************
 
-		.section storage
+CommandREAD:
+		jsr 	GetNextNonSpace 			; first char of identifier
+		jsr 	CharIsAlpha 				; check A-Z
+		bcc 	_CRSyntax
+		jsr 	IdentifyVariable 			; get the variable.
+		pha 								; save type.
 
-stringLowMemory:
-		.fill 	2		
-stringHighMemory:
-		.fill 	2
+		and 	#NSSTypeMask 				; is it a string ?
+		cmp 	#NSSString
+		beq 	_CRString
+		lda 	#PCD_READ 					; output read
+		bra 	_CRHaveType
+_CRString:		
+		lda 	#PCD_READDOLLAR 			; output read$
+_CRHaveType:		
+		jsr 	WriteCodeByte 				; so we have one typed data item.
+		pla 								; restore type
+		sec  								; write update code.
+		jsr 	GetSetVariable
+		jsr 	LookNextNonSpace 			; , follows ?
+		cmp 	#","
+		bne 	_CRExit 					; if not, end of READ.
+		jsr 	GetNext 					; consume comma
+		bra 	CommandREAD 				; keep going
+_CRExit:		
+		rts		
+_CRSyntax:
+		.error_syntax
 
-		.send 	storage
+		.send code
 
 ; ************************************************************************************************
 ;
@@ -51,4 +59,3 @@ stringHighMemory:
 ;		==== 			=====
 ;
 ; ************************************************************************************************
-
