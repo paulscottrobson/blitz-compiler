@@ -34,3 +34,6 @@ error_structure .macro
 error_stop .macro
 	jmp	ErrorV_stop
 	.endm
+error_data .macro
+	jmp	ErrorV_data
+	.endm

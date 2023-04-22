@@ -35,4 +35,7 @@ ErrorV_structure:
 ErrorV_stop:
 	jsr	ErrorHandler
 	.text	"PROGRAM HALTED",0
+ErrorV_data:
+	jsr	ErrorHandler
+	.text	"OUT OF DATA",0
 	.send code

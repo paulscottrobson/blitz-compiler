@@ -62,12 +62,12 @@ class PCodeDecompiler(object):
 						p = p + 5
 						s = ".float {0:.5f}".format(f)
 					if s == ".string" or s == ".data":
-						s += " {{"
+						s += " {"
 						for i in range(0,self.data[p]):
 							p = p + 1
 							s += chr(self.data[p])
 						p += 1
-						s += '}}'
+						s += '}'
 					if s.startswith(".goto") or s == ".gosub":
 						page = self.data[p]
 						offset = self.data[p+1]+(self.data[p+2] << 8)

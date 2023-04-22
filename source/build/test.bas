@@ -1,4 +1,4 @@
-10 a$ = chr$(int(rnd(1)*32+64))
-20 print "[";a$;"]"
+10 read a
+20 print "[";a;"]"
 30 goto 10
-100 data hello world, ",a,"
+110 data 1, 2, 3, 3.14159

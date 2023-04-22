@@ -23,7 +23,7 @@ errors = """
 	divzero 	  : divide by zero
 	structure 	  : structure imbalance
 	stop 		  : program halted
-	
+	data		  : out of data
 """.strip().split("\n")
 
 h1 = open("modules/common/generated/errors.inc","w")

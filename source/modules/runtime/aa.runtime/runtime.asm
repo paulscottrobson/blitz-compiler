@@ -24,7 +24,7 @@ Boot:
 		.set16 	codePtr,EndProgram+2 		; also used in RESTORE
 		stz 	codePage
 
-		jsr 	CommandRestore 				; which we now call
+		jsr 	RestoreCode 				; which we now call
 		;
 		;		Main Run Loop
 		;
