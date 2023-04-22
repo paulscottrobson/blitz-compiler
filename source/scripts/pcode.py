@@ -110,8 +110,6 @@ class PCode(object):
 		h.write("\tdef get(self):\n")
 		d = "|".join(["{0}:{1}".format(id,self.idToToken[id]) for id in range(0x80,self.currentID)])
 		h.write("\t\treturn \"{0}\"\n".format(d))
-
-
 		h.close()
 
 if __name__ == "__main__":
