@@ -206,7 +206,6 @@ GEXCompileExpression:
 		stx 	zTemp0
 		rts		
 
-
 ; ************************************************************************************************
 ;
 ;									Channel Prefix code.
@@ -217,10 +216,15 @@ ChannelPrefix:
 		lda 	#PCD_GETCHANNEL				; set channel onto stack
 		jsr 	WriteCodeByte
 		jsr 	GEXCompileExpression 		; channel #
+		and 	#NSSTypeMask
+		cmp 	#NSSIFloat
+		bne 	_CPXType
 		jsr 	CheckNextComma 				; check , follows.
 		lda 	#PCD_SETCHANNEL				; set channel
 		jsr 	WriteCodeByte
 		rts
+_CPXType:
+		.error_type
 
 ; ************************************************************************************************
 ;

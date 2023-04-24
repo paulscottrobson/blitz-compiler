@@ -27,6 +27,7 @@ GetChannel: ;; [getchannel]
 
 SetChannel: ;; [setchannel]
 		.entercmd
+		jsr 	FloatIntegerPart
 		lda 	NSMantissa0,x
 		sta 	currentChannel
 		dex
@@ -49,11 +50,11 @@ VectorPrintCharacter:
 ;
 ;		Check we're sending it to the correct channel.
 ;
-		pha
-		txa
-		ora 	#48
-		jsr 	XPrintCharacterToChannel
-		pla
+;		pha
+;		txa
+;		ora 	#48
+;		jsr 	XPrintCharacterToChannel
+;		pla
 
 		jsr 	XPrintCharacterToChannel
 		plx

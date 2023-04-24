@@ -14,11 +14,22 @@
 
 ; ************************************************************************************************
 ;
-;						Get input
+;									Get input (also GET#)
 ;
 ; ************************************************************************************************
 
 CommandGET:
+		jsr 	LookNextNonSpace 			; # follows ?
+		cmp 	#"#"
+		bne 	CommandGetBody
+		;
+		jsr 	GetNext 					; consume #
+		jsr 	ChannelPrefix 				; do it as GET#
+		jsr 	CommandGetBody
+		jsr 	ChannelPostfix
+		rts
+
+CommandGetBody:
 		jsr 	GetNextNonSpace 			; get the first character
 		jsr 	IdentifyVariable 			; identify variable to assign to
 		pha

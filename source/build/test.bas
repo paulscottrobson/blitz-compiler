@@ -1,2 +1,4 @@
-10 print#7,"hello"
+5 get b$
+10 get#2, a$
+12 print a$,b$
 20 stop
