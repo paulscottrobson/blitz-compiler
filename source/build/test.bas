@@ -1,4 +1,4 @@
-5 get b$
-10 get#2, a$
-12 print a$,b$
+10 cmd 3,"Test1"
+15 cmd 4
+18 print "Test2"
 20 stop

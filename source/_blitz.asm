@@ -36,6 +36,7 @@ ismain_common = 0
 	.include	"modules/compiler/helpers/output/byte.asm"
 	.include	"modules/compiler/helpers/input/check.asm"
 	.include	"modules/compiler/object/simple/clear.asm"
+	.include	"modules/compiler/commands/cmd.asm"
 	.include	"modules/ifloat32/float/compare.asm"
 	.include	"modules/compiler/aa.compiler/compiler.asm"
 	.include	"modules/compiler/helpers/output/constant.asm"
