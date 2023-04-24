@@ -1,6 +1,7 @@
-10 x = 2
-20 on x goto 110,120,130,140
-110 print "110":stop
-120 print "120":stop
-130 print "130":stop
-140 print "140":stop
+10 for x = 0 to 8
+20 on x gosub 110,120,130,140
+30 next:stop
+110 print "110":return
+120 print "120":return
+130 print "130":return
+140 print "140":return
