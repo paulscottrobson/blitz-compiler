@@ -1,0 +1,60 @@
+Variables
+=========
+
+Variable records are stored in 2 bytes
+
+Byte 0: 														Byte 1:
+Bit 7 		: Array 											Bit 7 : Function definition
+Bit 5,6 	: Type (00 Float,10 String,01 Int16) 				Bit 6 : Not used
+Bit 0..4 	: Lower 5 bits of A..Z 								Bit 5..0 : Lower 6 bits of 0-9A-Z
+
+
+General format.
+
++00 	Link to next or $00
++01 	First byte (Byte 0)
++02 	Second byte (Byte 1)
++03 	Data.....
+
+Variables
+=========
++03 	Offset Low 	from start of variables.
++04 	Offset High
+
+(type information from byte 0).
+
+Functions 		
+=========
+(Same format as GOSUB, called using the same code)
+
++03 	Page
++04 	Object Low
++05 	Object High
+
+Sample function 
+
+DEF FNC(a) = a + 4 : PRINT FNC(7)
+
+On entry, value 7 is on the stack.
+
+a@ 					; fetch variable A
+swap 				; A is now 2nd, value is 1st.
+a! 					; store new value in A
+
+a@ 4 +  			; body of the function, result TOS, old A second
+
+swap 				; result 2nd, old A TOS
+a! 					; fix it back up
+return 				; back to caller with result on TOS.
+
+Arrays
+======
++03,+04 			; offset to array record address($0000 if not created yet)
+
+Array Record : instantiated either using DIM or default DIM when referenced.
+
++0,1 				; address of first byte of data.
++2 					; number of dimensions
++3,4 				; dimension # 1
++5,6 				; dimension # 2
++7,8 				; dimension # 3 (etc.)
