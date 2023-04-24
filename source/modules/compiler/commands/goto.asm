@@ -47,7 +47,7 @@ CompileBranchCommand:
 		bcc 	_CBCSyntax
 
 		pha
-		lda 	#0 							; no page yet.
+		lda 	#$FF 						; no address yet.
 		jsr 	WriteCodeByte
 		pla 								; and compile the actual line number
 		jsr 	WriteCodeByte

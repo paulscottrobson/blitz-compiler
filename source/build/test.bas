@@ -1,4 +1,4 @@
-10 cmd 3,"Test1"
-15 cmd 4
-18 print "Test2"
+10 x = 0
+15 x = x + 3:print x
+18 if x < 30 goto 15
 20 stop

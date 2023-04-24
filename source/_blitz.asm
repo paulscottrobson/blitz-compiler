@@ -74,6 +74,7 @@ ismain_common = 0
 	.include	"modules/compiler/source/simple/nextline.asm"
 	.include	"modules/compiler/source/simple/nextnumber.asm"
 	.include	"modules/ifloat32/float/normalise.asm"
+	.include	"modules/compiler/commands/on.asm"
 	.include	"modules/compiler/evaluate/term/parsenumber.asm"
 	.include	"modules/x16_hardware/interface/peekpoke.asm"
 	.include	"modules/compiler/commands/print.asm"

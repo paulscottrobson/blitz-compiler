@@ -39,6 +39,10 @@ _FBExit:
 ;		Found GOTO/GOSUB - look it up in the line# table and fix it up.
 ;
 _FBFixGotoGosub:
+		ldy 	#1 							; if page is currently $FF
+		lda 	(objPtr),y 					; then patch else leave.
+		cmp 	#$FF
+		bne 	_FBNext
 
 		ldy 	#2							; line number in YA
 		lda 	(objPtr),y
