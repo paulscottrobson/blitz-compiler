@@ -16,8 +16,7 @@ Boot:
 		ldx 	#$FF 						; reset stack.
 		txs
 
-	 	lda 	#0 							; set default output channel.
-	 	jsr		SetPrintChannel
+	 	jsr		SetDefaultChannel			; set default input/output channel.
 
 		jsr 	ClearMemory 				; clear memory.
 

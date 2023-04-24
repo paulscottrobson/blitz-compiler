@@ -55,33 +55,35 @@ VectorTable:
 	.word	CommandNext              ; $b1 next
 	.word	NotTOS                   ; $b2 not
 	.word	CommandPOKE              ; $b3 poke
-	.word	PrintNumber              ; $b4 print.n
-	.word	PrintString              ; $b5 print.s
-	.word	CommandRead              ; $b6 read
-	.word	CommandReadString        ; $b7 read$
-	.word	StringConcatenate        ; $b8 concat
-	.word	PrintTab                 ; $b9 print.tab
-	.word	PrintPos                 ; $ba print.pos
-	.word	PrintSpace               ; $bb print.spc
-	.word	TimeTOS                  ; $bc ti
-	.word	CommandWAIT              ; $bd wait
-	.word	CommandShift             ; $be .shift
-	.word	PushByteCommand          ; $bf .byte
-	.word	PushWordCommand          ; $c0 .word
-	.word	CommandPushN             ; $c1 .float
-	.word	CommandPushS             ; $c2 .string
-	.word	CommandData              ; $c3 .data
-	.word	CommandGoto              ; $c4 .goto
-	.word	CommandGosub             ; $c5 .gosub
-	.word	CommandGotoZ             ; $c6 .goto.z
-	.word	CommandGotoNZ            ; $c7 .goto.nz
+	.word	GetChannel               ; $b4 getchannel
+	.word	SetChannel               ; $b5 setchannel
+	.word	PrintNumber              ; $b6 print.n
+	.word	PrintString              ; $b7 print.s
+	.word	CommandRead              ; $b8 read
+	.word	CommandReadString        ; $b9 read$
+	.word	StringConcatenate        ; $ba concat
+	.word	PrintTab                 ; $bb print.tab
+	.word	PrintPos                 ; $bc print.pos
+	.word	PrintSpace               ; $bd print.spc
+	.word	TimeTOS                  ; $be ti
+	.word	CommandWAIT              ; $bf wait
+	.word	CommandShift             ; $c0 .shift
+	.word	PushByteCommand          ; $c1 .byte
+	.word	PushWordCommand          ; $c2 .word
+	.word	CommandPushN             ; $c3 .float
+	.word	CommandPushS             ; $c4 .string
+	.word	CommandData              ; $c5 .data
+	.word	CommandGoto              ; $c6 .goto
+	.word	CommandGosub             ; $c7 .gosub
+	.word	CommandGotoZ             ; $c8 .goto.z
+	.word	CommandGotoNZ            ; $c9 .goto.nz
 
 
 ShiftVectorTable:
-	.word	CommandAssert            ; $be80 assert
-	.word	CommandClr               ; $be81 clr
-	.word	CommandEnd               ; $be82 end
-	.word	CommandRestore           ; $be83 restore
-	.word	CommandStop              ; $be84 stop
-	.word	CommandSYS               ; $be85 sys
+	.word	CommandAssert            ; $c080 assert
+	.word	CommandClr               ; $c081 clr
+	.word	CommandEnd               ; $c082 end
+	.word	CommandRestore           ; $c083 restore
+	.word	CommandStop              ; $c084 stop
+	.word	CommandSYS               ; $c085 sys
 	.send code

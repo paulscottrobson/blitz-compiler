@@ -11,7 +11,8 @@
 ; ************************************************************************************************
 
 		.section code
-	
+
+
 ; ************************************************************************************************
 ;
 ;						    Execute command pair at (zTemp0).
@@ -46,7 +47,7 @@ _GEExecuteVectors:
 		.word 	_GEXToken1 					; 1  (compile 1 byte token)
 		.word 	_GEXToken2 					; 2  (compile 2 byte token)
 		.word 	_GEXExecute 				; 3  (run arbitrary code)
-		.word 	_GEXNop 					; 4
+		.word 	_GEXChannelExec 			; 4  (run arbitrary code with possible channel redirection)
 		.word 	_GEXNop 					; 5
 		.word 	_GEXExitNumber 				; 6  exit return ifloat32 type
 		.word 	_GEXExitString 				; 7  exit return string type
@@ -120,7 +121,7 @@ _GEXSyntax:
 ; ------------------------------------------------------------------------------------------------
 
 _GEXNumber: 	
-		jsr 	_GEXCompileExpression 		; compile expression
+		jsr 	GEXCompileExpression 		; compile expression
 		and 	#NSSTypeMask
 		cmp  	#NSSIFloat
 		bne 	_GEXType 	
@@ -128,7 +129,7 @@ _GEXNumber:
 		rts
 
 _GEXString: 	
-		jsr 	_GEXCompileExpression 		; compile expression
+		jsr 	GEXCompileExpression 		; compile expression
 		and 	#NSSTypeMask
 		cmp  	#NSSString
 		bne 	_GEXType 	
@@ -137,6 +138,19 @@ _GEXString:
 
 _GEXType:
 		.error_type
+
+; ------------------------------------------------------------------------------------------------
+;							Execute 6502 code with Channel Redirect
+; ------------------------------------------------------------------------------------------------
+
+_GEXChannelExec:
+		jsr 	ChannelPrefix 				; set up default
+		jsr 	_GEXExecute
+		php
+		jsr 	ChannelPostfix 				; replace default.
+		plp
+		rts
+		.debug
 
 ; ------------------------------------------------------------------------------------------------
 ;										Execute 6502 code
@@ -165,10 +179,22 @@ _GECallZTemp2:
 		jmp 	(zTemp2)		
 
 ; ------------------------------------------------------------------------------------------------
+;										Get the next byte.
+; ------------------------------------------------------------------------------------------------
+
+_GEFetchZTemp0:
+		lda 	(zTemp0)
+		inc 	zTemp0
+		bne 	_GEFZ0Skip
+		inc 	zTemp0+1
+_GEFZ0Skip:
+		rts		
+
+; ------------------------------------------------------------------------------------------------
 ;								Compile expression preserve state
 ; ------------------------------------------------------------------------------------------------
 
-_GEXCompileExpression:
+GEXCompileExpression:
 		ldx 	zTemp0 						; push generation exec on to stack for reentrancy
 		phx
 		ldx 	zTemp0+1
@@ -180,17 +206,33 @@ _GEXCompileExpression:
 		stx 	zTemp0
 		rts		
 
-; ------------------------------------------------------------------------------------------------
-;										Get the next byte.
-; ------------------------------------------------------------------------------------------------
 
-_GEFetchZTemp0:
-		lda 	(zTemp0)
-		inc 	zTemp0
-		bne 	_GEFZ0Skip
-		inc 	zTemp0+1
-_GEFZ0Skip:
-		rts		
+; ************************************************************************************************
+;
+;									Channel Prefix code.
+;
+; ************************************************************************************************
+
+ChannelPrefix:
+		lda 	#PCD_GETCHANNEL				; set channel onto stack
+		jsr 	WriteCodeByte
+		jsr 	GEXCompileExpression 		; channel #
+		jsr 	CheckNextComma 				; check , follows.
+		lda 	#PCD_SETCHANNEL				; set channel
+		jsr 	WriteCodeByte
+		rts
+
+; ************************************************************************************************
+;
+;									Channel Prefix code.
+;
+; ************************************************************************************************
+
+ChannelPostfix:
+		lda 	#PCD_SETCHANNEL				; set channel from TOS.
+		jsr 	WriteCodeByte
+		rts
+
 		.send  code		
 
 ; ************************************************************************************************

@@ -79,7 +79,7 @@ class GenCompiler(object):
 		h.close()
 
 	def compileGenerator(self,s):
-		m = re.match("(\\w+\\$?)\\s+(.*)",s)
+		m = re.match("^([a-zA-Z\\#\\$]+)\\s+(.*)\\s*$",s)
 		assert m is not None,"Bad line "+s
 		self.token = m.group(1).strip()
 		self.gen = Generator(self.token)
@@ -95,10 +95,10 @@ class GenCompiler(object):
 			assert not s.startswith(":"),"TODO Alt token" 	# not implemented alt token yet.
 			self.compilePCodeToken(self.token)				# compile equivalent P-Code
 
-		elif cmd == "X":									# X execute
+		elif cmd == "X" or cmd == "C":						# X execute, C channelexecute
 			m = re.match("^\\:(\\w+)\\s*(.*)$",s) 			# get bits
-			assert m is not None,"Bad X command "+s
-			self.gen.append(3,True)
+			assert m is not None,"Bad "+cmd+" command "+s
+			self.gen.append(3 if cmd =="X" else 4,True)
 			self.gen.appendWord(m.group(1))
 			return m.group(2)
 

@@ -14,16 +14,26 @@
 
 ; ************************************************************************************************
 ;
-;									Set Print Channel, return old in A
+;							Get/Set Print Channel from/to stack
 ;
 ; ************************************************************************************************
 
-SetPrintChannel:
-		phx
-		ldx 	currentChannel
+GetChannel: ;; [getchannel]
+		.entercmd
+		lda 	currentChannel
+		inx
+		jsr 	FloatSetByte
+		.exitcmd
+
+SetChannel: ;; [setchannel]
+		.entercmd
+		lda 	NSMantissa0,x
 		sta 	currentChannel
-		txa
-		plx
+		dex
+		.exitcmd
+
+SetDefaultChannel:
+		stz 	currentChannel
 		rts
 
 ; ************************************************************************************************
@@ -35,6 +45,16 @@ SetPrintChannel:
 VectorPrintCharacter:
 		phx
 		ldx 	currentChannel
+
+;
+;		Check we're sending it to the correct channel.
+;
+		pha
+		txa
+		ora 	#48
+		jsr 	XPrintCharacterToChannel
+		pla
+
 		jsr 	XPrintCharacterToChannel
 		plx
 		rts
