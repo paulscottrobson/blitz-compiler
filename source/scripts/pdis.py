@@ -12,6 +12,7 @@
 import os,sys,math,re
 from pcodeconst import *
 from floats import *
+from compileinfo import *
 
 # *******************************************************************************************
 #
@@ -24,6 +25,7 @@ class PCodeDecompiler(object):
 		self.pcode = PCodeConstants()
 		self.float = Float()
 		self.code = []
+		self.info = AppInformation()
 	#
 	def decompileFile(self,f):
 		self.data = [x for x in open(f,"rb").read(-1)][2:]
@@ -38,12 +40,17 @@ class PCodeDecompiler(object):
 				dtype = "#%$"[(opcode-64) >> 4]
 				action = "!" if (opcode & 8) != 0 else "@"
 				address = (((opcode & 7) << 8) | self.data[p+1]) << 1
-				name = ""
+				name = self.info.getVariableName(address)
+				name = "" if self.info is None else "["+name+"]"
 				s = "{0}{1}{2} {3}".format(address,dtype,action,name)
 				p += 2
 			else:
 				s = self.pcode.getToken(self.data[p]) 
 				if s is not None:
+					if s == "new.line":
+						lineNumber = self.info.getLineNumber(p)
+						if lineNumber is not None:
+							s = s + " ["+str(lineNumber)+"]"
 					p = p + 1
 					if s == ".byte":
 						s = ".byte {0}".format(self.data[p])
