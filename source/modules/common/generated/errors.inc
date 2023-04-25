@@ -37,3 +37,6 @@ error_stop .macro
 error_data .macro
 	jmp	ErrorV_data
 	.endm
+error_undeclared .macro
+	jmp	ErrorV_undeclared
+	.endm

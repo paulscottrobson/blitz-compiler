@@ -18,7 +18,7 @@
 ;
 ; ************************************************************************************************
 
-CommandAssert: ;; [!assert]
+CommandAssert: ;; [assert]
 		.entercmd
 		cpx 	#0 							; check only one element on stack
 		bne 	_CAFail

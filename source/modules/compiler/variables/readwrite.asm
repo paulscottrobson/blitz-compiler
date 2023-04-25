@@ -14,18 +14,15 @@
 
 ; ************************************************************************************************
 ;
-;			On entry YX is the address ($FFFF for an array) and A the type data (bits 7..5)
-;								for array, address to use is on TOS
+;					On entry YX is the address and A the type data (bits 7..5)
 ;						CS => generate write code, CC => generate read code
 ;
 ; ************************************************************************************************
 
 GetSetVariable:
 		php 								; save direction on stack
-		cpx 	#6
-		beq 	_GSVReadWriteClock
-		cpy 	#$FF 						; array ?
-		beq 	_GSVArray
+		cpy 	#$00
+		bmi 	_GSVReadWriteSpecial
 		;
 		; 		64-79 is float, 80-95 is integer, 96-111 is string. So we multiply the
 		;		type bits 5 & 6 byte 16 - but they are already multiplied by 32, so
@@ -55,10 +52,13 @@ _GSVNotWrite:
 		jsr 	WriteCodeByte
 		rts
 		;
-		;		Handle arrays.
+		;		Special read/writes
 		;
-_GSVArray:
-		.error_unimplemented		
+_GSVReadWriteSpecial:
+		;
+		;		TODO: TI TI$ code missing		
+		;
+
 		;
 		;		Handle clock read/write
 		;

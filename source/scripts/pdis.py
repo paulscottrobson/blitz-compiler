@@ -39,11 +39,6 @@ class PCodeDecompiler(object):
 				action = "!" if (opcode & 8) != 0 else "@"
 				address = (((opcode & 7) << 8) | self.data[p+1]) << 1
 				name = ""
-				if address <= 256:
-					if address == 6 or address == 8:
-						name = "TI" if address == 6 else "TI$"
-					else:
-						name = "("+chr(address // 10+97)+("$%#"[(address % 10) >> 1])+")"
 				s = "{0}{1}{2} {3}".format(address,dtype,action,name)
 				p += 2
 			else:

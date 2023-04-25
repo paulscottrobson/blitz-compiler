@@ -24,6 +24,8 @@ errors = """
 	structure 	  : structure imbalance
 	stop 		  : program stopped
 	data		  : out of data
+	undeclared	  : unknown array
+	
 """.strip().split("\n")
 
 h1 = open("modules/common/generated/errors.inc","w")

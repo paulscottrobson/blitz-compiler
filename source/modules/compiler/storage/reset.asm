@@ -24,7 +24,7 @@ STRReset:
 		.storage_access 					; clear the head of the work area list.
 		stz 	WorkArea
 		.storage_release
-		.set16 freeVariableMemory,26*(2+2+6); set limit of variable memory accounting for A-Z
+		.set16 freeVariableMemory,0 		; clear the free variable memory record.
 		rts
 		.send code
 

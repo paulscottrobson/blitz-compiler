@@ -20,12 +20,20 @@
 		.section code
 
 GetReferenceTerm:
-		jsr 	ExtractVariableName
-		jsr 	FindVariable
-		bcs 	_GRTExit
-		.debug
+		jsr 	ExtractVariableName 		; get name & type info
+		phx 								; save type on stack
+		jsr 	FindVariable 				; read its data
+		bcs 	_GRTExit 					; found it, exit with type
+		cpy 	#0  						; not found, if array then error.
+		bmi 	_GRTUndeclared 				
+		jsr 	CreateVariable 				; create a variable.
 _GRTExit:
+		pla 								; get type back, strip out type information.
+		and 	#NSSTypeMask+NSSIInt16
 		rts		
+_GRTUndeclared:
+		.error_undeclared
+
 		
 		.send code
 

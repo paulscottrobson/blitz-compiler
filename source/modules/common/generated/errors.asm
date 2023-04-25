@@ -38,4 +38,7 @@ ErrorV_stop:
 ErrorV_data:
 	jsr	ErrorHandler
 	.text	"OUT OF DATA",0
+ErrorV_undeclared:
+	jsr	ErrorHandler
+	.text	"UNKNOWN ARRAY",0
 	.send code
