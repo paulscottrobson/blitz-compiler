@@ -21,7 +21,7 @@
 CommandLET:
 		jsr 	GetNextNonSpace 			; get the first character
 CommandLETHaveFirst:
-		jsr 	IdentifyVariable 			; identify variable to assign to
+		jsr 	GetReferenceTerm 			; identify variable to assign to
 		phx 								; save target on the stack.
 		phy
 		pha

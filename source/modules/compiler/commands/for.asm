@@ -27,7 +27,7 @@ CommandFOR:
 		jsr 	GetNextNonSpace 			; first letter of index variable, should be.
 		jsr 	CharIsAlpha 				; if not alpha , error
 		bcc 	_CFFail
-		jsr 	IdentifyVariable 			; figure out the reference.
+		jsr 	GetReferenceTerm 			; figure out the reference.
 
 		pha 								; save type
 		and 	#NSSTypeMask 				; check it is numeric

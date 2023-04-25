@@ -36,7 +36,7 @@ ismain_common = 0
 	.include	"modules/common/boot.end/00start.asm"
 	.include	"modules/runtime/functions/number/abs.asm"
 	.include	"modules/ifloat32/float/addsub.asm"
-	.include	"modules/runtime/allocate.asm"
+	.include	"modules/runtime/support/allocate.asm"
 	.include	"modules/runtime/binary/andor.asm"
 	.include	"modules/runtime/functions/number/asc.asm"
 	.include	"modules/runtime/commands/assert.asm"

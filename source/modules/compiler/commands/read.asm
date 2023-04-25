@@ -22,7 +22,7 @@ CommandREAD:
 		jsr 	GetNextNonSpace 			; first char of identifier
 		jsr 	CharIsAlpha 				; check A-Z
 		bcc 	_CRSyntax
-		jsr 	IdentifyVariable 			; get the variable.
+		jsr 	GetReferenceTerm 			; get the variable.
 		pha 								; save type.
 
 		and 	#NSSTypeMask 				; is it a string ?

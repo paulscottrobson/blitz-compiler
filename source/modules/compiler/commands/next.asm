@@ -28,7 +28,7 @@ CommandNEXT:
 		jsr 	CharIsAlpha 				; if not alpha , error
 		bcc 	_CNNoReferenceGiven
 		jsr 	GetNext
-		jsr 	IdentifyVariable 			; figure out the reference.
+		jsr 	GetReferenceTerm 			; figure out the reference.
 		txa 								; reference in YA
 		jsr 	PushIntegerYA 				; write it out.
 		bra 	_CNParametersDone

@@ -54,7 +54,7 @@ CompileTerm:
 		cmp 	#"Z"+1
 		bcs 	_CTSyntax
 
-		jsr 	IdentifyVariable 			; figure out what it is.
+		jsr 	GetReferenceTerm 			; figure out what it is.
 		pha 								; save type on stack
 		clc 								; read it
 		jsr 	GetSetVariable 			

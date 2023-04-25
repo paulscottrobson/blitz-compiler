@@ -18,3 +18,73 @@ The GetSetVariable routine takes takes this AXY information and either compiles 
 						address data %! $! #!)
 
 Simple variables are in the first 260 bytes (representing A-Z, A% to Z% and A$ to Z$)
+
+
+Variable records are stored in 2 bytes
+
+Byte 0: 														Byte 1:
+Bit 7 		: Array 											Bit 7 : Function definition
+Bit 5,6 	: Type (00 Float,10 String,01 Int16) 				Bit 6 : Not used
+Bit 0..4 	: Lower 5 bits of A..Z 								Bit 5..0 : Lower 6 bits of 0-9A-Z
+
+
+General format.
+
++00 	Link to next or $00
++01 	First byte (Byte 0)
++02 	Second byte (Byte 1)
++03 	Data.....
+
+Variable Records
+================
+
+Variables use 2 bytes for strings/int16 and 6 bytes for floats.
+
++03 	Offset Low 	from start of variables.
++04 	Offset High
+
+(type information from byte 0).
+
+Functions 		
+=========
+Functions do not use any variables.
+
+(Same format as GOSUB, called using the same code)
+
++03 	Page
++04 	Object Low
++05 	Object High
+
+Sample function 
+
+DEF FNC(a) = a + 4 : PRINT FNC(7)
+
+Before 0 : goto.z (EOL) as for THEN.
+
+On entry, value 7 is on the stack.
+
+a@ 					; fetch variable A
+swap 				; A is now 2nd, value is 1st.
+a! 					; store new value in A
+
+a@ 4 +  			; body of the function, result TOS, old A second
+
+swap 				; result 2nd, old A TOS
+a! 					; fix it back up
+return 				; back to caller with result on TOS.
+
+Array
+=====
+Array records contain 2 bytes ; they are created when the DIM statement is executed at present
+
++00 	Offset low to first level of array
++01 	Offset high to first level of array
+
+Links to:
+
++00 	Count of elements in array (this is one more than the dimension)
++01
++02 	Bit 7 : sub array bit 4..0 : size of data e.g. $82 indicates a further array of links $06 would be a float array.
+
+Memory is allocated using variable.space
+
