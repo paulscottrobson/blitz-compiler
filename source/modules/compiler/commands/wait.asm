@@ -25,8 +25,7 @@ CommandWAIT:
 		lda 	#0
 		jsr 	PushIntegerA
 _CWExit:		
-		lda 	#PCD_WAIT
-		jsr 	WriteCodeByte
+		.keyword PCD_WAIT
 		rts
 
 _CWThirdParameter:

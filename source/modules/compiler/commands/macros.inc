@@ -1,45 +1,36 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		wait.asm
-;		Purpose:	Wait command
-;		Created:	21st April 2023
+;		Name:		macros.inc
+;		Purpose:	Command macros
+;		Created:	25th April 2023
 ;		Reviewed: 	No
-;		Author : 	Paul Robson (paul@robsons.org.uk)
+;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section 	code
+		.section code
 
 ; ************************************************************************************************
 ;
-;										WAIT command
+;							Size independent write keyword as constant
 ;
 ; ************************************************************************************************
 
-CommandWAIT: ;; [!wait]
-		.entercmd
-		lda 	NSMantissa0-2,x 			; get wait address
-		sta 	zTemp0
-		lda 	NSMantissa1-2,x
-		sta 	zTemp0+1
-_WaitLoop:
-		lda 	(zTemp0) 					; read it
-		and 	NSMantissa0-1,x		 		; and with mask
-		eor 	NSMantissa0-0,x 			; toggle
-		beq 	_WaitLoop 					; keep going if zero
-
-		dex 								; drop 3.
-		dex
-		dex
-		.exitcmd
+keyword .macro
+		.if (\1) > 255
+		lda 	#(\1) >> 8
+		jsr 	WriteCodeByte
+		.endif
+		lda 	#(\1) & $FF
+		jsr 	WriteCodeByte
+		.endm
 
 
-; ************************************************************************************************
+		.send code
 
-		.send 	code
-		
+
 ; ************************************************************************************************
 ;
 ;									Changes and Updates
