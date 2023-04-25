@@ -24,7 +24,7 @@ GetReferenceTerm:
 		phx 								; save type on stack
 		jsr 	FindVariable 				; read its data
 		bcs 	_GRTExit 					; found it, exit with type
-		cpy 	#0  						; not found, if array then error.
+		cpx 	#0  						; not found, if array then error.
 		bmi 	_GRTUndeclared 				
 		jsr 	CreateVariable 				; create a variable.
 _GRTExit:

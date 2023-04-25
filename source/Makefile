@@ -67,11 +67,13 @@ cdebug : compiler basic
 	$(RUNEMU) -prg $(BTEMP)runcompiler.prg,801 -run 
 	$(CCOPY) CODE.BIN $(BTEMP)cout.bin
 	$(CDEL) CODE.BIN
+	python $(SCRIPTDIR)compileinfo.py >$(BTEMP)program.data
 #
 crun : compiler basic
 	$(HRUNEMU) -prg $(BTEMP)runcompiler.prg,801 -run 
 	$(CCOPY) CODE.BIN $(BTEMP)cout.bin
 	$(CDEL) CODE.BIN
+	python $(SCRIPTDIR)compileinfo.py >$(BTEMP)program.data
 #
 #		Compile and Run
 #
