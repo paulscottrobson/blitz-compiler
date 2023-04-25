@@ -14,7 +14,7 @@
 
 ; ************************************************************************************************
 ;
-;									Fix up GOTO and GOSUB
+;								Fix up GOTO and GOSUB, and VARSPACE
 ;
 ; ************************************************************************************************
 
@@ -30,6 +30,8 @@ _FBLoop:
 		beq 	_FBFixGotoGosub
 		cmp 	#PCD_CMD_GOTOCMD_Z 
 		beq 	_FBFixGotoGosub
+		cmp 	#PCD_CMD_VARSPACE
+		beq 	_FBFixVarSpace
 _FBNext:		
 		jsr 	MoveObjectForward 			; move forward in object code.
 		bcc 	_FBLoop 					; not finished
@@ -68,7 +70,17 @@ _FBFixGotoGosub:
 		pla
 		sta 	(objPtr),y
 		bra 	_FBNext
-
+;
+;		Found VarSpace, fix up with free space after variables
+;
+_FBFixVarSpace:
+		ldy 	#1
+		lda 	freeVariableMemory
+		sta 	(objPtr),y
+		iny
+		lda 	freeVariableMemory+1
+		sta 	(objPtr),y
+		bra 	_FBNext
 		.send code
 
 ; ************************************************************************************************

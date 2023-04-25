@@ -71,6 +71,9 @@ class PCodeDecompiler(object):
 							s += chr(self.data[p])
 						p += 1
 						s += '}'
+					if s == ".varspace":
+						s = ".varspace ${0:x}".format(self.data[p]+self.data[p+1]*256)
+						p = p + 2
 					if s.startswith(".goto") or s == ".gosub":
 						page = self.data[p]
 						offset = self.data[p+1]+(self.data[p+2] << 8)

@@ -17,6 +17,14 @@ Boot:
 		jsr 	HWIReset
 		jsr 	HWOReset
 		;
+		;		Compile _variable.space, filled in on pass 2.
+		;
+		lda 	#PCD_CMD_VARSPACE
+		jsr 	WriteCodeByte
+		lda 	#0
+		jsr 	WriteCodeByte
+		jsr 	WriteCodeByte
+		;
 		;		Main compilation loop
 		;
 MainCompileLoop:

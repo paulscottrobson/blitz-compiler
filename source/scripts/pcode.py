@@ -56,6 +56,7 @@ class PCode(object):
 		self.extra(".gosub",3)
 		self.extra(".goto.z",3)
 		self.extra(".goto.nz",3)
+		self.extra(".varspace",2)
 		self.define("PCD_ENDSYSTEM")	
 		self.endCommands = self.currentID	
 

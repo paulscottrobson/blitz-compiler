@@ -79,6 +79,7 @@ VectorTable:
 	.word	CommandGosub             ; $c9 .gosub
 	.word	CommandGotoZ             ; $ca .goto.z
 	.word	CommandGotoNZ            ; $cb .goto.nz
+	.word	CommandVarSpace          ; $cc .varspace
 
 
 ShiftVectorTable:

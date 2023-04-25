@@ -1,43 +1,40 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		reset.asm
-;		Purpose:	Reset information storage
-;		Created:	15th April 2023
+;		Name:		allocate.asm
+;		Purpose:	Allocate variable memory
+;		Created:	25th April 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section code
+		.section 	code
 
 ; ************************************************************************************************
 ;
-;								Reset the storage (variables,line#)
+;					Command which receives limit of variable memory
 ;
 ; ************************************************************************************************
 
-STRReset:
-		.set16  variableListEnd,WorkArea 	; set up the two table pointers
-		.set16 	lineNumberTable,WorkArea+WorkAreaSize
-		.storage_access 					; clear the head of the work area list.
-		stz 	WorkArea
-		.storage_release
-		.set16 freeVariableMemory,26*(2+2+6); set limit of variable memory accounting for A-Z
-		rts
-		.send code
+CommandVarSpace: ;; [.varspace]
+		.entercmd
+		  
+		lda 	(codePtr),y					; 3 byte opcode, which is 'free' memory in variable area.
+		sta 	availableMemory
+		iny 
+		lda 	(codePtr),y
+		sta 	availableMemory+1
+		iny
 
+		.exitcmd
+		.send 	code
 
 		.section storage
-lineNumberTable:							; line number table, works down.
-		.fill 	2		
-variableListEnd:							; known variables, works up.
-		.fill 	2	
-freeVariableMemory: 						; next free memory slot
-		.fill 	2			
-		.send storage
-
+availableMemory: 							; available memory as offset
+		.fill 	2
+		.send storage				
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

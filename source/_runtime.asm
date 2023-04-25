@@ -20,7 +20,7 @@ ismain_common = 0
 
 	.include	"modules/common/generated/c64tokens.inc"
 	.include	"modules/common/data/common.inc"
-	.include	"modules/runtime/config.inc"
+	.include	"modules/x16_runtime/config.inc"
 	.include	"modules/polynomials/utility/constant.inc"
 	.include	"modules/runtime/aa.runtime/data.inc"
 	.include	"modules/common/data/data.inc"
@@ -36,6 +36,7 @@ ismain_common = 0
 	.include	"modules/common/boot.end/00start.asm"
 	.include	"modules/runtime/functions/number/abs.asm"
 	.include	"modules/ifloat32/float/addsub.asm"
+	.include	"modules/runtime/allocate.asm"
 	.include	"modules/runtime/binary/andor.asm"
 	.include	"modules/runtime/functions/number/asc.asm"
 	.include	"modules/runtime/commands/assert.asm"

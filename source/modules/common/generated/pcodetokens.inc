@@ -8,7 +8,7 @@ PCD_ENDUNARY = $a4
 PCD_STARTCOMMAND = $a4
 PCD_ENDCOMMAND = $c2
 PCD_STARTSYSTEM = $c2
-PCD_ENDSYSTEM = $cc
+PCD_ENDSYSTEM = $cd
 
 PCD_PLUS             = $80 ; +
 PCD_MINUS            = $81 ; -
@@ -86,6 +86,7 @@ PCD_CMD_GOTO         = $c8 ; .goto
 PCD_CMD_GOSUB        = $c9 ; .gosub
 PCD_CMD_GOTOCMD_Z    = $ca ; .goto.z
 PCD_CMD_GOTOCMD_NZ   = $cb ; .goto.nz
+PCD_CMD_VARSPACE     = $cc ; .varspace
 PCD_ASSERT           = $c280 ; assert
 PCD_CLR              = $c281 ; clr
 PCD_END              = $c282 ; end
