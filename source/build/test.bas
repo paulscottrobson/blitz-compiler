@@ -1,3 +1,2 @@
-5 a% = 45:b$ = "hello":c = 22/7:x1 = 42
-10 print ti,a%,b$,c,x1:x1 = x1 + 1
-20 goto 10
+10 a1 = 4:b3% = 32:c$ = "hello": xz$ = "world": qw = 22/7
+20 print a1 b3% c$ xz$ qw

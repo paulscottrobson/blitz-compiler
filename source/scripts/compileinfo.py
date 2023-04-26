@@ -23,6 +23,7 @@ class AppInformation(object):
 	def __init__(self,fileName = "build/temp/program.data"):
 		self.lines = {}
 		self.variables = {}
+		self.varToOffset = {}
 		for x in open(fileName).readlines():
 			if x != "":
 				x = x.split(":")
@@ -30,12 +31,20 @@ class AppInformation(object):
 					self.lines[int(x[1])] = int(x[0])
 				else:
 					self.variables[int(x[1])] = x[0].lower()
+					self.varToOffset[x[0].lower()] = int(x[1])
 	#
 	def getLineNumber(self,offset):
 		return self.lines[offset] if offset in self.lines else None 
 	#
 	def getVariableName(self,offset):
 		return self.variables[offset] if offset in self.variables else None 
+	#
+	def getAllVariables(self):
+		return [x for x in self.varToOffset.keys()]
+	#
+	def getVariableOffset(self,name):
+		name = name.strip().lower()
+		return self.varToOffset[name] if name in self.varToOffset else None 
 
 if __name__ == "__main__":
 	app = AppInformation()
