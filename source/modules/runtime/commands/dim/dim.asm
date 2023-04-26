@@ -88,6 +88,7 @@ _DCOLNoSubLevel:
 		sta 	zTemp1
 		lda 	availableMemory+1
 		sta 	zTemp1+1
+		;
 		lda 	zTemp0
 		sta 	zTemp2
 		lda 	zTemp0+1
@@ -114,8 +115,60 @@ _DCOLNoBorrow:
 		beq 	_DCOLExit
 		;
 		;		Need to work though again filling in with lower levels.
+		; 		elements go at zTemp1, count in zTemp2, so these must be stacked
+		;		when the creator is called recursively.
 		;
-		.debug
+_DCOLRecursionLoop:
+		phx 								; save XY
+		phy
+
+		lda 	zTemp1 						; push zTemp1 (position) zTemp2 (count)
+		pha
+		lda 	zTemp1+1
+		pha
+		lda 	zTemp2
+		pha
+		lda 	zTemp2+1
+		pha
+
+		dey  								; lower level -> A
+		tya
+		inx 								; next index size
+		jsr 	DIMCreateOneLevel 			; create a level, return in YA
+
+		plx 								; restore zTemp2 (count) and zTemp1 (position)
+		stx 	zTemp2+1
+		plx
+		stx 	zTemp2
+		plx
+		stx 	zTemp1+1
+		plx
+		stx 	zTemp1
+		;
+		sta 	(zTemp1) 					; write out position
+		tya
+		ldy 	#1
+		sta 	(zTemp1),y
+		;
+		ply 								; restore XY
+		plx
+
+		clc
+		lda 	zTemp1 						; add 2 to zTemp1
+		adc 	#2
+		sta 	zTemp1
+		bcc 	_DCOLRNoCarry
+		inc 	zTemp1+1
+_DCOLRNoCarry:
+		lda 	zTemp2 						; decrement one from count in zTemp2
+		bne 	_DCOLRNoBorrow
+		dec 	zTemp2+1
+_DCOLRNoBorrow:
+		dec 	zTemp2
+		;
+		lda 	zTemp2 						; until completed.
+		ora 	zTemp2+1		
+		bne 	_DCOLRecursionLoop
 		;
 		;		Pop the start off the stack and return.
 		;
@@ -135,9 +188,9 @@ _DCOLExit:
 
 DIMWriteElement:
 		phx
+		ldx	 	#2 							; work out size is 2 or 6
 		cpy 	#1 							; do we have a sub level, if so 2.
 		bne 	_DIMWENotFloat
-		ldx	 	#2 							; work out size is 2 or 6
 		lda 	dimType 					
 		and 	#NSSTypeMask+NSSIInt16
 		cmp 	#NSSIFloat
