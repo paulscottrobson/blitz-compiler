@@ -76,17 +76,18 @@ VectorTable:
 
 ShiftVectorTable:
 	.word	CommandClr               ; $ba80 clr
-	.word	CommandEnd               ; $ba81 end
-	.word	LinkFloatIntegerPartDown ; $ba82 int
-	.word	LinkFloatSquareRoot      ; $ba83 sqr
-	.word	LinkFloatLogarithm       ; $ba84 log
-	.word	LinkFloatExponent        ; $ba85 exp
-	.word	LinkFloatCosine          ; $ba86 cos
-	.word	LinkFloatSine            ; $ba87 sin
-	.word	LinkFloatTangent         ; $ba88 tan
-	.word	LinkFloatArcTan          ; $ba89 atn
-	.word	CommandRestore           ; $ba8a restore
-	.word	CommandStop              ; $ba8b stop
-	.word	CommandSYS               ; $ba8c sys
-	.word	CommandWAIT              ; $ba8d wait
+	.word	CommandDIM               ; $ba81 dim
+	.word	CommandEnd               ; $ba82 end
+	.word	LinkFloatIntegerPartDown ; $ba83 int
+	.word	LinkFloatSquareRoot      ; $ba84 sqr
+	.word	LinkFloatLogarithm       ; $ba85 log
+	.word	LinkFloatExponent        ; $ba86 exp
+	.word	LinkFloatCosine          ; $ba87 cos
+	.word	LinkFloatSine            ; $ba88 sin
+	.word	LinkFloatTangent         ; $ba89 tan
+	.word	LinkFloatArcTan          ; $ba8a atn
+	.word	CommandRestore           ; $ba8b restore
+	.word	CommandStop              ; $ba8c stop
+	.word	CommandSYS               ; $ba8d sys
+	.word	CommandWAIT              ; $ba8e wait
 	.send code
