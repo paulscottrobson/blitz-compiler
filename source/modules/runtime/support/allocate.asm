@@ -25,16 +25,19 @@ CommandVarSpace: ;; [.varspace]
 		sta 	availableMemory
 		iny 
 		lda 	(codePtr),y
+		clc 
+		adc 	#WorkArea >> 8 				; offset to actual address.
 		sta 	availableMemory+1
 		iny
 
 		.exitcmd
 		.send 	code
 
-		.section storage
+		.section zeropage
 availableMemory: 							; available memory as offset
 		.fill 	2
-		.send storage				
+		.send zeropage
+
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

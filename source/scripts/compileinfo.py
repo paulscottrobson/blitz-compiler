@@ -65,6 +65,8 @@ if __name__ == "__main__":
 			name += "$"
 		if (c1 & 0x60) == 0x20:
 			name += "%"
+		if (c1 & 0x80) != 0:
+			name += "("
 		if (c2 & 0x80) != 0:
 			name = "FN"+name+"()"
 		ofst = dmp.read(varStart+3)
