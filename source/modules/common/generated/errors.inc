@@ -40,3 +40,6 @@ error_data .macro
 error_undeclared .macro
 	jmp	ErrorV_undeclared
 	.endm
+error_redefine .macro
+	jmp	ErrorV_redefine
+	.endm

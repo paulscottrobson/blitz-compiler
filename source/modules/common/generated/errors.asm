@@ -41,4 +41,7 @@ ErrorV_data:
 ErrorV_undeclared:
 	jsr	ErrorHandler
 	.text	"UNKNOWN ARRAY",0
+ErrorV_redefine:
+	jsr	ErrorHandler
+	.text	"ARRAY REDEFINED",0
 	.send code

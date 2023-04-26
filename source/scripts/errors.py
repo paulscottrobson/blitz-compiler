@@ -25,6 +25,7 @@ errors = """
 	stop 		  : program stopped
 	data		  : out of data
 	undeclared	  : unknown array
+	redefine 	  : array redefined
 	
 """.strip().split("\n")
 
