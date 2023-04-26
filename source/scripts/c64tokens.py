@@ -58,9 +58,6 @@ class C64TokenStore(object):
 	def getBinary(self):
 		return ",".join([self.getToken(i) for i in range(self.getID("+"),self.getID("<")+1)])
 
-	def getUnary(self):
-		return ",".join([self.getToken(i) for i in range(self.getID("SGN"),self.getID("MID$")+1)])
-
 	def get(self):
 		return """
 				128:END|129:FOR|130:NEXT|131:DATA|132:INPUT#|133:INPUT|134:DIM|135:READ|136:LET|137:GOTO|138:RUN|139:IF|

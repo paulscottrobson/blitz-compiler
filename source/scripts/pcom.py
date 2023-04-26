@@ -61,7 +61,10 @@ class PCodeCompiler(object):
 		#
 		t = self.pcode.getID(w)
 		if t is not None:
-			self.print("\t.byte\t{0} ; {1}".format(t,w))
+			if t <= 255:
+				self.print("\t.byte\t{0} ; {1}".format(t,w))
+			else:
+				self.print("\t.byte\t{0},{1} ; {2}".format(t >> 8,t & 0xFF,w))
 			return
 
 		assert False,"Unknown "+w
@@ -79,7 +82,7 @@ class PCodeCompiler(object):
 		elif n < 256:
 			self.print("\t.byte\t{0},{1} ; {1} ".format(self.pcode.getID(".BYTE"),n))
 		else:
-			self.print("\t.byte\t{0},{1},{2} ; {1} ".format(self.pcode.getID(".WORD"),n & 0xFF,n >> 8))
+			self.print("\t.byte\t{0},{1},{2} ; {3} ".format(self.pcode.getID(".WORD"),n & 0xFF,n >> 8,n))
 	#
 	def compileFloat(self,f):
 		d = self.float.toFloat(f)

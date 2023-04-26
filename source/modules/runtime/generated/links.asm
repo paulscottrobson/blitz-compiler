@@ -70,13 +70,13 @@ LinkCompareLessEqual: ;; [<=]
 	jsr	CompareLessEqual
 	ply
 	.exitcmd
-LinkFloatIntegerPartDown: ;; [int]
+LinkFloatIntegerPartDown: ;; [!int]
 	.entercmd
 	phy
 	jsr	FloatIntegerPartDown
 	ply
 	.exitcmd
-LinkFloatSquareRoot: ;; [sqr]
+LinkFloatSquareRoot: ;; [!sqr]
 	.entercmd
 	phy
 	jsr	FloatSquareRoot
@@ -87,38 +87,38 @@ MapRangeError:
 	.error_range
 DivZeroError:
 	.error_divzero
-LinkFloatLogarithm: ;; [log]
+LinkFloatLogarithm: ;; [!log]
 	.entercmd
 	phy
 	jsr	FloatLogarithm
 	bcs	MapRangeError
 	ply
 	.exitcmd
-LinkFloatExponent: ;; [exp]
+LinkFloatExponent: ;; [!exp]
 	.entercmd
 	phy
 	jsr	FloatExponent
 	ply
 	.exitcmd
-LinkFloatCosine: ;; [cos]
+LinkFloatCosine: ;; [!cos]
 	.entercmd
 	phy
 	jsr	FloatCosine
 	ply
 	.exitcmd
-LinkFloatSine: ;; [sin]
+LinkFloatSine: ;; [!sin]
 	.entercmd
 	phy
 	jsr	FloatSine
 	ply
 	.exitcmd
-LinkFloatTangent: ;; [tan]
+LinkFloatTangent: ;; [!tan]
 	.entercmd
 	phy
 	jsr	FloatTangent
 	ply
 	.exitcmd
-LinkFloatArcTan: ;; [atn]
+LinkFloatArcTan: ;; [!atn]
 	.entercmd
 	phy
 	jsr	FloatArcTan

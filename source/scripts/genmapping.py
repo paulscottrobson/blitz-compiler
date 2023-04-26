@@ -42,7 +42,8 @@ print("\t.section code")
 
 for m in mappings:
 	m = m.split()
-	print("Link{0}: ;; [{1}]".format(m[1],m[0]))
+	toShift = "!" if len(m[0]) == 3 else ""
+	print("Link{0}: ;; [{1}]".format(m[1],toShift+m[0]))
 	print("\t.entercmd")
 	print("\tphy")
 	print("\tjsr\t{0}".format(m[1]))

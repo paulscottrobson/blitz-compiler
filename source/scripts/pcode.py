@@ -21,7 +21,7 @@ class PCode(object):
 		self.idToToken = {}
 		self.tokenToID = {}
 		self.shiftedKeywords = []
-		self.doBinaryUnary(tokenList)
+		self.doBinary(tokenList)
 		self.doCommands()
 		self.doExtras()
 		self.currentID = (self.tokenToID[".shift"] << 8) | 0x80
@@ -60,14 +60,10 @@ class PCode(object):
 		self.define("PCD_ENDSYSTEM")	
 		self.endCommands = self.currentID	
 
-	def doBinaryUnary(self,tokenList):
+	def doBinary(self,tokenList):
 		self.define("PCD_STARTBINARY")		
 		self.addTokens(tokenList[0].getBinary()+",>=,<>,<=")
 		self.define("PCD_ENDBINARY")		
-		self.define("PCD_STARTUNARY")		
-		for t in tokenList:
-			self.addTokens(t.getUnary())
-		self.define("PCD_ENDUNARY")		
 
 	def addTokens(self,csList):
 		for w in csList.split(","):
@@ -146,8 +142,7 @@ if __name__ == "__main__":
 # 		104-111 ll 		nn$!	As above but for a 16 bit string address
 # 		112-127 		.not used
 #		128+ 			Binary operators in the same order as in the C64, ending with the aditional >= <> <= tokens
-#		+ 				Unary operators
-#		+ 				Command words
+#		+ 				Command words / Unary operators
 #		+				Data words ; these have associated data, the size of which is in a table
 #
 #							.SHIFT nn   		1		Shifted action word
