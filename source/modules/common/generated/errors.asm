@@ -44,4 +44,7 @@ ErrorV_undeclared:
 ErrorV_redefine:
 	jsr	ErrorHandler
 	.text	"ARRAY REDEFINED",0
+ErrorV_index:
+	jsr	ErrorHandler
+	.text	"BAD ARRAY INDEX",0
 	.send code

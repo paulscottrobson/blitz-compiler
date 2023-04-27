@@ -43,3 +43,6 @@ error_undeclared .macro
 error_redefine .macro
 	jmp	ErrorV_redefine
 	.endm
+error_index .macro
+	jmp	ErrorV_index
+	.endm

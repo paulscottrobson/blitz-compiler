@@ -26,6 +26,7 @@ errors = """
 	data		  : out of data
 	undeclared	  : unknown array
 	redefine 	  : array redefined
+	index 		  : bad array index
 	
 """.strip().split("\n")
 
