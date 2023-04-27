@@ -21,8 +21,10 @@
 WriteIntegerCommand:
 		.entercmd
 		.vaddress
+		jsr 	WriteIntegerZTemp0Sub
+		.exitcmd
 
-WriteIntegerZTemp0:
+WriteIntegerZTemp0Sub:
 		.floatinteger
 		phy 								; start write
 		ldy 	#1
@@ -35,7 +37,8 @@ WriteIntegerZTemp0:
 		sta 	(zTemp0),y
 		ply
 		dex
-		.exitcmd
+		rts
+
 _WIZNegative:
 		sec 								; -ve read
 		lda 	#0
@@ -46,7 +49,7 @@ _WIZNegative:
 		sta 	(zTemp0),y
 		ply
 		dex
-		.exitcmd
+		rts
 		.send 	code
 		
 ; ************************************************************************************************

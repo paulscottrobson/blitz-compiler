@@ -21,8 +21,10 @@
 ReadIntegerCommand:
 		.entercmd
 		.vaddress
+		jsr 	ReadIntegerZTemp0Sub
+		.exitcmd
 
-ReadIntegerZTemp0:
+ReadIntegerZTemp0Sub:
 		phy 								; start write
 		ldy 	#1
 		inx 								; prepare
@@ -38,7 +40,7 @@ ReadIntegerZTemp0:
 		lda 	(zTemp0)
 		sta 	NSMantissa0,x
 		ply
-		.exitcmd
+		rts
 
 _RIZNegative:
 		sec 								; -ve read
@@ -51,7 +53,7 @@ _RIZNegative:
 		lda 	#$80
 		sta 	NSStatus,x
 		ply
-		.exitcmd
+		rts
 		.send 	code
 		
 ; ************************************************************************************************

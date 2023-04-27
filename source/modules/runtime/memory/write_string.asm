@@ -21,8 +21,10 @@
 WriteStringCommand:
 		.entercmd
 		.vaddress
+		jsr 	WriteStringZTemp0Sub
+		.exitcmd
 
-WriteStringZTemp0:
+WriteStringZTemp0Sub:
 		phy
 
 		ldy 	#1 							; if it is zero we must concrete whatever.
@@ -92,7 +94,8 @@ _WSCopyLoop:
 	
 		dex
 		ply
-		.exitcmd
+		rts
+		
 		.send 	code
 		
 ; ************************************************************************************************

@@ -145,8 +145,6 @@ _ACNoCarry:
 		stz 	NSExponent,x
 		ply 	 							; restore code pointer
 
-		stx 	zTemp0
-		jmp 	$FFFF
 		.exitcmd
 
 _ACBadIndex:

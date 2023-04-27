@@ -21,7 +21,10 @@
 ReadStringCommand:
 		.entercmd
 		.vaddress
-ReadStringZTemp0:
+		jsr 	ReadStringZTemp0Sub
+		.exitcmd
+		
+ReadStringZTemp0Sub:
 		phy 								; start write
 		inx 								; prepare
 		stz 	NSMantissa2,x
@@ -49,7 +52,7 @@ ReadStringZTemp0:
 _RSZNoDefault:		
 
 		ply
-		.exitcmd
+		rts
 
 _RSZNull:	 								; dummy empty string
 		.byte 	0
