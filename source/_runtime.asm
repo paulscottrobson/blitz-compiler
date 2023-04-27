@@ -76,6 +76,7 @@ ismain_common = 0
 	.include	"modules/runtime/commands/goto.asm"
 	.include	"modules/x16_runtime/unary/hex.asm"
 	.include	"modules/polynomials/utility/horner.asm"
+	.include	"modules/runtime/memory/indirect.asm"
 	.include	"modules/ifloat32/float/integer.asm"
 	.include	"modules/ifloat32/float/integerdown.asm"
 	.include	"modules/runtime/support/integers.asm"

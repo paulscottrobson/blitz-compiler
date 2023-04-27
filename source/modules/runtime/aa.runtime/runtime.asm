@@ -42,6 +42,8 @@ _NXCommandNoFixUp:
 		;		Load/Store dispatch.
 		;
 NXLoadStore:
+		cmp		#120 						; is it an indirect read/write
+		bcs 	NXIndirectLoadStore
 		lsr 	a 							; / 4, so $48 => $12,
 		lsr 	a 
 		and 	#$0E
@@ -58,6 +60,25 @@ ReadWriteVectors:
 		.word 	WriteStringCommand 			; write string
 		.word 	Unimplemented 				
 		.word 	Unimplemented 		
+		;
+		;		Indirect Load/store dispatch
+		;
+NXIndirectLoadStore:
+		and 	#7
+		asl 	a
+		phx
+		tax
+		jmp 	(IndirectVectors,x)
+
+IndirectVectors:
+		.word 	IndFloatRead 				; float read				
+		.word 	IndInt16Read 				; int16 read				
+		.word 	IndStringRead 				; string read				
+		.word 	Unimplemented
+		.word 	IndFloatWrite				; float write
+		.word 	IndInt16Write 				; int16 write				
+		.word 	IndStringWrite 				; string write				
+		.word 	Unimplemented
 		;		
 		;		Push byte on stack
 		;
