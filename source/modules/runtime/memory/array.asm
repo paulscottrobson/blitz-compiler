@@ -55,8 +55,35 @@ _ACIndexLoop:
 		bcs 	_ACBadIndex 				; index error.
 		dec 	zTemp2 						; decrement count, if zero, then innermost level
 		beq 	_ACInnerLevel
-		.debug
+		;
+		;		Follow down a level
+		;
+		ldy 	#2 							; check sub index.
+		lda 	(zTemp1),y
+		bpl 	_ACBadIndex
 
+		asl 	zTemp0 						; double the index and add it to the base address
+		rol 	zTemp0+1 					
+		clc
+		lda		zTemp0
+		adc 	zTemp1
+		sta 	zTemp0	
+		lda		zTemp0+1
+		adc 	zTemp1+1
+		sta 	zTemp0+1
+		;
+		;		Follow the link address and set up zTemp1 one level down.
+		;
+		ldy 	#3 							; we offset by 3 because 3 at entry, now get the address
+		lda 	(zTemp0),y 					; into zTemp1 as a real address, not offset
+		sta 	zTemp1
+		iny
+		lda 	(zTemp0),y
+		clc
+		adc 	#(WorkArea >> 8)
+		sta 	zTemp1+1
+		inx 								; next index
+		bra 	_ACIndexLoop
 		;
 		;		Reached the innermost level.
 		;

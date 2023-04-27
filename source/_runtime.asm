@@ -55,7 +55,7 @@ ismain_common = 0
 	.include	"modules/polynomials/generated/constants.asm"
 	.include	"modules/polynomials/unary/cos.asm"
 	.include	"modules/runtime/commands/data.asm"
-	.include	"modules/runtime/commands/dim/dim.asm"
+	.include	"modules/runtime/commands/dim.asm"
 	.include	"modules/ifloat32/binary/divide.asm"
 	.include	"modules/ifloat32/float/divide.asm"
 	.include	"modules/runtime/commands/end.asm"
