@@ -24,7 +24,10 @@ GetReferenceTerm:
 		cpx 	#0 							; check for array handler
 		bmi 	_GRTArray
 		phx 								; save type on stack
+		jsr 	FindVariable 				; find it
+		bcs 	_GRTNoCreate 				; create if required.
 		jsr 	CreateVariable 				; create a variable.
+_GRTNoCreate:		
 		pla 								; get type back, strip out type information.
 		and 	#NSSTypeMask+NSSIInt16
 		rts		

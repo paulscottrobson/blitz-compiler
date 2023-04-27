@@ -62,7 +62,7 @@ _CNNoIndexVariable:
 		adc 	#VariableStart >> 8 		; point to variable page.
 		pha
 		sta 	zTemp0+1
-		jsr 	ReadFloatZTemp0 			; read current index onto stack.
+		jsr 	ReadFloatZTemp0Sub 			; read current index onto stack.
 		;		
 		ldy 	#7  						; read step onto stack +1
 		inx 
@@ -74,7 +74,7 @@ _CNNoIndexVariable:
 		sta 	zTemp0+1
 		pla
 		sta 	zTemp0
-		jsr 	WriteFloatZTemp0 			; write float.
+		jsr 	WriteFloatZTemp0Sub			; write float.
 		;
 		;		Now check against terminal value
 		;

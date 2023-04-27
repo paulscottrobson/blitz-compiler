@@ -21,10 +21,10 @@
 ReadFloatCommand:
 		.entercmd
 		.vaddress
-		jsr 	ReadFloatZTemp0
+		jsr 	ReadFloatZTemp0Sub
 		.exitcmd
 
-ReadFloatZTemp0:
+ReadFloatZTemp0Sub:
 		phy 								; start write
 		ldy 	#1
 		inx

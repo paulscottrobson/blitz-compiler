@@ -21,10 +21,10 @@
 WriteFloatCommand:
 		.entercmd
 		.vaddress
-		jsr 	WriteFloatZTemp0
+		jsr 	WriteFloatZTemp0Sub
 		.exitcmd
 
-WriteFloatZTemp0:
+WriteFloatZTemp0Sub:
 		phy 								; ldart write
 		ldy 	#1
 
