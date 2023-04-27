@@ -21,6 +21,8 @@
 
 GetSetVariable:
 		php 								; save direction on stack
+		cmp 	#$00
+		bmi 	_GSVArray
 		cpy 	#$00
 		bmi 	_GSVReadWriteSpecial
 		;
@@ -71,6 +73,23 @@ _GSVReadWriteClock:
 
 _GSVSyntax:
 		.error_syntax
+		;
+		;		For arrays use the indirection @ %@ $@ ! %! $!
+		;
+_GSVArray:
+		and 	#NSSTypeMask+NSSIInt16 		; mask out 2 bits of type data
+		lsr 	a		 					; shift from 5,6 to 0,1
+		lsr 	a		
+		lsr 	a		
+		lsr 	a		
+		lsr 	a				
+		plp 								; if writing array then set bit 2.
+		bcc 	_GSVANotWrite
+		ora 	#4
+_GSVANotWrite:		
+		ora 	#$78 						; make a valid opcode.
+		jsr 	WriteCodeByte 				; and write it out
+		rts
 
 		.send code
 

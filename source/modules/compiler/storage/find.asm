@@ -88,7 +88,6 @@ _IVNotFound:
 		ldy 	zTemp1+1
 		clc
 		rts
-		.error_unimplemented
 
 		.send code
 

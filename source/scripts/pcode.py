@@ -134,13 +134,15 @@ if __name__ == "__main__":
 # ***********************************************************************************************************************************************
 #
 #		0-63 			0-63	Constants 0-63, pushed on stack
-# 		64-71 ll  		nn%@	Loads the 12 bit value .lower 3 bits of opcode, 11 bits of second byte, shifted left once as a 32 bit iFloat
-# 		72-79 ll  		nn%!	Saves the 12 bit value .lower 3 bits of opcode, 11 bits of second byte, shifted left once as a 32 bit iFloat
-#		80-87 ll 		nn@		As above but for a 16 bit int16
-# 		88-95 ll 		nn! 	As above but for a 16 bit int16
+# 		64-71 ll  		nn@	Loads the 12 bit value .lower 3 bits of opcode, 11 bits of second byte, shifted left once as a 32 bit iFloat
+# 		72-79 ll  		nn!	Saves the 12 bit value .lower 3 bits of opcode, 11 bits of second byte, shifted left once as a 32 bit iFloat
+#		80-87 ll 		nn%@		As above but for a 16 bit int16
+# 		88-95 ll 		nn%! 	As above but for a 16 bit int16
 # 		96-103 ll 		nn$@	As above but for a 16 bit string address
 # 		104-111 ll 		nn$!	As above but for a 16 bit string address
-# 		112-127 		.not used
+# 		112-119 		.not used
+#		120-122 		#@ %@ $@  Address <op> Data readers
+# 		124-126 		#! %! $!  Address <op> Data writers
 #		128+ 			Binary operators in the same order as in the C64, ending with the aditional >= <> <= tokens
 #		+ 				Command words / Unary operators
 #		+				Data words ; these have associated data, the size of which is in a table

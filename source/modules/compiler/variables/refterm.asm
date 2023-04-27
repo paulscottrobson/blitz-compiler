@@ -21,20 +21,36 @@
 
 GetReferenceTerm:
 		jsr 	ExtractVariableName 		; get name & type info
+		cpx 	#0 							; check for array handler
+		bmi 	_GRTArray
 		phx 								; save type on stack
-		jsr 	FindVariable 				; read its data
-		bcs 	_GRTExit 					; found it, exit with type
-		cpx 	#0  						; not found, if array then error.
-		bmi 	_GRTUndeclared 				
 		jsr 	CreateVariable 				; create a variable.
-_GRTExit:
 		pla 								; get type back, strip out type information.
 		and 	#NSSTypeMask+NSSIInt16
 		rts		
+	
+_GRTArray:
+		phx 								; save type information 		
+		jsr 	FindVariable 				; read its data, the base address in YX
+		bcc 	_GRTUndeclared 				; undeclared array.
+		phx 								; save base address
+		phy
+		jsr 	OutputIndexGroup 			; create an index group and generate them
+		ply 								; get the array base address into YX
+		plx
+		lda 	#NSSIFloat+NSSIInt16 		; pretend it is an int16 reference.
+		clc
+		jsr 	GetSetVariable 				; load the address of the array structure.
+		.keyword PCD_ARRAY 					; convert that to an offset.
+
+		pla 								; and the type data into A
+		and 	#NSSTypeMask+NSSIInt16
+		ora 	#$80 						; with the array flag set.
+		rts		
+
 _GRTUndeclared:
 		.error_undeclared
 
-		
 		.send code
 
 ; ************************************************************************************************

@@ -148,20 +148,20 @@ _ECANotCompare:
 		;		For strings only, check the command is valid (e.g. only + and comparators)
 		;
 		lda 	zTemp0+1 					; check operator is + or comparator
-		cmp 	#C64_PLUS
-		beq 	_ECAOkay
-		cmp 	#C64_GREATER
-		bcs 	_ECAOkay
+		cmp 	#(PCD_CONCAT-(PCD_PLUS-C64_PLUS)) & $FF
+		beq 	_ECAOkayString 				; (this is post conversion)
+
+		cmp 	#C64_GREATER 				; must be a comparison then.
+		bcc 	_ECAType
+		cmp 	#C64_LESS+1
+		bcs 	_ECAType
+		lda 	#NSSIFloat 					; compare returns number.
+		jmp 	_ECALoop
+
 _ECAType: 									; types mixed ?
 		.error_type
 
-_ECAOkay:
-		lda 	zTemp0+1 					; check +
-		cmp 	#C64_PLUS
-		beq 	_ECAIsString
-		lda 	#NSSIFloat 					; compare returns number.
-		jmp 	_ECALoop
-_ECAIsString:		
+_ECAOkayString:		
 		lda 	#NSSString 					; current is string, go round again.
 _ECAGoLoop:		
 		jmp 	_ECALoop

@@ -44,6 +44,10 @@ class PCodeDecompiler(object):
 				name = "" if self.info is None else "["+name+"]"
 				s = "{0}{1}{2} {3}".format(address,dtype,action,name)
 				p += 2
+			elif self.data[p] >= 120 and self.data[p] < 128:
+				n = self.data[p]
+				p += 1
+				s = ("#%$"[n & 3]+("@" if (n & 4) == 0 else "!")).strip()
 			else:
 				s = self.pcode.getToken(self.data[p]) 
 				if s is not None:
