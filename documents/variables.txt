@@ -1,5 +1,24 @@
 Variables
-=========
+
+
+Variables are encoded in 2 bytes
+
+HI
+	Bit 7 		(used to mark array type)
+	Bit 6,5 	(standard ifloat,string,int16 types)
+	Bit 4..0	(ASCII of A-Z 1..26)
+LO
+	Bit 5..0 	(ASCII of 0-9A-Z)
+
+The IdentifyVariable	routine returns the address of the variable passed in YX, creating it if necessary, to YX 
+						and the base type (bits 7,6,5) in A
+
+The GetSetVariable routine takes takes this AXY information and either compiles code to write it (CS) or read it (CC) - 
+						if marked as an array the address is assumed to be on the stack (so it is now FORTH order, 
+						address data %! $! #!)
+
+Simple variables are in the first 260 bytes (representing A-Z, A% to Z% and A$ to Z$)
+
 
 Variable records are stored in 2 bytes
 
@@ -16,8 +35,9 @@ General format.
 +02 	Second byte (Byte 1)
 +03 	Data.....
 
-Variables
-=========
+Variable Records
+================
+
 Variables use 2 bytes for strings/int16 and 6 bytes for floats.
 
 +03 	Offset Low 	from start of variables.
@@ -62,9 +82,31 @@ Array records contain 2 bytes ; they are created when the DIM statement is execu
 
 Links to:
 
-+00 	Count of elements in array (this is one more than the dimension)
++00 	Count of elements in array (this is one more than the dimension) e.g. DIM A(10), this would be 11.
 +01
-+02 	Bit 7 : sub array bit 4..0 : size of data e.g. $82 indicates a further array of links $06 would be a float array.
++02 	Data type stored. Bit 7 is set if this is an array that has sub arrays.
++03 	First data item (or pointer to first sub array)
 
 Memory is allocated using variable.space
+
+Arrays are accessed using the following pattern
+
+DIM A(4,5,6) or A(4,5,6) is specified as 
+
+4 5 6 	3 e.g. the indices followed by the index count.
+
+for DIM this is completed with DIM and an integer store of the result on the stack.
+
+DIM C2(14) would be 14 1 dim 42%!
+
+Accessing is done similarly. Array converts it to an address which is then accessed updated.
+
+e.g. print c2(14)
+
+14 1 <offset of c2> array #@
+
+c2(11) = 4
+
+11 1 <offset of c2> array  4  #!
+
 

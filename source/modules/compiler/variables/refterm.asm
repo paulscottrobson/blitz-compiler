@@ -26,7 +26,8 @@ GetReferenceTerm:
 		phx 								; save type on stack
 		jsr 	FindVariable 				; find it
 		bcs 	_GRTNoCreate 				; create if required.
-		jsr 	CreateVariable 				; create a variable.
+		jsr 	CreateVariableRecord 		; create a variable.
+		jsr 	AllocateBytesForType 		; allocate memory for it
 _GRTNoCreate:		
 		pla 								; get type back, strip out type information.
 		and 	#NSSTypeMask+NSSIInt16

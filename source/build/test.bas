@@ -6,4 +6,4 @@
 50 print c(0),c(1),c(2)
 60 for i = 0 to 3:print i,a1$(i):next
 70 print d%(0,0),d%(1,2)
-100 stop
+

@@ -26,9 +26,10 @@ CommandDIM:
 		bpl 	_CDError
 		jsr 	FindVariable	 			; see if already exist
 		bcs 	_CDRedefine 				; it still exists.
-		jsr 	CreateVariable 				; create the basic variable 
-		pla 								; restore type bits
+		jsr 	CreateVariableRecord 		; create the basic variable 
+		jsr 	AllocateBytesForType 		; allocate memory for it
 
+		pla 								; restore type bits
 		phy 								; save the address of the basic storage
 		phx
 		pha

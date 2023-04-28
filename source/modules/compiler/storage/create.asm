@@ -19,7 +19,9 @@
 
 		.section code
 
-CreateVariable:
+CreateVariableRecord:
+		pha
+
 		.storage_access
 
 		lda 	freeVariableMemory 		; push current free address on stack.
@@ -32,10 +34,8 @@ CreateVariable:
 		lda 	variableListEnd+1
 		sta 	zTemp0+1
 
-		lda 	#5 						; default size if 5 (offset link 2 bytes)
+		lda 	#6 						; default size if 5 (offset link 3 bytes)
 		sta 	(zTemp0)
-
-		phx 							; save type info on stack.
 
 		tya
 		ldy 	#2 						; write out the name.
@@ -55,8 +55,29 @@ CreateVariable:
 		lda 	#0
 		sta 	(zTemp0),y
 
-		ldx 	#2 						; bytes to allocate
+		clc
+		lda 	(zTemp0) 				; add offset to variableListEnd
+		adc  	variableListEnd
+		sta 	variableListEnd
+		bcc 	_CVNoCarry2
+		inc 	variableListEnd+1
+_CVNoCarry2:		
+		.storage_release
+		ply 							
+		plx
 		pla
+		rts
+
+; ************************************************************************************************
+;
+;									Allocate bytes for type A
+;
+; ************************************************************************************************
+
+AllocateBytesForType:
+		pha
+		phx
+		ldx 	#2 						; bytes to allocate
 		and 	#NSSTypeMask+NSSIInt16
 		cmp 	#NSSIFloat
 		bne 	_CVNotFloat
@@ -69,18 +90,10 @@ _CVNotFloat:
 		bcc 	_CVNoCarry1
 		inc 	freeVariableMemory+1
 _CVNoCarry1:				
-
-		clc
-		lda 	(zTemp0) 				; add offset to variableListEnd
-		adc  	variableListEnd
-		sta 	variableListEnd
-		bcc 	_CVNoCarry2
-		inc 	variableListEnd+1
-_CVNoCarry2:		
-		.storage_release
-		ply 							
 		plx
+		pla
 		rts
+
 		.send code
 
 ; ************************************************************************************************
