@@ -27,6 +27,7 @@ errors = """
 	undeclared	  : unknown array
 	redefine 	  : array redefined
 	index 		  : bad array index
+	memory 		  : out of memory
 	
 """.strip().split("\n")
 

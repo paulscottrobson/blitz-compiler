@@ -46,3 +46,6 @@ error_redefine .macro
 error_index .macro
 	jmp	ErrorV_index
 	.endm
+error_memory .macro
+	jmp	ErrorV_memory
+	.endm

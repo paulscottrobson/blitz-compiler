@@ -42,8 +42,15 @@ StringInitialise:
 
 		dec 	stringInitialised 			; set the initialised flag.
 _SIExit:
+		lda 	availableMemory+1 			; check out of memory
+		inc 	a
+		inc 	a
+		cmp 	stringHighMemory+1
+		bcs 	_SIMemory
 		pla
 		rts
+_SIMemory:
+		.error_memory
 
 ; ************************************************************************************************
 ;

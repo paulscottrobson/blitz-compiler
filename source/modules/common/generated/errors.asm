@@ -47,4 +47,7 @@ ErrorV_redefine:
 ErrorV_index:
 	jsr	ErrorHandler
 	.text	"BAD ARRAY INDEX",0
+ErrorV_memory:
+	jsr	ErrorHandler
+	.text	"OUT OF MEMORY",0
 	.send code

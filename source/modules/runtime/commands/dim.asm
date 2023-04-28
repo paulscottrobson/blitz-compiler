@@ -215,9 +215,16 @@ DIMWriteByte:
 		inc 	availableMemory
 		bne 	_DIMWBSkip
 		inc 	availableMemory+1
+		pha
+		lda 	availableMemory+1 			; check out of memory
+		cmp 	stringHighMemory+1
+		bcs 	_DIMWBMemory
+		pla
 _DIMWBSkip:
 		rts
-
+_DIMWBMemory:
+		.error_memory
+		
 		.send 	code
 
 		.section storage
