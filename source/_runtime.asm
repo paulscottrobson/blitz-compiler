@@ -127,6 +127,7 @@ ismain_common = 0
 	.include	"modules/runtime/functions/strings/str.asm"
 	.include	"modules/runtime/strings/stralloc.asm"
 	.include	"modules/runtime/functions/strings/substring.asm"
+	.include	"modules/runtime/support/swap.asm"
 	.include	"modules/runtime/commands/sys.asm"
 	.include	"modules/polynomials/unary/tan.asm"
 	.include	"modules/ifloat32/aa.testing/testing.asm"

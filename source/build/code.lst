@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.58.2974? listing file
 ; 64tass -q -Wall -c -C -L build/code.lst -l build/code.lbl -o build/runtime.prg _runtime.asm
-; Fri Apr 28 15:13:13 2023
+; Fri Apr 28 16:01:09 2023
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -262,9 +262,9 @@
 =$80					PCD_STARTBINARY = $80
 =$8d					PCD_ENDBINARY = $8d
 =$8d					PCD_STARTCOMMAND = $8d
-=$bb					PCD_ENDCOMMAND = $bb
-=$bb					PCD_STARTSYSTEM = $bb
-=$c6					PCD_ENDSYSTEM = $c6
+=$bc					PCD_ENDCOMMAND = $bc
+=$bc					PCD_STARTSYSTEM = $bc
+=$c7					PCD_ENDSYSTEM = $c7
 =$80					PCD_PLUS             = $80 ; +
 =$81					PCD_MINUS            = $81 ; -
 =$82					PCD_TIMES            = $82 ; *
@@ -321,35 +321,36 @@
 =$b5					PCD_LEFTDOLLAR       = $b5 ; left$
 =$b6					PCD_RIGHTDOLLAR      = $b6 ; right$
 =$b7					PCD_MIDDOLLAR        = $b7 ; mid$
-=$b8					PCD_TI               = $b8 ; ti
-=$b9					PCD_USR              = $b9 ; usr
-=$ba					PCD_VAL              = $ba ; val
-=$bb					PCD_CMD_SHIFT        = $bb ; .shift
-=$bc					PCD_CMD_BYTE         = $bc ; .byte
-=$bd					PCD_CMD_WORD         = $bd ; .word
-=$be					PCD_CMD_FLOAT        = $be ; .float
-=$bf					PCD_CMD_STRING       = $bf ; .string
-=$c0					PCD_CMD_DATA         = $c0 ; .data
-=$c1					PCD_CMD_GOTO         = $c1 ; .goto
-=$c2					PCD_CMD_GOSUB        = $c2 ; .gosub
-=$c3					PCD_CMD_GOTOCMD_Z    = $c3 ; .goto.z
-=$c4					PCD_CMD_GOTOCMD_NZ   = $c4 ; .goto.nz
-=$c5					PCD_CMD_VARSPACE     = $c5 ; .varspace
-=$bb80					PCD_CLR              = $bb80 ; clr
-=$bb81					PCD_DIM              = $bb81 ; dim
-=$bb82					PCD_END              = $bb82 ; end
-=$bb83					PCD_INT              = $bb83 ; int
-=$bb84					PCD_SQR              = $bb84 ; sqr
-=$bb85					PCD_LOG              = $bb85 ; log
-=$bb86					PCD_EXP              = $bb86 ; exp
-=$bb87					PCD_COS              = $bb87 ; cos
-=$bb88					PCD_SIN              = $bb88 ; sin
-=$bb89					PCD_TAN              = $bb89 ; tan
-=$bb8a					PCD_ATN              = $bb8a ; atn
-=$bb8b					PCD_RESTORE          = $bb8b ; restore
-=$bb8c					PCD_STOP             = $bb8c ; stop
-=$bb8d					PCD_SYS              = $bb8d ; sys
-=$bb8e					PCD_WAIT             = $bb8e ; wait
+=$b8					PCD_SWAP             = $b8 ; swap
+=$b9					PCD_TI               = $b9 ; ti
+=$ba					PCD_USR              = $ba ; usr
+=$bb					PCD_VAL              = $bb ; val
+=$bc					PCD_CMD_SHIFT        = $bc ; .shift
+=$bd					PCD_CMD_BYTE         = $bd ; .byte
+=$be					PCD_CMD_WORD         = $be ; .word
+=$bf					PCD_CMD_FLOAT        = $bf ; .float
+=$c0					PCD_CMD_STRING       = $c0 ; .string
+=$c1					PCD_CMD_DATA         = $c1 ; .data
+=$c2					PCD_CMD_GOTO         = $c2 ; .goto
+=$c3					PCD_CMD_GOSUB        = $c3 ; .gosub
+=$c4					PCD_CMD_GOTOCMD_Z    = $c4 ; .goto.z
+=$c5					PCD_CMD_GOTOCMD_NZ   = $c5 ; .goto.nz
+=$c6					PCD_CMD_VARSPACE     = $c6 ; .varspace
+=$bc80					PCD_CLR              = $bc80 ; clr
+=$bc81					PCD_DIM              = $bc81 ; dim
+=$bc82					PCD_END              = $bc82 ; end
+=$bc83					PCD_INT              = $bc83 ; int
+=$bc84					PCD_SQR              = $bc84 ; sqr
+=$bc85					PCD_LOG              = $bc85 ; log
+=$bc86					PCD_EXP              = $bc86 ; exp
+=$bc87					PCD_COS              = $bc87 ; cos
+=$bc88					PCD_SIN              = $bc88 ; sin
+=$bc89					PCD_TAN              = $bc89 ; tan
+=$bc8a					PCD_ATN              = $bc8a ; atn
+=$bc8b					PCD_RESTORE          = $bc8b ; restore
+=$bc8c					PCD_STOP             = $bc8c ; stop
+=$bc8d					PCD_SYS              = $bc8d ; sys
+=$bc8e					PCD_WAIT             = $bc8e ; wait
 
 ;******  Return to file: _runtime.asm
 
@@ -438,17 +439,17 @@
 .0852	20 92 1b	jsr $1b92			jsr 	FloatAddTopTwoStack 		; do the add of the mantissae
 .0855	b5 90		lda $90,x			lda 	NSMantissa3,x 				; do we have an overflow in Mantissa A ?
 .0857	10 35		bpl $088e			bpl 	_FAExit 					; if no, we are done.
-.0859	20 63 20	jsr $2063			jsr 	FloatShiftRight 				; shift A right, renormalising it.
+.0859	20 a3 20	jsr $20a3			jsr 	FloatShiftRight 				; shift A right, renormalising it.
 .085c	f6 a0		inc $a0,x			inc 	NSExponent,x 				; bump the exponent and exit
 .085e	80 2e		bra $088e			bra 	_FAExit
 .0860					_FADifferentSigns:
 .0860	20 ac 1b	jsr $1bac			jsr 	FloatSubTopTwoStack 		; subtract mantissa B from A
 .0863	b5 90		lda $90,x			lda 	NSMantissa3,x 				; is the result negative ?
 .0865	10 06		bpl $086d			bpl 	_FACheckZero 				; if no, check for -0
-.0867	20 0c 20	jsr $200c			jsr 	FloatNegate 					; netate result
-.086a	20 13 20	jsr $2013			jsr 	FloatNegateMantissa 			; negate (2'c) the mantissa
+.0867	20 4c 20	jsr $204c			jsr 	FloatNegate 					; netate result
+.086a	20 53 20	jsr $2053			jsr 	FloatNegateMantissa 			; negate (2'c) the mantissa
 .086d					_FACheckZero:
-.086d	20 6c 20	jsr $206c			jsr 	FloatIsZero	 				; check for -0
+.086d	20 ac 20	jsr $20ac			jsr 	FloatIsZero	 				; check for -0
 .0870	d0 1c		bne $088e			bne 	_FAExit
 .0872	74 50		stz $50,x			stz 	NSStatus,x
 .0874	80 18		bra $088e			bra 	_FAExit
@@ -472,7 +473,7 @@
 .088f	98		tya				tya 								; compare Y to exponent
 .0890	d5 a0		cmp $a0,x			cmp 	NSExponent,x 				; reached the exponent required ?
 .0892	f0 07		beq $089b			beq 	_FASEExit 					; exit if so.
-.0894	20 63 20	jsr $2063			jsr 	FloatShiftRight	 			; shift the mantissa right
+.0894	20 a3 20	jsr $20a3			jsr 	FloatShiftRight	 			; shift the mantissa right
 .0897	f6 a0		inc $a0,x			inc 	NSExponent,x 				; increment exponent
 .0899	80 f4		bra $088f			bra 	_FAShiftToExponent2
 .089b					_FASEExit:
@@ -660,7 +661,7 @@
 .099b	b1 4a		lda ($4a),y			lda 	(zTemp0),y
 .099d	7a		ply				ply
 .099e					_UAExit:
-.099e	20 4c 20	jsr $204c			jsr 	FloatSetByte
+.099e	20 8c 20	jsr $208c			jsr 	FloatSetByte
 .09a1	7a		ply				ply
 .09a2	4c 78 1a	jmp $1a78			jmp 	NextCommand
 
@@ -673,7 +674,7 @@
 .09a5	fa		plx				plx
 .09a6	e0 00		cpx #$00			cpx 	#0 							; check only one element on stack
 .09a8	d0 09		bne $09b3			bne 	_CAFail
-.09aa	20 6c 20	jsr $206c			jsr 	FloatIsZero 				; is it zero ?
+.09aa	20 ac 20	jsr $20ac			jsr 	FloatIsZero 				; is it zero ?
 .09ad	f0 04		beq $09b3			beq 	_CAFail
 .09af	ca		dex				dex
 .09b0	4c 78 1a	jmp $1a78			jmp 	NextCommand
@@ -698,13 +699,13 @@
 .09c6	c8		iny				iny
 .09c7	20 44 12	jsr $1244			jsr 	CopyFloatXY
 .09ca	a9 01		lda #$01			lda 	#1 								; 1.0 in +0
-.09cc	20 4c 20	jsr $204c			jsr 	FloatSetByte
+.09cc	20 8c 20	jsr $208c			jsr 	FloatSetByte
 .09cf	e8		inx				inx
 .09d0	20 ed 0d	jsr $0ded			jsr 	FloatDivide
 .09d3	b0 21		bcs $09f6			bcs 	_FATError
 .09d5	20 f9 09	jsr $09f9			jsr 	CoreAtn 						; calculate the root
 .09d8	20 39 12	jsr $1239			jsr 	CompletePolynomial
-.09db	20 0c 20	jsr $200c			jsr 	FloatNegate 					; make -ve
+.09db	20 4c 20	jsr $204c			jsr 	FloatNegate 					; make -ve
 .09de	a9 05		lda #$05			lda 	#Const_PiDiv2-Const_Base
 .09e0	20 6d 14	jsr $146d			jsr 	LoadConstant
 .09e3	e8		inx				inx
@@ -984,7 +985,7 @@
 .0b8e					_FCNegative:
 .0b8e	a9 ff		lda #$ff			lda 	#$FF 						; and return -1 if result<0
 .0b90					_FCExit:
-.0b90	20 4c 20	jsr $204c			jsr 	FloatSetByte 				; set the result 255,0,1
+.0b90	20 8c 20	jsr $208c			jsr 	FloatSetByte 				; set the result 255,0,1
 .0b93	60		rts				rts
 
 ;******  Return to file: _runtime.asm
@@ -1033,7 +1034,7 @@
 .0bcc	7a		ply				ply
 .0bcd	fa		plx				plx
 .0bce	c9 00		cmp #$00			cmp 	#0 							; set the flags.
-.0bd0	20 4c 20	jsr $204c			jsr 	FloatSetByte 				; output the byte
+.0bd0	20 8c 20	jsr $208c			jsr 	FloatSetByte 				; output the byte
 .0bd3	4c 78 1a	jmp $1a78			jmp 	NextCommand
 
 ;******  Return to file: _runtime.asm
@@ -1349,16 +1350,16 @@
 .0da3					Int32Divide:
 .0da3	48		pha				pha 								; save AXY
 .0da4	5a		phy				phy
-.0da5	20 2d 20	jsr $202d			jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2]
-.0da8	20 46 20	jsr $2046			jsr 	FloatSetZeroMantissaOnly 	; set S[X] to zero
+.0da5	20 6d 20	jsr $206d			jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2]
+.0da8	20 86 20	jsr $2086			jsr 	FloatSetZeroMantissaOnly 	; set S[X] to zero
 .0dab	a0 20		ldy #$20			ldy 	#32 						; loop 32 times
 .0dad					_I32DivideLoop:
 .0dad	e8		inx				inx
 .0dae	e8		inx				inx
-.0daf	20 59 20	jsr $2059			jsr 	FloatShiftLeft				; shift S[X+2] S[X] left as a 64 bit element
+.0daf	20 99 20	jsr $2099			jsr 	FloatShiftLeft				; shift S[X+2] S[X] left as a 64 bit element
 .0db2	ca		dex				dex
 .0db3	ca		dex				dex
-.0db4	20 5a 20	jsr $205a			jsr 	FloatRotateLeft
+.0db4	20 9a 20	jsr $209a			jsr 	FloatRotateLeft
 .0db7	20 e3 0d	jsr $0de3			jsr 	FloatDivideCheck 			; check if subtract possible
 .0dba	90 02		bcc $0dbe			bcc 	_I32DivideNoCarryIn
 .0dbc	f6 62		inc $62,x			inc 	NSMantissa0+2,x 			; if possible, set Mantissa0[X+2].0
@@ -1374,7 +1375,7 @@
 .0dc6	5a		phy				phy
 .0dc7	e8		inx				inx 								; clear S[X+2]
 .0dc8	e8		inx				inx
-.0dc9	20 4a 20	jsr $204a			jsr 	FloatSetZero
+.0dc9	20 8a 20	jsr $208a			jsr 	FloatSetZero
 .0dcc	ca		dex				dex
 .0dcd	ca		dex				dex
 .0dce	a0 1f		ldy #$1f			ldy 	#31 						; loop 31 times.
@@ -1382,10 +1383,10 @@
 .0dd0	20 e3 0d	jsr $0de3			jsr 	FloatDivideCheck 			; check if subtract possible
 .0dd3	e8		inx				inx
 .0dd4	e8		inx				inx
-.0dd5	20 5a 20	jsr $205a			jsr 	FloatRotateLeft				; shift 64 bit FPA left, rotating carry in
+.0dd5	20 9a 20	jsr $209a			jsr 	FloatRotateLeft				; shift 64 bit FPA left, rotating carry in
 .0dd8	ca		dex				dex
 .0dd9	ca		dex				dex
-.0dda	20 5a 20	jsr $205a			jsr 	FloatRotateLeft
+.0dda	20 9a 20	jsr $209a			jsr 	FloatRotateLeft
 .0ddd	88		dey				dey 	 							; do 31 times
 .0dde	d0 f0		bne $0dd0			bne 	_I32SDLoop
 .0de0	7a		ply				ply 								; restore AY and exit
@@ -1608,9 +1609,9 @@
 .0fbb	10 14		bpl $0fd1			bpl 	_UEPositive
 .0fbd	e8		inx				inx 							; 1-x
 .0fbe	a9 01		lda #$01			lda 	#1
-.0fc0	20 4c 20	jsr $204c			jsr 	FloatSetByte
+.0fc0	20 8c 20	jsr $208c			jsr 	FloatSetByte
 .0fc3	ca		dex				dex
-.0fc4	20 0c 20	jsr $200c			jsr 	FloatNegate
+.0fc4	20 4c 20	jsr $204c			jsr 	FloatNegate
 .0fc7	e8		inx				inx
 .0fc8	20 11 08	jsr $0811			jsr 	FloatAdd
 .0fcb	68		pla				pla 							; integer part +1 and negated.
@@ -1740,10 +1741,10 @@
 .107b	a0 02		ldy #$02			ldy 	#2 							; 40-7F
 .107d	c9 80		cmp #$80			cmp 	#$80 						; forward 2
 .107f	90 20		bcc $10a1			bcc 	_MOFAdvanceY
-.1081	c9 bb		cmp #$bb			cmp 	#PCD_STARTSYSTEM 			; 80 - System tokens.
+.1081	c9 bc		cmp #$bc			cmp 	#PCD_STARTSYSTEM 			; 80 - System tokens.
 .1083	90 1a		bcc $109f			bcc 	_MOFAdvance1 				; forward 1
 .1085	a8		tay				tay 								; read the size.
-.1086	b9 fa 0f	lda $0ffa,y			lda 	_MOFSizeTable-PCD_STARTSYSTEM,y
+.1086	b9 f9 0f	lda $0ff9,y			lda 	_MOFSizeTable-PCD_STARTSYSTEM,y
 .1089	a8		tay				tay
 .108a	c8		iny				iny 								; add 1 for the system token.
 .108b	d0 14		bne $10a1			bne 	_MOFAdvanceY 				; if 0, was $FF thus a string/data skip.
@@ -1781,17 +1782,17 @@
 
 ;******  Processing file: modules/common/utilities/../generated/pcodesize.dat
 
->10b5	01					.byte	1         	; $bb .shift
->10b6	01					.byte	1         	; $bc .byte
->10b7	02					.byte	2         	; $bd .word
->10b8	05					.byte	5         	; $be .float
->10b9	ff					.byte	255       	; $bf .string
->10ba	ff					.byte	255       	; $c0 .data
->10bb	03					.byte	3         	; $c1 .goto
->10bc	03					.byte	3         	; $c2 .gosub
->10bd	03					.byte	3         	; $c3 .goto.z
->10be	03					.byte	3         	; $c4 .goto.nz
->10bf	02					.byte	2         	; $c5 .varspace
+>10b5	01					.byte	1         	; $bc .shift
+>10b6	01					.byte	1         	; $bd .byte
+>10b7	02					.byte	2         	; $be .word
+>10b8	05					.byte	5         	; $bf .float
+>10b9	ff					.byte	255       	; $c0 .string
+>10ba	ff					.byte	255       	; $c1 .data
+>10bb	03					.byte	3         	; $c2 .goto
+>10bc	03					.byte	3         	; $c3 .gosub
+>10bd	03					.byte	3         	; $c4 .goto.z
+>10be	03					.byte	3         	; $c5 .goto.nz
+>10bf	02					.byte	2         	; $c6 .varspace
 
 ;******  Return to file: modules/common/utilities/forward.asm
 
@@ -1826,10 +1827,10 @@
 .10eb	b5 60		lda $60,x			lda 	NSMantissa0,x
 .10ed	20 ff 10	jsr $10ff			jsr 	_FFPPartial
 .10f0	95 60		sta $60,x			sta 	NSMantissa0,x
-.10f2	20 6c 20	jsr $206c			jsr 	FloatIsZero 					; zeroed check.
+.10f2	20 ac 20	jsr $20ac			jsr 	FloatIsZero 					; zeroed check.
 .10f5	d0 03		bne $10fa			bne 	_FFPExit
 .10f7					_FFPZero:
-.10f7	20 4a 20	jsr $204a			jsr 	FloatSetZero
+.10f7	20 8a 20	jsr $208a			jsr 	FloatSetZero
 .10fa					_FFPExit:
 .10fa	20 cd 16	jsr $16cd			jsr 	FloatNormalise
 .10fd	7a		ply				ply
@@ -1902,7 +1903,7 @@
 
 .1147					UnaryFre:
 .1147	fa		plx				plx
-.1148	20 4a 20	jsr $204a			jsr 	FloatSetZero 				; zero the result (32 bit integer)
+.1148	20 8a 20	jsr $208a			jsr 	FloatSetZero 				; zero the result (32 bit integer)
 .114b	38		sec				sec
 .114c	ad 02 04	lda $0402			lda 	stringHighMemory 			; calculate the free memory.
 .114f	ed 00 04	sbc $0400			sbc 	stringLowMemory
@@ -2009,7 +2010,7 @@
 .11bd	4c 78 1a	jmp $1a78			jmp 	NextCommand
 .11c0					CommandGotoZ:
 .11c0	fa		plx				plx
-.11c1	20 6c 20	jsr $206c			jsr 	FloatIsZero
+.11c1	20 ac 20	jsr $20ac			jsr 	FloatIsZero
 .11c4	ca		dex				dex
 .11c5	c9 00		cmp #$00			cmp 	#0
 .11c7	f0 e1		beq $11aa			beq 	PerformGOTO
@@ -2019,7 +2020,7 @@
 .11cc	4c 78 1a	jmp $1a78			jmp 	NextCommand
 .11cf					CommandGotoNZ:
 .11cf	fa		plx				plx
-.11d0	20 6c 20	jsr $206c			jsr 	FloatIsZero
+.11d0	20 ac 20	jsr $20ac			jsr 	FloatIsZero
 .11d3	ca		dex				dex
 .11d4	c9 00		cmp #$00			cmp 	#0
 .11d6	d0 d2		bne $11aa			bne 	PerformGOTO
@@ -2074,7 +2075,7 @@
 .1211	9c 27 04	stz $0427			stz 	coefficientCount 			; zero the count.
 .1214	8e 28 04	stx $0428			stx 	xValueSlot 					; save xValue slot.
 .1217	e8		inx				inx 								; set the count to zero.
-.1218	20 4a 20	jsr $204a			jsr 	FloatSetZero
+.1218	20 8a 20	jsr $208a			jsr 	FloatSetZero
 .121b					_CHPLoop:
 .121b	8a		txa				txa 								; copy X-1 to X+1
 .121c	a8		tay				tay
@@ -2192,7 +2193,7 @@
 .12d0	18		clc				clc
 .12d1	69 80		adc #$80			adc 	#(WorkArea >> 8)
 .12d3	85 4b		sta $4b				sta 	zTemp0+1
-.12d5	20 9d 21	jsr $219d			jsr 	WriteFloatZTemp0Sub 							; call write routine
+.12d5	20 df 21	jsr $21df			jsr 	WriteFloatZTemp0Sub 							; call write routine
 .12d8	ca		dex				dex 								; throw the address as well.
 .12d9	4c 78 1a	jmp $1a78			jmp 	NextCommand
 .12dc					IndInt16Write:
@@ -2203,7 +2204,7 @@
 .12e3	18		clc				clc
 .12e4	69 80		adc #$80			adc 	#(WorkArea >> 8)
 .12e6	85 4b		sta $4b				sta 	zTemp0+1
-.12e8	20 d8 21	jsr $21d8			jsr 	WriteIntegerZTemp0Sub 							; call write routine
+.12e8	20 1a 22	jsr $221a			jsr 	WriteIntegerZTemp0Sub 							; call write routine
 .12eb	ca		dex				dex 								; throw the address as well.
 .12ec	4c 78 1a	jmp $1a78			jmp 	NextCommand
 .12ef					IndStringWrite:
@@ -2214,7 +2215,7 @@
 .12f6	18		clc				clc
 .12f7	69 80		adc #$80			adc 	#(WorkArea >> 8)
 .12f9	85 4b		sta $4b				sta 	zTemp0+1
-.12fb	20 16 22	jsr $2216			jsr 	WriteStringZTemp0Sub 							; call write routine
+.12fb	20 58 22	jsr $2258			jsr 	WriteStringZTemp0Sub 							; call write routine
 .12fe	ca		dex				dex 								; throw the address as well.
 .12ff	4c 78 1a	jmp $1a78			jmp 	NextCommand
 
@@ -2227,21 +2228,21 @@
 .1302	48		pha				pha
 .1303	b5 a0		lda $a0,x			lda 	NSExponent,x 				; is it integer already ?
 .1305	f0 1d		beq $1324			beq 	_FIPExit 					; if so do nothing
-.1307	20 6c 20	jsr $206c			jsr 	FloatIsZero 				; is it zero ?
+.1307	20 ac 20	jsr $20ac			jsr 	FloatIsZero 				; is it zero ?
 .130a	f0 15		beq $1321			beq 	_FIPZero 					; if so return zero.
 .130c	20 cd 16	jsr $16cd			jsr 	FloatNormalise 				; normalise
 .130f	f0 10		beq $1321			beq 	_FIPZero 					; normalised to zero, exit zero
 .1311					_FIPShift:
 .1311	b5 a0		lda $a0,x			lda 	NSExponent,x 				; if Exponent >= 0 exit.
 .1313	10 07		bpl $131c			bpl 	_FIPCheckZero
-.1315	20 63 20	jsr $2063			jsr 	FloatShiftRight 			; shift mantissa right
+.1315	20 a3 20	jsr $20a3			jsr 	FloatShiftRight 			; shift mantissa right
 .1318	f6 a0		inc $a0,x			inc 	NSExponent,x 				; bump exponent
 .131a	80 f5		bra $1311			bra 	_FIPShift
 .131c					_FIPCheckZero:
-.131c	20 6c 20	jsr $206c			jsr 	FloatIsZero 				; avoid -0 problem
+.131c	20 ac 20	jsr $20ac			jsr 	FloatIsZero 				; avoid -0 problem
 .131f	d0 03		bne $1324			bne 	_FIPExit 					; set to zero if mantissa zero.
 .1321					_FIPZero:
-.1321	20 4a 20	jsr $204a			jsr 	FloatSetZero
+.1321	20 8a 20	jsr $208a			jsr 	FloatSetZero
 .1324					_FIPExit:
 .1324	68		pla				pla
 .1325	60		rts				rts
@@ -2256,7 +2257,7 @@
 .1327	5a		phy				phy
 .1328	b5 a0		lda $a0,x			lda 	NSExponent,x 				; is it integer already ?
 .132a	f0 36		beq $1362			beq 	_FIPExit 					; if so do nothing
-.132c	20 6c 20	jsr $206c			jsr 	FloatIsZero 				; is it zero ?
+.132c	20 ac 20	jsr $20ac			jsr 	FloatIsZero 				; is it zero ?
 .132f	f0 2e		beq $135f			beq 	_FIPZero 					; if so return zero.
 .1331	20 cd 16	jsr $16cd			jsr 	FloatNormalise 				; normalise
 .1334	f0 29		beq $135f			beq 	_FIPZero 					; normalised to zero, exit zero
@@ -2264,7 +2265,7 @@
 .1338					_FIPShift:
 .1338	b5 a0		lda $a0,x			lda 	NSExponent,x 				; if Exponent >= 0 exit.
 .133a	10 0a		bpl $1346			bpl 	_FIPCheckDown
-.133c	20 63 20	jsr $2063			jsr 	FloatShiftRight 			; shift mantissa right
+.133c	20 a3 20	jsr $20a3			jsr 	FloatShiftRight 			; shift mantissa right
 .133f	90 01		bcc $1342			bcc 	_FIPNoFrac 					; shifted a zero out ?
 .1341	c8		iny				iny
 .1342					_FIPNoFrac:
@@ -2277,14 +2278,14 @@
 .134c	10 0c		bpl $135a			bpl 	_FIPCheckZero
 .134e	e8		inx				inx 								; -ve so round *down*.
 .134f	a9 01		lda #$01			lda 	#1
-.1351	20 4c 20	jsr $204c			jsr 	FloatSetByte
-.1354	20 0c 20	jsr $200c			jsr 	FloatNegate
+.1351	20 8c 20	jsr $208c			jsr 	FloatSetByte
+.1354	20 4c 20	jsr $204c			jsr 	FloatNegate
 .1357	20 11 08	jsr $0811			jsr 	FloatAdd
 .135a					_FIPCheckZero:
-.135a	20 6c 20	jsr $206c			jsr 	FloatIsZero 				; avoid -0 problem
+.135a	20 ac 20	jsr $20ac			jsr 	FloatIsZero 				; avoid -0 problem
 .135d	d0 03		bne $1362			bne 	_FIPExit 					; set to zero if mantissa zero.
 .135f					_FIPZero:
-.135f	20 4a 20	jsr $204a			jsr 	FloatSetZero
+.135f	20 8a 20	jsr $208a			jsr 	FloatSetZero
 .1362					_FIPExit:
 .1362	7a		ply				ply
 .1363	68		pla				pla
@@ -2332,7 +2333,7 @@
 .1392	b5 70		lda $70,x			lda 	NSMantissa1,x
 .1394	85 4b		sta $4b				sta 	zTemp0+1
 .1396	b2 4a		lda ($4a)			lda 	(zTemp0) 					; get length
-.1398	20 4c 20	jsr $204c			jsr 	FloatSetByte
+.1398	20 8c 20	jsr $208c			jsr 	FloatSetByte
 .139b	4c 78 1a	jmp $1a78			jmp 	NextCommand
 
 ;******  Return to file: _runtime.asm
@@ -2453,7 +2454,7 @@
 .1445					LinkFloatTangent:
 .1445	fa		plx				plx
 .1446	5a		phy			phy
-.1447	20 de 1d	jsr $1dde		jsr	FloatTangent
+.1447	20 1e 1e	jsr $1e1e		jsr	FloatTangent
 .144a	7a		ply			ply
 .144b	4c 78 1a	jmp $1a78			jmp 	NextCommand
 .144e					LinkFloatArcTan:
@@ -2543,7 +2544,7 @@
 .14bb					FloatLogarithm:
 .14bb	b5 50		lda $50,x			lda 	NSStatus,x 					; check > 0
 .14bd	30 5f		bmi $151e			bmi 	_ULRange
-.14bf	20 6c 20	jsr $206c			jsr 	FloatIsZero
+.14bf	20 ac 20	jsr $20ac			jsr 	FloatIsZero
 .14c2	f0 5a		beq $151e			beq 	_ULRange
 .14c4	20 cd 16	jsr $16cd			jsr 	FloatNormalise 				; put into FP mode.
 .14c7	b5 a0		lda $a0,x			lda 	NSExponent,x 				; get power
@@ -2565,10 +2566,10 @@
 .14e4	e8		inx				inx
 .14e5	20 ed 0d	jsr $0ded			jsr 	FloatDivide 				; if zero, error.
 .14e8	b0 33		bcs $151d			bcs 	_ULRangePla
-.14ea	20 0c 20	jsr $200c			jsr 	FloatNegate 				; subtract from 1
+.14ea	20 4c 20	jsr $204c			jsr 	FloatNegate 				; subtract from 1
 .14ed	e8		inx				inx
 .14ee	a9 01		lda #$01			lda 	#1
-.14f0	20 4c 20	jsr $204c			jsr 	FloatSetByte
+.14f0	20 8c 20	jsr $208c			jsr 	FloatSetByte
 .14f3	20 11 08	jsr $0811			jsr 	FloatAdd
 .14f6	20 20 15	jsr $1520			jsr 	CoreLog
 .14f9	20 39 12	jsr $1239			jsr 	CompletePolynomial
@@ -2581,7 +2582,7 @@
 .1505	1a		inc a				inc 	a
 .1506					_LogNotNeg:
 .1506	e8		inx				inx 								; set byte and sign.
-.1507	20 4c 20	jsr $204c			jsr 	FloatSetByte
+.1507	20 8c 20	jsr $208c			jsr 	FloatSetByte
 .150a	68		pla				pla
 .150b	29 80		and #$80			and 	#$80
 .150d	95 50		sta $50,x			sta 	NSStatus,x
@@ -2645,8 +2646,8 @@
 
 .1549					FloatMultiplyShort:
 .1549	5a		phy				phy 								; save Y
-.154a	20 2d 20	jsr $202d			jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2]
-.154d	20 46 20	jsr $2046			jsr 	FloatSetZeroMantissaOnly 	; set mantissa S[X] to zero
+.154a	20 6d 20	jsr $206d			jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2]
+.154d	20 86 20	jsr $2086			jsr 	FloatSetZeroMantissaOnly 	; set mantissa S[X] to zero
 .1550	a0 00		ldy #$00			ldy 	#0 							; Y is the shift count.
 .1552					_I32MLoop:
 .1552	b5 62		lda $62,x			lda 	NSMantissa0+2,x 			; check S[X+2] is zero
@@ -2661,19 +2662,19 @@
 .1565	b5 90		lda $90,x			lda 	NSMantissa3,x 				; has MantissaA overflowed ?
 .1567	10 06		bpl $156f			bpl 	_I32MNoAdd
 .1569					_I32ShiftRight:
-.1569	20 63 20	jsr $2063			jsr 	FloatShiftRight 			; shift S[X] right
+.1569	20 a3 20	jsr $20a3			jsr 	FloatShiftRight 			; shift S[X] right
 .156c	c8		iny				iny 								; increment shift count
 .156d	80 09		bra $1578			bra 	_I32MShiftUpper 			; n2 is doubled by default.
 .156f					_I32MNoAdd:
 .156f	34 91		bit $91,x			bit 	NSMantissa3+1,x				; if we can't shift S[X+1] left, shift everything right
 .1571	70 f6		bvs $1569			bvs 	_I32ShiftRight 				; instead.
 .1573	e8		inx				inx
-.1574	20 59 20	jsr $2059			jsr 	FloatShiftLeft 				; shift additive S[X+1] left
+.1574	20 99 20	jsr $2099			jsr 	FloatShiftLeft 				; shift additive S[X+1] left
 .1577	ca		dex				dex
 .1578					_I32MShiftUpper:
 .1578	e8		inx				inx 								; shift S[X+2] right
 .1579	e8		inx				inx
-.157a	20 63 20	jsr $2063			jsr 	FloatShiftRight
+.157a	20 a3 20	jsr $20a3			jsr 	FloatShiftRight
 .157d	ca		dex				dex
 .157e	ca		dex				dex
 .157f	80 d1		bra $1552			bra 	_I32MLoop 					; try again.
@@ -2733,7 +2734,7 @@
 .15cf	95 a0		sta $a0,x			sta 	NSExponent,x
 .15d1	80 03		bra $15d6			bra 	_FDExit
 .15d3					_FDSetZero:
-.15d3	20 4a 20	jsr $204a			jsr 	FloatSetZero 				; return 0
+.15d3	20 8a 20	jsr $208a			jsr 	FloatSetZero 				; return 0
 .15d6					_FDExit:
 .15d6	20 cd 16	jsr $16cd			jsr 	FloatNormalise 				; normalise the result
 .15d9	60		rts				rts
@@ -2745,7 +2746,7 @@
 
 .15da					NegateTOS:
 .15da	fa		plx				plx
-.15db	20 0c 20	jsr $200c			jsr 	FloatNegate
+.15db	20 4c 20	jsr $204c			jsr 	FloatNegate
 .15de	4c 78 1a	jmp $1a78			jmp 	NextCommand
 
 ;******  Return to file: _runtime.asm
@@ -2808,7 +2809,7 @@
 .1633	85 4b		sta $4b				sta 	zTemp0+1
 .1635	68		pla				pla
 .1636	85 4a		sta $4a				sta 	zTemp0
-.1638	20 9d 21	jsr $219d			jsr 	WriteFloatZTemp0Sub			; write float.
+.1638	20 df 21	jsr $21df			jsr 	WriteFloatZTemp0Sub			; write float.
 .163b	e8		inx				inx  								; recover written
 .163c	e8		inx				inx 								; load offset
 .163d	a0 0d		ldy #$0d			ldy 	#13
@@ -2900,7 +2901,7 @@
 ;******  Processing file: modules/ifloat32/float/normalise.asm
 
 .16cd					FloatNormalise:
-.16cd	20 6c 20	jsr $206c			jsr 	FloatIsZero 				; if zero exit
+.16cd	20 ac 20	jsr $20ac			jsr 	FloatIsZero 				; if zero exit
 .16d0	d0 07		bne $16d9			bne 	_NSNormaliseOptimise 		; if so, normalise it.
 .16d2	16 50		asl $50,x			asl 	NSStatus,x 					; clear the sign bit.
 .16d4	76 50		ror $50,x			ror 	NSStatus,x 					; (no -0)
@@ -2925,7 +2926,7 @@
 .16f6					_NSNormaliseLoop:
 .16f6	34 90		bit $90,x			bit 	NSMantissa3,x 				; bit 30 set ?
 .16f8	70 07		bvs $1701			bvs 	_NSNExit 					; exit if so with Z flag clear
-.16fa	20 59 20	jsr $2059			jsr 	FloatShiftLeft 				; shift mantissa left
+.16fa	20 99 20	jsr $2099			jsr 	FloatShiftLeft 				; shift mantissa left
 .16fd	d6 a0		dec $a0,x			dec 	NSExponent,x 				; adjust exponent
 .16ff	80 f5		bra $16f6			bra 	_NSNormaliseLoop
 .1701					_NSNExit:
@@ -2942,10 +2943,10 @@
 .1705	20 02 13	jsr $1302			jsr 	FloatIntegerPart
 .1708	74 80		stz $80,x			stz 	NSMantissa2,x 				; chop down to 16 bit.
 .170a	74 90		stz $90,x			stz 	NSMantissa3,x
-.170c	20 0c 20	jsr $200c			jsr 	FloatNegate		 			; negate
+.170c	20 4c 20	jsr $204c			jsr 	FloatNegate		 			; negate
 .170f	e8		inx				inx 								; and add 1.
 .1710	a9 01		lda #$01			lda 	#1
-.1712	20 4c 20	jsr $204c			jsr 	FloatSetByte
+.1712	20 8c 20	jsr $208c			jsr 	FloatSetByte
 .1715	20 11 08	jsr $0811			jsr 	FloatAdd
 .1718					_NotTOSSkip:
 .1718	4c 78 1a	jmp $1a78			jmp 	NextCommand
@@ -2999,7 +3000,7 @@
 .174b	20 5d 17	jsr $175d			jsr 	XPeekMemory
 .174e	7a		ply				ply
 .174f	fa		plx				plx
-.1750	20 4c 20	jsr $204c			jsr 	FloatSetByte
+.1750	20 8c 20	jsr $208c			jsr 	FloatSetByte
 .1753	4c 78 1a	jmp $1a78			jmp 	NextCommand
 
 ;******  Return to file: _runtime.asm
@@ -3061,7 +3062,7 @@
 .1784					UnaryPos:
 .1784	fa		plx				plx
 .1785	20 81 11	jsr $1181			jsr 	XGetHPos
-.1788	20 4c 20	jsr $204c			jsr 	FloatSetByte
+.1788	20 8c 20	jsr $208c			jsr 	FloatSetByte
 .178b	4c 78 1a	jmp $1a78			jmp 	NextCommand
 
 ;******  Return to file: _runtime.asm
@@ -3099,7 +3100,7 @@
 .17ab	fa		plx				plx
 .17ac	ad 2a 04	lda $042a			lda 	currentChannel
 .17af	e8		inx				inx
-.17b0	20 4c 20	jsr $204c			jsr 	FloatSetByte
+.17b0	20 8c 20	jsr $208c			jsr 	FloatSetByte
 .17b3	4c 78 1a	jmp $1a78			jmp 	NextCommand
 .17b6					SetChannel:
 .17b6	fa		plx				plx
@@ -3149,7 +3150,7 @@
 .17e3					PrintNumber:
 .17e3	fa		plx				plx
 .17e4	a9 07		lda #$07			lda 	#7
-.17e6	20 79 1f	jsr $1f79			jsr 	FloatToString 				; to number in decimal buffer
+.17e6	20 b9 1f	jsr $1fb9			jsr 	FloatToString 				; to number in decimal buffer
 .17e9	ca		dex				dex 								; drop
 .17ea	da		phx				phx
 .17eb	a2 00		ldx #$00			ldx 	#0 							; print buffer.
@@ -3257,7 +3258,7 @@
 .1871	85 4a		sta $4a				sta 	0+zTemp0
 .1873	a9 04		lda #$04			lda 	#((ReadBufferSize) >> 8) & $FF
 .1875	85 4b		sta $4b				sta 	1+zTemp0
-.1877	20 89 20	jsr $2089			jsr 	ValEvaluateZTemp0
+.1877	20 c9 20	jsr $20c9			jsr 	ValEvaluateZTemp0
 .187a	b0 04		bcs $1880			bcs 	_CRError 					; failed
 .187c	7a		ply				ply 								; restore Y
 .187d	4c 78 1a	jmp $1a78			jmp 	NextCommand
@@ -3268,7 +3269,7 @@
 .1884	5a		phy				phy 								; save Y
 .1885	20 9c 18	jsr $189c			jsr 	ReadStringToBuffer 			; read text
 .1888	e8		inx				inx 								; make space on stack
-.1889	20 4a 20	jsr $204a			jsr 	FloatSetZero 				; store as string on stack
+.1889	20 8a 20	jsr $208a			jsr 	FloatSetZero 				; store as string on stack
 .188c	a9 2c		lda #$2c			lda 	#ReadBufferSize & $FF
 .188e	95 60		sta $60,x			sta 	NSMantissa0,x
 .1890	a9 04		lda #$04			lda 	#ReadBufferSize >> 8
@@ -3322,7 +3323,7 @@
 .18ea	b2 47		lda ($47)			lda 	(objPtr) 					; see where we are
 .18ec	c9 ff		cmp #$ff			cmp 	#$FF 						; if at $FF then end, error.
 .18ee	f0 1a		beq $190a			beq 	_RLNNoData
-.18f0	c9 c0		cmp #$c0			cmp 	#PCD_CMD_DATA 				; Found DATA
+.18f0	c9 c1		cmp #$c1			cmp 	#PCD_CMD_DATA 				; Found DATA
 .18f2	f0 05		beq $18f9			beq 	_RLNHaveData
 .18f4					_RLNNext:
 .18f4	20 71 10	jsr $1071			jsr 	MoveObjectForward			; else scan forward.
@@ -3511,7 +3512,7 @@
 .19dd	20 e3 19	jsr $19e3			jsr 	RestoreCode
 .19e0	4c 78 1a	jmp $1a78			jmp 	NextCommand
 .19e3					RestoreCode:
-.19e3	a9 74		lda #$74			lda 	#((EndProgram+2) & $FF)
+.19e3	a9 b6		lda #$b6			lda 	#((EndProgram+2) & $FF)
 .19e5	85 47		sta $47				sta 	0+objPtr
 .19e7	a9 22		lda #$22			lda 	#((EndProgram+2) >> 8) & $FF
 .19e9	85 48		sta $48				sta 	1+objPtr
@@ -3593,7 +3594,7 @@
 .1a62	9a		txs				txs
 .1a63	20 c3 17	jsr $17c3		 	jsr		SetDefaultChannel			; set default input/output channel.
 .1a66	20 53 0a	jsr $0a53			jsr 	ClearMemory 				; clear memory.
-.1a69	a9 74		lda #$74			lda 	#((EndProgram+2) & $FF)
+.1a69	a9 b6		lda #$b6			lda 	#((EndProgram+2) & $FF)
 .1a6b	85 44		sta $44				sta 	0+codePtr
 .1a6d	a9 22		lda #$22			lda 	#((EndProgram+2) >> 8) & $FF
 .1a6f	85 45		sta $45				sta 	1+codePtr
@@ -3620,11 +3621,11 @@
 .1a90	7c 93 1a	jmp ($1a93,x)			jmp 	(ReadWriteVectors,x) 		; go via the jump table.
 .1a93					ReadWriteVectors:
 >1a93	18 19						.word 	ReadFloatCommand			; read float
->1a95	84 21						.word 	WriteFloatCommand 			; write float
+>1a95	c6 21						.word 	WriteFloatCommand 			; write float
 >1a97	53 19						.word 	ReadIntegerCommand 			; read integer
->1a99	bf 21						.word 	WriteIntegerCommand 		; write integer
+>1a99	01 22						.word 	WriteIntegerCommand 		; write integer
 >1a9b	97 19						.word 	ReadStringCommand 			; read string
->1a9d	fd 21						.word 	WriteStringCommand 			; write string
+>1a9d	3f 22						.word 	WriteStringCommand 			; write string
 >1a9f	1b 0e						.word 	Unimplemented
 >1aa1	1b 0e						.word 	Unimplemented
 .1aa3					NXIndirectLoadStore:
@@ -3674,7 +3675,7 @@
 .1ae2	0a		asl a				asl 	a 							; shift left
 .1ae3	da		phx				phx 								; save SP on stack
 .1ae4	aa		tax				tax				 					; and jump indirect
-.1ae5	7c c3 20	jmp ($20c3,x)			jmp 	(VectorTable,x)
+.1ae5	7c 03 21	jmp ($2103,x)			jmp 	(VectorTable,x)
 .1ae8					FixUpY:
 .1ae8	48		pha				pha
 .1ae9	98		tya				tya
@@ -3778,18 +3779,18 @@
 
 .1b6f					SignTOS:
 .1b6f	fa		plx				plx
-.1b70	20 6c 20	jsr $206c			jsr 	FloatIsZero 				; if zero
+.1b70	20 ac 20	jsr $20ac			jsr 	FloatIsZero 				; if zero
 .1b73	f0 0f		beq $1b84			beq 	_SGZero  					; return Int Zero
 .1b75	b5 50		lda $50,x			lda 	NSStatus,x 					; get status w/sign
 .1b77	48		pha				pha
 .1b78	a9 01		lda #$01			lda 	#1 							; set result to 1
-.1b7a	20 4c 20	jsr $204c			jsr 	FloatSetByte
+.1b7a	20 8c 20	jsr $208c			jsr 	FloatSetByte
 .1b7d	68		pla				pla
 .1b7e	29 80		and #$80			and		#$80 						; copy the sign byte out
 .1b80	95 50		sta $50,x			sta 	NSStatus,x  				; so it will be -1 or 1
 .1b82	80 03		bra $1b87			bra 	_SGExit
 .1b84					_SGZero:
-.1b84	20 4a 20	jsr $204a			jsr 	FloatSetZero
+.1b84	20 8a 20	jsr $208a			jsr 	FloatSetZero
 .1b87					_SGExit:
 .1b87	4c 78 1a	jmp $1a78			jmp 	NextCommand
 
@@ -3803,7 +3804,7 @@
 .1b8c	c8		iny				iny
 .1b8d	0a		asl a				asl 	a 							; double into X
 .1b8e	aa		tax				tax
-.1b8f	7c 4f 21	jmp ($214f,x)			jmp 	(ShiftVectorTable,x) 		; go there.
+.1b8f	7c 91 21	jmp ($2191,x)			jmp 	(ShiftVectorTable,x) 		; go there.
 
 ;******  Return to file: _runtime.asm
 
@@ -3852,9 +3853,9 @@
 .1bd5	10 07		bpl $1bde			bpl 	_AddExit
 .1bd7	b5 51		lda $51,x			lda 	NSStatus+1,x 				; sign is that of 11th value
 .1bd9	95 50		sta $50,x			sta 	NSStatus,x
-.1bdb	20 13 20	jsr $2013			jsr 	FloatNegateMantissa 		; negate the mantissa and exit
+.1bdb	20 53 20	jsr $2053			jsr 	FloatNegateMantissa 		; negate the mantissa and exit
 .1bde					_AddExit:
-.1bde	20 6c 20	jsr $206c			jsr 	FloatIsZero 				; check for -0
+.1bde	20 ac 20	jsr $20ac			jsr 	FloatIsZero 				; check for -0
 .1be1	d0 02		bne $1be5			bne 	_AddNonZero
 .1be3	74 50		stz $50,x			stz 	NSStatus,x
 .1be5					_AddNonZero:
@@ -3886,12 +3887,12 @@
 .1c07	20 6d 14	jsr $146d			jsr 	LoadConstant
 .1c0a	e8		inx				inx
 .1c0b	20 0b 08	jsr $080b			jsr 	FloatSubtract
-.1c0e	20 0c 20	jsr $200c			jsr 	FloatNegate 				; then negate it
+.1c0e	20 4c 20	jsr $204c			jsr 	FloatNegate 				; then negate it
 .1c11	80 09		bra $1c1c			bra 	_USProcessExit 				; and exit
 .1c13					_USSubtractOne:
 .1c13	e8		inx				inx
 .1c14	a9 01		lda #$01			lda 	#1
-.1c16	20 4c 20	jsr $204c			jsr 	FloatSetByte
+.1c16	20 8c 20	jsr $208c			jsr 	FloatSetByte
 .1c19	20 0b 08	jsr $080b			jsr 	FloatSubtract
 .1c1c					_USProcessExit:
 .1c1c	20 29 1c	jsr $1c29			jsr 	CoreSine
@@ -4005,7 +4006,7 @@
 .1c8f	fa		plx				plx
 .1c90	5a		phy				phy
 .1c91	a9 08		lda #$08			lda 	#8 							; maximum decimal places.
-.1c93	20 79 1f	jsr $1f79			jsr 	FloatToString 				; do the conversion.
+.1c93	20 b9 1f	jsr $1fb9			jsr 	FloatToString 				; do the conversion.
 .1c96	a9 21		lda #$21			lda		#33 						; create buffer
 .1c98	20 d4 1c	jsr $1cd4			jsr 	StringAllocTemp 			; allocate memory
 .1c9b	a0 01		ldy #$01			ldy 	#1  						; copy the converted string into the buffer.
@@ -4197,69 +4198,114 @@
 ;******  Return to file: _runtime.asm
 
 
+;******  Processing file: modules/runtime/support/swap.asm
+
+.1da8					CommandSwap:
+.1da8	fa		plx				plx
+.1da9	b5 60		lda $60,x			lda 	NSMantissa0,x
+.1dab	48		pha				pha
+.1dac	b5 5f		lda $5f,x			lda 	NSMantissa0-1,x
+.1dae	95 60		sta $60,x			sta 	NSMantissa0,x
+.1db0	68		pla				pla
+.1db1	95 5f		sta $5f,x			sta 	NSMantissa0-1,x
+.1db3	b5 70		lda $70,x			lda 	NSMantissa1,x
+.1db5	48		pha				pha
+.1db6	b5 6f		lda $6f,x			lda 	NSMantissa1-1,x
+.1db8	95 70		sta $70,x			sta 	NSMantissa1,x
+.1dba	68		pla				pla
+.1dbb	95 6f		sta $6f,x			sta 	NSMantissa1-1,x
+.1dbd	b5 80		lda $80,x			lda 	NSMantissa2,x
+.1dbf	48		pha				pha
+.1dc0	b5 7f		lda $7f,x			lda 	NSMantissa2-1,x
+.1dc2	95 80		sta $80,x			sta 	NSMantissa2,x
+.1dc4	68		pla				pla
+.1dc5	95 7f		sta $7f,x			sta 	NSMantissa2-1,x
+.1dc7	b5 90		lda $90,x			lda 	NSMantissa3,x
+.1dc9	48		pha				pha
+.1dca	b5 8f		lda $8f,x			lda 	NSMantissa3-1,x
+.1dcc	95 90		sta $90,x			sta 	NSMantissa3,x
+.1dce	68		pla				pla
+.1dcf	95 8f		sta $8f,x			sta 	NSMantissa3-1,x
+.1dd1	b5 a0		lda $a0,x			lda 	NSExponent,x
+.1dd3	48		pha				pha
+.1dd4	b5 9f		lda $9f,x			lda 	NSExponent-1,x
+.1dd6	95 a0		sta $a0,x			sta 	NSExponent,x
+.1dd8	68		pla				pla
+.1dd9	95 9f		sta $9f,x			sta 	NSExponent-1,x
+.1ddb	b5 50		lda $50,x			lda 	NSStatus,x
+.1ddd	48		pha				pha
+.1dde	b5 4f		lda $4f,x			lda 	NSStatus-1,x
+.1de0	95 50		sta $50,x			sta 	NSStatus,x
+.1de2	68		pla				pla
+.1de3	95 4f		sta $4f,x			sta 	NSStatus-1,x
+.1de5	4c 78 1a	jmp $1a78			jmp 	NextCommand
+
+;******  Return to file: _runtime.asm
+
+
 ;******  Processing file: modules/runtime/commands/sys.asm
 
-.1da8					CommandSYS:
-.1da8	fa		plx				plx
-.1da9	da		phx				phx 								; save XY
-.1daa	5a		phy				phy
-.1dab	20 02 13	jsr $1302			jsr 	FloatIntegerPart
-.1dae	b5 70		lda $70,x			lda 	NSMantissa1,x 				; get call address => zTemp0
-.1db0	85 4b		sta $4b				sta 	zTemp0+1
-.1db2	b5 60		lda $60,x			lda 	NSMantissa0,x
-.1db4	85 4a		sta $4a				sta 	zTemp0
-.1db6	ae 0d 03	ldx $030d			ldx 	SYS_Reg_X 					; load registers
-.1db9	ac 0e 03	ldy $030e			ldy 	SYS_Reg_Y
-.1dbc	ad 0f 03	lda $030f			lda 	SYS_Reg_S
-.1dbf	48		pha				pha
-.1dc0	ad 0c 03	lda $030c			lda 	SYS_Reg_A
-.1dc3	28		plp				plp
-.1dc4	20 db 1d	jsr $1ddb			jsr 	_CSZTemp0
-.1dc7	08		php				php
-.1dc8	8e 0d 03	stx $030d			stx 	SYS_Reg_X 					; load registers
-.1dcb	8c 0e 03	sty $030e			sty 	SYS_Reg_Y
-.1dce	8d 0c 03	sta $030c			sta 	SYS_Reg_A
-.1dd1	68		pla				pla
-.1dd2	8d 0f 03	sta $030f			sta 	SYS_Reg_S
-.1dd5	7a		ply				ply 								; restore YX and drop 2
-.1dd6	fa		plx				plx
-.1dd7	ca		dex				dex
-.1dd8	4c 78 1a	jmp $1a78			jmp 	NextCommand
-.1ddb					_CSZTemp0:
-.1ddb	6c 4a 00	jmp ($004a)			jmp 	(zTemp0)
+.1de8					CommandSYS:
+.1de8	fa		plx				plx
+.1de9	da		phx				phx 								; save XY
+.1dea	5a		phy				phy
+.1deb	20 02 13	jsr $1302			jsr 	FloatIntegerPart
+.1dee	b5 70		lda $70,x			lda 	NSMantissa1,x 				; get call address => zTemp0
+.1df0	85 4b		sta $4b				sta 	zTemp0+1
+.1df2	b5 60		lda $60,x			lda 	NSMantissa0,x
+.1df4	85 4a		sta $4a				sta 	zTemp0
+.1df6	ae 0d 03	ldx $030d			ldx 	SYS_Reg_X 					; load registers
+.1df9	ac 0e 03	ldy $030e			ldy 	SYS_Reg_Y
+.1dfc	ad 0f 03	lda $030f			lda 	SYS_Reg_S
+.1dff	48		pha				pha
+.1e00	ad 0c 03	lda $030c			lda 	SYS_Reg_A
+.1e03	28		plp				plp
+.1e04	20 1b 1e	jsr $1e1b			jsr 	_CSZTemp0
+.1e07	08		php				php
+.1e08	8e 0d 03	stx $030d			stx 	SYS_Reg_X 					; load registers
+.1e0b	8c 0e 03	sty $030e			sty 	SYS_Reg_Y
+.1e0e	8d 0c 03	sta $030c			sta 	SYS_Reg_A
+.1e11	68		pla				pla
+.1e12	8d 0f 03	sta $030f			sta 	SYS_Reg_S
+.1e15	7a		ply				ply 								; restore YX and drop 2
+.1e16	fa		plx				plx
+.1e17	ca		dex				dex
+.1e18	4c 78 1a	jmp $1a78			jmp 	NextCommand
+.1e1b					_CSZTemp0:
+.1e1b	6c 4a 00	jmp ($004a)			jmp 	(zTemp0)
 
 ;******  Return to file: _runtime.asm
 
 
 ;******  Processing file: modules/polynomials/unary/tan.asm
 
-.1dde					FloatTangent:
-.1dde	da		phx				phx
-.1ddf	8a		txa				txa 								; sin -> +1
-.1de0	a8		tay				tay
-.1de1	c8		iny				iny
-.1de2	20 44 12	jsr $1244			jsr 	CopyFloatXY
-.1de5	e8		inx				inx
-.1de6	20 e6 1b	jsr $1be6			jsr 	FloatSine
-.1de9	ca		dex				dex
-.1dea	8a		txa				txa 								; cos -> +2
-.1deb	a8		tay				tay
-.1dec	c8		iny				iny
-.1ded	c8		iny				iny
-.1dee	20 44 12	jsr $1244			jsr 	CopyFloatXY
-.1df1	e8		inx				inx
-.1df2	e8		inx				inx
-.1df3	20 7b 0c	jsr $0c7b			jsr 	FloatCosine
-.1df6	20 ed 0d	jsr $0ded			jsr 	FloatDivide 				; calculate sin/cos
-.1df9	b0 07		bcs $1e02			bcs 	_FTExit 					; divide by zero
-.1dfb	8a		txa				txa 								; copy result down.
-.1dfc	a8		tay				tay
-.1dfd	88		dey				dey
-.1dfe	20 44 12	jsr $1244			jsr 	CopyFloatXY
-.1e01	18		clc				clc
-.1e02					_FTExit:
-.1e02	fa		plx				plx
-.1e03	60		rts				rts
+.1e1e					FloatTangent:
+.1e1e	da		phx				phx
+.1e1f	8a		txa				txa 								; sin -> +1
+.1e20	a8		tay				tay
+.1e21	c8		iny				iny
+.1e22	20 44 12	jsr $1244			jsr 	CopyFloatXY
+.1e25	e8		inx				inx
+.1e26	20 e6 1b	jsr $1be6			jsr 	FloatSine
+.1e29	ca		dex				dex
+.1e2a	8a		txa				txa 								; cos -> +2
+.1e2b	a8		tay				tay
+.1e2c	c8		iny				iny
+.1e2d	c8		iny				iny
+.1e2e	20 44 12	jsr $1244			jsr 	CopyFloatXY
+.1e31	e8		inx				inx
+.1e32	e8		inx				inx
+.1e33	20 7b 0c	jsr $0c7b			jsr 	FloatCosine
+.1e36	20 ed 0d	jsr $0ded			jsr 	FloatDivide 				; calculate sin/cos
+.1e39	b0 07		bcs $1e42			bcs 	_FTExit 					; divide by zero
+.1e3b	8a		txa				txa 								; copy result down.
+.1e3c	a8		tay				tay
+.1e3d	88		dey				dey
+.1e3e	20 44 12	jsr $1244			jsr 	CopyFloatXY
+.1e41	18		clc				clc
+.1e42					_FTExit:
+.1e42	fa		plx				plx
+.1e43	60		rts				rts
 
 ;******  Return to file: _runtime.asm
 
@@ -4272,22 +4318,22 @@
 
 ;******  Processing file: modules/runtime/functions/number/ti.asm
 
-.1e04					TimeTOS:
-.1e04	fa		plx				plx
-.1e05	5a		phy				phy
-.1e06	e8		inx				inx 								; push 0 on the stack
-.1e07	20 4a 20	jsr $204a			jsr 	FloatSetZero
-.1e0a	da		phx				phx
-.1e0b	20 d8 19	jsr $19d8			jsr 	XReadClock 					; read time into AXY
-.1e0e	86 4a		stx $4a				stx 	zTemp0
-.1e10	fa		plx				plx
-.1e11	95 60		sta $60,x			sta 	NSMantissa0,x
-.1e13	a5 4a		lda $4a				lda 	zTemp0
-.1e15	95 70		sta $70,x			sta 	NSMantissa1,x
-.1e17	98		tya				tya
-.1e18	95 80		sta $80,x			sta 	NSMantissa2,x
-.1e1a	7a		ply				ply
-.1e1b	4c 78 1a	jmp $1a78			jmp 	NextCommand
+.1e44					TimeTOS:
+.1e44	fa		plx				plx
+.1e45	5a		phy				phy
+.1e46	e8		inx				inx 								; push 0 on the stack
+.1e47	20 8a 20	jsr $208a			jsr 	FloatSetZero
+.1e4a	da		phx				phx
+.1e4b	20 d8 19	jsr $19d8			jsr 	XReadClock 					; read time into AXY
+.1e4e	86 4a		stx $4a				stx 	zTemp0
+.1e50	fa		plx				plx
+.1e51	95 60		sta $60,x			sta 	NSMantissa0,x
+.1e53	a5 4a		lda $4a				lda 	zTemp0
+.1e55	95 70		sta $70,x			sta 	NSMantissa1,x
+.1e57	98		tya				tya
+.1e58	95 80		sta $80,x			sta 	NSMantissa2,x
+.1e5a	7a		ply				ply
+.1e5b	4c 78 1a	jmp $1a78			jmp 	NextCommand
 
 ;******  Return to file: _runtime.asm
 
@@ -4297,170 +4343,170 @@
 =1					ESTA_Low = 1 								; state 1 is 1 byte, switches when A >= 24.
 =2					ESTA_High = 2 								; loading up to 32 bit integer in the mantissa
 =3					ESTA_Decimal = 3 							; fractional part.
-.1e1e					FloatEncodeStart:
-.1e1e	38		sec				sec
-.1e1f	80 01		bra $1e22			bra 	FloatEncodeContinue+1
-.1e21					FloatEncodeContinue:
-.1e21	18		clc				clc
-.1e22					FloatEncode:
-.1e22	08		php				php 								; save reset flag.
-.1e23	c9 2e		cmp #$2e			cmp 	#"." 						; only accept 0-9 and .
-.1e25	f0 15		beq $1e3c			beq 	_ENIsOkay
-.1e27	c9 30		cmp #$30			cmp 	#"0"
-.1e29	90 04		bcc $1e2f			bcc 	_ENBadNumber
-.1e2b	c9 3a		cmp #$3a			cmp 	#"9"+1
-.1e2d	90 0d		bcc $1e3c			bcc 	_ENIsOkay
-.1e2f					_ENBadNumber:
-.1e2f	28		plp				plp 								; throw saved reset
-.1e30	ad 34 05	lda $0534			lda 	encodeState 				; if in decimal mode, construct final number
-.1e33	c9 03		cmp #$03			cmp 	#ESTA_Decimal
-.1e35	d0 03		bne $1e3a			bne 	_ENFail
-.1e37	4c b4 1e	jmp $1eb4			jmp 	_ENConstructFinal
-.1e3a					_ENFail:
-.1e3a	18		clc				clc 								; not allowed
-.1e3b	60		rts				rts
-.1e3c					_ENIsOkay:
-.1e3c	28		plp				plp 								; are we restarting
-.1e3d	90 15		bcc $1e54			bcc 	_ENNoRestart
-.1e3f					_ENStartEncode:
-.1e3f	c9 2e		cmp #$2e			cmp 	#'.'						; first is decimal place, go straight to that.
-.1e41	f0 0c		beq $1e4f			beq 	_ENFirstDP
-.1e43	29 0f		and #$0f			and 	#15 						; put digit in mantissa, initially a single digit constant
-.1e45	20 4c 20	jsr $204c			jsr 	FloatSetByte 				; in single byte mode.
-.1e48	a9 01		lda #$01			lda 	#ESTA_Low
-.1e4a					_ENExitChange:
-.1e4a	8d 34 05	sta $0534			sta 	encodeState 				; save new state
-.1e4d	38		sec				sec
-.1e4e	60		rts				rts
-.1e4f					_ENFirstDP:
-.1e4f	20 4a 20	jsr $204a			jsr 	FloatSetZero 				; clear integer part
-.1e52	80 3c		bra $1e90			bra 	_ESTASwitchFloat			; go straight to float and exi
-.1e54					_ENNoRestart:
-.1e54	48		pha				pha 								; save digit or DP on stack.
-.1e55	ad 34 05	lda $0534			lda 	encodeState 				; get current state
-.1e58	c9 01		cmp #$01			cmp 	#ESTA_Low
-.1e5a	f0 09		beq $1e65			beq  	_ESTALowState
-.1e5c	c9 02		cmp #$02			cmp 	#ESTA_High
-.1e5e	f0 26		beq $1e86			beq 	_ESTAHighState
-.1e60	c9 03		cmp #$03			cmp 	#ESTA_Decimal
-.1e62	f0 38		beq $1e9c			beq 	_ESTADecimalState
->1e64	db						.byte 	$DB 						; causes a break in the emulator
-.1e65					_ESTALowState:
-.1e65	68		pla				pla 								; get value back
-.1e66	c9 2e		cmp #$2e			cmp 	#"."						; decimal point
-.1e68	f0 26		beq $1e90			beq 	_ESTASwitchFloat 			; then we need to do the floating point bit
-.1e6a	29 0f		and #$0f			and 	#15 						; make digit
-.1e6c	8d 35 05	sta $0535			sta 	digitTemp 					; save it.
-.1e6f	b5 60		lda $60,x			lda 	NSMantissa0,x 				; x mantissa0 x 10 and add it
-.1e71	0a		asl a				asl 	a
-.1e72	0a		asl a				asl 	a
-.1e73	75 60		adc $60,x			adc 	NSMantissa0,x
-.1e75	0a		asl a				asl 	a
-.1e76	6d 35 05	adc $0535			adc 	digitTemp
-.1e79	95 60		sta $60,x			sta 	NSMantissa0,x
-.1e7b	c9 19		cmp #$19			cmp 	#25 						; if >= 25 cannot guarantee next will be okay
-.1e7d	90 05		bcc $1e84			bcc 	_ESTANoSwitch 				; as could be 25 x 10 + 9
-.1e7f	a9 02		lda #$02			lda 	#ESTA_High 					; so if so, switch to the high encoding state
-.1e81	8d 34 05	sta $0534			sta 	encodeState
-.1e84					_ESTANoSwitch:
-.1e84	38		sec				sec
-.1e85	60		rts				rts
-.1e86					_ESTAHighState:
-.1e86	68		pla				pla 								; get value back
-.1e87	c9 2e		cmp #$2e			cmp 	#"." 						; if DP switch to dloat
-.1e89	f0 05		beq $1e90			beq 	_ESTASwitchFloat
-.1e8b	20 e6 1e	jsr $1ee6			jsr 	ESTAShiftDigitIntoMantissa 	; a routine does this.
-.1e8e	38		sec				sec
-.1e8f	60		rts				rts
-.1e90					_ESTASwitchFloat:
-.1e90	9c 36 05	stz $0536			stz 	decimalCount 				; reset the count of digits - we divide by 10^n at the end.
-.1e93	e8		inx				inx 								; zero the decimal additive.
-.1e94	20 4a 20	jsr $204a			jsr 	FloatSetZero
-.1e97	ca		dex				dex
-.1e98	a9 03		lda #$03			lda 	#ESTA_Decimal 				; switch to decimal mode
-.1e9a	80 ae		bra $1e4a			bra 	_ENExitChange
-.1e9c					_ESTADecimalState:
-.1e9c	68		pla				pla 								; digit.
-.1e9d	c9 2e		cmp #$2e			cmp 	#"." 						; fail on 11th decimal point.
-.1e9f	f0 99		beq $1e3a			beq 	_ENFail
-.1ea1	e8		inx				inx 								; put digit into fractional part of X+1
-.1ea2	20 e6 1e	jsr $1ee6			jsr 	ESTAShiftDigitIntoMantissa
-.1ea5	ca		dex				dex
-.1ea6	ee 36 05	inc $0536			inc 	decimalCount 				; bump the count of decimals
-.1ea9	ad 36 05	lda $0536			lda 	decimalCount 				; too many decimal digits.
-.1eac	c9 0b		cmp #$0b			cmp 	#11
-.1eae	f0 02		beq $1eb2			beq 	_ESTADSFail
-.1eb0	38		sec				sec
-.1eb1	60		rts				rts
-.1eb2					_ESTADSFail:
-.1eb2	18		clc				clc
-.1eb3	60		rts				rts
-.1eb4					_ENConstructFinal:
-.1eb4	ad 36 05	lda $0536			lda 	decimalCount 				; get decimal count
-.1eb7	f0 2b		beq $1ee4			beq 	_ENCFExit 					; no decimals
-.1eb9	5a		phy				phy
-.1eba	0a		asl a				asl 	a 							; x 4 and CLC
-.1ebb	0a		asl a				asl 	a
-.1ebc	6d 36 05	adc $0536			adc 	decimalCount
-.1ebf	a8		tay				tay
-.1ec0	b9 17 0c	lda $0c17,y			lda 	FloatScalarTable-5,y 		; copy decimal scalar to X+2
-.1ec3	95 62		sta $62,x			sta 	NSMantissa0+2,x  			; this is 10^-n
-.1ec5	b9 18 0c	lda $0c18,y			lda 	FloatScalarTable-5+1,y
-.1ec8	95 72		sta $72,x			sta 	NSMantissa1+2,x
-.1eca	b9 19 0c	lda $0c19,y			lda 	FloatScalarTable-5+2,y
-.1ecd	95 82		sta $82,x			sta 	NSMantissa2+2,x
-.1ecf	b9 1a 0c	lda $0c1a,y			lda 	FloatScalarTable-5+3,y
-.1ed2	95 92		sta $92,x			sta 	NSMantissa3+2,x
-.1ed4	b9 1b 0c	lda $0c1b,y			lda 	FloatScalarTable-5+4,y
-.1ed7	95 a2		sta $a2,x			sta 	NSExponent+2,x
-.1ed9	74 52		stz $52,x			stz 	NSStatus+2,x 				; make +ve
-.1edb	e8		inx				inx 								; multiply decimal const by decimal scalar
-.1edc	e8		inx				inx
-.1edd	20 91 15	jsr $1591			jsr 	FloatMultiply
-.1ee0	20 11 08	jsr $0811			jsr 	FloatAdd 					; add to integer part.
-.1ee3	7a		ply				ply
-.1ee4					_ENCFExit:
-.1ee4	18		clc				clc 								; reject the digit.
-.1ee5	60		rts				rts
-.1ee6					ESTAShiftDigitIntoMantissa:
-.1ee6	29 0f		and #$0f			and 	#15 						; save digit
-.1ee8	48		pha				pha
-.1ee9	b5 90		lda $90,x			lda 	NSMantissa3,x 				; push mantissa on stack
-.1eeb	48		pha				pha
-.1eec	b5 80		lda $80,x			lda 	NSMantissa2,x
-.1eee	48		pha				pha
-.1eef	b5 70		lda $70,x			lda 	NSMantissa1,x
-.1ef1	48		pha				pha
-.1ef2	b5 60		lda $60,x			lda 	NSMantissa0,x
-.1ef4	48		pha				pha
-.1ef5	20 59 20	jsr $2059			jsr 	FloatShiftLeft 				; x 2
-.1ef8	20 59 20	jsr $2059			jsr 	FloatShiftLeft 				; x 4
-.1efb	18		clc				clc 								; pop mantissa and add
-.1efc	68		pla				pla
-.1efd	75 60		adc $60,x			adc 	NSMantissa0,x
-.1eff	95 60		sta $60,x			sta 	NSMantissa0,x
-.1f01	68		pla				pla
-.1f02	75 70		adc $70,x			adc 	NSMantissa1,x
-.1f04	95 70		sta $70,x			sta 	NSMantissa1,x
-.1f06	68		pla				pla
-.1f07	75 80		adc $80,x			adc 	NSMantissa2,x
-.1f09	95 80		sta $80,x			sta 	NSMantissa2,x
-.1f0b	68		pla				pla
-.1f0c	75 90		adc $90,x			adc 	NSMantissa3,x
-.1f0e	95 90		sta $90,x			sta 	NSMantissa3,x 				; x 5
-.1f10	20 59 20	jsr $2059			jsr 	FloatShiftLeft 				; x 10
-.1f13	68		pla				pla 								; add digit
-.1f14	18		clc				clc
-.1f15	75 60		adc $60,x			adc 	NSMantissa0,x
-.1f17	95 60		sta $60,x			sta 	NSMantissa0,x
-.1f19	90 0a		bcc $1f25			bcc 	_ESTASDExit
-.1f1b	f6 70		inc $70,x			inc 	NSMantissa1,x
-.1f1d	d0 06		bne $1f25			bne 	_ESTASDExit
-.1f1f	f6 80		inc $80,x			inc 	NSMantissa2,x
-.1f21	d0 02		bne $1f25			bne 	_ESTASDExit
-.1f23	f6 90		inc $90,x			inc 	NSMantissa3,x
-.1f25					_ESTASDExit:
+.1e5e					FloatEncodeStart:
+.1e5e	38		sec				sec
+.1e5f	80 01		bra $1e62			bra 	FloatEncodeContinue+1
+.1e61					FloatEncodeContinue:
+.1e61	18		clc				clc
+.1e62					FloatEncode:
+.1e62	08		php				php 								; save reset flag.
+.1e63	c9 2e		cmp #$2e			cmp 	#"." 						; only accept 0-9 and .
+.1e65	f0 15		beq $1e7c			beq 	_ENIsOkay
+.1e67	c9 30		cmp #$30			cmp 	#"0"
+.1e69	90 04		bcc $1e6f			bcc 	_ENBadNumber
+.1e6b	c9 3a		cmp #$3a			cmp 	#"9"+1
+.1e6d	90 0d		bcc $1e7c			bcc 	_ENIsOkay
+.1e6f					_ENBadNumber:
+.1e6f	28		plp				plp 								; throw saved reset
+.1e70	ad 34 05	lda $0534			lda 	encodeState 				; if in decimal mode, construct final number
+.1e73	c9 03		cmp #$03			cmp 	#ESTA_Decimal
+.1e75	d0 03		bne $1e7a			bne 	_ENFail
+.1e77	4c f4 1e	jmp $1ef4			jmp 	_ENConstructFinal
+.1e7a					_ENFail:
+.1e7a	18		clc				clc 								; not allowed
+.1e7b	60		rts				rts
+.1e7c					_ENIsOkay:
+.1e7c	28		plp				plp 								; are we restarting
+.1e7d	90 15		bcc $1e94			bcc 	_ENNoRestart
+.1e7f					_ENStartEncode:
+.1e7f	c9 2e		cmp #$2e			cmp 	#'.'						; first is decimal place, go straight to that.
+.1e81	f0 0c		beq $1e8f			beq 	_ENFirstDP
+.1e83	29 0f		and #$0f			and 	#15 						; put digit in mantissa, initially a single digit constant
+.1e85	20 8c 20	jsr $208c			jsr 	FloatSetByte 				; in single byte mode.
+.1e88	a9 01		lda #$01			lda 	#ESTA_Low
+.1e8a					_ENExitChange:
+.1e8a	8d 34 05	sta $0534			sta 	encodeState 				; save new state
+.1e8d	38		sec				sec
+.1e8e	60		rts				rts
+.1e8f					_ENFirstDP:
+.1e8f	20 8a 20	jsr $208a			jsr 	FloatSetZero 				; clear integer part
+.1e92	80 3c		bra $1ed0			bra 	_ESTASwitchFloat			; go straight to float and exi
+.1e94					_ENNoRestart:
+.1e94	48		pha				pha 								; save digit or DP on stack.
+.1e95	ad 34 05	lda $0534			lda 	encodeState 				; get current state
+.1e98	c9 01		cmp #$01			cmp 	#ESTA_Low
+.1e9a	f0 09		beq $1ea5			beq  	_ESTALowState
+.1e9c	c9 02		cmp #$02			cmp 	#ESTA_High
+.1e9e	f0 26		beq $1ec6			beq 	_ESTAHighState
+.1ea0	c9 03		cmp #$03			cmp 	#ESTA_Decimal
+.1ea2	f0 38		beq $1edc			beq 	_ESTADecimalState
+>1ea4	db						.byte 	$DB 						; causes a break in the emulator
+.1ea5					_ESTALowState:
+.1ea5	68		pla				pla 								; get value back
+.1ea6	c9 2e		cmp #$2e			cmp 	#"."						; decimal point
+.1ea8	f0 26		beq $1ed0			beq 	_ESTASwitchFloat 			; then we need to do the floating point bit
+.1eaa	29 0f		and #$0f			and 	#15 						; make digit
+.1eac	8d 35 05	sta $0535			sta 	digitTemp 					; save it.
+.1eaf	b5 60		lda $60,x			lda 	NSMantissa0,x 				; x mantissa0 x 10 and add it
+.1eb1	0a		asl a				asl 	a
+.1eb2	0a		asl a				asl 	a
+.1eb3	75 60		adc $60,x			adc 	NSMantissa0,x
+.1eb5	0a		asl a				asl 	a
+.1eb6	6d 35 05	adc $0535			adc 	digitTemp
+.1eb9	95 60		sta $60,x			sta 	NSMantissa0,x
+.1ebb	c9 19		cmp #$19			cmp 	#25 						; if >= 25 cannot guarantee next will be okay
+.1ebd	90 05		bcc $1ec4			bcc 	_ESTANoSwitch 				; as could be 25 x 10 + 9
+.1ebf	a9 02		lda #$02			lda 	#ESTA_High 					; so if so, switch to the high encoding state
+.1ec1	8d 34 05	sta $0534			sta 	encodeState
+.1ec4					_ESTANoSwitch:
+.1ec4	38		sec				sec
+.1ec5	60		rts				rts
+.1ec6					_ESTAHighState:
+.1ec6	68		pla				pla 								; get value back
+.1ec7	c9 2e		cmp #$2e			cmp 	#"." 						; if DP switch to dloat
+.1ec9	f0 05		beq $1ed0			beq 	_ESTASwitchFloat
+.1ecb	20 26 1f	jsr $1f26			jsr 	ESTAShiftDigitIntoMantissa 	; a routine does this.
+.1ece	38		sec				sec
+.1ecf	60		rts				rts
+.1ed0					_ESTASwitchFloat:
+.1ed0	9c 36 05	stz $0536			stz 	decimalCount 				; reset the count of digits - we divide by 10^n at the end.
+.1ed3	e8		inx				inx 								; zero the decimal additive.
+.1ed4	20 8a 20	jsr $208a			jsr 	FloatSetZero
+.1ed7	ca		dex				dex
+.1ed8	a9 03		lda #$03			lda 	#ESTA_Decimal 				; switch to decimal mode
+.1eda	80 ae		bra $1e8a			bra 	_ENExitChange
+.1edc					_ESTADecimalState:
+.1edc	68		pla				pla 								; digit.
+.1edd	c9 2e		cmp #$2e			cmp 	#"." 						; fail on 11th decimal point.
+.1edf	f0 99		beq $1e7a			beq 	_ENFail
+.1ee1	e8		inx				inx 								; put digit into fractional part of X+1
+.1ee2	20 26 1f	jsr $1f26			jsr 	ESTAShiftDigitIntoMantissa
+.1ee5	ca		dex				dex
+.1ee6	ee 36 05	inc $0536			inc 	decimalCount 				; bump the count of decimals
+.1ee9	ad 36 05	lda $0536			lda 	decimalCount 				; too many decimal digits.
+.1eec	c9 0b		cmp #$0b			cmp 	#11
+.1eee	f0 02		beq $1ef2			beq 	_ESTADSFail
+.1ef0	38		sec				sec
+.1ef1	60		rts				rts
+.1ef2					_ESTADSFail:
+.1ef2	18		clc				clc
+.1ef3	60		rts				rts
+.1ef4					_ENConstructFinal:
+.1ef4	ad 36 05	lda $0536			lda 	decimalCount 				; get decimal count
+.1ef7	f0 2b		beq $1f24			beq 	_ENCFExit 					; no decimals
+.1ef9	5a		phy				phy
+.1efa	0a		asl a				asl 	a 							; x 4 and CLC
+.1efb	0a		asl a				asl 	a
+.1efc	6d 36 05	adc $0536			adc 	decimalCount
+.1eff	a8		tay				tay
+.1f00	b9 17 0c	lda $0c17,y			lda 	FloatScalarTable-5,y 		; copy decimal scalar to X+2
+.1f03	95 62		sta $62,x			sta 	NSMantissa0+2,x  			; this is 10^-n
+.1f05	b9 18 0c	lda $0c18,y			lda 	FloatScalarTable-5+1,y
+.1f08	95 72		sta $72,x			sta 	NSMantissa1+2,x
+.1f0a	b9 19 0c	lda $0c19,y			lda 	FloatScalarTable-5+2,y
+.1f0d	95 82		sta $82,x			sta 	NSMantissa2+2,x
+.1f0f	b9 1a 0c	lda $0c1a,y			lda 	FloatScalarTable-5+3,y
+.1f12	95 92		sta $92,x			sta 	NSMantissa3+2,x
+.1f14	b9 1b 0c	lda $0c1b,y			lda 	FloatScalarTable-5+4,y
+.1f17	95 a2		sta $a2,x			sta 	NSExponent+2,x
+.1f19	74 52		stz $52,x			stz 	NSStatus+2,x 				; make +ve
+.1f1b	e8		inx				inx 								; multiply decimal const by decimal scalar
+.1f1c	e8		inx				inx
+.1f1d	20 91 15	jsr $1591			jsr 	FloatMultiply
+.1f20	20 11 08	jsr $0811			jsr 	FloatAdd 					; add to integer part.
+.1f23	7a		ply				ply
+.1f24					_ENCFExit:
+.1f24	18		clc				clc 								; reject the digit.
 .1f25	60		rts				rts
+.1f26					ESTAShiftDigitIntoMantissa:
+.1f26	29 0f		and #$0f			and 	#15 						; save digit
+.1f28	48		pha				pha
+.1f29	b5 90		lda $90,x			lda 	NSMantissa3,x 				; push mantissa on stack
+.1f2b	48		pha				pha
+.1f2c	b5 80		lda $80,x			lda 	NSMantissa2,x
+.1f2e	48		pha				pha
+.1f2f	b5 70		lda $70,x			lda 	NSMantissa1,x
+.1f31	48		pha				pha
+.1f32	b5 60		lda $60,x			lda 	NSMantissa0,x
+.1f34	48		pha				pha
+.1f35	20 99 20	jsr $2099			jsr 	FloatShiftLeft 				; x 2
+.1f38	20 99 20	jsr $2099			jsr 	FloatShiftLeft 				; x 4
+.1f3b	18		clc				clc 								; pop mantissa and add
+.1f3c	68		pla				pla
+.1f3d	75 60		adc $60,x			adc 	NSMantissa0,x
+.1f3f	95 60		sta $60,x			sta 	NSMantissa0,x
+.1f41	68		pla				pla
+.1f42	75 70		adc $70,x			adc 	NSMantissa1,x
+.1f44	95 70		sta $70,x			sta 	NSMantissa1,x
+.1f46	68		pla				pla
+.1f47	75 80		adc $80,x			adc 	NSMantissa2,x
+.1f49	95 80		sta $80,x			sta 	NSMantissa2,x
+.1f4b	68		pla				pla
+.1f4c	75 90		adc $90,x			adc 	NSMantissa3,x
+.1f4e	95 90		sta $90,x			sta 	NSMantissa3,x 				; x 5
+.1f50	20 99 20	jsr $2099			jsr 	FloatShiftLeft 				; x 10
+.1f53	68		pla				pla 								; add digit
+.1f54	18		clc				clc
+.1f55	75 60		adc $60,x			adc 	NSMantissa0,x
+.1f57	95 60		sta $60,x			sta 	NSMantissa0,x
+.1f59	90 0a		bcc $1f65			bcc 	_ESTASDExit
+.1f5b	f6 70		inc $70,x			inc 	NSMantissa1,x
+.1f5d	d0 06		bne $1f65			bne 	_ESTASDExit
+.1f5f	f6 80		inc $80,x			inc 	NSMantissa2,x
+.1f61	d0 02		bne $1f65			bne 	_ESTASDExit
+.1f63	f6 90		inc $90,x			inc 	NSMantissa3,x
+.1f65					_ESTASDExit:
+.1f65	60		rts				rts
 .0534					encodeState:
 >0534							.fill 	1
 .0535					digitTemp:
@@ -4473,133 +4519,133 @@
 
 ;******  Processing file: modules/ifloat32/binary/tostring.asm
 
-.1f26					ConvertInt16:
-.1f26	85 60		sta $60				sta 	NSMantissa0 				; set up as 32 bit conversion
-.1f28	86 70		stx $70				stx 	NSMantissa1
-.1f2a	64 80		stz $80				stz 	NSMantissa2
-.1f2c	64 90		stz $90				stz 	NSMantissa3
-.1f2e	64 50		stz $50				stz 	NSStatus 					; positive integer
-.1f30	a2 00		ldx #$00			ldx 	#0 							; stack level
-.1f32	a9 0a		lda #$0a			lda 	#10 						; base 10 decimal.
-.1f34	80 00		bra $1f36			bra 	ConvertInt32
-.1f36					ConvertInt32:
-.1f36	5a		phy				phy
-.1f37	a0 00		ldy #$00			ldy  	#0 							; index into buffer.
-.1f39	24 50		bit $50				bit 	NSStatus 					; output a - if not negative.
-.1f3b	10 08		bpl $1f45			bpl 	_CI32NotNeg
-.1f3d	48		pha				pha
-.1f3e	a9 2d		lda #$2d			lda 	#'-'
-.1f40	99 04 04	sta $0404,y			sta 	numberBuffer,y
-.1f43	c8		iny				iny
-.1f44	68		pla				pla
-.1f45					_CI32NotNeg:
-.1f45	20 53 1f	jsr $1f53			jsr 	_CI32DivideConvert 			; recursive conversion
-.1f48	a9 00		lda #$00			lda 	#0 							; make ASCIIZ
-.1f4a	99 04 04	sta $0404,y			sta 	numberBuffer,y
-.1f4d	7a		ply				ply
-.1f4e	a2 04		ldx #$04			ldx 	#numberBuffer >> 8 			; return address in XA
-.1f50	a9 04		lda #$04			lda 	#numberBuffer & $FF
-.1f52	60		rts				rts
-.1f53					_CI32DivideConvert:
-.1f53	e8		inx				inx 								; write to next slot up
-.1f54	20 4c 20	jsr $204c			jsr 	FloatSetByte 		 		; write the base out.
-.1f57	ca		dex				dex
-.1f58	20 a3 0d	jsr $0da3			jsr 	Int32Divide 				; divide
-.1f5b	b5 60		lda $60,x			lda 	NSMantissa0,x 				; save remainder
-.1f5d	48		pha				pha
-.1f5e	20 92 0d	jsr $0d92			jsr 	NSMCopyPlusTwoToZero 		; Copy the divide result into place.
-.1f61	20 6c 20	jsr $206c			jsr 	FloatIsZero 				; is it zero ?
-.1f64	f0 05		beq $1f6b			beq 	_CI32NoRecurse 				; if so, don't recursively call.
-.1f66	b5 61		lda $61,x			lda 	NSMantissa0+1,x 			; this is the base which is not changed by divide
-.1f68	20 53 1f	jsr $1f53			jsr 	_CI32DivideConvert 			; and recusrively call.
-.1f6b					_CI32NoRecurse:
-.1f6b	68		pla				pla 								; remainder
-.1f6c	c9 0a		cmp #$0a			cmp 	#10 						; convert to ASCII, allowing for hexadecimal.
-.1f6e	90 02		bcc $1f72			bcc 	_CI32NotHex
-.1f70	69 26		adc #$26			adc 	#6+32
-.1f72					_CI32NotHex:
-.1f72	69 30		adc #$30			adc 	#48
-.1f74	99 04 04	sta $0404,y			sta 	numberBuffer,y 				; write out and exit
-.1f77	c8		iny				iny
-.1f78	60		rts				rts
+.1f66					ConvertInt16:
+.1f66	85 60		sta $60				sta 	NSMantissa0 				; set up as 32 bit conversion
+.1f68	86 70		stx $70				stx 	NSMantissa1
+.1f6a	64 80		stz $80				stz 	NSMantissa2
+.1f6c	64 90		stz $90				stz 	NSMantissa3
+.1f6e	64 50		stz $50				stz 	NSStatus 					; positive integer
+.1f70	a2 00		ldx #$00			ldx 	#0 							; stack level
+.1f72	a9 0a		lda #$0a			lda 	#10 						; base 10 decimal.
+.1f74	80 00		bra $1f76			bra 	ConvertInt32
+.1f76					ConvertInt32:
+.1f76	5a		phy				phy
+.1f77	a0 00		ldy #$00			ldy  	#0 							; index into buffer.
+.1f79	24 50		bit $50				bit 	NSStatus 					; output a - if not negative.
+.1f7b	10 08		bpl $1f85			bpl 	_CI32NotNeg
+.1f7d	48		pha				pha
+.1f7e	a9 2d		lda #$2d			lda 	#'-'
+.1f80	99 04 04	sta $0404,y			sta 	numberBuffer,y
+.1f83	c8		iny				iny
+.1f84	68		pla				pla
+.1f85					_CI32NotNeg:
+.1f85	20 93 1f	jsr $1f93			jsr 	_CI32DivideConvert 			; recursive conversion
+.1f88	a9 00		lda #$00			lda 	#0 							; make ASCIIZ
+.1f8a	99 04 04	sta $0404,y			sta 	numberBuffer,y
+.1f8d	7a		ply				ply
+.1f8e	a2 04		ldx #$04			ldx 	#numberBuffer >> 8 			; return address in XA
+.1f90	a9 04		lda #$04			lda 	#numberBuffer & $FF
+.1f92	60		rts				rts
+.1f93					_CI32DivideConvert:
+.1f93	e8		inx				inx 								; write to next slot up
+.1f94	20 8c 20	jsr $208c			jsr 	FloatSetByte 		 		; write the base out.
+.1f97	ca		dex				dex
+.1f98	20 a3 0d	jsr $0da3			jsr 	Int32Divide 				; divide
+.1f9b	b5 60		lda $60,x			lda 	NSMantissa0,x 				; save remainder
+.1f9d	48		pha				pha
+.1f9e	20 92 0d	jsr $0d92			jsr 	NSMCopyPlusTwoToZero 		; Copy the divide result into place.
+.1fa1	20 ac 20	jsr $20ac			jsr 	FloatIsZero 				; is it zero ?
+.1fa4	f0 05		beq $1fab			beq 	_CI32NoRecurse 				; if so, don't recursively call.
+.1fa6	b5 61		lda $61,x			lda 	NSMantissa0+1,x 			; this is the base which is not changed by divide
+.1fa8	20 93 1f	jsr $1f93			jsr 	_CI32DivideConvert 			; and recusrively call.
+.1fab					_CI32NoRecurse:
+.1fab	68		pla				pla 								; remainder
+.1fac	c9 0a		cmp #$0a			cmp 	#10 						; convert to ASCII, allowing for hexadecimal.
+.1fae	90 02		bcc $1fb2			bcc 	_CI32NotHex
+.1fb0	69 26		adc #$26			adc 	#6+32
+.1fb2					_CI32NotHex:
+.1fb2	69 30		adc #$30			adc 	#48
+.1fb4	99 04 04	sta $0404,y			sta 	numberBuffer,y 				; write out and exit
+.1fb7	c8		iny				iny
+.1fb8	60		rts				rts
 
 ;******  Return to file: _runtime.asm
 
 
 ;******  Processing file: modules/ifloat32/float/tostring.asm
 
-.1f79					FloatToString:
-.1f79	da		phx				phx
-.1f7a	5a		phy				phy 								; save code position
-.1f7b	8d 37 05	sta $0537			sta 	decimalPlaces	 			; save number of DPs.
-.1f7e	9c 38 05	stz $0538			stz 	dbOffset 					; offset into decimal buffer = start.
-.1f81	b5 50		lda $50,x			lda 	NSStatus,x  				; is it -ve.
-.1f83	10 08		bpl $1f8d			bpl 	_CNTSNotNegative
-.1f85	29 7f		and #$7f			and 	#$7F 						; make +ve
-.1f87	95 50		sta $50,x			sta 	NSStatus,x
-.1f89	a9 2d		lda #$2d			lda 	#"-"
-.1f8b	80 02		bra $1f8f			bra 	_CNTMain
-.1f8d					_CNTSNotNegative:
-.1f8d	a9 20		lda #$20			lda 	#" "
-.1f8f					_CNTMain:
-.1f8f	20 f1 1f	jsr $1ff1			jsr 	WriteDecimalBuffer
-.1f92	b5 a0		lda $a0,x			lda 	NSExponent,x 				; check if decimal
-.1f94	f0 0d		beq $1fa3			beq 	_CNTSNotFloat
-.1f96	e8		inx				inx 								; round up so we don't get too many 6.999999
-.1f97	a9 01		lda #$01			lda 	#1
-.1f99	20 4c 20	jsr $204c			jsr 	FloatSetByte
-.1f9c	b5 9f		lda $9f,x			lda		NSExponent-1,x
-.1f9e	95 a0		sta $a0,x			sta 	NSExponent,x
-.1fa0	20 11 08	jsr $0811			jsr 	FloatAdd
-.1fa3					_CNTSNotFloat:
-.1fa3	20 d3 1f	jsr $1fd3			jsr 	MakePlusTwoString 			; do the integer part.
-.1fa6	20 c0 10	jsr $10c0			jsr 	FloatFractionalPart 		; get the fractional part
-.1fa9	20 cd 16	jsr $16cd			jsr 	FloatNormalise					; normalise , exit if zero
-.1fac	f0 22		beq $1fd0			beq 	_CNTSExit
-.1fae	a9 2e		lda #$2e			lda 	#"."
-.1fb0	20 f1 1f	jsr $1ff1			jsr 	WriteDecimalBuffer 			; write decimal place
-.1fb3					_CNTSDecimal:
-.1fb3	ce 37 05	dec $0537			dec 	decimalPlaces 				; done all the decimals
-.1fb6	30 18		bmi $1fd0			bmi 	_CNTSExit
-.1fb8	e8		inx				inx 								; x 10.0
-.1fb9	a9 0a		lda #$0a			lda 	#10
-.1fbb	20 4c 20	jsr $204c			jsr 	FloatSetByte
-.1fbe	20 91 15	jsr $1591			jsr 	FloatMultiply
-.1fc1	20 d3 1f	jsr $1fd3			jsr 	MakePlusTwoString 			; put the integer e.g. next digit out.
-.1fc4	20 c0 10	jsr $10c0			jsr 	FloatFractionalPart 		; get the fractional part
-.1fc7	20 cd 16	jsr $16cd			jsr 	FloatNormalise 				; normalise it.
-.1fca	b5 a0		lda $a0,x			lda 	NSExponent,x 				; gone to zero, exit.
-.1fcc	c9 d0		cmp #$d0			cmp 	#$D0 						; very small remainder, so don't bother.
-.1fce	b0 e3		bcs $1fb3			bcs 	_CNTSDecimal 				; keep going.
-.1fd0					_CNTSExit:
-.1fd0	7a		ply				ply
-.1fd1	fa		plx				plx
-.1fd2	60		rts				rts
-.1fd3					MakePlusTwoString:
-.1fd3	da		phx				phx
-.1fd4	20 2d 20	jsr $202d			jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2] - we will use S[X+2] for the intege part.
-.1fd7	e8		inx				inx 								; access it
-.1fd8	e8		inx				inx
-.1fd9	20 02 13	jsr $1302			jsr 	FloatIntegerPart 			; make it an integer
-.1fdc	a9 0a		lda #$0a			lda 	#10 						; convert it in base 10
-.1fde	20 36 1f	jsr $1f36			jsr 	ConvertInt32
-.1fe1	a2 00		ldx #$00			ldx	 	#0 							; write that to the decimal buffer.
-.1fe3					_MPTSCopy:
-.1fe3	bd 04 04	lda $0404,x			lda 	numberBuffer,x
-.1fe6	20 f1 1f	jsr $1ff1			jsr 	WriteDecimalBuffer
-.1fe9	e8		inx				inx
-.1fea	bd 04 04	lda $0404,x			lda 	numberBuffer,x
-.1fed	d0 f4		bne $1fe3			bne 	_MPTSCopy
-.1fef	fa		plx				plx
-.1ff0	60		rts				rts
-.1ff1					WriteDecimalBuffer:
-.1ff1	da		phx				phx
-.1ff2	ae 38 05	ldx $0538			ldx 	dbOffset
-.1ff5	9d 39 05	sta $0539,x			sta 	decimalBuffer,x
-.1ff8	9e 3a 05	stz $053a,x			stz 	decimalBuffer+1,x
-.1ffb	ee 38 05	inc $0538			inc 	dbOffset
-.1ffe	fa		plx				plx
-.1fff	60		rts				rts
+.1fb9					FloatToString:
+.1fb9	da		phx				phx
+.1fba	5a		phy				phy 								; save code position
+.1fbb	8d 37 05	sta $0537			sta 	decimalPlaces	 			; save number of DPs.
+.1fbe	9c 38 05	stz $0538			stz 	dbOffset 					; offset into decimal buffer = start.
+.1fc1	b5 50		lda $50,x			lda 	NSStatus,x  				; is it -ve.
+.1fc3	10 08		bpl $1fcd			bpl 	_CNTSNotNegative
+.1fc5	29 7f		and #$7f			and 	#$7F 						; make +ve
+.1fc7	95 50		sta $50,x			sta 	NSStatus,x
+.1fc9	a9 2d		lda #$2d			lda 	#"-"
+.1fcb	80 02		bra $1fcf			bra 	_CNTMain
+.1fcd					_CNTSNotNegative:
+.1fcd	a9 20		lda #$20			lda 	#" "
+.1fcf					_CNTMain:
+.1fcf	20 31 20	jsr $2031			jsr 	WriteDecimalBuffer
+.1fd2	b5 a0		lda $a0,x			lda 	NSExponent,x 				; check if decimal
+.1fd4	f0 0d		beq $1fe3			beq 	_CNTSNotFloat
+.1fd6	e8		inx				inx 								; round up so we don't get too many 6.999999
+.1fd7	a9 01		lda #$01			lda 	#1
+.1fd9	20 8c 20	jsr $208c			jsr 	FloatSetByte
+.1fdc	b5 9f		lda $9f,x			lda		NSExponent-1,x
+.1fde	95 a0		sta $a0,x			sta 	NSExponent,x
+.1fe0	20 11 08	jsr $0811			jsr 	FloatAdd
+.1fe3					_CNTSNotFloat:
+.1fe3	20 13 20	jsr $2013			jsr 	MakePlusTwoString 			; do the integer part.
+.1fe6	20 c0 10	jsr $10c0			jsr 	FloatFractionalPart 		; get the fractional part
+.1fe9	20 cd 16	jsr $16cd			jsr 	FloatNormalise					; normalise , exit if zero
+.1fec	f0 22		beq $2010			beq 	_CNTSExit
+.1fee	a9 2e		lda #$2e			lda 	#"."
+.1ff0	20 31 20	jsr $2031			jsr 	WriteDecimalBuffer 			; write decimal place
+.1ff3					_CNTSDecimal:
+.1ff3	ce 37 05	dec $0537			dec 	decimalPlaces 				; done all the decimals
+.1ff6	30 18		bmi $2010			bmi 	_CNTSExit
+.1ff8	e8		inx				inx 								; x 10.0
+.1ff9	a9 0a		lda #$0a			lda 	#10
+.1ffb	20 8c 20	jsr $208c			jsr 	FloatSetByte
+.1ffe	20 91 15	jsr $1591			jsr 	FloatMultiply
+.2001	20 13 20	jsr $2013			jsr 	MakePlusTwoString 			; put the integer e.g. next digit out.
+.2004	20 c0 10	jsr $10c0			jsr 	FloatFractionalPart 		; get the fractional part
+.2007	20 cd 16	jsr $16cd			jsr 	FloatNormalise 				; normalise it.
+.200a	b5 a0		lda $a0,x			lda 	NSExponent,x 				; gone to zero, exit.
+.200c	c9 d0		cmp #$d0			cmp 	#$D0 						; very small remainder, so don't bother.
+.200e	b0 e3		bcs $1ff3			bcs 	_CNTSDecimal 				; keep going.
+.2010					_CNTSExit:
+.2010	7a		ply				ply
+.2011	fa		plx				plx
+.2012	60		rts				rts
+.2013					MakePlusTwoString:
+.2013	da		phx				phx
+.2014	20 6d 20	jsr $206d			jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2] - we will use S[X+2] for the intege part.
+.2017	e8		inx				inx 								; access it
+.2018	e8		inx				inx
+.2019	20 02 13	jsr $1302			jsr 	FloatIntegerPart 			; make it an integer
+.201c	a9 0a		lda #$0a			lda 	#10 						; convert it in base 10
+.201e	20 76 1f	jsr $1f76			jsr 	ConvertInt32
+.2021	a2 00		ldx #$00			ldx	 	#0 							; write that to the decimal buffer.
+.2023					_MPTSCopy:
+.2023	bd 04 04	lda $0404,x			lda 	numberBuffer,x
+.2026	20 31 20	jsr $2031			jsr 	WriteDecimalBuffer
+.2029	e8		inx				inx
+.202a	bd 04 04	lda $0404,x			lda 	numberBuffer,x
+.202d	d0 f4		bne $2023			bne 	_MPTSCopy
+.202f	fa		plx				plx
+.2030	60		rts				rts
+.2031					WriteDecimalBuffer:
+.2031	da		phx				phx
+.2032	ae 38 05	ldx $0538			ldx 	dbOffset
+.2035	9d 39 05	sta $0539,x			sta 	decimalBuffer,x
+.2038	9e 3a 05	stz $053a,x			stz 	decimalBuffer+1,x
+.203b	ee 38 05	inc $0538			inc 	dbOffset
+.203e	fa		plx				plx
+.203f	60		rts				rts
 .0537					decimalPlaces:
 >0537							.fill 	1
 .0538					dbOffset:
@@ -4612,434 +4658,435 @@
 
 ;******  Processing file: modules/runtime/functions/number/usr.asm
 
-.2000					UnaryUsr:
-.2000	fa		plx				plx
-.2001	5a		phy				phy
-.2002	20 09 20	jsr $2009			jsr 	_UUCallVector
-.2005	7a		ply				ply
-.2006	4c 78 1a	jmp $1a78			jmp 	NextCommand
-.2009					_UUCallVector:
-.2009	6c 11 03	jmp ($0311)			jmp 	(USRRoutineAddress)
+.2040					UnaryUsr:
+.2040	fa		plx				plx
+.2041	5a		phy				phy
+.2042	20 49 20	jsr $2049			jsr 	_UUCallVector
+.2045	7a		ply				ply
+.2046	4c 78 1a	jmp $1a78			jmp 	NextCommand
+.2049					_UUCallVector:
+.2049	6c 11 03	jmp ($0311)			jmp 	(USRRoutineAddress)
 
 ;******  Return to file: _runtime.asm
 
 
 ;******  Processing file: modules/ifloat32/utility/utility.asm
 
-.200c					FloatNegate:
-.200c	b5 50		lda $50,x			lda 	NSStatus,x 					; everything is sign/magnitude usually so just
-.200e	49 80		eor #$80			eor 	#$80  						; toggle the negative flag
-.2010	95 50		sta $50,x			sta 	NSStatus,x
-.2012	60		rts				rts
-.2013					FloatNegateMantissa:
-.2013	38		sec				sec 								; when we want an actual 32 bit 2's complement value.
-.2014	a9 00		lda #$00			lda 	#0
-.2016	f5 60		sbc $60,x			sbc 	NSMantissa0,x
-.2018	95 60		sta $60,x			sta 	NSMantissa0,x
-.201a	a9 00		lda #$00			lda 	#0
-.201c	f5 70		sbc $70,x			sbc 	NSMantissa1,x
-.201e	95 70		sta $70,x			sta 	NSMantissa1,x
-.2020	a9 00		lda #$00			lda 	#0
-.2022	f5 80		sbc $80,x			sbc 	NSMantissa2,x
-.2024	95 80		sta $80,x			sta 	NSMantissa2,x
-.2026	a9 00		lda #$00			lda 	#0
-.2028	f5 90		sbc $90,x			sbc 	NSMantissa3,x
-.202a	95 90		sta $90,x			sta 	NSMantissa3,x
-.202c	60		rts				rts
-.202d					FloatShiftUpTwo:
-.202d	b5 60		lda $60,x			lda 	NSMantissa0,x
-.202f	95 62		sta $62,x			sta 	NSMantissa0+2,x
-.2031	b5 70		lda $70,x			lda 	NSMantissa1,x
-.2033	95 72		sta $72,x			sta 	NSMantissa1+2,x
-.2035	b5 80		lda $80,x			lda 	NSMantissa2,x
-.2037	95 82		sta $82,x			sta 	NSMantissa2+2,x
-.2039	b5 90		lda $90,x			lda 	NSMantissa3,x
-.203b	95 92		sta $92,x			sta 	NSMantissa3+2,x
-.203d	b5 a0		lda $a0,x			lda 	NSExponent,x
-.203f	95 a2		sta $a2,x			sta 	NSExponent+2,x
-.2041	b5 50		lda $50,x			lda 	NSStatus,x
-.2043	95 52		sta $52,x			sta 	NSStatus+2,x
-.2045	60		rts				rts
-.2046					FloatSetZeroMantissaOnly:
-.2046	74 60		stz $60,x			stz 	NSMantissa0,x
-.2048	80 08		bra $2052			bra 	FloatZero13
-.204a					FloatSetZero:
-.204a	a9 00		lda #$00			lda 	#0
-.204c					FloatSetByte:
-.204c	74 a0		stz $a0,x			stz 	NSExponent,x 				; zero exponent, as +ve integer value.
-.204e					FloatSetMantissa:
-.204e	95 60		sta $60,x			sta 	NSMantissa0,x 				; zero mantissa
-.2050	74 50		stz $50,x			stz 	NSStatus,x
-.2052					FloatZero13:
-.2052	74 70		stz $70,x			stz 	NSMantissa1,x
-.2054	74 80		stz $80,x			stz 	NSMantissa2,x
-.2056	74 90		stz $90,x			stz 	NSMantissa3,x
-.2058	60		rts				rts
-.2059					FloatShiftLeft:
-.2059	18		clc				clc
-.205a					FloatRotateLeft:
-.205a	36 60		rol $60,x			rol 	NSMantissa0,x
-.205c	36 70		rol $70,x			rol		NSMantissa1,x
-.205e	36 80		rol $80,x			rol		NSMantissa2,x
-.2060	36 90		rol $90,x			rol		NSMantissa3,x
-.2062	60		rts				rts
-.2063					FloatShiftRight:
-.2063	56 90		lsr $90,x			lsr 	NSMantissa3,x
-.2065	76 80		ror $80,x			ror		NSMantissa2,x
-.2067	76 70		ror $70,x			ror		NSMantissa1,x
-.2069	76 60		ror $60,x			ror		NSMantissa0,x
-.206b	60		rts				rts
-.206c					FloatIsZero:
-.206c	b5 90		lda $90,x			lda 	NSMantissa3,x
-.206e	15 80		ora $80,x			ora		NSMantissa2,x
-.2070	15 70		ora $70,x			ora		NSMantissa1,x
-.2072	15 60		ora $60,x			ora		NSMantissa0,x
-.2074	60		rts				rts
+.204c					FloatNegate:
+.204c	b5 50		lda $50,x			lda 	NSStatus,x 					; everything is sign/magnitude usually so just
+.204e	49 80		eor #$80			eor 	#$80  						; toggle the negative flag
+.2050	95 50		sta $50,x			sta 	NSStatus,x
+.2052	60		rts				rts
+.2053					FloatNegateMantissa:
+.2053	38		sec				sec 								; when we want an actual 32 bit 2's complement value.
+.2054	a9 00		lda #$00			lda 	#0
+.2056	f5 60		sbc $60,x			sbc 	NSMantissa0,x
+.2058	95 60		sta $60,x			sta 	NSMantissa0,x
+.205a	a9 00		lda #$00			lda 	#0
+.205c	f5 70		sbc $70,x			sbc 	NSMantissa1,x
+.205e	95 70		sta $70,x			sta 	NSMantissa1,x
+.2060	a9 00		lda #$00			lda 	#0
+.2062	f5 80		sbc $80,x			sbc 	NSMantissa2,x
+.2064	95 80		sta $80,x			sta 	NSMantissa2,x
+.2066	a9 00		lda #$00			lda 	#0
+.2068	f5 90		sbc $90,x			sbc 	NSMantissa3,x
+.206a	95 90		sta $90,x			sta 	NSMantissa3,x
+.206c	60		rts				rts
+.206d					FloatShiftUpTwo:
+.206d	b5 60		lda $60,x			lda 	NSMantissa0,x
+.206f	95 62		sta $62,x			sta 	NSMantissa0+2,x
+.2071	b5 70		lda $70,x			lda 	NSMantissa1,x
+.2073	95 72		sta $72,x			sta 	NSMantissa1+2,x
+.2075	b5 80		lda $80,x			lda 	NSMantissa2,x
+.2077	95 82		sta $82,x			sta 	NSMantissa2+2,x
+.2079	b5 90		lda $90,x			lda 	NSMantissa3,x
+.207b	95 92		sta $92,x			sta 	NSMantissa3+2,x
+.207d	b5 a0		lda $a0,x			lda 	NSExponent,x
+.207f	95 a2		sta $a2,x			sta 	NSExponent+2,x
+.2081	b5 50		lda $50,x			lda 	NSStatus,x
+.2083	95 52		sta $52,x			sta 	NSStatus+2,x
+.2085	60		rts				rts
+.2086					FloatSetZeroMantissaOnly:
+.2086	74 60		stz $60,x			stz 	NSMantissa0,x
+.2088	80 08		bra $2092			bra 	FloatZero13
+.208a					FloatSetZero:
+.208a	a9 00		lda #$00			lda 	#0
+.208c					FloatSetByte:
+.208c	74 a0		stz $a0,x			stz 	NSExponent,x 				; zero exponent, as +ve integer value.
+.208e					FloatSetMantissa:
+.208e	95 60		sta $60,x			sta 	NSMantissa0,x 				; zero mantissa
+.2090	74 50		stz $50,x			stz 	NSStatus,x
+.2092					FloatZero13:
+.2092	74 70		stz $70,x			stz 	NSMantissa1,x
+.2094	74 80		stz $80,x			stz 	NSMantissa2,x
+.2096	74 90		stz $90,x			stz 	NSMantissa3,x
+.2098	60		rts				rts
+.2099					FloatShiftLeft:
+.2099	18		clc				clc
+.209a					FloatRotateLeft:
+.209a	36 60		rol $60,x			rol 	NSMantissa0,x
+.209c	36 70		rol $70,x			rol		NSMantissa1,x
+.209e	36 80		rol $80,x			rol		NSMantissa2,x
+.20a0	36 90		rol $90,x			rol		NSMantissa3,x
+.20a2	60		rts				rts
+.20a3					FloatShiftRight:
+.20a3	56 90		lsr $90,x			lsr 	NSMantissa3,x
+.20a5	76 80		ror $80,x			ror		NSMantissa2,x
+.20a7	76 70		ror $70,x			ror		NSMantissa1,x
+.20a9	76 60		ror $60,x			ror		NSMantissa0,x
+.20ab	60		rts				rts
+.20ac					FloatIsZero:
+.20ac	b5 90		lda $90,x			lda 	NSMantissa3,x
+.20ae	15 80		ora $80,x			ora		NSMantissa2,x
+.20b0	15 70		ora $70,x			ora		NSMantissa1,x
+.20b2	15 60		ora $60,x			ora		NSMantissa0,x
+.20b4	60		rts				rts
 
 ;******  Return to file: _runtime.asm
 
 
 ;******  Processing file: modules/runtime/functions/strings/val.asm
 
-.2075					ValUnary:
-.2075	fa		plx				plx
-.2076	b5 60		lda $60,x			lda 	NSMantissa0,x
-.2078	85 4a		sta $4a				sta 	zTemp0
-.207a	b5 70		lda $70,x			lda 	NSMantissa1,x
-.207c	85 4b		sta $4b				sta 	zTemp0+1
-.207e	20 89 20	jsr $2089			jsr 	ValEvaluateZTemp0
-.2081	b0 03		bcs $2086			bcs 	_VUError 					; couldn't convert
-.2083	4c 78 1a	jmp $1a78			jmp 	NextCommand
-.2086					_VUError:
-.2086	4c 7d 0e	jmp $0e7d		jmp	ErrorV_value
-.2089					ValEvaluateZTemp0:
-.2089	5a		phy				phy
-.208a	b2 4a		lda ($4a)			lda 	(zTemp0) 					; check not empty string
-.208c	f0 22		beq $20b0			beq 	_VMCFail2
-.208e	a0 00		ldy #$00			ldy 	#0 							; start position
-.2090					_VMCSpaces:
-.2090	c8		iny				iny 								; skip leading spaces
-.2091	b1 4a		lda ($4a),y			lda 	(zTemp0),y
-.2093	c9 20		cmp #$20			cmp 	#" "
-.2095	f0 f9		beq $2090			beq 	_VMCSpaces
-.2097	48		pha				pha 								; save first character
-.2098	c9 2d		cmp #$2d			cmp 	#"-"		 				; is it - ?
-.209a	d0 01		bne $209d			bne 	_VMCStart
-.209c	c8		iny				iny 								; skip over - if so.
-.209d					_VMCStart:
-.209d	38		sec				sec 								; initialise first time round.
-.209e					_VMCNext:
-.209e	98		tya				tya 								; reached end of string
-.209f	3a		dec a				dec 	a
-.20a0	52 4a		eor ($4a)			eor 	(zTemp0) 					; compare length preserve carry.
-.20a2	f0 0f		beq $20b3			beq 	_VMCSuccess 				; successful.
-.20a4	b1 4a		lda ($4a),y			lda 	(zTemp0),y 					; encode a number.
-.20a6	c8		iny				iny
-.20a7	20 22 1e	jsr $1e22			jsr 	FloatEncode 				; send it to the number-builder
-.20aa	90 03		bcc $20af			bcc 	_VMCFail 					; if failed, give up.
-.20ac	18		clc				clc 								; next time round, countinue
-.20ad	80 ef		bra $209e			bra 	_VMCNext
-.20af					_VMCFail:
-.20af	68		pla				pla
-.20b0					_VMCFail2:
-.20b0	7a		ply				ply
-.20b1	38		sec				sec
-.20b2	60		rts				rts
-.20b3					_VMCSuccess:
-.20b3	a9 00		lda #$00			lda 	#0 							; construct final
-.20b5	20 22 1e	jsr $1e22			jsr 	FloatEncode 				; by sending a duff value.
-.20b8	68		pla				pla 								; if it was -ve
-.20b9	c9 2d		cmp #$2d			cmp 	#"-"
-.20bb	d0 03		bne $20c0			bne 	_VMCNotNegative
-.20bd	20 0c 20	jsr $200c			jsr		FloatNegate 				; negate it.
-.20c0					_VMCNotNegative:
-.20c0	7a		ply				ply
-.20c1	18		clc				clc
-.20c2	60		rts				rts
+.20b5					ValUnary:
+.20b5	fa		plx				plx
+.20b6	b5 60		lda $60,x			lda 	NSMantissa0,x
+.20b8	85 4a		sta $4a				sta 	zTemp0
+.20ba	b5 70		lda $70,x			lda 	NSMantissa1,x
+.20bc	85 4b		sta $4b				sta 	zTemp0+1
+.20be	20 c9 20	jsr $20c9			jsr 	ValEvaluateZTemp0
+.20c1	b0 03		bcs $20c6			bcs 	_VUError 					; couldn't convert
+.20c3	4c 78 1a	jmp $1a78			jmp 	NextCommand
+.20c6					_VUError:
+.20c6	4c 7d 0e	jmp $0e7d		jmp	ErrorV_value
+.20c9					ValEvaluateZTemp0:
+.20c9	5a		phy				phy
+.20ca	b2 4a		lda ($4a)			lda 	(zTemp0) 					; check not empty string
+.20cc	f0 22		beq $20f0			beq 	_VMCFail2
+.20ce	a0 00		ldy #$00			ldy 	#0 							; start position
+.20d0					_VMCSpaces:
+.20d0	c8		iny				iny 								; skip leading spaces
+.20d1	b1 4a		lda ($4a),y			lda 	(zTemp0),y
+.20d3	c9 20		cmp #$20			cmp 	#" "
+.20d5	f0 f9		beq $20d0			beq 	_VMCSpaces
+.20d7	48		pha				pha 								; save first character
+.20d8	c9 2d		cmp #$2d			cmp 	#"-"		 				; is it - ?
+.20da	d0 01		bne $20dd			bne 	_VMCStart
+.20dc	c8		iny				iny 								; skip over - if so.
+.20dd					_VMCStart:
+.20dd	38		sec				sec 								; initialise first time round.
+.20de					_VMCNext:
+.20de	98		tya				tya 								; reached end of string
+.20df	3a		dec a				dec 	a
+.20e0	52 4a		eor ($4a)			eor 	(zTemp0) 					; compare length preserve carry.
+.20e2	f0 0f		beq $20f3			beq 	_VMCSuccess 				; successful.
+.20e4	b1 4a		lda ($4a),y			lda 	(zTemp0),y 					; encode a number.
+.20e6	c8		iny				iny
+.20e7	20 62 1e	jsr $1e62			jsr 	FloatEncode 				; send it to the number-builder
+.20ea	90 03		bcc $20ef			bcc 	_VMCFail 					; if failed, give up.
+.20ec	18		clc				clc 								; next time round, countinue
+.20ed	80 ef		bra $20de			bra 	_VMCNext
+.20ef					_VMCFail:
+.20ef	68		pla				pla
+.20f0					_VMCFail2:
+.20f0	7a		ply				ply
+.20f1	38		sec				sec
+.20f2	60		rts				rts
+.20f3					_VMCSuccess:
+.20f3	a9 00		lda #$00			lda 	#0 							; construct final
+.20f5	20 62 1e	jsr $1e62			jsr 	FloatEncode 				; by sending a duff value.
+.20f8	68		pla				pla 								; if it was -ve
+.20f9	c9 2d		cmp #$2d			cmp 	#"-"
+.20fb	d0 03		bne $2100			bne 	_VMCNotNegative
+.20fd	20 4c 20	jsr $204c			jsr		FloatNegate 				; negate it.
+.2100					_VMCNotNegative:
+.2100	7a		ply				ply
+.2101	18		clc				clc
+.2102	60		rts				rts
 
 ;******  Return to file: _runtime.asm
 
 
 ;******  Processing file: modules/runtime/generated/vectors.asm
 
-.20c3					VectorTable:
->20c3	9e 13					.word	LinkFloatAdd             ; $80 +
->20c5	a7 13					.word	LinkFloatSubtract        ; $81 -
->20c7	b0 13					.word	LinkFloatMultiply        ; $82 *
->20c9	b9 13					.word	LinkFloatDivide          ; $83 /
->20cb	c4 13					.word	LinkFloatPower           ; $84 ^
->20cd	ad 08					.word	BinaryAnd                ; $85 and
->20cf	b1 08					.word	BinaryOr                 ; $86 or
->20d1	cf 13					.word	LinkCompareGreater       ; $87 >
->20d3	d8 13					.word	LinkCompareEqual         ; $88 =
->20d5	e1 13					.word	LinkCompareLess          ; $89 <
->20d7	ea 13					.word	LinkCompareGreaterEqual  ; $8a >=
->20d9	f3 13					.word	LinkCompareNotEqual      ; $8b <>
->20db	fc 13					.word	LinkCompareLessEqual     ; $8c <=
->20dd	05 08					.word	AbsoluteTOS              ; $8d abs
->20df	e8 08					.word	ArrayConvert             ; $8e array
->20e1	8a 09					.word	UnaryAsc                 ; $8f asc
->20e3	a5 09					.word	CommandAssert            ; $90 assert
->20e5	00 0a					.word	UnaryBin                 ; $91 bin$
->20e7	2a 0a					.word	PrintCharacter           ; $92 print.chr
->20e9	34 0a					.word	UnaryChr                 ; $93 chr$
->20eb	94 0b					.word	CompareStrings           ; $94 s.cmp
->20ed	89 0f					.word	CommandExit              ; $95 exit
->20ef	8f 0f					.word	CommandDebug             ; $96 debug
->20f1	ef 0f					.word	CommandFor               ; $97 for
->20f3	47 11					.word	UnaryFre                 ; $98 fre
->20f5	5f 11					.word	CommandGet               ; $99 get
->20f7	97 11					.word	CommandReturn            ; $9a return
->20f9	de 11					.word	UnaryHex                 ; $9b hex$
->20fb	8d 13					.word	UnaryLen                 ; $9c len
->20fd	59 14					.word	LinkFloatCompare         ; $9d f.cmp
->20ff	62 14					.word	LinkDivideInt32          ; $9e int.div
->2101	da 15					.word	NegateTOS                ; $9f negate
->2103	e1 15					.word	CommandNewLine           ; $a0 new.line
->2105	ea 15					.word	CommandNext              ; $a1 next
->2107	04 17					.word	NotTOS                   ; $a2 not
->2109	1b 17					.word	CommandOn                ; $a3 on
->210b	39 17					.word	CommandMoreOn            ; $a4 moreon
->210d	41 17					.word	UnaryPeek                ; $a5 peek
->210f	6c 17					.word	CommandPOKE              ; $a6 poke
->2111	84 17					.word	UnaryPos                 ; $a7 pos
->2113	ab 17					.word	GetChannel               ; $a8 getchannel
->2115	b6 17					.word	SetChannel               ; $a9 setchannel
->2117	e3 17					.word	PrintNumber              ; $aa print.n
->2119	02 18					.word	PrintString              ; $ab print.s
->211b	69 18					.word	CommandRead              ; $ac read
->211d	83 18					.word	CommandReadString        ; $ad read$
->211f	f1 19					.word	UnaryRND                 ; $ae rnd
->2121	21 1b					.word	StringConcatenate        ; $af concat
->2123	6f 1b					.word	SignTOS                  ; $b0 sgn
->2125	4b 1c					.word	PrintTab                 ; $b1 print.tab
->2127	59 1c					.word	PrintPos                 ; $b2 print.pos
->2129	6a 1c					.word	PrintSpace               ; $b3 print.spc
->212b	8f 1c					.word	Unary_Str                ; $b4 str$
->212d	0a 1d					.word	Unary_Left               ; $b5 left$
->212f	1a 1d					.word	Unary_Right              ; $b6 right$
->2131	36 1d					.word	Unary_Mid                ; $b7 mid$
->2133	04 1e					.word	TimeTOS                  ; $b8 ti
->2135	00 20					.word	UnaryUsr                 ; $b9 usr
->2137	75 20					.word	ValUnary                 ; $ba val
->2139	8a 1b					.word	CommandShift             ; $bb .shift
->213b	bb 1a					.word	PushByteCommand          ; $bc .byte
->213d	ce 1a					.word	PushWordCommand          ; $bd .word
->213f	25 18					.word	CommandPushN             ; $be .float
->2141	4b 18					.word	CommandPushS             ; $bf .string
->2143	87 0c					.word	CommandData              ; $c0 .data
->2145	a9 11					.word	CommandGoto              ; $c1 .goto
->2147	8b 11					.word	CommandGosub             ; $c2 .gosub
->2149	c0 11					.word	CommandGotoZ             ; $c3 .goto.z
->214b	cf 11					.word	CommandGotoNZ            ; $c4 .goto.nz
->214d	9c 08					.word	CommandVarSpace          ; $c5 .varspace
-.214f					ShiftVectorTable:
->214f	4c 0a					.word	CommandClr               ; $bb80 clr
->2151	90 0c					.word	CommandDIM               ; $bb81 dim
->2153	17 0e					.word	CommandEnd               ; $bb82 end
->2155	05 14					.word	LinkFloatIntegerPartDown ; $bb83 int
->2157	0e 14					.word	LinkFloatSquareRoot      ; $bb84 sqr
->2159	1f 14					.word	LinkFloatLogarithm       ; $bb85 log
->215b	2a 14					.word	LinkFloatExponent        ; $bb86 exp
->215d	33 14					.word	LinkFloatCosine          ; $bb87 cos
->215f	3c 14					.word	LinkFloatSine            ; $bb88 sin
->2161	45 14					.word	LinkFloatTangent         ; $bb89 tan
->2163	4e 14					.word	LinkFloatArcTan          ; $bb8a atn
->2165	dc 19					.word	CommandRestore           ; $bb8b restore
->2167	8b 1c					.word	CommandStop              ; $bb8c stop
->2169	a8 1d					.word	CommandSYS               ; $bb8d sys
->216b	6d 21					.word	CommandWAIT              ; $bb8e wait
+.2103					VectorTable:
+>2103	9e 13					.word	LinkFloatAdd             ; $80 +
+>2105	a7 13					.word	LinkFloatSubtract        ; $81 -
+>2107	b0 13					.word	LinkFloatMultiply        ; $82 *
+>2109	b9 13					.word	LinkFloatDivide          ; $83 /
+>210b	c4 13					.word	LinkFloatPower           ; $84 ^
+>210d	ad 08					.word	BinaryAnd                ; $85 and
+>210f	b1 08					.word	BinaryOr                 ; $86 or
+>2111	cf 13					.word	LinkCompareGreater       ; $87 >
+>2113	d8 13					.word	LinkCompareEqual         ; $88 =
+>2115	e1 13					.word	LinkCompareLess          ; $89 <
+>2117	ea 13					.word	LinkCompareGreaterEqual  ; $8a >=
+>2119	f3 13					.word	LinkCompareNotEqual      ; $8b <>
+>211b	fc 13					.word	LinkCompareLessEqual     ; $8c <=
+>211d	05 08					.word	AbsoluteTOS              ; $8d abs
+>211f	e8 08					.word	ArrayConvert             ; $8e array
+>2121	8a 09					.word	UnaryAsc                 ; $8f asc
+>2123	a5 09					.word	CommandAssert            ; $90 assert
+>2125	00 0a					.word	UnaryBin                 ; $91 bin$
+>2127	2a 0a					.word	PrintCharacter           ; $92 print.chr
+>2129	34 0a					.word	UnaryChr                 ; $93 chr$
+>212b	94 0b					.word	CompareStrings           ; $94 s.cmp
+>212d	89 0f					.word	CommandExit              ; $95 exit
+>212f	8f 0f					.word	CommandDebug             ; $96 debug
+>2131	ef 0f					.word	CommandFor               ; $97 for
+>2133	47 11					.word	UnaryFre                 ; $98 fre
+>2135	5f 11					.word	CommandGet               ; $99 get
+>2137	97 11					.word	CommandReturn            ; $9a return
+>2139	de 11					.word	UnaryHex                 ; $9b hex$
+>213b	8d 13					.word	UnaryLen                 ; $9c len
+>213d	59 14					.word	LinkFloatCompare         ; $9d f.cmp
+>213f	62 14					.word	LinkDivideInt32          ; $9e int.div
+>2141	da 15					.word	NegateTOS                ; $9f negate
+>2143	e1 15					.word	CommandNewLine           ; $a0 new.line
+>2145	ea 15					.word	CommandNext              ; $a1 next
+>2147	04 17					.word	NotTOS                   ; $a2 not
+>2149	1b 17					.word	CommandOn                ; $a3 on
+>214b	39 17					.word	CommandMoreOn            ; $a4 moreon
+>214d	41 17					.word	UnaryPeek                ; $a5 peek
+>214f	6c 17					.word	CommandPOKE              ; $a6 poke
+>2151	84 17					.word	UnaryPos                 ; $a7 pos
+>2153	ab 17					.word	GetChannel               ; $a8 getchannel
+>2155	b6 17					.word	SetChannel               ; $a9 setchannel
+>2157	e3 17					.word	PrintNumber              ; $aa print.n
+>2159	02 18					.word	PrintString              ; $ab print.s
+>215b	69 18					.word	CommandRead              ; $ac read
+>215d	83 18					.word	CommandReadString        ; $ad read$
+>215f	f1 19					.word	UnaryRND                 ; $ae rnd
+>2161	21 1b					.word	StringConcatenate        ; $af concat
+>2163	6f 1b					.word	SignTOS                  ; $b0 sgn
+>2165	4b 1c					.word	PrintTab                 ; $b1 print.tab
+>2167	59 1c					.word	PrintPos                 ; $b2 print.pos
+>2169	6a 1c					.word	PrintSpace               ; $b3 print.spc
+>216b	8f 1c					.word	Unary_Str                ; $b4 str$
+>216d	0a 1d					.word	Unary_Left               ; $b5 left$
+>216f	1a 1d					.word	Unary_Right              ; $b6 right$
+>2171	36 1d					.word	Unary_Mid                ; $b7 mid$
+>2173	a8 1d					.word	CommandSwap              ; $b8 swap
+>2175	44 1e					.word	TimeTOS                  ; $b9 ti
+>2177	40 20					.word	UnaryUsr                 ; $ba usr
+>2179	b5 20					.word	ValUnary                 ; $bb val
+>217b	8a 1b					.word	CommandShift             ; $bc .shift
+>217d	bb 1a					.word	PushByteCommand          ; $bd .byte
+>217f	ce 1a					.word	PushWordCommand          ; $be .word
+>2181	25 18					.word	CommandPushN             ; $bf .float
+>2183	4b 18					.word	CommandPushS             ; $c0 .string
+>2185	87 0c					.word	CommandData              ; $c1 .data
+>2187	a9 11					.word	CommandGoto              ; $c2 .goto
+>2189	8b 11					.word	CommandGosub             ; $c3 .gosub
+>218b	c0 11					.word	CommandGotoZ             ; $c4 .goto.z
+>218d	cf 11					.word	CommandGotoNZ            ; $c5 .goto.nz
+>218f	9c 08					.word	CommandVarSpace          ; $c6 .varspace
+.2191					ShiftVectorTable:
+>2191	4c 0a					.word	CommandClr               ; $bc80 clr
+>2193	90 0c					.word	CommandDIM               ; $bc81 dim
+>2195	17 0e					.word	CommandEnd               ; $bc82 end
+>2197	05 14					.word	LinkFloatIntegerPartDown ; $bc83 int
+>2199	0e 14					.word	LinkFloatSquareRoot      ; $bc84 sqr
+>219b	1f 14					.word	LinkFloatLogarithm       ; $bc85 log
+>219d	2a 14					.word	LinkFloatExponent        ; $bc86 exp
+>219f	33 14					.word	LinkFloatCosine          ; $bc87 cos
+>21a1	3c 14					.word	LinkFloatSine            ; $bc88 sin
+>21a3	45 14					.word	LinkFloatTangent         ; $bc89 tan
+>21a5	4e 14					.word	LinkFloatArcTan          ; $bc8a atn
+>21a7	dc 19					.word	CommandRestore           ; $bc8b restore
+>21a9	8b 1c					.word	CommandStop              ; $bc8c stop
+>21ab	e8 1d					.word	CommandSYS               ; $bc8d sys
+>21ad	af 21					.word	CommandWAIT              ; $bc8e wait
 
 ;******  Return to file: _runtime.asm
 
 
 ;******  Processing file: modules/runtime/commands/wait.asm
 
-.216d					CommandWAIT:
-.216d	fa		plx				plx
-.216e	b5 5e		lda $5e,x			lda 	NSMantissa0-2,x 			; get wait address
-.2170	85 4a		sta $4a				sta 	zTemp0
-.2172	b5 6e		lda $6e,x			lda 	NSMantissa1-2,x
-.2174	85 4b		sta $4b				sta 	zTemp0+1
-.2176					_WaitLoop:
-.2176	b2 4a		lda ($4a)			lda 	(zTemp0) 					; read it
-.2178	35 5f		and $5f,x			and 	NSMantissa0-1,x		 		; and with mask
-.217a	55 60		eor $60,x			eor 	NSMantissa0-0,x 			; toggle
-.217c	f0 f8		beq $2176			beq 	_WaitLoop 					; keep going if zero
-.217e	ca		dex				dex 								; drop 3.
-.217f	ca		dex				dex
-.2180	ca		dex				dex
-.2181	4c 78 1a	jmp $1a78			jmp 	NextCommand
+.21af					CommandWAIT:
+.21af	fa		plx				plx
+.21b0	b5 5e		lda $5e,x			lda 	NSMantissa0-2,x 			; get wait address
+.21b2	85 4a		sta $4a				sta 	zTemp0
+.21b4	b5 6e		lda $6e,x			lda 	NSMantissa1-2,x
+.21b6	85 4b		sta $4b				sta 	zTemp0+1
+.21b8					_WaitLoop:
+.21b8	b2 4a		lda ($4a)			lda 	(zTemp0) 					; read it
+.21ba	35 5f		and $5f,x			and 	NSMantissa0-1,x		 		; and with mask
+.21bc	55 60		eor $60,x			eor 	NSMantissa0-0,x 			; toggle
+.21be	f0 f8		beq $21b8			beq 	_WaitLoop 					; keep going if zero
+.21c0	ca		dex				dex 								; drop 3.
+.21c1	ca		dex				dex
+.21c2	ca		dex				dex
+.21c3	4c 78 1a	jmp $1a78			jmp 	NextCommand
 
 ;******  Return to file: _runtime.asm
 
 
 ;******  Processing file: modules/runtime/memory/write_float.asm
 
-.2184					WriteFloatCommand:
-.2184	fa		plx				plx
-.2185	b1 44		lda ($44),y			lda 	(codePtr),y 				; get the LSB of the halved offset.
-.2187	85 4a		sta $4a				sta 	zTemp0 						; save in MSB
-.2189	88		dey				dey 								; get the upper 3 bits
-.218a	b1 44		lda ($44),y			lda 	(codePtr),y
-.218c	29 07		and #$07			and 	#7
-.218e	c8		iny				iny
-.218f	c8		iny				iny
-.2190	06 4a		asl $4a				asl 	zTemp0 						; shift zTemp0:A left
-.2192	2a		rol a				rol 	a 							; carry will be clear.
-.2193	69 80		adc #$80			adc 	#VariableStart >> 8 		; point to variable page.
-.2195	85 4b		sta $4b				sta 	zTemp0+1
-.2197	20 9d 21	jsr $219d			jsr 	WriteFloatZTemp0Sub
-.219a	4c 78 1a	jmp $1a78			jmp 	NextCommand
-.219d					WriteFloatZTemp0Sub:
-.219d	5a		phy				phy 								; ldart write
-.219e	a0 01		ldy #$01			ldy 	#1
-.21a0	b5 60		lda $60,x			lda 	NSMantissa0,x
-.21a2	92 4a		sta ($4a)			sta 	(zTemp0)
-.21a4	b5 70		lda $70,x			lda 	NSMantissa1,x
-.21a6	91 4a		sta ($4a),y			sta 	(zTemp0),y
-.21a8	c8		iny				iny
-.21a9	b5 80		lda $80,x			lda 	NSMantissa2,x
-.21ab	91 4a		sta ($4a),y			sta 	(zTemp0),y
-.21ad	c8		iny				iny
-.21ae	b5 90		lda $90,x			lda 	NSMantissa3,x
-.21b0	91 4a		sta ($4a),y			sta 	(zTemp0),y
-.21b2	c8		iny				iny
-.21b3	b5 a0		lda $a0,x			lda 	NSExponent,x
-.21b5	91 4a		sta ($4a),y			sta 	(zTemp0),y
-.21b7	c8		iny				iny
-.21b8	b5 50		lda $50,x			lda 	NSStatus,x
-.21ba	91 4a		sta ($4a),y			sta 	(zTemp0),y
-.21bc	ca		dex				dex
-.21bd	7a		ply				ply
-.21be	60		rts				rts
+.21c6					WriteFloatCommand:
+.21c6	fa		plx				plx
+.21c7	b1 44		lda ($44),y			lda 	(codePtr),y 				; get the LSB of the halved offset.
+.21c9	85 4a		sta $4a				sta 	zTemp0 						; save in MSB
+.21cb	88		dey				dey 								; get the upper 3 bits
+.21cc	b1 44		lda ($44),y			lda 	(codePtr),y
+.21ce	29 07		and #$07			and 	#7
+.21d0	c8		iny				iny
+.21d1	c8		iny				iny
+.21d2	06 4a		asl $4a				asl 	zTemp0 						; shift zTemp0:A left
+.21d4	2a		rol a				rol 	a 							; carry will be clear.
+.21d5	69 80		adc #$80			adc 	#VariableStart >> 8 		; point to variable page.
+.21d7	85 4b		sta $4b				sta 	zTemp0+1
+.21d9	20 df 21	jsr $21df			jsr 	WriteFloatZTemp0Sub
+.21dc	4c 78 1a	jmp $1a78			jmp 	NextCommand
+.21df					WriteFloatZTemp0Sub:
+.21df	5a		phy				phy 								; ldart write
+.21e0	a0 01		ldy #$01			ldy 	#1
+.21e2	b5 60		lda $60,x			lda 	NSMantissa0,x
+.21e4	92 4a		sta ($4a)			sta 	(zTemp0)
+.21e6	b5 70		lda $70,x			lda 	NSMantissa1,x
+.21e8	91 4a		sta ($4a),y			sta 	(zTemp0),y
+.21ea	c8		iny				iny
+.21eb	b5 80		lda $80,x			lda 	NSMantissa2,x
+.21ed	91 4a		sta ($4a),y			sta 	(zTemp0),y
+.21ef	c8		iny				iny
+.21f0	b5 90		lda $90,x			lda 	NSMantissa3,x
+.21f2	91 4a		sta ($4a),y			sta 	(zTemp0),y
+.21f4	c8		iny				iny
+.21f5	b5 a0		lda $a0,x			lda 	NSExponent,x
+.21f7	91 4a		sta ($4a),y			sta 	(zTemp0),y
+.21f9	c8		iny				iny
+.21fa	b5 50		lda $50,x			lda 	NSStatus,x
+.21fc	91 4a		sta ($4a),y			sta 	(zTemp0),y
+.21fe	ca		dex				dex
+.21ff	7a		ply				ply
+.2200	60		rts				rts
 
 ;******  Return to file: _runtime.asm
 
 
 ;******  Processing file: modules/runtime/memory/write_int.asm
 
-.21bf					WriteIntegerCommand:
-.21bf	fa		plx				plx
-.21c0	b1 44		lda ($44),y			lda 	(codePtr),y 				; get the LSB of the halved offset.
-.21c2	85 4a		sta $4a				sta 	zTemp0 						; save in MSB
-.21c4	88		dey				dey 								; get the upper 3 bits
-.21c5	b1 44		lda ($44),y			lda 	(codePtr),y
-.21c7	29 07		and #$07			and 	#7
-.21c9	c8		iny				iny
-.21ca	c8		iny				iny
-.21cb	06 4a		asl $4a				asl 	zTemp0 						; shift zTemp0:A left
-.21cd	2a		rol a				rol 	a 							; carry will be clear.
-.21ce	69 80		adc #$80			adc 	#VariableStart >> 8 		; point to variable page.
-.21d0	85 4b		sta $4b				sta 	zTemp0+1
-.21d2	20 d8 21	jsr $21d8			jsr 	WriteIntegerZTemp0Sub
-.21d5	4c 78 1a	jmp $1a78			jmp 	NextCommand
-.21d8					WriteIntegerZTemp0Sub:
-.21d8	20 02 13	jsr $1302			jsr 	FloatIntegerPart
-.21db	5a		phy				phy 								; start write
-.21dc	a0 01		ldy #$01			ldy 	#1
-.21de	b5 50		lda $50,x			lda 	NSStatus,x 					; negate 2's comp if -ve
-.21e0	30 0b		bmi $21ed			bmi 	_WIZNegative
-.21e2	b5 60		lda $60,x			lda 	NSMantissa0,x 				; +ve write
-.21e4	92 4a		sta ($4a)			sta 	(zTemp0)
-.21e6	b5 70		lda $70,x			lda 	NSMantissa1,x
-.21e8	91 4a		sta ($4a),y			sta 	(zTemp0),y
-.21ea	7a		ply				ply
-.21eb	ca		dex				dex
-.21ec	60		rts				rts
-.21ed					_WIZNegative:
-.21ed	38		sec				sec 								; -ve read
-.21ee	a9 00		lda #$00			lda 	#0
-.21f0	f5 60		sbc $60,x			sbc 	NSMantissa0,x
-.21f2	92 4a		sta ($4a)			sta 	(zTemp0)
-.21f4	a9 00		lda #$00			lda 	#0
-.21f6	f5 70		sbc $70,x			sbc 	NSMantissa1,x
-.21f8	91 4a		sta ($4a),y			sta 	(zTemp0),y
-.21fa	7a		ply				ply
-.21fb	ca		dex				dex
-.21fc	60		rts				rts
+.2201					WriteIntegerCommand:
+.2201	fa		plx				plx
+.2202	b1 44		lda ($44),y			lda 	(codePtr),y 				; get the LSB of the halved offset.
+.2204	85 4a		sta $4a				sta 	zTemp0 						; save in MSB
+.2206	88		dey				dey 								; get the upper 3 bits
+.2207	b1 44		lda ($44),y			lda 	(codePtr),y
+.2209	29 07		and #$07			and 	#7
+.220b	c8		iny				iny
+.220c	c8		iny				iny
+.220d	06 4a		asl $4a				asl 	zTemp0 						; shift zTemp0:A left
+.220f	2a		rol a				rol 	a 							; carry will be clear.
+.2210	69 80		adc #$80			adc 	#VariableStart >> 8 		; point to variable page.
+.2212	85 4b		sta $4b				sta 	zTemp0+1
+.2214	20 1a 22	jsr $221a			jsr 	WriteIntegerZTemp0Sub
+.2217	4c 78 1a	jmp $1a78			jmp 	NextCommand
+.221a					WriteIntegerZTemp0Sub:
+.221a	20 02 13	jsr $1302			jsr 	FloatIntegerPart
+.221d	5a		phy				phy 								; start write
+.221e	a0 01		ldy #$01			ldy 	#1
+.2220	b5 50		lda $50,x			lda 	NSStatus,x 					; negate 2's comp if -ve
+.2222	30 0b		bmi $222f			bmi 	_WIZNegative
+.2224	b5 60		lda $60,x			lda 	NSMantissa0,x 				; +ve write
+.2226	92 4a		sta ($4a)			sta 	(zTemp0)
+.2228	b5 70		lda $70,x			lda 	NSMantissa1,x
+.222a	91 4a		sta ($4a),y			sta 	(zTemp0),y
+.222c	7a		ply				ply
+.222d	ca		dex				dex
+.222e	60		rts				rts
+.222f					_WIZNegative:
+.222f	38		sec				sec 								; -ve read
+.2230	a9 00		lda #$00			lda 	#0
+.2232	f5 60		sbc $60,x			sbc 	NSMantissa0,x
+.2234	92 4a		sta ($4a)			sta 	(zTemp0)
+.2236	a9 00		lda #$00			lda 	#0
+.2238	f5 70		sbc $70,x			sbc 	NSMantissa1,x
+.223a	91 4a		sta ($4a),y			sta 	(zTemp0),y
+.223c	7a		ply				ply
+.223d	ca		dex				dex
+.223e	60		rts				rts
 
 ;******  Return to file: _runtime.asm
 
 
 ;******  Processing file: modules/runtime/memory/write_string.asm
 
-.21fd					WriteStringCommand:
-.21fd	fa		plx				plx
-.21fe	b1 44		lda ($44),y			lda 	(codePtr),y 				; get the LSB of the halved offset.
-.2200	85 4a		sta $4a				sta 	zTemp0 						; save in MSB
-.2202	88		dey				dey 								; get the upper 3 bits
-.2203	b1 44		lda ($44),y			lda 	(codePtr),y
-.2205	29 07		and #$07			and 	#7
-.2207	c8		iny				iny
-.2208	c8		iny				iny
-.2209	06 4a		asl $4a				asl 	zTemp0 						; shift zTemp0:A left
-.220b	2a		rol a				rol 	a 							; carry will be clear.
-.220c	69 80		adc #$80			adc 	#VariableStart >> 8 		; point to variable page.
-.220e	85 4b		sta $4b				sta 	zTemp0+1
-.2210	20 16 22	jsr $2216			jsr 	WriteStringZTemp0Sub
-.2213	4c 78 1a	jmp $1a78			jmp 	NextCommand
-.2216					WriteStringZTemp0Sub:
-.2216	5a		phy				phy
-.2217	a0 01		ldy #$01			ldy 	#1 							; if it is zero we must concrete whatever.
-.2219	b2 4a		lda ($4a)			lda 	(zTemp0)
-.221b	11 4a		ora ($4a),y			ora 	(zTemp0),y
-.221d	f0 1e		beq $223d			beq 	_WSConcrete
-.221f	b2 4a		lda ($4a)			lda 	(zTemp0) 					; put address of actual string in zTemp1
-.2221	85 4c		sta $4c				sta 	zTemp1
-.2223	b1 4a		lda ($4a),y			lda 	(zTemp0),y
-.2225	85 4d		sta $4d				sta 	zTemp1+1
-.2227	b5 60		lda $60,x			lda 	NSMantissa0,x 				; copy source to zTemp2
-.2229	85 4e		sta $4e				sta 	zTemp2
-.222b	b5 70		lda $70,x			lda 	NSMantissa1,x
-.222d	85 4f		sta $4f				sta 	zTemp2+1
-.222f	b2 4c		lda ($4c)			lda 	(zTemp1) 					; space available
-.2231	d2 4e		cmp ($4e)			cmp 	(zTemp2) 					; if >= required length then copy
-.2233	b0 17		bcs $224c			bcs 	_WSCopy
-.2235	a0 01		ldy #$01			ldy 	#1 							; set the 'available for reclaim' flag
-.2237	b1 4c		lda ($4c),y			lda 	(zTemp1),y
-.2239	09 80		ora #$80			ora 	#$80
-.223b	91 4c		sta ($4c),y			sta 	(zTemp1),y
-.223d					_WSConcrete:
-.223d	b5 70		lda $70,x			lda 	NSMantissa1,x 				; string in YA
-.223f	a8		tay				tay
-.2240	b5 60		lda $60,x			lda 	NSMantissa0,x
-.2242	20 d6 0b	jsr $0bd6			jsr 	StringConcrete
-.2245	92 4a		sta ($4a)			sta 	(zTemp0) 					; save returned address
-.2247	98		tya				tya
-.2248	a0 01		ldy #$01			ldy 	#1
-.224a	91 4a		sta ($4a),y			sta 	(zTemp0),y
-.224c					_WSCopy
-.224c	18		clc				clc  								; copy target+2 to zTemp2
-.224d	b2 4a		lda ($4a)			lda 	(zTemp0)
-.224f	69 02		adc #$02			adc 	#2
-.2251	85 4e		sta $4e				sta 	zTemp2
-.2253	a0 01		ldy #$01			ldy 	#1
-.2255	b1 4a		lda ($4a),y			lda 	(zTemp0),y
-.2257	69 00		adc #$00			adc 	#0
-.2259	85 4f		sta $4f				sta 	zTemp2+1
-.225b	b5 60		lda $60,x			lda 	NSMantissa0,x 				; copy source to zTemp1
-.225d	85 4c		sta $4c				sta 	zTemp1
-.225f	b5 70		lda $70,x			lda 	NSMantissa1,x
-.2261	85 4d		sta $4d				sta 	zTemp1+1
-.2263	b2 4c		lda ($4c)			lda 	(zTemp1) 					; length of string .. 0 inclusive
-.2265	a8		tay				tay
-.2266					_WSCopyLoop:
-.2266	b1 4c		lda ($4c),y			lda 	(zTemp1),y
-.2268	91 4e		sta ($4e),y			sta 	(zTemp2),y
-.226a	88		dey				dey
-.226b	c0 ff		cpy #$ff			cpy 	#$FF
-.226d	d0 f7		bne $2266			bne 	_WSCopyLoop
-.226f	ca		dex				dex
-.2270	7a		ply				ply
-.2271	60		rts				rts
+.223f					WriteStringCommand:
+.223f	fa		plx				plx
+.2240	b1 44		lda ($44),y			lda 	(codePtr),y 				; get the LSB of the halved offset.
+.2242	85 4a		sta $4a				sta 	zTemp0 						; save in MSB
+.2244	88		dey				dey 								; get the upper 3 bits
+.2245	b1 44		lda ($44),y			lda 	(codePtr),y
+.2247	29 07		and #$07			and 	#7
+.2249	c8		iny				iny
+.224a	c8		iny				iny
+.224b	06 4a		asl $4a				asl 	zTemp0 						; shift zTemp0:A left
+.224d	2a		rol a				rol 	a 							; carry will be clear.
+.224e	69 80		adc #$80			adc 	#VariableStart >> 8 		; point to variable page.
+.2250	85 4b		sta $4b				sta 	zTemp0+1
+.2252	20 58 22	jsr $2258			jsr 	WriteStringZTemp0Sub
+.2255	4c 78 1a	jmp $1a78			jmp 	NextCommand
+.2258					WriteStringZTemp0Sub:
+.2258	5a		phy				phy
+.2259	a0 01		ldy #$01			ldy 	#1 							; if it is zero we must concrete whatever.
+.225b	b2 4a		lda ($4a)			lda 	(zTemp0)
+.225d	11 4a		ora ($4a),y			ora 	(zTemp0),y
+.225f	f0 1e		beq $227f			beq 	_WSConcrete
+.2261	b2 4a		lda ($4a)			lda 	(zTemp0) 					; put address of actual string in zTemp1
+.2263	85 4c		sta $4c				sta 	zTemp1
+.2265	b1 4a		lda ($4a),y			lda 	(zTemp0),y
+.2267	85 4d		sta $4d				sta 	zTemp1+1
+.2269	b5 60		lda $60,x			lda 	NSMantissa0,x 				; copy source to zTemp2
+.226b	85 4e		sta $4e				sta 	zTemp2
+.226d	b5 70		lda $70,x			lda 	NSMantissa1,x
+.226f	85 4f		sta $4f				sta 	zTemp2+1
+.2271	b2 4c		lda ($4c)			lda 	(zTemp1) 					; space available
+.2273	d2 4e		cmp ($4e)			cmp 	(zTemp2) 					; if >= required length then copy
+.2275	b0 17		bcs $228e			bcs 	_WSCopy
+.2277	a0 01		ldy #$01			ldy 	#1 							; set the 'available for reclaim' flag
+.2279	b1 4c		lda ($4c),y			lda 	(zTemp1),y
+.227b	09 80		ora #$80			ora 	#$80
+.227d	91 4c		sta ($4c),y			sta 	(zTemp1),y
+.227f					_WSConcrete:
+.227f	b5 70		lda $70,x			lda 	NSMantissa1,x 				; string in YA
+.2281	a8		tay				tay
+.2282	b5 60		lda $60,x			lda 	NSMantissa0,x
+.2284	20 d6 0b	jsr $0bd6			jsr 	StringConcrete
+.2287	92 4a		sta ($4a)			sta 	(zTemp0) 					; save returned address
+.2289	98		tya				tya
+.228a	a0 01		ldy #$01			ldy 	#1
+.228c	91 4a		sta ($4a),y			sta 	(zTemp0),y
+.228e					_WSCopy
+.228e	18		clc				clc  								; copy target+2 to zTemp2
+.228f	b2 4a		lda ($4a)			lda 	(zTemp0)
+.2291	69 02		adc #$02			adc 	#2
+.2293	85 4e		sta $4e				sta 	zTemp2
+.2295	a0 01		ldy #$01			ldy 	#1
+.2297	b1 4a		lda ($4a),y			lda 	(zTemp0),y
+.2299	69 00		adc #$00			adc 	#0
+.229b	85 4f		sta $4f				sta 	zTemp2+1
+.229d	b5 60		lda $60,x			lda 	NSMantissa0,x 				; copy source to zTemp1
+.229f	85 4c		sta $4c				sta 	zTemp1
+.22a1	b5 70		lda $70,x			lda 	NSMantissa1,x
+.22a3	85 4d		sta $4d				sta 	zTemp1+1
+.22a5	b2 4c		lda ($4c)			lda 	(zTemp1) 					; length of string .. 0 inclusive
+.22a7	a8		tay				tay
+.22a8					_WSCopyLoop:
+.22a8	b1 4c		lda ($4c),y			lda 	(zTemp1),y
+.22aa	91 4e		sta ($4e),y			sta 	(zTemp2),y
+.22ac	88		dey				dey
+.22ad	c0 ff		cpy #$ff			cpy 	#$FF
+.22af	d0 f7		bne $22a8			bne 	_WSCopyLoop
+.22b1	ca		dex				dex
+.22b2	7a		ply				ply
+.22b3	60		rts				rts
 
 ;******  Return to file: _runtime.asm
 
 
 ;******  Processing file: modules/common/boot.end/zzEnd.asm
 
-.2272					EndProgram:
+.22b4					EndProgram:
 
 ;******  Return to file: _runtime.asm
 
