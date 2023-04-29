@@ -32,7 +32,7 @@ CommandIF:
 
 		lda 	#PCD_CMD_GOTOCMD_Z
 		jsr 	WriteCodeByte
-		lda 	#0
+		lda 	#$FF
 		jsr 	WriteCodeByte
 
 		jsr 	HWIGetNextLineNumber 		; Get the *next* line number => YA
