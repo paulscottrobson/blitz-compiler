@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		bin.asm
-;		Purpose:	Binary conversion
-;		Created:	11th April 2023
+;		Name:		vpoke.asm
+;		Purpose:	VPoke command
+;		Created:	29th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -14,38 +14,33 @@
 		
 ; ************************************************************************************************
 ;
-;								BIN$ (integer to string)
+;								VPOKE bank,address,data
 ;
 ; ************************************************************************************************
 
-Unary16Bin: ;; [bin$]
+Command16VPOKE: ;; [vpoke]
 		.entercmd
-		jsr 	GetInteger16Bit				; 16 bit int 
-		lda 	#16 						; allocate / set 16 bytes.
-		jsr 	StringAllocTemp
-		lda 	zTemp0+1
-		beq 	_UBNoHigh
-		jsr 	_UBWriteBinary
-_UBNoHigh:
-		lda 	zTemp0
-		jsr 	_UBWriteBinary
-		.exitcmd
 
-_UBWriteBinary:	
-		phy	
-		ldy 	#8
-_UBWLoop:
-		asl 	a
+		jsr 	GetInteger8Bit 				; poke value
 		pha
-		lda  	#0
-		adc 	#48		
-		jsr 	StringWriteChar
-		pla
-		dey
-		bne 	_UBWLoop
-		ply
-		rts
+		dex
 
+		.floatinteger 						; address (MED/LO)
+		lda 	NSMantissa0,x
+		sta 	VRAMLow0
+		lda 	NSMantissa1,x
+		sta 	VRAMMed0
+		dex
+
+		.floatinteger 						; address (HI)
+		jsr 	GetInteger8Bit
+		sta 	VRAMHigh0
+		dex
+
+		pla 								; poke value back
+		sta 	VRAMData0					; and write it out.
+
+		.exitcmd
 
 		.send code
 

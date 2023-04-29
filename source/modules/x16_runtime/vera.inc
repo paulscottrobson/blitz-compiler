@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		bin.asm
-;		Purpose:	Binary conversion
-;		Created:	11th April 2023
+;		Name:		vera.inc
+;		Purpose:	Vera constants
+;		Created:	29th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -12,40 +12,10 @@
 
 		.section code
 		
-; ************************************************************************************************
-;
-;								BIN$ (integer to string)
-;
-; ************************************************************************************************
-
-Unary16Bin: ;; [bin$]
-		.entercmd
-		jsr 	GetInteger16Bit				; 16 bit int 
-		lda 	#16 						; allocate / set 16 bytes.
-		jsr 	StringAllocTemp
-		lda 	zTemp0+1
-		beq 	_UBNoHigh
-		jsr 	_UBWriteBinary
-_UBNoHigh:
-		lda 	zTemp0
-		jsr 	_UBWriteBinary
-		.exitcmd
-
-_UBWriteBinary:	
-		phy	
-		ldy 	#8
-_UBWLoop:
-		asl 	a
-		pha
-		lda  	#0
-		adc 	#48		
-		jsr 	StringWriteChar
-		pla
-		dey
-		bne 	_UBWLoop
-		ply
-		rts
-
+VRAMLow0 = $9F20
+VRAMMed0 = $9F21
+VRAMHigh0 = $9F22
+VRAMData0 = $9F23
 
 		.send code
 

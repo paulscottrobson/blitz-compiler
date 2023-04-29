@@ -25,7 +25,10 @@ class Generator(object):
 		self.c64tokens = C64TokenStore()
 		token = self.c64tokens.getID(header)
 		assert token is not None,"Unknown "+token
-		self.data = [ token & 0xFF,token >> 8]
+		if token < 256:
+			self.data = [ token,0 ]
+		else:
+			self.data = [ token >> 8,token & 0xFF ]
 		self.first = True
 
 	def render(self):

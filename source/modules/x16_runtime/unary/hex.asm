@@ -18,7 +18,7 @@
 ;
 ; ************************************************************************************************
 
-UnaryHex: ;; [hex$]
+Unary16Hex: ;; [hex$]
 		.entercmd
 		jsr 	GetInteger16Bit
 		lda 	#4 							; allocate / set 4 bytes.

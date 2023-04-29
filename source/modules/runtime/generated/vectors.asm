@@ -20,7 +20,7 @@ VectorTable:
 	.word	ArrayConvert             ; $8e array
 	.word	UnaryAsc                 ; $8f asc
 	.word	CommandAssert            ; $90 assert
-	.word	UnaryBin                 ; $91 bin$
+	.word	Unary16Bin               ; $91 bin$
 	.word	PrintCharacter           ; $92 print.chr
 	.word	UnaryChr                 ; $93 chr$
 	.word	CompareStrings           ; $94 s.cmp
@@ -30,7 +30,7 @@ VectorTable:
 	.word	UnaryFre                 ; $98 fre
 	.word	CommandGet               ; $99 get
 	.word	CommandReturn            ; $9a return
-	.word	UnaryHex                 ; $9b hex$
+	.word	Unary16Hex               ; $9b hex$
 	.word	UnaryLen                 ; $9c len
 	.word	LinkFloatCompare         ; $9d f.cmp
 	.word	LinkDivideInt32          ; $9e int.div
@@ -63,33 +63,34 @@ VectorTable:
 	.word	TimeTOS                  ; $b9 ti
 	.word	UnaryUsr                 ; $ba usr
 	.word	ValUnary                 ; $bb val
-	.word	CommandShift             ; $bc .shift
-	.word	PushByteCommand          ; $bd .byte
-	.word	PushWordCommand          ; $be .word
-	.word	CommandPushN             ; $bf .float
-	.word	CommandPushS             ; $c0 .string
-	.word	CommandData              ; $c1 .data
-	.word	CommandGoto              ; $c2 .goto
-	.word	CommandGosub             ; $c3 .gosub
-	.word	CommandGotoZ             ; $c4 .goto.z
-	.word	CommandGotoNZ            ; $c5 .goto.nz
-	.word	CommandVarSpace          ; $c6 .varspace
+	.word	Command16VPOKE           ; $bc vpoke
+	.word	CommandShift             ; $bd .shift
+	.word	PushByteCommand          ; $be .byte
+	.word	PushWordCommand          ; $bf .word
+	.word	CommandPushN             ; $c0 .float
+	.word	CommandPushS             ; $c1 .string
+	.word	CommandData              ; $c2 .data
+	.word	CommandGoto              ; $c3 .goto
+	.word	CommandGosub             ; $c4 .gosub
+	.word	CommandGotoZ             ; $c5 .goto.z
+	.word	CommandGotoNZ            ; $c6 .goto.nz
+	.word	CommandVarSpace          ; $c7 .varspace
 
 
 ShiftVectorTable:
-	.word	CommandClr               ; $bc80 clr
-	.word	CommandDIM               ; $bc81 dim
-	.word	CommandEnd               ; $bc82 end
-	.word	LinkFloatIntegerPartDown ; $bc83 int
-	.word	LinkFloatSquareRoot      ; $bc84 sqr
-	.word	LinkFloatLogarithm       ; $bc85 log
-	.word	LinkFloatExponent        ; $bc86 exp
-	.word	LinkFloatCosine          ; $bc87 cos
-	.word	LinkFloatSine            ; $bc88 sin
-	.word	LinkFloatTangent         ; $bc89 tan
-	.word	LinkFloatArcTan          ; $bc8a atn
-	.word	CommandRestore           ; $bc8b restore
-	.word	CommandStop              ; $bc8c stop
-	.word	CommandSYS               ; $bc8d sys
-	.word	CommandWAIT              ; $bc8e wait
+	.word	CommandClr               ; $bd80 clr
+	.word	CommandDIM               ; $bd81 dim
+	.word	CommandEnd               ; $bd82 end
+	.word	LinkFloatIntegerPartDown ; $bd83 int
+	.word	LinkFloatSquareRoot      ; $bd84 sqr
+	.word	LinkFloatLogarithm       ; $bd85 log
+	.word	LinkFloatExponent        ; $bd86 exp
+	.word	LinkFloatCosine          ; $bd87 cos
+	.word	LinkFloatSine            ; $bd88 sin
+	.word	LinkFloatTangent         ; $bd89 tan
+	.word	LinkFloatArcTan          ; $bd8a atn
+	.word	CommandRestore           ; $bd8b restore
+	.word	CommandStop              ; $bd8c stop
+	.word	CommandSYS               ; $bd8d sys
+	.word	CommandWAIT              ; $bd8e wait
 	.send code

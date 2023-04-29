@@ -48,6 +48,9 @@ class C64TokenStore(object):
 	def getHeader(self):
 		return "C64"
 
+	def getAllTokens(self):
+		return [x for x in self.tokenToID.keys()]
+		
 	def getToken(self,i):
 		return self.idToToken[i] if i in self.idToToken else None
 

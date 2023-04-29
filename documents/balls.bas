@@ -16,7 +16,7 @@
 150 vpoke 1,q,81:vpoke1,q+1,0
 160 nextx:next y
 200 for b=1ton
-210 vpoke 1,45056+by(b)+bx(b),1
+210 vpoke 1,45056+by(b)+bx(b),0
 230 dxb=dx(b)
 240 ifdxb=0thengosub1010
 250 ifdxb=1thengosub1040
@@ -27,10 +27,8 @@
 290 nextb
 300 goto 200
 1000 rem
-1010 rem
-1013 bxb=bx(b)
-1014 stop
-1015 ifbxb=1thendx(b)=1:return
+1010 bxb=bx(b)
+1011 ifbxb=1thendx(b)=1:return
 1020 bx(b)=bxb-2:return
 1030 rem
 1040 bxb=bx(b)
