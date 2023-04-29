@@ -86,6 +86,11 @@ rrun: crun runtime
 	$(CAT) $(BUILD)runtime.prg $(BTEMP)cout.bin $(BTEMP)pcodebin.prg
 	$(CDEL) dump*.bin
 	$(TIME) $(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
+
+grun: crun runtime 
+	$(CAT) $(BUILD)runtime.prg $(BTEMP)cout.bin $(BTEMP)pcodebin.prg
+	$(CDEL) dump*.bin
+	$(TIME) $(RUNEMU) -gif demo.gif -prg $(BTEMP)pcodebin.prg,801 -run 
 #
 #		Build the runtime
 #
