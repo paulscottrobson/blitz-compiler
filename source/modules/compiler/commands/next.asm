@@ -39,6 +39,14 @@ _CNNoReferenceGiven:
 _CNParametersDone:
 		lda 	#PCD_NEXT  					; compile FOR word.
 		jsr 	WriteCodeByte
+
+		jsr 	LookNextNonSpace 			; look for , 
+		cmp 	#","
+		bne 	_CNExit
+		jsr 	GetNext 					; consume ,
+		bra 	CommandNEXT 				; and go round.
+
+_CNExit:
 		rts
 
 		.send code

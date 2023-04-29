@@ -75,7 +75,7 @@ crun : compiler basic
 	$(CDEL) CODE.BIN
 	$(PYTHON) $(SCRIPTDIR)compileinfo.py >$(BTEMP)program.data
 #
-#		Compile and Run
+#		Compile and Run (and optionally record)
 #
 rdebug: cdebug runtime 
 	$(CAT) $(BUILD)runtime.prg $(BTEMP)cout.bin $(BTEMP)pcodebin.prg
@@ -90,7 +90,7 @@ rrun: crun runtime
 grun: crun runtime 
 	$(CAT) $(BUILD)runtime.prg $(BTEMP)cout.bin $(BTEMP)pcodebin.prg
 	$(CDEL) dump*.bin
-	$(TIME) $(RUNEMU) -gif demo.gif -prg $(BTEMP)pcodebin.prg,801 -run 
+	$(TIME) $(RUNEMU) -gif $(BTEMP)blitz.gif -prg $(BTEMP)pcodebin.prg,801 -run 
 #
 #		Build the runtime
 #

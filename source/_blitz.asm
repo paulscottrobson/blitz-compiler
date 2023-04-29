@@ -44,6 +44,7 @@ ismain_common = 0
 	.include	"modules/ifloat32/generated/constants.asm"
 	.include	"modules/compiler/storage/create.asm"
 	.include	"modules/compiler/commands/data.asm"
+	.include	"modules/compiler/commands/deffn.asm"
 	.include	"modules/compiler/commands/dim.asm"
 	.include	"modules/ifloat32/binary/divide.asm"
 	.include	"modules/ifloat32/float/divide.asm"
