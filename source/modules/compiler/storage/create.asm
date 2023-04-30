@@ -34,7 +34,7 @@ CreateVariableRecord:
 		lda 	variableListEnd+1
 		sta 	zTemp0+1
 
-		lda 	#6 						; default size if 5 (offset link 3 bytes)
+		lda 	#6 						; default size if 6 (offset link 3 bytes)
 		sta 	(zTemp0)
 
 		tya
@@ -65,6 +65,28 @@ _CVNoCarry2:
 		.storage_release
 		ply 							
 		plx
+		pla
+		rts
+
+; ************************************************************************************************
+;
+;			Set the last defined variable record to the current code position.
+;
+; ************************************************************************************************
+
+SetVariableRecordToCodePosition:
+		pha
+		phy
+		lda 	objPtr
+		ldy 	#3
+		sta 	(zTemp0),y
+		iny
+		lda 	objPtr+1
+		sta 	(zTemp0),y
+		iny 	
+		lda 	objPage
+		sta 	(zTemp0),y
+		ply
 		pla
 		rts
 
