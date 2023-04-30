@@ -54,7 +54,6 @@ CommandDEF:
 		;
 		;		Get the address to update.
 		;
-		.debug
 		jsr 	GetNextNonSpace
 		jsr 	GetReferenceTerm 			; get var ref, not array
 		cmp 	#0

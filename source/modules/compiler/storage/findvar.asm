@@ -12,7 +12,7 @@
 
 ; ************************************************************************************************
 ;
-;		  XY contains a variable name. Find it, returning address in YX and CS if found
+;		  XY contains a variable name. Find it, returning address in YXA and CS if found
 ;		
 ;					  Returns $8000 > for special variables TI ($8000) TI$($C001)
 ;
@@ -77,7 +77,10 @@ _IVFound:
 		tax
 		iny
 		lda 	(zTemp0),y
-		tay
+		pha
+		iny
+		lda 	(zTemp0),y
+		ply
 		.storage_release
 		sec
 		rts
