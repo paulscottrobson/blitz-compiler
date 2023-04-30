@@ -54,7 +54,8 @@ _FBFixGotoGosub:
 		tay
 		pla
 		jsr 	STRFindLine			 		; find where it is X:YA
-
+		jsr 	STRMakeOffset 				; make it an offset from X:YA
+		
 		phy	 								; patch the GOTO/GOSUB
 		pha
 

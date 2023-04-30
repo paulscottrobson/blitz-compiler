@@ -50,7 +50,7 @@ ismain_common = 0
 	.include	"modules/ifloat32/float/divide.asm"
 	.include	"modules/common/generated/errors.asm"
 	.include	"modules/compiler/evaluate/expression.asm"
-	.include	"modules/compiler/storage/find.asm"
+	.include	"modules/compiler/storage/findvar.asm"
 	.include	"modules/compiler/utility/fixbranches.asm"
 	.include	"modules/compiler/commands/for.asm"
 	.include	"modules/common/utilities/forward.asm"

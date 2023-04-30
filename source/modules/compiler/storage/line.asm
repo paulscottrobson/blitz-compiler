@@ -53,7 +53,7 @@ STRMarkLine:
 
 ; ************************************************************************************************
 ;
-;				Line number YA - find in table, return page X offset/address YA
+;				Line number YA - find in table, return page X address YA
 ;
 ; ************************************************************************************************
 
@@ -96,21 +96,33 @@ _STRFound:
 		iny 								; page into X
 		lda 	(zTemp1),y
 		tax
-
-		clc 								; borrow 1
 		iny 								; address into YA
 		lda 	(zTemp1),y
-		sbc 	objPtr
 		pha
 		iny
 		lda 	(zTemp1),y
-		sbc 	objPtr+1
 		tay
 		pla	
 
 		.storage_release
 		rts
 
+; ************************************************************************************************
+;
+;								Make position X:YA to Offset X:YA
+;
+; ************************************************************************************************
+
+STRMakeOffset:
+		clc 								; borrow 1
+		sbc 	objPtr
+		pha
+		tya
+		sbc 	objPtr+1
+		tay
+		pla
+		rts
+		
 		.send code
 
 ; ************************************************************************************************
