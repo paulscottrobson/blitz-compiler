@@ -2,46 +2,34 @@
 ; ************************************************************************************************
 ;
 ;		Name:		input.asm
-;		Purpose:	INPUT command
-;		Created:	1st May 2023
+;		Purpose:	Input commands
+;		Created:	1stMay 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section code
+		.section 	code
 
 ; ************************************************************************************************
 ;
-;											INPUT
+;										Input Commands
 ;
 ; ************************************************************************************************
 
-CommandINPUT:
-		jsr 	LookNextNonSpace 			; check for "
-		cmp 	#'"'
-		bne 	CommandINPUTStream
-		jsr 	CompileExpressionAt0
-		.keyword PCD_PRINTCMD_S
-		lda 	#","
-		jsr 	CheckNextComma
-CommandINPUTStream:
-		ldx 	#PCD_INPUT
-		ldy 	#PCD_INPUTDOLLAR
-		jmp 	CommandReadInputCommon
+CommandInput: ;; [input]
+		.entercmd
+		.error_stop
 
-		.send code
+CommandInputString: ;; [input$]
+		.entercmd
+		.error_stop
 
 ; ************************************************************************************************
-;
-;		Notes:
-;			INPUT has an optional prompt ; INPUT# skips this code <string> print.s
-;			Do the actual input.
-;			Ignore blank lines.
-; 			Behaves like READ in that it will grab data read , store keep going until have
-; 			everything, use of , and "" etc.
-;
+
+		.send 	code
+		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

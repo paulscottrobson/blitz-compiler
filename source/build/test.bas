@@ -1,3 +1,2 @@
-10 get a$
-20 print asc(a$);" ";
-30 goto 10
+10 input "hello",a$,b,c
+20 input#5,a$,b,c

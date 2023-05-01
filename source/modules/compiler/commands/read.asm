@@ -37,10 +37,10 @@ _CRLoop:
 		and 	#NSSTypeMask 				; is it a string ?
 		cmp 	#NSSString
 		beq 	_CRString
-		lda 	#PCD_READ 					; output read
+		lda 	numberPCode 				; output read/input
 		bra 	_CRHaveType
 _CRString:		
-		lda 	#PCD_READDOLLAR 			; output read$
+		lda 	stringPCode					; output read$/input$
 _CRHaveType:		
 		jsr 	WriteCodeByte 				; so we have one typed data item.
 		pla 								; restore type
