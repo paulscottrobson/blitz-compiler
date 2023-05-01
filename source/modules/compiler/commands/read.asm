@@ -19,6 +19,15 @@
 ; ************************************************************************************************
 
 CommandREAD:
+		ldx 	#PCD_READ
+		ldy 	#PCD_READDOLLAR
+;
+;		Code shared by READ and INPUT
+;
+CommandReadInputCommon:
+		stx 	numberPCode
+		sty 	stringPCode
+_CRLoop:				
 		jsr 	GetNextNonSpace 			; first char of identifier
 		jsr 	CharIsAlpha 				; check A-Z
 		bcc 	_CRSyntax
@@ -41,13 +50,20 @@ _CRHaveType:
 		cmp 	#","
 		bne 	_CRExit 					; if not, end of READ.
 		jsr 	GetNext 					; consume comma
-		bra 	CommandREAD 				; keep going
+		bra 	_CRLoop 					; keep going
 _CRExit:		
 		rts		
 _CRSyntax:
 		.error_syntax
 
 		.send code
+
+		.section storage
+numberPCode:	
+		.fill 	1
+stringPCode:
+		.fill 	1
+		.send storage
 
 ; ************************************************************************************************
 ;
