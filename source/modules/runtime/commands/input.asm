@@ -26,7 +26,7 @@ _INError:
 		jsr 	InputStringToBuffer 		; input from keyboard
 		.set16 	zTemp0,ReadBufferSize		; convert from here
 		jsr 	ValEvaluateZTemp0
-		bcs 	_INError 					; failed
+		bcs 	_INError 					; failed, try again.
 		ply 								; restore Y
 		.exitcmd
 
@@ -46,7 +46,27 @@ CommandInputString: ;; [input$]
 		.exitcmd
 
 InputStringToBuffer:
-		.debug
+		.set16 	ReadBumpNextVec,InputBumpNext
+		.set16 	ReadLookNextVec,InputLookNext
+		jmp 	GetStringToBuffer
+
+; ************************************************************************************************
+;
+;		Look at the next input character - return CS if we have new line input, forces an end.
+;		$00 if end of data.
+;
+; ************************************************************************************************
+
+InputLookNext:		
+
+; ************************************************************************************************
+;
+;								Consume 1 input character
+;
+; ************************************************************************************************
+
+InputBumpNext:
+
 		
 ; ************************************************************************************************
 

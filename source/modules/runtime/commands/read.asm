@@ -49,24 +49,27 @@ CommandReadString: ;; [read$]
 
 ; ************************************************************************************************
 ;
-;									Read string into buffer
+;									Get string into buffer
 ;
 ; ************************************************************************************************
 
-ReadStringToBuffer:		
-		jsr		ReadLookNext 				; skip all leading spaces.
+ReadStringToBuffer:
+		.set16 	ReadBumpNextVec,ReadBumpNext
+		.set16 	ReadLookNextVec,ReadLookNext
+GetStringToBuffer:		
+		jsr		GetLookNext 				; skip all leading spaces.
 		beq 	_RBError 					; end of data
-		bcs 	ReadStringToBuffer 			; switched to new data line.
+		bcs 	GetStringToBuffer 			; switched to new data line.
 		cmp 	#' ' 						; non space got something
 		bne 	_RBNoSpace
-		jsr 	ReadBumpNext 				; consume space and loop round.
-		bra 	ReadStringToBuffer
+		jsr 	GetBumpNext 				; consume space and loop round.
+		bra 	GetStringToBuffer
 _RBNoSpace:
 		stz 	ReadBufferSize 				; empty the buffer.
 		cmp 	#'"' 						; is it a '"'
 		bne 	_RBCommaSep
 		sta 	ReadSep 					; use as a seperator
-		jsr 	ReadBumpNext 				; consume the '"'
+		jsr 	GetBumpNext 				; consume the '"'
 		bra 	_RBGetText
 _RBCommaSep:	
 		lda 	#","						; get till comma 		
@@ -75,9 +78,9 @@ _RBCommaSep:
 		;		Main loop
 		;
 _RBGetText:		
-		jsr 	ReadLookNext 				; what follows
+		jsr 	GetLookNext 				; what follows
 		bcs 	_RBEndGet 					; if new DATA line, the end without consumption
-		jsr 	ReadBumpNext 				; consume it whatever
+		jsr 	GetBumpNext 				; consume it whatever
 		cmp 	ReadSep 					; if found the seperator.
 		beq 	_RBEndGet 					; exit after consumption
 		phx
@@ -90,12 +93,17 @@ _RBGetText:
 _RBEndGet: 									; value is in the read buffer,	
 		cmp 	#'"'
 		bne 	_RBNotQuote
-		jsr 	ReadBumpNext
+		jsr 	GetBumpNext
 _RBNotQuote:		
 		rts
 
 _RBError:
 		.error_data
+
+GetBumpNext:
+		jmp 	(ReadBumpNextVec)
+GetLookNext:
+		jmp 	(ReadLookNextVec)
 
 ; ************************************************************************************************
 ;
@@ -156,6 +164,10 @@ ReadBufferSize: 							; buffer for read.
 		.fill 	1		
 ReadBuffer:
 		.fill 	255		
+ReadBumpNextVec: 							; data vectors
+		.fill 	2		
+ReadLookNextVec:
+		.fill 	2		
 		.send storage
 
 ; ************************************************************************************************
