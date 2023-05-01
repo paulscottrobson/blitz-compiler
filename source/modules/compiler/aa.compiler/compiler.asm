@@ -77,12 +77,9 @@ SaveCodeAndExit:
 		;  TODO: Possibly append variable map ?
 		;
 		jsr 	HWOSave
+ExitCompiler:		
 		jmp 	$FFFF
 		rts
-
-ErrorHandler:
-		.debug
-		bra 	ErrorHandler
 
 		.send code
 

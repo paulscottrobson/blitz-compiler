@@ -48,6 +48,7 @@ ismain_common = 0
 	.include	"modules/compiler/commands/dim.asm"
 	.include	"modules/ifloat32/binary/divide.asm"
 	.include	"modules/ifloat32/float/divide.asm"
+	.include	"modules/compiler/aa.compiler/errorhandler.asm"
 	.include	"modules/common/generated/errors.asm"
 	.include	"modules/compiler/evaluate/expression.asm"
 	.include	"modules/compiler/storage/findvar.asm"
