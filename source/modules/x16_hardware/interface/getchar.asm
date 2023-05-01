@@ -22,11 +22,16 @@
 XGetCharacterFromChannel:
 		phx
 		phy
+
+		jsr 	$FFC6 						; CHKIN set channel (0 = keyboard)
+		jsr 	$FFB7 						; check okay
+		bne 	_XGCError
 		jsr 	$FFE4
-_NoKey:		
 		ply
 		plx
 		rts
+_XGCError:
+		.error_channel
 
 		.send code
 

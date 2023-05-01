@@ -1,4 +1,3 @@
-100 read a$,b$
-110 print "(";a$;")+(";b$;")"
-120 data "ab",227
-130 stop
+10 get a$
+20 print asc(a$);" ";
+30 goto 10

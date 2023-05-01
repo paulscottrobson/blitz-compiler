@@ -88,6 +88,10 @@ _RBGetText:
 		plx
 		bra 	_RBGetText
 _RBEndGet: 									; value is in the read buffer,	
+		cmp 	#'"'
+		bne 	_RBNotQuote
+		jsr 	ReadBumpNext
+_RBNotQuote:		
 		rts
 
 _RBError:
