@@ -55,6 +55,7 @@ ismain_common = 0
 	.include	"modules/compiler/commands/for.asm"
 	.include	"modules/common/utilities/forward.asm"
 	.include	"modules/ifloat32/float/fractional.asm"
+	.include	"modules/compiler/evaluate/term/functions.asm"
 	.include	"modules/compiler/generation/gendata.asm"
 	.include	"modules/compiler/generation/generator.asm"
 	.include	"modules/compiler/generation/genexec.asm"

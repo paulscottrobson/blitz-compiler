@@ -29,7 +29,9 @@ GeneratorExecute:
 		lsr 	a
 		jsr 	_GEExecuteNibble 			; MSB first
 		pla
+		bcs 	_GEHaveCompleted
 		jsr 	_GEExecuteNibble 			; LSB second
+_GEHaveCompleted:		
 		rts
 
 ; ------------------------------------------------------------------------------------------------

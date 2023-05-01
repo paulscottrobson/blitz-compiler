@@ -35,7 +35,7 @@ CommandDEF:
 		;
 		jsr 	GetNextNonSpace				; get variable name w/type must be array e.g. DEF FNx(a)
 		jsr 	ExtractVariableName 
-		cpx 	#0
+		txa
 		bpl 	_CDError
 		;
 		txa 								; convert to a function reference - bit 7:0 clear bit 7:1 set
@@ -61,6 +61,8 @@ CommandDEF:
 		sta 	defType 					; save type		
 		stx 	defVariable 				; save var ref 
 		sty 	defVariable+1
+		and 	#NSSString 					; only numbers.
+		bne 	_CDError
 		jsr 	CheckNextRParen 			; check )
 		lda 	#C64_EQUAL
 		jsr 	CheckNextA 					; check =

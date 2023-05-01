@@ -41,7 +41,7 @@ _IVCheckSpecial:
 _IVTIFloat: 								; TI returns ifloat at $8000
 		ldy 	#$80
 		ldx 	#$00
-		lda 	#NSSIFloat
+		lda 	#0
 		sec
 		rts
 		;

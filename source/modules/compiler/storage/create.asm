@@ -75,19 +75,21 @@ _CVNoCarry2:
 ; ************************************************************************************************
 
 SetVariableRecordToCodePosition:
+		.storage_access
 		pha
 		phy
-		lda 	objPtr
+		lda 	objPage
 		ldy 	#3
 		sta 	(zTemp0),y
 		iny
 		lda 	objPtr+1
 		sta 	(zTemp0),y
 		iny 	
-		lda 	objPage
+		lda 	objPtr
 		sta 	(zTemp0),y
 		ply
 		pla
+		.storage_release
 		rts
 
 ; ************************************************************************************************
