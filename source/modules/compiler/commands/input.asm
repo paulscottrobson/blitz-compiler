@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		printchar.asm
-;		Purpose:	Character output interface
-;		Created:	11th April 2023
+;		Name:		input.asm
+;		Purpose:	INPUT command
+;		Created:	1st May 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -11,43 +11,25 @@
 ; ************************************************************************************************
 
 		.section code
-		
+
 ; ************************************************************************************************
 ;
-;						Print character A to Channel X: 13 should be CR, 32 space
-;
-;										Channel 0 is the screen.
+;											INPUT
 ;
 ; ************************************************************************************************
 
-XPrintCharacterToChannel:
-		pha
-		phx
-		phy
-
-		pha  								; save char
-		cpx 	#0 							; map 0 (default) to 3 (screen)
-		bne 	_XPCNotDefault
-		ldx 	#3
-_XPCNotDefault:		
-		jsr 	$FFC9 						; CHKOUT set channel
-		jsr 	$FFB7 						; check okay
-		bne 	_XPCError
-		pla 								; restore character
-
-		jsr 	$FFD2 						;print
-		jsr 	$FFB7 						; check okay
-		bne 	_XPCError
-
-		ply
-		plx
-		pla
-		rts
-_XPCError:
-		.error_channel
 
 		.send code
 
+; ************************************************************************************************
+;
+;		Notes:
+;			INPUT has an optional prompt ; INPUT# skips this code <string> print.s
+;			Do the actual input.
+;			Ignore blank lines.
+; 			Behaves like READ in that it will grab data read , store keep going until have
+; 			everything, use of , and "" etc.
+;
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

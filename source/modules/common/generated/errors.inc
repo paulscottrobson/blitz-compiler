@@ -49,3 +49,6 @@ error_index .macro
 error_memory .macro
 	jmp	ErrorV_memory
 	.endm
+error_channel .macro
+	jmp	ErrorV_channel
+	.endm

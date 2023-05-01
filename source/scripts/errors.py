@@ -28,6 +28,7 @@ errors = """
 	redefine 	  : array redefined
 	index 		  : bad array index
 	memory 		  : out of memory
+	channel 	  : input/output error
 	
 """.strip().split("\n")
 

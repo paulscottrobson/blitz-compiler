@@ -50,4 +50,7 @@ ErrorV_index:
 ErrorV_memory:
 	jsr	ErrorHandler
 	.text	"OUT OF MEMORY",0
+ErrorV_channel:
+	jsr	ErrorHandler
+	.text	"INPUT/OUTPUT ERROR",0
 	.send code
