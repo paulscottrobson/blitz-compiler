@@ -45,6 +45,9 @@ CommandInputString: ;; [input$]
 		ply 								; restore Y
 		.exitcmd
 
+InputStringToBuffer:
+		.debug
+		
 ; ************************************************************************************************
 
 		.send 	code
