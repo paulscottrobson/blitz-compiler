@@ -27,6 +27,7 @@ CommandINPUT:
 		lda 	#","
 		jsr 	CheckNextComma
 CommandINPUTStream:
+		.keyword PCD_INPUTSTART 			; new INPUT.
 		ldx 	#PCD_INPUT
 		ldy 	#PCD_INPUTDOLLAR
 		jmp 	CommandReadInputCommon
