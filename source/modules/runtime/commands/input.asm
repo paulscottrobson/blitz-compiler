@@ -33,7 +33,6 @@ _INError:
 CommandInputString: ;; [input$]
 		.entercmd
 		phy 								; save Y
-		.debug
 		jsr 	InputStringToBuffer 		; input from keyboard
 		inx 								; make space on stack
 		jsr 	FloatSetZero 				; store as string on stack
@@ -48,7 +47,7 @@ CommandInputString: ;; [input$]
 
 CommandInputReset: ;; [inputstart]	
 		.entercmd	
-		jsr 	InputGetNewLine 			; get new line.
+		stz 	InputBuffer
 		.exitcmd	
 
 InputStringToBuffer:
@@ -66,21 +65,26 @@ InputStringToBuffer:
 
 InputLookNext:		
 		phx
+_ILNRetry:		
+		lda 	InputBuffer 				; do we need to read more (e.g. the buffer is empty)
+		bne 	_ILNNotEmpty
+		jsr 	InputGetNewLine 			; get a new line 
+		stz 	InputBufferPos 				; reset read position.
+		bra 	_ILNRetry
+
+_ILNNotEmpty:		
 		ldx 	InputBufferPos 				; get head available character
-		lda 	ReadBuffer,x 				
-		clc
+		lda 	InputBuffer,x 				
 		bne 	_ILNExit 					; if not EOS return it with CC.
 _ILNNextLine:		
-		jsr 	InputGetNewLine 			; get a new line skip empty ones.
-		lda 	InputBufferPos
-		beq 	_ILNNextLine
+		stz 	InputBuffer 				; clear the buffer, indicating new line next time.
 		sec 								; return CS,Zero
-		lda 	#0
 		plx
+		lda 	#13 						
 		rts
 _ILNExit:	
 		plx
-		cmp 	#0
+		cmp 	#0 							; return CC, Z Flag set.
 		clc
 		rts
 
@@ -115,9 +119,9 @@ _IGNLLoop:
 		beq 	_IGNBackspace
 		cmp 	#$0D 						; Return ?
 		beq 	_IGNExit
-		cpy 	#$FF 						; space ?
+		cpy 	#80 						; buffer full ?
 		beq 	_IGNLLoop
-		sta 	ReadBuffer,y
+		sta 	InputBuffer,y
 		iny
 		jsr 	IGNLEchoIfScreen
 		bra 	_IGNLLoop
@@ -131,12 +135,18 @@ _IGNBackspace:
 _IGNExit:
 		jsr 	IGNLEchoIfScreen
 		lda 	#0 							; make ASCIIZ
-		sta 	ReadBuffer,y
+		sta 	InputBuffer,y
 		stz 	InputBufferPos 				; reset position to start of input buffer.
 		ply
 		plx
 		pla
 		rts		
+
+; ************************************************************************************************
+;
+;								Print A if output channel is screen.
+;
+; ************************************************************************************************
 
 IGNLEchoIfScreen:
 		ldx 	currentChannel
@@ -148,6 +158,8 @@ _IGNLEExit:
 		.send 	code
 		
 		.section storage
+InputBuffer:
+		.fill 	81		
 InputBufferPos:
 		.fill 	1
 		.send storage

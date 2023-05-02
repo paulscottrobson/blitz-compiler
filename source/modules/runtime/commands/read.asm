@@ -61,7 +61,7 @@ GetStringToBuffer:
 		beq 	_RBError 					; end of data
 		bcs 	GetStringToBuffer 			; switched to new data line.
 		cmp 	#' ' 						; non space got something
-		bne 	_RBNoSpace
+		bcs 	_RBNoSpace
 		jsr 	GetBumpNext 				; consume space and loop round.
 		bra 	GetStringToBuffer
 _RBNoSpace:
