@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		peekpoke.asm
-;		Purpose:	Read/Write memory
-;		Created:	20th April 2023
+;		Name:		x16_save.asm
+;		Purpose:	Write out the object data.
+;		Created:	15th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -14,29 +14,39 @@
 
 ; ************************************************************************************************
 ;
-;											Write Memory
+;							Save compiled code from A:00 to YX
 ;
 ; ************************************************************************************************
 
-XPokeMemory:
-		stx 	zTemp0
-		sty 	zTemp0+1
-		sta 	(zTemp0)
+XSaveMemory:
+		phx
+		phy
+		pha
+
+		lda 	#0 							; set LFS
+		ldx 	#8
+		ldy 	#0
+		jsr 	X16_SETLFS
+
+		lda 	#8 							; set file name
+		ldx 	#SaveName & $FF
+		ldy 	#SaveName >> 8
+		jsr 	X16_SETNAM
+
+		pla 								; set up the start address.
+		sta 	zTemp0+1
+		stz 	zTemp0
+
+		lda 	#zTemp0 					; from index.
+		ply 								; end in YX
+		plx
+		jsr 	X16_SAVE 					; write out.
 		rts
 
-; ************************************************************************************************
-;
-;											Read Memory
-;
-; ************************************************************************************************
-
-XPeekMemory:
-		stx 	zTemp0
-		sty 	zTemp0+1
-		lda 	(zTemp0)
-		rts
-
+SaveName:
+		.text 	"CODE.BIN"
 		.send code
+
 
 ; ************************************************************************************************
 ;

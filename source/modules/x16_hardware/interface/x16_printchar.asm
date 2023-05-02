@@ -1,8 +1,8 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		getchar.asm
-;		Purpose:	Character input interface
+;		Name:		printchar.asm
+;		Purpose:	Character output interface
 ;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
@@ -14,28 +14,35 @@
 		
 ; ************************************************************************************************
 ;
-;						Get Input from Channel if available, else return 0
-;										0 is the Keyboard
+;						Print character A to Channel X: 13 should be CR, 32 space
+;
+;										Channel 0 is the screen.
 ;
 ; ************************************************************************************************
 
-XGetCharacterFromChannel:
+XPrintCharacterToChannel:
+		pha
 		phx
 		phy
-		cpx 	#0 							; is it default
-		bne 	_XGetChannel
-		jsr 	$FFCC 						; set default channel
-		bra 	_XGetChar
-_XGetChannel:		
-		jsr 	$FFC6 						; CHKIN set channel
-		jsr 	$FFB7 						; check okay
-		bne 	_XGCError
-_XGetChar:		
-		jsr 	$FFE4
+
+		pha  								; save char
+		cpx 	#0 							; check default (0)
+		bne 	_XPCNotDefault
+		jsr 	X16_CLRCHN					; set default channel
+		bra 	_XPCSend
+_XPCNotDefault:		
+		jsr 	X16_CHKOUT 					; CHKOUT set channel
+		jsr 	X16_READST 					; check okay
+		bne 	_XPCError
+_XPCSend:		
+		pla 								; restore character
+		jsr 	X16_BSOUT 					; print
+
 		ply
 		plx
+		pla
 		rts
-_XGCError:
+_XPCError:
 		.error_channel
 
 		.send code

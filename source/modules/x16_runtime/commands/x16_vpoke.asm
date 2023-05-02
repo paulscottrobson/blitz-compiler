@@ -1,31 +1,48 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		machinecode.inc
-;		Purpose:	Addresses for SYS and USR
-;		Created:	11th April 2023
+;		Name:		x16_vpoke.asm
+;		Purpose:	VPoke command
+;		Created:	29th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
+		.section code
+		
 ; ************************************************************************************************
 ;
-;								Addresses for SYS and USR
+;								VPOKE bank,address,data
 ;
 ; ************************************************************************************************
-;
-;		Vector for USR() function
-;
-USRRoutineAddress = $311
-;
-;		Register addresses for SYS command
-;
-SYS_Reg_A = $30C
-SYS_Reg_X = $30D
-SYS_Reg_Y = $30E
-SYS_Reg_S = $30F
+
+CommandVPOKE: ;; [vpoke]
+		.entercmd
+
+		jsr 	GetInteger8Bit 				; poke value
+		pha
+		dex
+
+		.floatinteger 						; address (MED/LO)
+		lda 	NSMantissa0,x
+		sta 	VRAMLow0
+		lda 	NSMantissa1,x
+		sta 	VRAMMed0
+		dex
+
+		.floatinteger 						; address (HI)
+		jsr 	GetInteger8Bit
+		sta 	VRAMHigh0
+		dex
+
+		pla 								; poke value back
+		sta 	VRAMData0					; and write it out.
+
+		.exitcmd
+
+		.send code
 
 ; ************************************************************************************************
 ;

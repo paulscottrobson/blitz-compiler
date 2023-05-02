@@ -1,49 +1,36 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		vpoke.asm
-;		Purpose:	VPoke command
-;		Created:	29th April 2023
+;		Name:		x16_close.asm
+;		Purpose:	CLOSE
+;		Created:	2nd May 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section code
-		
+		.section 	code
+
 ; ************************************************************************************************
 ;
-;								VPOKE bank,address,data
+;					<logical> CLOSE (cancels CMD effect if that channel closed)
 ;
 ; ************************************************************************************************
 
-Command16VPOKE: ;; [vpoke]
+CommandClose: ;; [close]
 		.entercmd
-
-		jsr 	GetInteger8Bit 				; poke value
-		pha
-		dex
-
-		.floatinteger 						; address (MED/LO)
-		lda 	NSMantissa0,x
-		sta 	VRAMLow0
-		lda 	NSMantissa1,x
-		sta 	VRAMMed0
-		dex
-
-		.floatinteger 						; address (HI)
-		jsr 	GetInteger8Bit
-		sta 	VRAMHigh0
-		dex
-
-		pla 								; poke value back
-		sta 	VRAMData0					; and write it out.
-
+		jsr 	GetInteger8Bit 				; channel to close
+		cmp 	currentChannel 				; is it the current channel
+		bne 	_CCNotCurrent
+		stz 	currentChannel 				; effectively disables CMD
+_CCNotCurrent:
+		jsr 	$FFC3 						; close the file		
 		.exitcmd
 
-		.send code
 
+		.send 	code
+		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

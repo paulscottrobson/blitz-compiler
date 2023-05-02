@@ -22,13 +22,13 @@
 CommandTables:
 		.include 	"commands.defc"
 		.if module_x16_compiler == 1
-		.include "../../x16_compiler/generation/commandx16.defc"
+		.include "../../x16_compiler/generation/x16_command.defc"
 		.endif
 		.byte 	0
 
 UnaryTables:
 		.include 	"unary.defc"
-		.include "../../x16_compiler/generation/unaryx16.defc"
+		.include "../../x16_compiler/generation/x16_unary.defc"
 		.byte 	0
 
 		.send  code		

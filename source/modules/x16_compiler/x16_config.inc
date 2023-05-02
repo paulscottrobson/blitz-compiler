@@ -1,34 +1,27 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		getxpos.asm
-;		Purpose:	Get horizontal position
-;		Created:	11th April 2023
+;		Name:		x16_config.inc
+;		Purpose:	Configuration for compiler
+;		Created:	15th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
-
-		.section code
-
-; ************************************************************************************************
 ;
-;							Get horizontal character position.
+;		Build address
 ;
-; ************************************************************************************************
-
-XGetHPos:
-		phx
-		phy
-		sec
-		jsr 	$FFF0
-		tya
-		ply
-		plx
-		rts
-
-		.send code
+CodeStart = $801
+;
+;		Runtime p-code goes here. Needs to be on a page boundary.
+;
+PCodeStart = $4000
+;
+;		Work area space and size. Upwards is variables, Downwards is line number positions.
+;
+WorkArea = $8000
+WorkAreaSize = $1F00
 
 ; ************************************************************************************************
 ;
@@ -40,3 +33,4 @@ XGetHPos:
 ;		==== 			=====
 ;
 ; ************************************************************************************************
+

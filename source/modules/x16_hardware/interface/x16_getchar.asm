@@ -1,31 +1,45 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		open.asm
-;		Purpose:	OPEN
-;		Created:	2nd May 2023
+;		Name:		x16_getchar.asm
+;		Purpose:	Character input interface
+;		Created:	11th April 2023
 ;		Reviewed: 	No
-;		Author : 	Paul Robson (paul@robsons.org.uk)
+;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section 	code
-
-; ************************************************************************************************
-;
-;					<logical> <device> <secondary> <filename> OPEN command
-;
-; ************************************************************************************************
-
-CommandOpen: ;; [open]
-		.entercmd
-		.debug
-		.exitcmd
-
-
-		.send 	code
+		.section code
 		
+; ************************************************************************************************
+;
+;						Get Input from Channel if available, else return 0
+;										0 is the Keyboard
+;
+; ************************************************************************************************
+
+XGetCharacterFromChannel:
+		phx
+		phy
+		cpx 	#0 							; is it default
+		bne 	_XGetChannel
+		jsr 	X16_CLRCHN 					; set default channel
+		bra 	_XGetChar
+_XGetChannel:		
+		jsr 	X16_CHKIN					; CHKIN set channel
+		jsr 	X16_READST 					; check okay
+		bne 	_XGCError
+_XGetChar:		
+		jsr 	X16_GETIN
+		ply
+		plx
+		rts
+_XGCError:
+		.error_channel
+
+		.send code
+
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

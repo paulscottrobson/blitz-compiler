@@ -51,7 +51,7 @@ CreateVariableRecord:
 		lda 	freeVariableMemory+1
 		sta 	(zTemp0),y
 
-		iny 							; write EOL marker next record.
+		ldy 	#6 						; write EOL marker next record.
 		lda 	#0
 		sta 	(zTemp0),y
 

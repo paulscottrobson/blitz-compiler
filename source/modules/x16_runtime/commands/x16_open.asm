@@ -1,53 +1,47 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		save.asm
-;		Purpose:	Write out the object data.
-;		Created:	15th April 2023
+;		Name:		x16_open.asm
+;		Purpose:	OPEN
+;		Created:	2nd May 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section code
+		.section 	code
 
 ; ************************************************************************************************
 ;
-;							Save compiled code from A:00 to YX
+;					<logical> <device> <secondary> <filename> OPEN command
 ;
 ; ************************************************************************************************
 
-XSaveMemory:
-		phx
-		phy
-		pha
-
-		lda 	#0 							; set LFS
-		ldx 	#8
-		ldy 	#0
-		jsr 	$FFBA
-
-		lda 	#8 							; set file name
-		ldx 	#SaveName & $FF
-		ldy 	#SaveName >> 8
-		jsr 	$FFBD
-
-		pla 								; set up the start address.
+CommandOpen: ;; [open]
+		.entercmd
+		;
+		;		Set up the file name
+		;
+		lda 	NSMantissa0+3  				; point zTemp0 to string head, also in XY
+		sta 	zTemp0
+		tay
+		lda 	NSMantissa1+3 
 		sta 	zTemp0+1
-		stz 	zTemp0
+		tax
 
-		lda 	#zTemp0 					; from index.
-		ply 								; end in YX
-		plx
-		jsr 	$FFD8 						; write out.
-		rts
+		iny 								; XY points to first character
+		bne 	_CONoCarry
+		inx
+_CONoCarry:		
+		lda 	(zTemp0) 					; get length of filename
+		jsr 	$FFBD
+		.debug
+		.exitcmd
 
-SaveName:
-		.text 	"CODE.BIN"
-		.send code
 
-
+		.send 	code
+		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

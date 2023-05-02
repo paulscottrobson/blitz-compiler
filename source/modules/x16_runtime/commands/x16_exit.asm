@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		close.asm
-;		Purpose:	CLOSE
-;		Created:	2nd May 2023
+;		Name:		x16_exit.asm
+;		Purpose:	Exit emulator
+;		Created:	13th April 2023
 ;		Reviewed: 	No
 ;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
@@ -14,20 +14,19 @@
 
 ; ************************************************************************************************
 ;
-;					<logical> CLOSE (cancels CMD effect if that channel closed)
+;								Exit emulator command
 ;
 ; ************************************************************************************************
 
-CommandClose: ;; [close]
+CommandExit: ;; [exit]
 		.entercmd
-		jsr 	GetInteger8Bit 				; channel to close
-		cmp 	currentChannel 				; is it the current channel
-		bne 	_CCNotCurrent
-		stz 	currentChannel 				; effectively disables CMD
-_CCNotCurrent:
-		jsr 	$FFC3 						; close the file		
-		.exitcmd
+		stx 	zTemp0 						; stack position.
+		jmp 	$FFFF 						; exits the emulator.
 
+CommandDebug: ;; [debug]
+		.entercmd
+		.debug
+		.exitcmd
 
 		.send 	code
 		

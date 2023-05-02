@@ -1,35 +1,35 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		exit.asm
-;		Purpose:	Exit emulator
-;		Created:	13th April 2023
+;		Name:		x16_getxpos.asm
+;		Purpose:	Get horizontal position
+;		Created:	11th April 2023
 ;		Reviewed: 	No
-;		Author : 	Paul Robson (paul@robsons.org.uk)
+;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section 	code
+		.section code
 
 ; ************************************************************************************************
 ;
-;								Exit emulator command
+;							Get horizontal character position.
 ;
 ; ************************************************************************************************
 
-CommandExit: ;; [exit]
-		.entercmd
-		stx 	zTemp0 						; stack position.
-		jmp 	$FFFF 						; exits the emulator.
+XGetHPos:
+		phx
+		phy
+		sec
+		jsr 	X16_PLOT
+		tya
+		ply
+		plx
+		rts
 
-CommandDebug: ;; [debug]
-		.entercmd
-		.debug
-		.exitcmd
+		.send code
 
-		.send 	code
-		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates
