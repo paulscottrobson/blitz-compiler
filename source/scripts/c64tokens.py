@@ -74,12 +74,14 @@ class C64TokenStore(object):
 	#		X16 keywords sequential from $CE80
 	#
 	def getX16(self):
-		s = """MON|DOS|OLD|GEOS|VPOKE|VLOAD|SCREEN|PSET|LINE|FRAME|RECT|CHAR|MOUSE|
-			   COLOR|TEST|RESET|CLS|CODEX|LOCATE|BOOT|KEYMAP|BLOAD|BVLOAD|BVERIFY|
-			   BANK|VPEEK|MX|MY|MB|JOY|HEX$|BIN$"""
+		s = """
+				MON|DOS|OLD|GEOS|VPOKE|VLOAD|SCREEN|PSET|LINE|FRAME|RECT|CHAR|MOUSE|COLOR|TEST|RESET|CLS|CODEX|LOCATE|BOOT|KEYMAP|BLOAD|BVLOAD
+				|BVERIFY|BANK|FMINIT|FMNOTE|FMDRUM|FMINST|FMVIB|FMFREQ|FMVOL|FMPAN|FMPLAY|FMCHORD|FMPOKE|PSGINIT|PSGNOTE|PSGVOL|PSGWAV|PSGFREQ
+				|PSGPAN|PSGPLAY|PSGCHORD|REBOOT|POWEROFF|I2CPOKE|SLEEP|BSAVE|MENU|REN|VPEEK|MX|MY|MB|JOY|HEX$|BIN$|I2CPEEK"""
 
 		s = s.replace("\n","").replace(" ","").replace("\t","").split("|")
-		return "|".join(["{0}:{1}".format(i+0xCE80,s[i]) for i in range(0,len(s))])
+		vpeek = s.index("VPEEK")
+		return "|".join(["{0}:{1}".format(i+0xCE80+(0 if i < vpeek else 0x50-vpeek),s[i]) for i in range(0,len(s))])
 
 
 if __name__ == "__main__":
@@ -87,4 +89,4 @@ if __name__ == "__main__":
 	c64 = C64TokenStore()
 	c64.dump()
 	#print(c64.getBinary())
-	#print(c64.getUnary())
+	#print(c64.getX16())
