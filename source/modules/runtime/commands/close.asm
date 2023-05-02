@@ -1,52 +1,31 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		printchar.asm
-;		Purpose:	Character output interface
-;		Created:	11th April 2023
+;		Name:		close.asm
+;		Purpose:	CLOSE
+;		Created:	2nd May 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section code
+		.section 	code
+
+; ************************************************************************************************
+;
+;					<logical> <device> <secondary> <filename> OPEN command
+;
+; ************************************************************************************************
+
+CommandClose: ;; [close]
+		.entercmd
+		.debug
+		.exitcmd
+
+
+		.send 	code
 		
-; ************************************************************************************************
-;
-;						Print character A to Channel X: 13 should be CR, 32 space
-;
-;										Channel 0 is the screen.
-;
-; ************************************************************************************************
-
-XPrintCharacterToChannel:
-		pha
-		phx
-		phy
-
-		pha  								; save char
-		cpx 	#0 							; check default (0)
-		bne 	_XPCNotDefault
-		jsr 	$FFCC 						; set default channel
-		bra 	_XPCSend
-_XPCNotDefault:		
-		jsr 	$FFC9 						; CHKOUT set channel
-		jsr 	$FFB7 						; check okay
-		bne 	_XPCError
-_XPCSend:		
-		pla 								; restore character
-		jsr 	$FFD2 						; print
-
-		ply
-		plx
-		pla
-		rts
-_XPCError:
-		.error_channel
-
-		.send code
-
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

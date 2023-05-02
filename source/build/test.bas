@@ -1,3 +1,2 @@
-10 input a$,b,c
-20 print a$;",";b;",";c
-30 stop
+10 open 1,8,2,"test2,s,w"
+30 close 1

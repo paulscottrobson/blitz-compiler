@@ -22,10 +22,15 @@
 XGetCharacterFromChannel:
 		phx
 		phy
-
-		jsr 	$FFC6 						; CHKIN set channel (0 = keyboard)
+		cpx 	#0 							; is it default
+		bne 	_XGetChannel
+		jsr 	$FFCC 						; set default channel
+		bra 	_XGetChar
+_XGetChannel:		
+		jsr 	$FFC6 						; CHKIN set channel
 		jsr 	$FFB7 						; check okay
 		bne 	_XGCError
+_XGetChar:		
 		jsr 	$FFE4
 		ply
 		plx
