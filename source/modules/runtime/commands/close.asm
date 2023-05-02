@@ -14,13 +14,18 @@
 
 ; ************************************************************************************************
 ;
-;					<logical> <device> <secondary> <filename> OPEN command
+;					<logical> CLOSE (cancels CMD effect if that channel closed)
 ;
 ; ************************************************************************************************
 
 CommandClose: ;; [close]
 		.entercmd
-		.debug
+		jsr 	GetInteger8Bit 				; channel to close
+		cmp 	currentChannel 				; is it the current channel
+		bne 	_CCNotCurrent
+		stz 	currentChannel 				; effectively disables CMD
+_CCNotCurrent:
+		jsr 	$FFC3 						; close the file		
 		.exitcmd
 
 
