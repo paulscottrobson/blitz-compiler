@@ -1,4 +1,4 @@
-10 n = 50
+10 n = 20
 60 print chr$(147);
 70 dim bx(n):dim by(n):dim bc(n)
 75 dim dx(n):dim dy(n)
