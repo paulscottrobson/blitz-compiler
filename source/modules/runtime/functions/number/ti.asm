@@ -2,7 +2,7 @@
 ; ************************************************************************************************
 ;
 ;		Name:		ti.asm
-;		Purpose:	Read time in jiffies
+;		Purpose:	Read time in jiffies as integer (ti) or string (ti$)
 ;		Created:	20th April 2023
 ;		Reviewed: 	No
 ;		Author : 	Paul Robson (paul@robsons.org.uk)
@@ -14,12 +14,31 @@
 
 ; ************************************************************************************************
 ;
-;									     Absolute TOS
+;									     Time to TOS
 ;
 ; ************************************************************************************************
 
 TimeTOS:	;; [ti]
 		.entercmd
+		jsr 	TIPushClock 				; push clock to TOS
+		.exitcmd
+
+TimeString: ;; [ti$]
+		.entercmd
+		jsr 	TIPushClock 				; push clock to TOS
+
+		.debug
+
+
+		.exitcmd
+
+; ************************************************************************************************
+;
+;									Push clock (60Hz) to TOS
+;	
+; ************************************************************************************************
+
+TIPushClock:
 		phy
 		inx 								; push 0 on the stack
 		jsr 	FloatSetZero
@@ -33,8 +52,7 @@ TimeTOS:	;; [ti]
 		tya
 		sta 	NSMantissa2,x
 		ply
-		.exitcmd
-
+		rts
 		.send 	code
 
 ; ************************************************************************************************

@@ -21,10 +21,10 @@
 
 GetSetVariable:
 		php 								; save direction on stack
-		cmp 	#$00
-		bmi 	_GSVArray
 		cpy 	#$00
 		bmi 	_GSVReadWriteSpecial
+		cmp 	#$00
+		bmi 	_GSVArray
 		;
 		; 		64-79 is float, 80-95 is integer, 96-111 is string. So we multiply the
 		;		type bits 5 & 6 byte 16 - but they are already multiplied by 32, so
@@ -60,16 +60,18 @@ _GSVReadWriteSpecial:
 		;
 		;		TODO: TI TI$ code missing		
 		;
-
-		;
-		;		Handle clock read/write
-		;
-_GSVReadWriteClock:
 		plp
 		bcs 	_GSVSyntax		
-		lda 	#PCD_TI
-		jsr 	WriteCodeByte
+		;
+		;		Handle clock read
+		;
+		cpy 	#$C0 						; TI$ ?
+		beq 	_GSVRWString
+		.keyword PCD_TI
 		rts
+_GSVRWString:
+		.keyword PCD_TIDOLLAR
+		rts		
 
 _GSVSyntax:
 		.error_syntax

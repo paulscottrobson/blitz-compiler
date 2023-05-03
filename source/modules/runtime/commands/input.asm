@@ -45,7 +45,7 @@ CommandInputString: ;; [input$]
 		ply 								; restore Y
 		.exitcmd
 
-CommandInputReset: ;; [inputstart]	
+CommandInputReset: ;; [input.start]	
 		.entercmd	
 		stz 	InputBuffer
 		.exitcmd	

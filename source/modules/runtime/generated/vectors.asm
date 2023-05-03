@@ -31,7 +31,7 @@ VectorTable:
 	.word	Unary16Hex               ; $99 hex$
 	.word	CommandInput             ; $9a input
 	.word	CommandInputString       ; $9b input$
-	.word	CommandInputReset        ; $9c inputstart
+	.word	CommandInputReset        ; $9c input.start
 	.word	UnaryLen                 ; $9d len
 	.word	LinkFloatCompare         ; $9e f.cmp
 	.word	LinkDivideInt32          ; $9f int.div
@@ -62,40 +62,41 @@ VectorTable:
 	.word	Unary_Mid                ; $b8 mid$
 	.word	CommandSwap              ; $b9 swap
 	.word	TimeTOS                  ; $ba ti
-	.word	UnaryUsr                 ; $bb usr
-	.word	ValUnary                 ; $bc val
-	.word	CommandClose             ; $bd close
-	.word	CommandExit              ; $be exit
-	.word	CommandDebug             ; $bf debug
-	.word	CommandOpen              ; $c0 open
-	.word	CommandVPOKE             ; $c1 vpoke
-	.word	CommandShift             ; $c2 .shift
-	.word	PushByteCommand          ; $c3 .byte
-	.word	PushWordCommand          ; $c4 .word
-	.word	CommandPushN             ; $c5 .float
-	.word	CommandPushS             ; $c6 .string
-	.word	CommandData              ; $c7 .data
-	.word	CommandGoto              ; $c8 .goto
-	.word	CommandGosub             ; $c9 .gosub
-	.word	CommandGotoZ             ; $ca .goto.z
-	.word	CommandGotoNZ            ; $cb .goto.nz
-	.word	CommandVarSpace          ; $cc .varspace
+	.word	TimeString               ; $bb ti$
+	.word	UnaryUsr                 ; $bc usr
+	.word	ValUnary                 ; $bd val
+	.word	CommandClose             ; $be close
+	.word	CommandExit              ; $bf exit
+	.word	CommandDebug             ; $c0 debug
+	.word	CommandOpen              ; $c1 open
+	.word	CommandVPOKE             ; $c2 vpoke
+	.word	CommandShift             ; $c3 .shift
+	.word	PushByteCommand          ; $c4 .byte
+	.word	PushWordCommand          ; $c5 .word
+	.word	CommandPushN             ; $c6 .float
+	.word	CommandPushS             ; $c7 .string
+	.word	CommandData              ; $c8 .data
+	.word	CommandGoto              ; $c9 .goto
+	.word	CommandGosub             ; $ca .gosub
+	.word	CommandGotoZ             ; $cb .goto.z
+	.word	CommandGotoNZ            ; $cc .goto.nz
+	.word	CommandVarSpace          ; $cd .varspace
 
 
 ShiftVectorTable:
-	.word	CommandClr               ; $c280 clr
-	.word	CommandDIM               ; $c281 dim
-	.word	CommandEnd               ; $c282 end
-	.word	LinkFloatIntegerPartDown ; $c283 int
-	.word	LinkFloatSquareRoot      ; $c284 sqr
-	.word	LinkFloatLogarithm       ; $c285 log
-	.word	LinkFloatExponent        ; $c286 exp
-	.word	LinkFloatCosine          ; $c287 cos
-	.word	LinkFloatSine            ; $c288 sin
-	.word	LinkFloatTangent         ; $c289 tan
-	.word	LinkFloatArcTan          ; $c28a atn
-	.word	CommandRestore           ; $c28b restore
-	.word	CommandStop              ; $c28c stop
-	.word	CommandSYS               ; $c28d sys
-	.word	CommandWAIT              ; $c28e wait
+	.word	CommandClr               ; $c380 clr
+	.word	CommandDIM               ; $c381 dim
+	.word	CommandEnd               ; $c382 end
+	.word	LinkFloatIntegerPartDown ; $c383 int
+	.word	LinkFloatSquareRoot      ; $c384 sqr
+	.word	LinkFloatLogarithm       ; $c385 log
+	.word	LinkFloatExponent        ; $c386 exp
+	.word	LinkFloatCosine          ; $c387 cos
+	.word	LinkFloatSine            ; $c388 sin
+	.word	LinkFloatTangent         ; $c389 tan
+	.word	LinkFloatArcTan          ; $c38a atn
+	.word	CommandRestore           ; $c38b restore
+	.word	CommandStop              ; $c38c stop
+	.word	CommandSYS               ; $c38d sys
+	.word	CommandWAIT              ; $c38e wait
 	.send code

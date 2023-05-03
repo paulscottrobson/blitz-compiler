@@ -96,6 +96,7 @@ grun: crun runtime
 #
 runtime:prelim
 	$(PYTHON) $(SCRIPTDIR)build.py $(RTMODULES) 
+	$(CDEL) WTEST*
 	$(ASM) $(ASMOPTS) _runtime.asm -o $(BUILD)runtime.prg
 	$(CCOPY) $(BUILD)runtime.prg $(BINDIR)
 	$(CDEL) dump*.bin

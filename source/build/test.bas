@@ -1,5 +1,2 @@
-10 OPEN 2,8,2,"TEST2,S,W"
-15 PRINT#2,0,0,0,"HELLO,WORLD !"
-30 CLOSE 2
-40 stop
-
+10 print chr$(147);ti
+20 goto 10
