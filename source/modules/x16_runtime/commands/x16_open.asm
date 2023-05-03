@@ -25,20 +25,32 @@ CommandOpen: ;; [open]
 		;
 		lda 	NSMantissa0+3  				; point zTemp0 to string head, also in XY
 		sta 	zTemp0
-		tay
+		tax
 		lda 	NSMantissa1+3 
 		sta 	zTemp0+1
-		tax
+		tay
 
-		iny 								; XY points to first character
+		inx 								; XY points to first character
 		bne 	_CONoCarry
-		inx
+		iny
 _CONoCarry:		
 		lda 	(zTemp0) 					; get length of filename
-		jsr 	$FFBD
-		.debug
+		jsr 	X16_SETNAM
+		;
+		; 		Set up the logical channel.
+		;
+		lda 	NSMantissa0+0
+		ldx 	NSMantissa0+1
+		ldy 	NSMantissa0+2
+		jsr 	X16_SETLFS
+		;
+		;		Open
+		;
+		jsr 	X16_OPEN
+		bcs 	_COError
 		.exitcmd
-
+_COError:
+		.error_channel
 
 		.send 	code
 		

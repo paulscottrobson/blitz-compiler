@@ -25,7 +25,7 @@ CommandClose: ;; [close]
 		bne 	_CCNotCurrent
 		stz 	currentChannel 				; effectively disables CMD
 _CCNotCurrent:
-		jsr 	$FFC3 						; close the file		
+		jsr 	X16_CLOSE 					; close the file		
 		.exitcmd
 
 
