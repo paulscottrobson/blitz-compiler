@@ -28,6 +28,7 @@ EMU_REPO= ..$(S)..$(S)x16-emulator
 ROM_REPO= ..$(S)..$(S)x16-rom
 HARDWARE = x16
 BUILD = build$(S)
+RELEASE = ..$(S)release
 BTEMP = $(BUILD)temp$(S)
 RTMODULES = ifloat32 polynomials runtime $(HARDWARE)_hardware $(HARDWARE)_runtime -o_runtime.asm -mruntime
 CMMODULES = compiler ifloat32 $(HARDWARE)_hardware $(HARDWARE)_compiler -o_blitz.asm -mcompiler
@@ -112,6 +113,17 @@ pcode: prelim
 debugpcode: runtime prelim pcode
 	$(CAT) $(BUILD)runtime.prg $(BTEMP)pcodebin.bin $(BTEMP)pcodebin.prg
 	$(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
+#
+#		Build / Copy relevant files to Release
+#	
+release: runtime compiler
+	$(CCOPY) $(BUILD)runtime.prg $(RELEASE)
+	$(CCOPY) $(BUILD)blitz.prg $(RELEASE) 
+	$(CCOPY) $(BINDIR)x16emu $(RELEASE)
+	$(CCOPY) $(BINDIR)rom.bin $(RELEASE)
+	$(CCOPY) $(SCRIPTDIR)tokenise.py $(RELEASE)
+	$(CCOPY) $(SCRIPTDIR)c64tokens.py $(RELEASE)
+	$(CCOPY) $(SCRIPTDIR)cat.py $(RELEASE)
 #
 #		A test_pcode.py run
 #	
