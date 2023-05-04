@@ -1,3 +1,3 @@
-10 ti$="123456"
-20 print ti,ti$
-30 stop
+11 n=10:dima(n)
+12 fort=0ton:print t:a(t) = rnd(1):next	
+	

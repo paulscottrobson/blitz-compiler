@@ -20,7 +20,6 @@
 
 CommandNext: ;; [next]
 		.entercmd
-
 		lda 	#FRAME_FOR 					; check in a FOR 
 		jsr 	StackCheckFrame
 		jsr 	FixUpY 						; so we can use Y		

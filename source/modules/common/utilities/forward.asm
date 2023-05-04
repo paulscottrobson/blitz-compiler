@@ -28,11 +28,11 @@ MoveObjectForward:
 		cmp 	#$40 						; 00-3F
 		bcc 	_MOFAdvance1 				; forward 1
 
-		ldy 	#2 							; 40-7F
-		cmp 	#$80 						; forward 2
+		ldy 	#2 							; 40-6F
+		cmp 	#$70 						; forward 2
 		bcc 	_MOFAdvanceY 				
 
-		cmp 	#PCD_STARTSYSTEM 			; 80 - System tokens.
+		cmp 	#PCD_STARTSYSTEM 			; 70 - System tokens.
 		bcc 	_MOFAdvance1 				; forward 1
 
 		tay 								; read the size.

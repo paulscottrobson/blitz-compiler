@@ -20,7 +20,6 @@
 
 CommandFor: ;; [for]
 		.entercmd
-
 		lda 	#FRAME_FOR 					; open frame
 		jsr 	StackOpenFrame 			
 		jsr 	StackSaveCurrentPosition 	; normalise to Y=0 and save position.
