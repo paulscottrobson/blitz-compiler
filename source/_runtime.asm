@@ -128,6 +128,7 @@ ismain_common = 0
 	.include	"modules/polynomials/unary/tan.asm"
 	.include	"modules/ifloat32/aa.testing/testing.asm"
 	.include	"modules/runtime/functions/number/ti.asm"
+	.include	"modules/runtime/commands/tiwrite.asm"
 	.include	"modules/ifloat32/float/tofloat.asm"
 	.include	"modules/ifloat32/binary/tostring.asm"
 	.include	"modules/ifloat32/float/tostring.asm"

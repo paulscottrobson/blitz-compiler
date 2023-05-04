@@ -39,10 +39,17 @@ CommandLETHaveFirst:
 		pla 								; restore and compile save code
 		ply
 		plx
+
+		cpy 	#$C0 						; is it TI$ = "xxxxx"
+		beq 	_CLTIString
 		sec
 		jsr		GetSetVariable
 		rts
 
+_CLTIString:
+		.keyword PCD_TIDOLLARCMD_WRITE
+		rts
+		
 _CLType:
 		.error_type
 

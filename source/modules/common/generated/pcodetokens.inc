@@ -100,4 +100,5 @@ PCD_ATN              = $c38a ; atn
 PCD_RESTORE          = $c38b ; restore
 PCD_STOP             = $c38c ; stop
 PCD_SYS              = $c38d ; sys
-PCD_WAIT             = $c38e ; wait
+PCD_TIDOLLARCMD_WRITE = $c38e ; ti$.write
+PCD_WAIT             = $c38f ; wait

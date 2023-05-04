@@ -22,6 +22,16 @@ XReadClock:
 		jsr 	X16_RDTIM
 		rts
 		
+XWriteClock:
+		pha
+		phx
+		phy
+		jsr 	X16_SETTIM
+		ply
+		plx
+		pla
+		rts
+
 		.send code
 
 ; ************************************************************************************************

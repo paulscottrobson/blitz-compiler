@@ -98,5 +98,6 @@ ShiftVectorTable:
 	.word	CommandRestore           ; $c38b restore
 	.word	CommandStop              ; $c38c stop
 	.word	CommandSYS               ; $c38d sys
-	.word	CommandWAIT              ; $c38e wait
+	.word	CommandTIWrite           ; $c38e ti$.write
+	.word	CommandWAIT              ; $c38f wait
 	.send code

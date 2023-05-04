@@ -102,7 +102,7 @@ TIPushClock:
 		inx 								; push 0 on the stack
 		jsr 	FloatSetZero
 		phx
-		jsr 	XReadClock 					; read time into AXY
+		jsr 	XReadClock 					; read time into YXA
 		stx 	zTemp0
 		plx
 		sta 	NSMantissa0,x

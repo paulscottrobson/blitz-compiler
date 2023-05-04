@@ -124,6 +124,9 @@ release: runtime compiler
 	$(CCOPY) $(SCRIPTDIR)tokenise.py $(RELEASE)
 	$(CCOPY) $(SCRIPTDIR)c64tokens.py $(RELEASE)
 	$(CCOPY) $(SCRIPTDIR)cat.py $(RELEASE)
+	$(CCOPY) ..$(S)TODO $(RELEASE)
+	$(CDEL) $(RELEASE)release.zip
+	cd $(RELEASE) ; zip -r release.zip *
 #
 #		A test_pcode.py run
 #	
