@@ -57,7 +57,6 @@ NSSIInt16 = $20								; when set, a reference is a 16 bit reference (e.g. a%)
 NSSTypeMask = $40 					
 NSSArray = $80  							; array (in variable code)
 
-		.align 16
 NSStatus: 									; Status bits of stack.
 		.fill 	MathStackSize
 NSMantissa0: 								; Mantissa on stack (address in 0,1 for string)

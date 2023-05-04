@@ -1,50 +1,36 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		common.inc
-;		Purpose:	Common includes/defines/setups
-;		Created:	11th April 2023
+;		Name:		screen.asm
+;		Purpose:	Screen Command
+;		Created:	4th May 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-; ************************************************************************************************
-;
-;										Configuration options
-;
-;			  Addresses should be on page boundaries (except for ZeroPageMandatory)
-;
-; ************************************************************************************************
-;
-;		Variables that have to be in zero page because it's used in (xx),y
-;
-ZeroPageMandatory = $22 
-;
-;		Variables that can go anywhere
-;
-MemoryStorage = $400
-;
-;		Size of stack
-;
-MathStackSize = 12
+		.section 	code
 
 ; ************************************************************************************************
 ;
-;									Set up code and data sections
+;											Screen Command
 ;
 ; ************************************************************************************************
 
-		* = ZeroPageMandatory 				; *must* be in zero page
-		.dsection zeropage
+CommandScreen: ;; [screen]
+		.entercmd
+		phx
+		phy
+		jsr 	GetInteger8Bit
+		clc 
+		jsr 	X16_screen_mode
+		ply
+		plx
+		.exitcmd
 
-		* = MemoryStorage 					; doesn't matter if zero page or not 
-		.dsection storage
-
-		* = CodeStart
-		.dsection code
-
+		.send 	code
+		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

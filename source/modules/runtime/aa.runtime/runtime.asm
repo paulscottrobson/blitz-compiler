@@ -32,10 +32,6 @@ NextCommand:
 		lda 	(codePtr),y 				; get next
 		bmi 	NXCommand 					; -if -ve command
 		iny
-		bpl 	_NXCommandNoFixUp 			; fix up Y check
-		jsr 	FixUpY
-_NXCommandNoFixUp:		
-
 		cmp 	#64 						; 64..127 is load and store.
 		bcc 	PushByteA 					; 0..63 is short constants.
 		;

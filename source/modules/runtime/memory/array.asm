@@ -37,6 +37,7 @@ ArrayConvert: ;; [array]
 		dex 								; count of indices to follow -> zTemp2
 		jsr 	GetInteger8Bit 
 		sta 	zTemp2 						; subtract from stack.
+
 		txa
 		sec
 		sbc 	zTemp2
@@ -46,6 +47,7 @@ ArrayConvert: ;; [array]
 		;		The loop for following down the indices
 		;
 _ACIndexLoop:		
+		jsr 	FloatIntegerPart 			; integer array index
 		jsr 	GetInteger16Bit 			; get the index => zTemp0
 		ldy 	#1 							; compare against the index count.
 		lda 	zTemp0

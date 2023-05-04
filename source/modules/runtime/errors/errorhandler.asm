@@ -41,12 +41,22 @@ _EHDisplayMsg:
 		jsr 	XPrintCharacterToChannel
 		lda 	#32
 		jsr 	XPrintCharacterToChannel
-
-		lda 	codePtr+1
-		jsr 	_EHDisplayHex
-		lda 	codePtr
-		jsr 	_EHDisplayHex
+		jsr 	EHDisplayCodePtr
 _EHStop:bra 	_EHStop
+
+EHDisplayCodePtr:
+		lda 	#32
+		jsr 	XPrintCharacterToChannel
+		sec
+		lda 	codePtr
+		sbc 	#(EndProgram+2) & $FF
+		pha
+		lda 	codePtr+1
+		sbc 	#(EndProgram+2) >> 8
+		jsr 	_EHDisplayHex
+		pla
+		jsr 	_EHDisplayHex
+		rts
 
 _EHDisplayHex:
 		pha

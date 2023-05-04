@@ -112,6 +112,7 @@ ismain_common = 0
 	.include	"modules/runtime/functions/number/rnd.asm"
 	.include	"modules/runtime/aa.runtime/runtime.asm"
 	.include	"modules/runtime/strings/sconcat.asm"
+	.include	"modules/x16_runtime/commands/screen.asm"
 	.include	"modules/runtime/functions/number/sgn.asm"
 	.include	"modules/runtime/support/shift.asm"
 	.include	"modules/ifloat32/binary/simple.asm"
