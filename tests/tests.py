@@ -25,7 +25,7 @@ class VFloat(Value):
 	def __init__(self):
 		self.value = 0.0
 	def updateValue(self):
-		self.value = random.randint(-100000,100000) / 100.0
+		self.value = random.randint(-3200000,3200000) / 100.0
 		return self.getValue()
 	def render(self):
 		return str(self.value)
@@ -34,10 +34,10 @@ class VInteger(Value):
 	def __init__(self):
 		self.value = 0.0
 	def updateValue(self):
-		self.value = random.randint(-100000,100000)
+		self.value = random.randint(-32000,32000)
 		return self.getValue()
 	def render(self):
-		return str(self.value)
+		return "{0:.5f}".format(self.value)
 
 class VString(Value):
 	def __init__(self,maxStringSize = 6):
@@ -86,19 +86,19 @@ class IFloat(Identifier):
 	def getTypeMarker(self):
 		return ""
 	def getDefaultValue(self):
-		return VFloat()
+		return 0.0
 
 class IInteger(Identifier):
 	def getTypeMarker(self):
 		return "%"
 	def getDefaultValue(self):
-		return VInteger()
+		return 0
 
 class IString(Identifier):
 	def getTypeMarker(self):
 		return "$"
 	def getDefaultValue(self):
-		return VString()
+		return ""
 
 # *******************************************************************************************
 #
@@ -107,7 +107,7 @@ class IString(Identifier):
 # *******************************************************************************************
 
 class TestScript(object):
-	def __init__(self,seed = None,maxChars = 4096,maxLines = 10):
+	def __init__(self,seed = None,maxChars = 4096,maxLines = 400):
 		if seed is None:
 			seed = random.randint(0,9999)
 		random.seed(seed)
@@ -149,14 +149,27 @@ class TestScript(object):
 	def checkExpression(self,expr):
 		self.render("if {0} then print ###:stop".format(expr))
 
+	def checkEqual(self,n1,n2):
+		self.checkExpression(self.areEqual(n1,n2))
+
+	def checkAreNearlyEqual(self,n1,n2,percent = 0.1):
+		self.checkExpression(self.areNearlyEqual(n1,n2))
+
+	def checkStringEqual(self,s1,s2):
+		self.checkExpression(s1+" <> "+s2)
+
 	def areEqual(self,n1,n2):
-		return "({0} <> {1})".format(n1,n2)
+		return "({0} <> {1:.5f})".format(n1,n2)
 
 	def areNearlyEqual(self,n,correct,percent = 0.1):
 		if isinstance(correct,str):
 			correct = float(correct)
-		error = abs(correct) * percent / 100
-		return "(abs({0}-{1})) >= {2}".format(n,correct,error)
+		error = max(0.0001,round(abs(correct) * percent / 100,5))
+		return "(abs(({0})-{1:.5f})) >= {2:.6f}".format(n,correct,error)
+
+	def getNumber(self):
+		v = VFloat() if random.randint(0,1) == 0 else VInteger()
+		return v.updateValue()
 
 if __name__ == "__main__":
 	print(VFloat().render())

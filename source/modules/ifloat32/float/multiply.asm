@@ -19,7 +19,6 @@
 ; ************************************************************************************************
 
 FloatMultiply:	
-
 		dex
 		lda 	NSExponent,x 				; can use optimised ?
 		ora 	NSExponent+1,x
@@ -30,8 +29,10 @@ FloatMultiply:
 		lda 	NSStatus,x 					; check if it is 8 bit unsigned
 		ora 	NSStatus+1,x		
 		and 	#$80
+		ora 	NSMantissa3,x
 		ora 	NSMantissa2,x
 		ora 	NSMantissa1,x
+		ora 	NSMantissa3+1,x
 		ora 	NSMantissa2+1,x
 		ora 	NSMantissa1+1,x
 		bne 	_FMInt32
