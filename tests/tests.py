@@ -122,23 +122,41 @@ class TestScript(object):
 		self.render("END")
 
 	def render(self,s):
-		print("{0} {1}".format(self.line,s.upper()))
+		print("{0} {1}".format(self.line,s.upper().replace("###",str(self.line))))
 		self.line += 10
 		self.charsLeft -= len(s)
 		self.linesLeft -= 1
 
 	def initialisePhase(self):
 		pass
+
 	def mainPhase(self):
 		while not self.isComplete():
-			self.render("REM TEST")
+			self.addTest()
+
+	def addTest(self):
+		self.assertExpression(self.areNearlyEqual("10","12",1))
+
 	def terminatePhase(self):
 		pass
+		
 	def validatePhase(self):
 		pass
 
 	def isComplete(self):
 		return self.charsLeft <= 0 or self.linesLeft <= 0
+
+	def checkExpression(self,expr):
+		self.render("if {0} then print ###:stop".format(expr))
+
+	def areEqual(self,n1,n2):
+		return "({0} <> {1})".format(n1,n2)
+
+	def areNearlyEqual(self,n,correct,percent = 0.1):
+		if isinstance(correct,str):
+			correct = float(correct)
+		error = abs(correct) * percent / 100
+		return "(abs({0}-{1})) >= {2}".format(n,correct,error)
 
 if __name__ == "__main__":
 	print(VFloat().render())
