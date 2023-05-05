@@ -21,7 +21,7 @@ import random
 class TestBinary(TestScript):
 	def addTest(self):
 		#
-		#		4 Functions
+		#		4 Functions for numbers.
 		#
 		n1 = self.getNumber()
 		n2 = self.getNumber()

@@ -153,7 +153,7 @@ _ECANotCompare:
 
 		cmp 	#C64_GREATER 				; must be a comparison then.
 		bcc 	_ECAType
-		cmp 	#C64_LESS+1
+		cmp 	#C64_LESS+1+3 				; the +3 is because of >= <= <>
 		bcs 	_ECAType
 		lda 	#NSSIFloat 					; compare returns number.
 		jmp 	_ECALoop
