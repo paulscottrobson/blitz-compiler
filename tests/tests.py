@@ -18,6 +18,8 @@ import os,sys,re,math,random
 # *******************************************************************************************
 
 class Value(object):
+	def setValue(self,n):
+		self.value = n
 	def getValue(self):
 		return self.value
 
@@ -167,9 +169,11 @@ class TestScript(object):
 		error = max(0.0001,round(abs(correct) * percent / 100,5))
 		return "(abs(({0})-{1:.5f})) >= {2:.6f}".format(n,correct,error)
 
+	def getNumberClass(self):
+		return VFloat() if random.randint(0,1) == 0 else VInteger()
+
 	def getNumber(self):
-		v = VFloat() if random.randint(0,1) == 0 else VInteger()
-		return v.updateValue()
+		return self.getNumberClass().updateValue()
 
 if __name__ == "__main__":
 	print(VFloat().render())
