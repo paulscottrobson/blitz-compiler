@@ -38,4 +38,15 @@ class TestBinary(TestScript):
 		s2 = VString()
 		s2.updateValue()
 		self.checkStringEqual("{0}+{1}".format(s1.render(),s2.render()),'"'+s1.getValue()+s2.getValue()+'"')
+		#
+		#		And / Or
+		#
+		fnc = "and" if random.randint(0,1) == 0 else "or"
+		n1 = random.randint(-0x7FFF,0x7FFF) & 0xFFFF
+		n2 = random.randint(-0x7FFF,0x7FFF) & 0xFFFF
+		r = (n1 & n2) if fnc == "and" else (n1 | n2)
+		if (r & 0x8000) != 0:
+			r = r - 0x10000
+		self.checkEqual("({0} {2} {1})".format(n1,n2,fnc),r)
+		
 TestBinary()		
