@@ -36,6 +36,7 @@ _MidDefault:
 		lda 	#255 						; default of 255
 		jsr 	PushIntegerA
 _MidComplete:
+		clc
 		rts
 _MidSyntax:
 		.error_syntax		

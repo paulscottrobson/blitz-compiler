@@ -1,5 +1,4 @@
-20 print "abcdef" <> "abcdef"
-22 print sqr(25),sqr(10)
+20 print mid$("abcdef",4)
+22 print mid$("abcdef",4,2)
 25 stop
-30 end
 

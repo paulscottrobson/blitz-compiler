@@ -21,16 +21,19 @@ BINDIR = ..$(S)bin$(S)
 SCRIPTDIR = ..$(S)source$(S)scripts$(S)
 PROGDIR = ..$(S)source$(S)build$(S)
 EMULATOR = $(BINDIR)x16emu$(APPSTEM) # -zeroram
-RUNEMU = $(EMULATOR) -rom $(BINDIR)rom.bin -keymap en-gb -dump R -scale 2 -rtc -debug  -testbench -warp
+RUNEMU = $(EMULATOR) -rom $(BINDIR)rom.bin -keymap en-gb -dump R -scale 2 -rtc -debug -testbench -warp
 CAT = $(PYTHON) $(SCRIPTDIR)cat.py
 TMPDIR = build$(S)
 
-all: binary compare 
+all: binary compare unary
 
 binary : 
 	$(call run_test,$@)
 
 compare:
+	$(call run_test,$@)
+
+unary:
 	$(call run_test,$@)
 
 define run_test

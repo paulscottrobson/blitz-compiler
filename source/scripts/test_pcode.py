@@ -173,7 +173,7 @@ class FunctionUnaryTestGenerator(UnaryTestGenerator):
 		return 0 if n == 0 else (-1 if n < 0 else 1)
 	@staticmethod 
 	def unot(n):
-		return -n+1
+		return -n-1
 	@staticmethod
 	def valstr(s):
 		return s

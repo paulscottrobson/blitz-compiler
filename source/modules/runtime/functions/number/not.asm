@@ -26,10 +26,10 @@ NotTOS:	;; [not]
 
 		jsr 	FloatNegate		 			; negate
 
-		inx 								; and add 1.
+		inx 								; and subtract 1.
 		lda 	#1
 		jsr 	FloatSetByte
-		jsr 	FloatAdd
+		jsr 	FloatSubtract
 
 _NotTOSSkip:
 		.exitcmd
