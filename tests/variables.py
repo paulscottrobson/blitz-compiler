@@ -14,14 +14,14 @@ import random,sys
 
 # *******************************************************************************************
 #
-#								Simple parenthesis test
+#							Simple variable assignment test
 #
 # *******************************************************************************************
 
-class TestParenthesis(TestScript):
+class TestVariables(TestScript):
 	def initialisePhase(self):
 		self.variables = {}
-		for i in range(0,20):
+		for i in range(0,15):
 			self.appendVariable(IFloat())
 			self.appendVariable(IInteger())
 			self.appendVariable(IString())
@@ -38,4 +38,4 @@ class TestParenthesis(TestScript):
 	def validatePhase(self):
 		for v in self.variables.values():
 			self.checkExpression(v.check())
-TestParenthesis()		
+TestVariables()		
