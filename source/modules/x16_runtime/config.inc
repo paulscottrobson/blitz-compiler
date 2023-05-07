@@ -14,9 +14,9 @@
 ;
 CodeStart = $801
 ;
-;		Runtime p-code address
+;		When compileing, PCode is stored from here onwards
 ;
-PCodeStart = $4000
+PCodeStart = $6000
 ;
 ;		Work area space and size
 ;

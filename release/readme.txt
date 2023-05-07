@@ -12,8 +12,10 @@ source is appended to the compiler (blitz.prg), and run to compile it (compile.s
 leverage the emulator to do this. It's designed to run on real hardware, though a cross developing
 version is possible probably using py6502 or something like that.
 
-It won't compile very large programs, yet. Nor will this be the final way it compiles/runs, it's 
-just a development stage.
+It won't compile very large programs, yet (about 8k). This is not a limitation of the compiler, 
+merely this version. It's easier to debug code if it's not stored in banked RAM.
+
+Nor will this be the final way it compiles/runs, it's just a development stage.
 
 It is probably quite buggy. Included is a copy of David "8 bit Guy" Murray's balls demo, which gives an 
 idea of the speed increase. To give an idea, when I first ran this it yielded two issues ; IF had

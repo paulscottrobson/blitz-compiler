@@ -34,7 +34,7 @@ RTMODULES = ifloat32 polynomials runtime $(HARDWARE)_hardware $(HARDWARE)_runtim
 CMMODULES = compiler ifloat32 $(HARDWARE)_hardware $(HARDWARE)_compiler -o_blitz.asm -mcompiler
 CAT = $(PYTHON) $(SCRIPTDIR)cat.py
 
-all: prelim compiler runtime
+all: prelim compiler runtime parenthesis
 
 #
 #		Build the compiler

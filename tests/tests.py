@@ -109,7 +109,7 @@ class IString(Identifier):
 # *******************************************************************************************
 
 class TestScript(object):
-	def __init__(self,seed = None,maxChars = 4096,maxLines = 400):
+	def __init__(self,seed = None,maxChars = 8192,maxLines = 400):
 		if seed is None:
 			seed = random.randint(0,9999)
 		random.seed(seed)

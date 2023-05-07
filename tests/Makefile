@@ -36,6 +36,9 @@ compare:
 unary:
 	$(call run_test,$@)
 
+parenthesis:
+	$(call run_test,$@)
+
 define run_test
 	$(CDEL) dump*.bin
 	$(PYTHON) $1.py >$(TMPDIR)$1.bas
