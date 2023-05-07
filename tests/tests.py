@@ -19,14 +19,19 @@ import os,sys,re,math,random
 
 class Identifier(object):
 	def __init__(self):
-		self.name = chr(random.randint(65,90))
+		self.name = self.getValidName()+self.getTypeMarker()
+		self.value = self.getDefaultValue()
+
+	def getValidName(self):
+		name = chr(random.randint(65,90))
 		if random.randint(0,2) > 0:
 			if random.randint(0,1) == 0:
-				self.name += chr(random.randint(65,90))
+				name += chr(random.randint(65,90))
 			else:
-				self.name += chr(random.randint(48,57))
-		self.name += self.getTypeMarker()
-		self.value = self.getDefaultValue()
+				name += chr(random.randint(48,57))
+		if "/TO/IF/MB/MX/MY/ON/FN/OR/GO/".find(name) >= 0:
+			return self.getValidName()
+		return name 
 
 	def getName(self):
 		return self.name 
