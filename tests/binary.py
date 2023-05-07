@@ -33,9 +33,9 @@ class TestBinary(TestScript):
 		#
 		#		String concatentation.
 		#
-		s1 = VString()
+		s1 = IString()
 		s1.updateValue()
-		s2 = VString()
+		s2 = IString()
 		s2.updateValue()
 		self.checkStringEqual("{0}+{1}".format(s1.render(),s2.render()),'"'+s1.getValue()+s2.getValue()+'"')
 		#

@@ -22,6 +22,8 @@ idea of the speed increase. To give an idea, when I first ran this it yielded tw
 got broken at some point, and I'd forgotten you could do NEXT Y,X.  But it's probably not a great
 idea to throw a hundred lines at it yet :)
 
+Having said that it passed the tests in tests/build/*.bas in the github.
+
 The speed increase varies but probably will be of the range 4-8 times. Things like floating point aren't
 any quicker because you are still using a 6502. Something like 'balls' which uses integers works better.
 (The MSBasic interpreter does all its math in floats, and converts; Blitz aggressively avoids floating 

@@ -21,7 +21,7 @@ import random,math
 class TestUnary(TestScript):
 	def addTest(self):
 		n1 = self.getNumber()
-		s1 = VString()
+		s1 = IString()
 		s1.updateValue()
 		s1 = s1.getValue()
 		i1 = random.randint(-32760,32760)

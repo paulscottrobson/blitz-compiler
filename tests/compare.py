@@ -26,8 +26,8 @@ class TestCompare(TestScript):
 			n1 = self.getNumberClass()
 			n2 = self.getNumberClass()
 		else:
-			n1 = VString()
-			n2 = VString()
+			n1 = IString()
+			n2 = IString()
 		n1.updateValue()
 		n2.updateValue()	
 		if random.randint(0,5) == 0:

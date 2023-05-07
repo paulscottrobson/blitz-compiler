@@ -25,7 +25,7 @@ RUNEMU = $(EMULATOR) -rom $(BINDIR)rom.bin -keymap en-gb -dump R -scale 2 -rtc -
 CAT = $(PYTHON) $(SCRIPTDIR)cat.py
 TMPDIR = build$(S)
 
-all: binary compare unary
+all: binary compare unary variables parenthesis
 
 binary : 
 	$(call run_test,$@)
@@ -37,6 +37,9 @@ unary:
 	$(call run_test,$@)
 
 parenthesis:
+	$(call run_test,$@)
+
+variables:
 	$(call run_test,$@)
 
 define run_test

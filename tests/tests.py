@@ -13,46 +13,6 @@ import os,sys,re,math,random
 
 # *******************************************************************************************
 #
-#										Value classes
-#
-# *******************************************************************************************
-
-class Value(object):
-	def setValue(self,n):
-		self.value = n
-	def getValue(self):
-		return self.value
-
-class VFloat(Value):
-	def __init__(self):
-		self.value = 0.0
-	def updateValue(self):
-		self.value = random.randint(-3200000,3200000) / 100.0
-		return self.getValue()
-	def render(self):
-		return str(self.value)
-
-class VInteger(Value):
-	def __init__(self):
-		self.value = 0.0
-	def updateValue(self):
-		self.value = random.randint(-32000,32000)
-		return self.getValue()
-	def render(self):
-		return "{0:.5f}".format(self.value)
-
-class VString(Value):
-	def __init__(self,maxStringSize = 6):
-		self.value = ""
-		self.maxStringSize = maxStringSize
-	def updateValue(self):
-		self.value = "".join([chr(random.randint(65,90)) for i in range(0,random.randint(0,self.maxStringSize))])
-		return self.getValue()
-	def render(self):
-		return '"'+str(self.value)+'"'
-
-# *******************************************************************************************
-#
 #									Identifier classes
 #
 # *******************************************************************************************
@@ -74,33 +34,48 @@ class Identifier(object):
 	def getValue(self):
 		return self.value 
 
+	def setValue(self,v):
+		self.value = v 
+		
 	def updateValue(self):
-		self.value.updateValue()
+		self.value = self.newValue()
 		return self.getValue()
 
 	def assignment(self):
-		return self.getName() + "="+self.getValue().render()
+		return self.getName() + "="+self.render()
 
 	def check(self):
-		return self.getName() + "="+self.getValue().render()
+		return self.getName() + "<>"+self.render()
 
 class IFloat(Identifier):
 	def getTypeMarker(self):
 		return ""
 	def getDefaultValue(self):
 		return 0.0
+	def render(self):
+		return "{0:.5f}".format(self.getValue())
+	def newValue(self):
+		return random.randint(-3200000,3200000) / 100.0
 
 class IInteger(Identifier):
 	def getTypeMarker(self):
 		return "%"
 	def getDefaultValue(self):
 		return 0
+	def render(self):
+		return str(self.getValue())
+	def newValue(self):
+		return random.randint(-32000,32000)
 
 class IString(Identifier):
 	def getTypeMarker(self):
 		return "$"
 	def getDefaultValue(self):
 		return ""
+	def render(self):
+		return '"'+self.getValue()+'"'
+	def newValue(self):
+		return "".join([chr(random.randint(65,90)) for i in range(0,random.randint(0,8))])
 
 # *******************************************************************************************
 #
@@ -170,15 +145,12 @@ class TestScript(object):
 		return "(abs(({0})-{1:.5f})) >= {2:.6f}".format(n,correct,error)
 
 	def getNumberClass(self):
-		return VFloat() if random.randint(0,1) == 0 else VInteger()
+		return IFloat() if random.randint(0,1) == 0 else IInteger()
 
 	def getNumber(self):
 		return self.getNumberClass().updateValue()
 
 if __name__ == "__main__":
-	print(VFloat().render())
-	print(VInteger().render())	
-	print(VString().render())	
 
 	i = IFloat()
 	print(i.name,i.value.render())
