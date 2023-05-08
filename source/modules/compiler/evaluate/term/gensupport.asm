@@ -19,18 +19,16 @@
 ;
 ; ************************************************************************************************
 
-MidParameterCompile:
-		jsr 	GetNextNonSpace 			; what follows.
-		cmp 	#")" 						; ), use default
-		beq 	_MidDefault
+OptionalParameterCompile:
+		jsr 	LookNextNonSpace 			; what follows.
 		;
 		cmp 	#","
-		bne 	_MidSyntax
+		bne 	_MidDefault
+		jsr 	GetNext 					; consume ,
 		jsr 	CompileExpressionAt0
 		and 	#NSSTypeMask
 		cmp 	#NSSIFloat
 		bne 	MidFailType
-		jsr 	CheckNextRParen
 		bra 	_MidComplete
 _MidDefault:
 		lda 	#255 						; default of 255
@@ -38,8 +36,6 @@ _MidDefault:
 _MidComplete:
 		clc
 		rts
-_MidSyntax:
-		.error_syntax		
 
 MidFailType:
 		.error_type

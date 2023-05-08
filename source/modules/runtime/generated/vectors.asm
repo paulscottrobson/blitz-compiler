@@ -102,4 +102,5 @@ ShiftVectorTable:
 	.word	CommandTIWrite           ; $c48e ti$.write
 	.word	CommandWAIT              ; $c48f wait
 	.word	CommandCls               ; $c490 cls
+	.word	CommandLocate            ; $c491 locate
 	.send code

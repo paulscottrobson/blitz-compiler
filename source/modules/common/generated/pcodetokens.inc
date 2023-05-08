@@ -104,3 +104,4 @@ PCD_SYS              = $c48d ; sys
 PCD_TIDOLLARCMD_WRITE = $c48e ; ti$.write
 PCD_WAIT             = $c48f ; wait
 PCD_CLS              = $c490 ; cls
+PCD_LOCATE           = $c491 ; locate
