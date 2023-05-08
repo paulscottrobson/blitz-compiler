@@ -53,8 +53,10 @@ STRMarkLine:
 
 ; ************************************************************************************************
 ;
-;				Line number YA - find in table, return page X address YA of next
-; 				highest. CC if found, CS if not found.
+;				Line number YA - find in table, return page X address YA 
+;				
+;				If FOUND: of the matching line, with Carry Clear.
+;				If NOT FOUND : of the previous line (e.g. next code line), with Carry Set.
 ;
 ; ************************************************************************************************
 
@@ -66,13 +68,7 @@ STRFindLine:
 		.set16 	zTemp1,WorkArea+WorkAreaSize ; work backwards through table
 
 _STRSearch:
-		sec 								; move backwards one entry.
-		lda 	zTemp1
-		sbc 	#5
-		sta 	zTemp1
-		lda 	zTemp1+1
-		sbc 	#0
-		sta 	zTemp1+1
+		jsr 	_STRPrevLine 				; look at previous record.
 
 		ldy 	#1
 		lda 	(zTemp1) 					; check table line # >= target
@@ -93,7 +89,10 @@ _STRFound:
 		bne 	_STRDifferent
 		lda 	(zTemp1)
 		eor 	zTemp0
+		beq 	_STROut 					; if zero, exit with A = 0 and correct line.
 _STRDifferent:
+		lda 	#$FF 						
+_STROut:
 		clc  								; set carry if different, e.g. > rather than >=
 		adc 	#255 				
 		php
@@ -111,6 +110,15 @@ _STRDifferent:
 		plp	
 		rts
 
+_STRPrevLine:
+		sec 								; move backwards one entry.
+		lda 	zTemp1
+		sbc 	#5
+		sta 	zTemp1
+		lda 	zTemp1+1
+		sbc 	#0
+		sta 	zTemp1+1
+		rts
 ; ************************************************************************************************
 ;
 ;								Make position X:YA to Offset X:YA

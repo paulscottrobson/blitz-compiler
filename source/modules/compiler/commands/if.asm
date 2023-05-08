@@ -44,11 +44,11 @@ CompileGotoEOL: 							; compile GOTOZ <next line>
 		lda 	#$FF
 		jsr 	WriteCodeByte
 
-		jsr 	HWIGetNextLineNumber 		; Get the *next* line number => YA
-		bcs 	_CINotLastLine 				; if last line, write $FFFF out , illegal line#
-		lda 	#$FF
-		tay
-_CINotLastLine:		
+		jsr 	HWILineNumber 				; Get the current line number => YA
+		inc 	a 							; and branch to +1
+		bne 	_CGENoCarry
+		iny
+_CGENoCarry:		
 		jsr 	WriteCodeByte
 		tya
 		jsr 	WriteCodeByte

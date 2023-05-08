@@ -55,10 +55,11 @@ _FBFixGotoGosub:
 		pla
 		jsr 	STRFindLine			 		; find where it is X:YA
 		bcc 	_FBFFound 					; not found, so must be >
+		pha
 		lda 	(objPtr) 					; which is a fail if not CMD_GOTOCMD_Z
 		cmp 	#PCD_CMD_GOTOCMD_Z
-		beq 	_FBFFound
-		.error_line
+		bne 	_FBFFail
+		pla
 
 _FBFFound:		
 		jsr 	STRMakeOffset 				; make it an offset from X:YA
@@ -78,6 +79,10 @@ _FBFFound:
 		pla
 		sta 	(objPtr),y
 		bra 	_FBNext
+
+_FBFFail:
+		.error_line
+
 ;
 ;		Found VarSpace, fix up with free space after variables
 ;
@@ -89,7 +94,7 @@ _FBFixVarSpace:
 		lda 	freeVariableMemory+1
 		sta 	(objPtr),y
 		bra 	_FBNext
-		
+
 		.send code
 
 ; ************************************************************************************************
