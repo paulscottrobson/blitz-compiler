@@ -44,7 +44,7 @@ CompileGotoEOL: 							; compile GOTOZ <next line>
 		lda 	#$FF
 		jsr 	WriteCodeByte
 
-		jsr 	HWILineNumber 				; Get the current line number => YA
+		jsr 	GetLineNumber 				; Get the current line number => YA
 		inc 	a 							; and branch to +1
 		bne 	_CGENoCarry
 		iny

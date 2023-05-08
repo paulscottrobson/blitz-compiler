@@ -19,7 +19,7 @@
 ; ************************************************************************************************
 
 FixBranches:
-		jsr 	HWOReset 					; back to the start of the *object* code.
+		jsr 	OUTPUTRewind 				; back to the start of the *object* code.
 _FBLoop:
 		lda 	(objPtr) 					; get the next one.
 		cmp 	#PCD_CMD_GOTO 				; found GOTO or GOSUB, patch up.

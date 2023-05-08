@@ -32,7 +32,7 @@ _EHDisplayMsg:
 		;
 		ldx 	#0 							; convert line# to string
 		jsr 	FloatSetByte
-		jsr 	HWILineNumber
+		jsr 	GetLineNumber
 		sta 	NSMantissa0,x
 		tya
 		sta 	NSMantissa1,x

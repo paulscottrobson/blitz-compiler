@@ -13,9 +13,9 @@
 		.section code
 
 Boot:	
-		jsr 	STRReset
-		jsr 	HWIReset
-		jsr 	HWOReset
+		jsr 	STRReset 					; reset storage (line#, variable)
+		jsr 	INPUTOpen 					; reset data input
+		jsr 	OUTPUTOpen 					; reset data output.
 		;
 		;		Compile _variable.space, filled in on pass 2.
 		;
@@ -28,14 +28,17 @@ Boot:
 		;		Main compilation loop
 		;
 MainCompileLoop:
-		jsr 	HWILineNumber 				; get line #
+		jsr 	ReadNextLine 				; read next line into the buffer.
+		bcc 	SaveCodeAndExit 			; end of source.
+		;
+		jsr 	GetLineNumber 				; get line #
 		jsr 	STRMarkLine 				; remember the position and number of this line.
 		lda 	#PCD_NEWCMD_LINE 			; generate new command line
 		jsr 	WriteCodeByte
 
 _MCLSameLine:
 		jsr 	GetNextNonSpace 			; get the first character.
-		beq 	_MCLNextLine 				; end of line.
+		beq 	MainCompileLoop 			; end of line, get next line.
 		cmp 	#":"						; if : then loop back.
 		beq 	_MCLSameLine
 
@@ -57,14 +60,11 @@ _MCLCheckAssignment:
 		bcc 	_MCLSyntax
 		jsr 	CommandLETHaveFirst  		; LET first character, do assign
 		bra		_MCLSameLine 				; loop back.
-
-_MCLNextLine:		
-		jsr 	HWINextLine 				; go to the next line.
-		bcs 	MainCompileLoop 			; found one, keep compile.
 		;
 		;		End of compile, fix up GOTO/GOSUB etc., save it and exit.
 		;
 SaveCodeAndExit:
+		jsr 	INPUTClose 					; finish input.
 		lda 	#$FF 						; fake line number $FFFF for forward THEN.
 		tay
 		jsr 	STRMarkLine
@@ -73,10 +73,7 @@ SaveCodeAndExit:
 		lda 	#$FF 						; add end marker
 		jsr 	WriteCodeByte
 		jsr 	FixBranches 				; fix up GOTO/GOSUB etc.
-		;
-		;  TODO: Possibly append variable map ?
-		;
-		jsr 	HWOSave
+		jsr 	OUTPUTClose
 ExitCompiler:		
 		jmp 	$FFFF
 		rts

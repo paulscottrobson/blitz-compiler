@@ -17,6 +17,8 @@
 ; ************************************************************************************************
 
 		.section zeropage
+srcPtr: 									; pointer in source buffer
+		.fill 	2		
 		.send zeropage
 
 
@@ -27,6 +29,10 @@
 ; ************************************************************************************************
 
 		.section storage
+sourceBuffer: 								; current input line.
+		.fill 	256		
+currentLineNumber:							; current line number.
+		.fill 	2		
 		.send 	storage
 
 ; ************************************************************************************************

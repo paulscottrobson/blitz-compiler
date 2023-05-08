@@ -14,7 +14,7 @@
 
 ; ************************************************************************************************
 ;
-;							Write A with checks for lastIntegerpCode
+;									Write A with to output
 ;
 ; ************************************************************************************************
 
@@ -22,7 +22,7 @@ WriteCodeByte:
 		pha 								; save on stack
 		phx
 		phy
-		jsr 	HWOWriteByte
+		jsr 	OUTPUTWriteByte
 		ply 								; restore from stack
 		plx
 		pla

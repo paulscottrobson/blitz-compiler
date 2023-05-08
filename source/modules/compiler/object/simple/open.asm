@@ -1,8 +1,8 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		nextline.asm
-;		Purpose:	Set up for next line.
+;		Name:		open.asm
+;		Purpose:	Open/Reopen the output
 ;		Created:	15th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
@@ -14,37 +14,19 @@
 
 ; ************************************************************************************************
 ;
-;						Set pointers to next line in srcPtr. CS if ok, CC if EOF
+;								Reset the output system
+;						(note this is all gone throught TWICE)
 ;
 ; ************************************************************************************************
 
-
-HWINextLine:	
-		ldy 	#1
-		clc 								; advance following link.
-		lda 	(inputPtr)
-		adc 	offsetAdjust
-		pha
-		lda 	(inputPtr),y 	
-		adc 	offsetAdjust+1
-		sta 	inputPtr+1
-		pla
-		sta 	inputPtr
-
-		lda 	(inputPtr) 					; check if reached end of program.
-		ldy 	#1
-		ora 	(inputPtr),y
-		beq 	_HWIGFail
-
-		jsr 	HWISetTokenisedCodePtr 		; set srcPtr accordingly.
-		sec
-		rts
-
-_HWIGFail:
-		clc
+OUTPUTOpen:
+OUTPUTRewind:
+		stz 	objPage
+		.set16 	objPtr,PCodeStart
 		rts
 
 		.send code
+
 
 ; ************************************************************************************************
 ;
