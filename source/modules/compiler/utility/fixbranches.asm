@@ -81,6 +81,12 @@ _FBFFound:
 		bra 	_FBNext
 
 _FBFFail:
+		ldy 	#2
+		lda 	(objPtr),y
+		sta 	currentLineNumber
+		iny
+		lda 	(objPtr),y
+		sta 	currentLineNumber+1
 		.error_line
 
 ;
