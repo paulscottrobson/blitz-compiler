@@ -30,8 +30,8 @@ HARDWARE = x16
 BUILD = build$(S)
 RELEASE = ..$(S)release
 BTEMP = $(BUILD)temp$(S)
-RTMODULES = ifloat32 polynomials runtime $(HARDWARE)_hardware $(HARDWARE)_runtime -o_runtime.asm -mruntime
-CMMODULES = compiler ifloat32 $(HARDWARE)_hardware $(HARDWARE)_compiler -o_blitz.asm -mcompiler
+RTMODULES = ifloat32 polynomials runtime $(HARDWARE)_runtime -o_runtime.asm -mruntime
+CMMODULES = compiler ifloat32 $(HARDWARE)_compiler -o_blitz.asm -mcompiler
 CAT = $(PYTHON) $(SCRIPTDIR)cat.py
 
 all: prelim compiler runtime parenthesis

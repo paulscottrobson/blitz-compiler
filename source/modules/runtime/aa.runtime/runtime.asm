@@ -16,9 +16,10 @@ Boot:
 		ldx 	#$FF 						; reset stack.
 		txs
 
+		jsr 	ClearMemory 				; clear memory.
+		jsr 	XRuntimeSetup 				; initialise the runtime stuff.
 	 	jsr		SetDefaultChannel			; set default input/output channel.
 
-		jsr 	ClearMemory 				; clear memory.
 
 		.set16 	codePtr,EndProgram+2 		; also used in RESTORE
 		stz 	codePage

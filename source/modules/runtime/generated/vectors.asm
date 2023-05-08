@@ -52,24 +52,24 @@ VectorTable:
 	.word	CommandReadString        ; $ae read$
 	.word	UnaryRND                 ; $af rnd
 	.word	StringConcatenate        ; $b0 concat
-	.word	CommandScreen            ; $b1 screen
-	.word	SignTOS                  ; $b2 sgn
-	.word	PrintTab                 ; $b3 print.tab
-	.word	PrintPos                 ; $b4 print.pos
-	.word	PrintSpace               ; $b5 print.spc
-	.word	Unary_Str                ; $b6 str$
-	.word	Unary_Left               ; $b7 left$
-	.word	Unary_Right              ; $b8 right$
-	.word	Unary_Mid                ; $b9 mid$
-	.word	CommandSwap              ; $ba swap
-	.word	TimeTOS                  ; $bb ti
-	.word	TimeString               ; $bc ti$
-	.word	UnaryUsr                 ; $bd usr
-	.word	ValUnary                 ; $be val
-	.word	CommandClose             ; $bf close
-	.word	CommandExit              ; $c0 exit
-	.word	CommandDebug             ; $c1 debug
-	.word	CommandOpen              ; $c2 open
+	.word	SignTOS                  ; $b1 sgn
+	.word	PrintTab                 ; $b2 print.tab
+	.word	PrintPos                 ; $b3 print.pos
+	.word	PrintSpace               ; $b4 print.spc
+	.word	Unary_Str                ; $b5 str$
+	.word	Unary_Left               ; $b6 left$
+	.word	Unary_Right              ; $b7 right$
+	.word	Unary_Mid                ; $b8 mid$
+	.word	CommandSwap              ; $b9 swap
+	.word	TimeTOS                  ; $ba ti
+	.word	TimeString               ; $bb ti$
+	.word	UnaryUsr                 ; $bc usr
+	.word	ValUnary                 ; $bd val
+	.word	CommandClose             ; $be close
+	.word	CommandExit              ; $bf exit
+	.word	CommandDebug             ; $c0 debug
+	.word	CommandOpen              ; $c1 open
+	.word	CommandScreen            ; $c2 screen
 	.word	CommandVPOKE             ; $c3 vpoke
 	.word	CommandShift             ; $c4 .shift
 	.word	PushByteCommand          ; $c5 .byte
@@ -101,4 +101,5 @@ ShiftVectorTable:
 	.word	CommandSYS               ; $c48d sys
 	.word	CommandTIWrite           ; $c48e ti$.write
 	.word	CommandWAIT              ; $c48f wait
+	.word	CommandCls               ; $c490 cls
 	.send code

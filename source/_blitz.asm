@@ -11,8 +11,6 @@ module_ifloat32 = 1
 ismain_ifloat32 = 0
 module_runtime = 0
 ismain_runtime = 0
-module_x16_hardware = 1
-ismain_x16_hardware = 0
 module_polynomials = 0
 ismain_polynomials = 0
 module_common = 1
@@ -27,10 +25,7 @@ ismain_common = 0
 	.include	"modules/common/boot.end/macros.inc"
 	.include	"modules/common/generated/pcodetokens.inc"
 	.include	"modules/ifloat32/aa.testing/testing.inc"
-	.include	"modules/x16_hardware/config/x16_audio_include.inc"
 	.include	"modules/x16_compiler/x16_config.inc"
-	.include	"modules/x16_hardware/config/x16_include.inc"
-	.include	"modules/x16_hardware/config/x16_machinecode.inc"
 	.include	"modules/x16_compiler/support/x16_storage.inc"
 	.include	"modules/common/boot.end/00start.asm"
 	.include	"modules/ifloat32/float/addsub.asm"
@@ -99,11 +94,7 @@ ismain_common = 0
 	.include	"modules/compiler/commands/wait.asm"
 	.include	"modules/compiler/object/simple/writebyte.asm"
 	.include	"modules/x16_compiler/commands/x16_cmd.asm"
-	.include	"modules/x16_hardware/interface/x16_getchar.asm"
-	.include	"modules/x16_hardware/interface/x16_getxpos.asm"
 	.include	"modules/x16_compiler/commands/x16_open.asm"
-	.include	"modules/x16_hardware/interface/x16_peekpoke.asm"
-	.include	"modules/x16_hardware/interface/x16_printchar.asm"
-	.include	"modules/x16_hardware/interface/x16_readwriteclock.asm"
-	.include	"modules/x16_hardware/interface/x16_save.asm"
+	.include	"modules/x16_compiler/external/x16_printchar.asm"
+	.include	"modules/x16_compiler/external/x16_save.asm"
 	.include	"modules/common/boot.end/zzEnd.asm"

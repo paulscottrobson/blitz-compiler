@@ -1,55 +1,36 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		errorhandler.asm
-;		Purpose:	Error handler
-;		Created:	1st May 2023
+;		Name:		x16_screen.asm
+;		Purpose:	Screen Command
+;		Created:	4th May 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section code
-	
-ErrorHandler:
-		pla
+		.section 	code
+
+; ************************************************************************************************
+;
+;											Screen Command
+;
+; ************************************************************************************************
+
+CommandScreen: ;; [screen]
+		.entercmd
+		phx
+		phy
+		jsr 	GetInteger8Bit
+		clc 
+		jsr 	X16_screen_mode
 		ply
-		sta 	zTemp0
-		sty 	zTemp0+1
-		ldx 	#0 							; output msg to channel #0 
-		ldy 	#1
-_EHDisplayMsg:
-		lda 	(zTemp0),y
-		jsr 	XPrintCharacter
-		iny
-		lda 	(zTemp0),y
-		bne 	_EHDisplayMsg
-		lda 	#32
-		jsr 	XPrintCharacter
-		lda 	#64
-		jsr 	XPrintCharacter
-		;
-		ldx 	#0 							; convert line# to string
-		jsr 	FloatSetByte
-		jsr 	GetLineNumber
-		sta 	NSMantissa0,x
-		tya
-		sta 	NSMantissa1,x
-		jsr 	FloatToString
-		ldy 	#0 							; display that string.
-		ldx 	#0
-_EHDisplayLine:
-		lda 	decimalBuffer,y
-		jsr 	XPrintCharacter
-		iny
-		lda 	decimalBuffer,y
-		bne 	_EHDisplayLine
+		plx
+		.exitcmd
 
-_EHStop:bra 	_EHStop
-						
-		.send code
-
+		.send 	code
+		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

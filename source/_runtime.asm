@@ -11,8 +11,6 @@ module_ifloat32 = 1
 ismain_ifloat32 = 0
 module_runtime = 1
 ismain_runtime = 1
-module_x16_hardware = 1
-ismain_x16_hardware = 0
 module_polynomials = 1
 ismain_polynomials = 0
 module_common = 1
@@ -33,9 +31,9 @@ ismain_common = 0
 	.include	"modules/runtime/memory/support.inc"
 	.include	"modules/ifloat32/aa.testing/testing.inc"
 	.include	"modules/x16_runtime/vera.inc"
-	.include	"modules/x16_hardware/config/x16_audio_include.inc"
-	.include	"modules/x16_hardware/config/x16_include.inc"
-	.include	"modules/x16_hardware/config/x16_machinecode.inc"
+	.include	"modules/x16_runtime/addresses/x16_audio_include.inc"
+	.include	"modules/x16_runtime/addresses/x16_include.inc"
+	.include	"modules/x16_runtime/addresses/x16_machinecode.inc"
 	.include	"modules/common/boot.end/00start.asm"
 	.include	"modules/runtime/functions/number/abs.asm"
 	.include	"modules/ifloat32/float/addsub.asm"
@@ -113,7 +111,7 @@ ismain_common = 0
 	.include	"modules/runtime/functions/number/rnd.asm"
 	.include	"modules/runtime/aa.runtime/runtime.asm"
 	.include	"modules/runtime/strings/sconcat.asm"
-	.include	"modules/x16_runtime/commands/screen.asm"
+	.include	"modules/x16_runtime/setup.asm"
 	.include	"modules/runtime/functions/number/sgn.asm"
 	.include	"modules/runtime/support/shift.asm"
 	.include	"modules/ifloat32/binary/simple.asm"
@@ -144,12 +142,13 @@ ismain_common = 0
 	.include	"modules/runtime/memory/write_string.asm"
 	.include	"modules/x16_runtime/commands/x16_close.asm"
 	.include	"modules/x16_runtime/commands/x16_exit.asm"
-	.include	"modules/x16_hardware/interface/x16_getchar.asm"
-	.include	"modules/x16_hardware/interface/x16_getxpos.asm"
+	.include	"modules/x16_runtime/interface/x16_getchar.asm"
+	.include	"modules/x16_runtime/interface/x16_getxpos.asm"
 	.include	"modules/x16_runtime/commands/x16_open.asm"
-	.include	"modules/x16_hardware/interface/x16_peekpoke.asm"
-	.include	"modules/x16_hardware/interface/x16_printchar.asm"
-	.include	"modules/x16_hardware/interface/x16_readwriteclock.asm"
-	.include	"modules/x16_hardware/interface/x16_save.asm"
+	.include	"modules/x16_runtime/interface/x16_peekpoke.asm"
+	.include	"modules/x16_runtime/interface/x16_printchar.asm"
+	.include	"modules/x16_runtime/interface/x16_readwriteclock.asm"
+	.include	"modules/x16_runtime/commands/x16_screen.asm"
+	.include	"modules/x16_runtime/commands/x16_text.asm"
 	.include	"modules/x16_runtime/commands/x16_vpoke.asm"
 	.include	"modules/common/boot.end/zzEnd.asm"
