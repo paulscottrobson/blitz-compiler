@@ -36,7 +36,33 @@ XPeekMemory:
 		lda 	(zTemp0)
 		rts
 
+; ************************************************************************************************
+;
+;											BANK command
+;
+; ************************************************************************************************
+
+CommandBank: ;; [!bank]
+		.entercmd
+		lda 	NSMantissa0 				; RAM bank
+		sta 	ramBank 					; store & make current
+		sta 	SelectRAMBank
+		lda 	NSMantissa0+1 		 		; ROM specified 
+		cmp 	#$FF
+		beq 	_CBNoUpdate
+		sta 	romBank 					; this doesn't set the hardware page.
+_CBNoUpdate:		
+		ldx 	#$FF
+		.exitcmd
+
 		.send code
+
+		.section storage
+ramBank:
+		.fill 	1
+romBank:
+		.fill 	1
+		.send storage
 
 ; ************************************************************************************************
 ;

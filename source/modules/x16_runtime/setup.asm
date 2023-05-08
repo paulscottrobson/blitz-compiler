@@ -19,6 +19,9 @@
 ; ************************************************************************************************
 
 XRuntimeSetup:
+ 		lda 	#$FF 						; default banks to access.
+ 		sta 	ramBank
+ 		sta 	romBank
 		rts
 		
 		.send code

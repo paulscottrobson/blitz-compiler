@@ -24,6 +24,12 @@ CommandCls: ;; [!cls]
 		jsr 	XPrintCharacterToChannel
 		.exitcmd
 
+; ************************************************************************************************
+;
+;										Locate X[,Y] command
+;
+; ************************************************************************************************
+
 CommandLocate: ;; [!locate]
 		.entercmd
 		lda 	#$13 						; home.
@@ -34,6 +40,7 @@ CommandLocate: ;; [!locate]
 		lda 	#$11 						; do cursor downs.
 		ldx 	NSMantissa0+1
 		jsr 	_CLOutputXA
+		ldx 	#$FF
 		.exitcmd
 
 _CLOutputXA: 								; output X A's, 1 based.
@@ -44,6 +51,37 @@ _CLOutputXA: 								; output X A's, 1 based.
 		bra 	_CLOutputXA
 _CLOExit:
 		rts		
+
+; ************************************************************************************************
+;
+;										Color F[,B]
+;
+; ************************************************************************************************
+
+CommandColor: ;; [!color]
+		.entercmd
+		lda 	NSMantissa0+1 				; bgr specified
+		cmp 	#$FF  				
+		beq 	_CCNoBGR 					; if so, change background
+		jsr 	_CCSetColour
+		lda 	#$01 						; swap FGR/BGR
+		jsr 	XPrintCharacterToChannel
+_CCNoBGR:
+		lda 	NSMantissa0
+		jsr 	_CCSetColour		
+		ldx 	#$FF
+		.exitcmd
+
+_CCSetColour:
+		and 	#15 						; look up in control codes table.
+		tax
+		lda 	_CCCommandTable,x
+		jsr 	XPrintCharacterToChannel
+		rts
+
+_CCCommandTable:
+		.byte	 $90,$05,$1c,$9f,$9c,$1e,$1f,$9e
+		.byte	 $81,$95,$96,$97,$98,$99,$9a,$9b
 
 		.send 	code
 		
