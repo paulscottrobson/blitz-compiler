@@ -27,6 +27,7 @@ ismain_common = 0
 	.include	"modules/common/boot.end/macros.inc"
 	.include	"modules/common/generated/pcodetokens.inc"
 	.include	"modules/ifloat32/aa.testing/testing.inc"
+	.include	"modules/x16_hardware/config/x16_audio_include.inc"
 	.include	"modules/x16_compiler/x16_config.inc"
 	.include	"modules/x16_hardware/config/x16_include.inc"
 	.include	"modules/x16_hardware/config/x16_machinecode.inc"

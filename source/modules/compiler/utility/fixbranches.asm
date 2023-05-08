@@ -54,6 +54,13 @@ _FBFixGotoGosub:
 		tay
 		pla
 		jsr 	STRFindLine			 		; find where it is X:YA
+		bcc 	_FBFFound 					; not found, so must be >
+		lda 	(objPtr) 					; which is a fail if not CMD_GOTOCMD_Z
+		cmp 	#PCD_CMD_GOTOCMD_Z
+		beq 	_FBFFound
+		.error_line
+
+_FBFFound:		
 		jsr 	STRMakeOffset 				; make it an offset from X:YA
 		
 		phy	 								; patch the GOTO/GOSUB
@@ -82,6 +89,7 @@ _FBFixVarSpace:
 		lda 	freeVariableMemory+1
 		sta 	(objPtr),y
 		bra 	_FBNext
+		
 		.send code
 
 ; ************************************************************************************************

@@ -33,6 +33,7 @@ ismain_common = 0
 	.include	"modules/runtime/memory/support.inc"
 	.include	"modules/ifloat32/aa.testing/testing.inc"
 	.include	"modules/x16_runtime/vera.inc"
+	.include	"modules/x16_hardware/config/x16_audio_include.inc"
 	.include	"modules/x16_hardware/config/x16_include.inc"
 	.include	"modules/x16_hardware/config/x16_machinecode.inc"
 	.include	"modules/common/boot.end/00start.asm"

@@ -53,7 +53,8 @@ STRMarkLine:
 
 ; ************************************************************************************************
 ;
-;				Line number YA - find in table, return page X address YA
+;				Line number YA - find in table, return page X address YA of next
+; 				highest. CC if found, CS if not found.
 ;
 ; ************************************************************************************************
 
@@ -62,37 +63,40 @@ STRFindLine:
 
 		sta 	zTemp0 						; zTemp0 line number being searched
 		sty 	zTemp0+1
-		lda 	lineNumberTable 			; zTemp1 points to table
-		sta 	zTemp1
-		lda 	lineNumberTable+1
-		sta 	zTemp1+1
+		.set16 	zTemp1,WorkArea+WorkAreaSize ; work backwards through table
 
 _STRSearch:
-		lda 	zTemp1+1 					; reached the end
-		cmp 	#(WorkArea+WorkAreaSize) >> 8
-		beq 	_STRError
-		;
-		lda 	(zTemp1) 					; check match.
-		cmp 	zTemp0
-		bne 	_STRNext
-		ldy 	#1
-		lda 	(zTemp1),y
-		cmp 	zTemp0+1
-		beq 	_STRFound
-_STRNext: 									; next table entry.
-		clc
+		sec 								; move backwards one entry.
 		lda 	zTemp1
-		adc 	#5
+		sbc 	#5
 		sta 	zTemp1
-		bcc 	_STRSearch
-		inc 	zTemp1+1
-		bra 	_STRSearch
-		rts
-_STRError:
-		.storage_release
-		.error_line
+		lda 	zTemp1+1
+		sbc 	#0
+		sta 	zTemp1+1
+
+		ldy 	#1
+		lda 	(zTemp1) 					; check table line # >= target
+		cmp 	zTemp0
+		lda 	(zTemp1),y
+		sbc 	zTemp0+1
+		bcs 	_STRFound 					; >=
+_STRNext: 									; next table entry.
+		ldy 	#1 							; should not be required !
+		lda 	(zTemp1),y
+		cmp 	#$FF
+		bne 	_STRSearch
+		.error_internal
 
 _STRFound:
+		lda 	(zTemp1) 					; set A = 0 if the same, 0 if different.
+		eor 	zTemp0
+		bne 	_STRDifferent
+		lda 	(zTemp1)
+		eor 	zTemp0
+_STRDifferent:
+		clc  								; set carry if different, e.g. > rather than >=
+		adc 	#255 				
+		php
 		iny 								; page into X
 		lda 	(zTemp1),y
 		tax
@@ -103,8 +107,8 @@ _STRFound:
 		lda 	(zTemp1),y
 		tay
 		pla	
-
 		.storage_release
+		plp	
 		rts
 
 ; ************************************************************************************************

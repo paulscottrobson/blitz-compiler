@@ -1,4 +1,5 @@
-20 print mid$("abcdef",4)
-22 print mid$("abcdef",4,2)
-25 stop
+10 if 0 then print
+20 goto 10
+25 gosub 25
+30 if 0 then stop
 
