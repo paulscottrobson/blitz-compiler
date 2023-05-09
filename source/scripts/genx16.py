@@ -66,9 +66,17 @@ for s in [x.strip() for x in src if x.strip() != ""]:
 	ha.write("\t.entercmd\n")
 	ha.write("\tphy\n")
 
+	if setup == "A#":
+		ha.write("\tjsr\t\tX16_Audio_Parameters8_16\n")
+	if setup == "A$":
+		ha.write("\tjsr\t\tX16_Audio_Parameters8_String\n")
+	if setup.startswith("AX"):
+		ha.write("\tjsr\t\tX16_Audio_Parameters8_8\n")
+		ha.write("\t{0}\n".format("sec" if setup.endswith("C") else "clc"))
+
 	ha.write("\tjsr\t\tX16_JSRFAR\n")
 	ha.write("\t.word\t{0}\n".format(apicall))
-	ha.write("\t.byte\t$0A\n")
+	ha.write("\t.byte\tX16_AudioCodeBank\n")
 
 	ha.write("\tldx\t#$FF\n")
 	ha.write("\tply\n")

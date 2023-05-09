@@ -1,4 +1,3 @@
-10 cls:mouse 1
-20 locate 1,1:print mx,my,mb
-30 goto 20
+10 fminst 0,160
+20 fmplay 0,"ABC"
 40 stop

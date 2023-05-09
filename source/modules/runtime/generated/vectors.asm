@@ -107,28 +107,30 @@ ShiftVectorTable:
 	.word	CommandSYS               ; $c592 sys
 	.word	CommandTIWrite           ; $c593 ti$.write
 	.word	CommandWAIT              ; $c594 wait
-	.word	CommandBank              ; $c595 bank
-	.word	XCommandSleep            ; $c596 sleep
-	.word	X16_Audio_FMINIT         ; $c597 fminit
-	.word	X16_Audio_FMNOTE         ; $c598 fmnote
-	.word	X16_Audio_FMDRUM         ; $c599 fmdrum
-	.word	X16_Audio_FMINST         ; $c59a fminst
-	.word	X16_Audio_FMVIB          ; $c59b fmvib
-	.word	X16_Audio_FMFREQ         ; $c59c fmfreq
-	.word	X16_Audio_FMVOL          ; $c59d fmvol
-	.word	X16_Audio_FMPAN          ; $c59e fmpan
-	.word	X16_Audio_FMPLAY         ; $c59f fmplay
-	.word	X16_Audio_FMCHORD        ; $c5a0 fmchord
-	.word	X16_Audio_FMPOKE         ; $c5a1 fmpoke
-	.word	X16_Audio_PSGINIT        ; $c5a2 psginit
-	.word	X16_Audio_PSGNOTE        ; $c5a3 psgnote
-	.word	X16_Audio_PSGVOL         ; $c5a4 psgvol
-	.word	X16_Audio_PSGWAV         ; $c5a5 psgwav
-	.word	X16_Audio_PSGFREQ        ; $c5a6 psgfreq
-	.word	X16_Audio_PSGPAN         ; $c5a7 psgpan
-	.word	X16_Audio_PSGPLAY        ; $c5a8 psgplay
-	.word	X16_Audio_PSGCHORD       ; $c5a9 psgchord
-	.word	CommandCls               ; $c5aa cls
-	.word	CommandLocate            ; $c5ab locate
-	.word	CommandColor             ; $c5ac color
+	.word	X16I2CPoke               ; $c595 i2cpoke
+	.word	X16I2CPeek               ; $c596 i2cpeek
+	.word	CommandBank              ; $c597 bank
+	.word	XCommandSleep            ; $c598 sleep
+	.word	X16_Audio_FMINIT         ; $c599 fminit
+	.word	X16_Audio_FMNOTE         ; $c59a fmnote
+	.word	X16_Audio_FMDRUM         ; $c59b fmdrum
+	.word	X16_Audio_FMINST         ; $c59c fminst
+	.word	X16_Audio_FMVIB          ; $c59d fmvib
+	.word	X16_Audio_FMFREQ         ; $c59e fmfreq
+	.word	X16_Audio_FMVOL          ; $c59f fmvol
+	.word	X16_Audio_FMPAN          ; $c5a0 fmpan
+	.word	X16_Audio_FMPLAY         ; $c5a1 fmplay
+	.word	X16_Audio_FMCHORD        ; $c5a2 fmchord
+	.word	X16_Audio_FMPOKE         ; $c5a3 fmpoke
+	.word	X16_Audio_PSGINIT        ; $c5a4 psginit
+	.word	X16_Audio_PSGNOTE        ; $c5a5 psgnote
+	.word	X16_Audio_PSGVOL         ; $c5a6 psgvol
+	.word	X16_Audio_PSGWAV         ; $c5a7 psgwav
+	.word	X16_Audio_PSGFREQ        ; $c5a8 psgfreq
+	.word	X16_Audio_PSGPAN         ; $c5a9 psgpan
+	.word	X16_Audio_PSGPLAY        ; $c5aa psgplay
+	.word	X16_Audio_PSGCHORD       ; $c5ab psgchord
+	.word	CommandCls               ; $c5ac cls
+	.word	CommandLocate            ; $c5ad locate
+	.word	CommandColor             ; $c5ae color
 	.send code

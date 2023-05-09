@@ -82,7 +82,7 @@ class GenCompiler(object):
 		h.close()
 
 	def compileGenerator(self,s):
-		m = re.match("^([a-zA-Z\\#\\$]+)\\s+(.*)\\s*$",s)
+		m = re.match("^([a-zA-Z0-9\\#\\$]+)\\s+(.*)\\s*$",s)
 		assert m is not None,"Bad line "+s
 		self.token = m.group(1).strip()
 		self.gen = Generator(self.token)

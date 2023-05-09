@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		gendata.asm
-;		Purpose:	Generation data files
-;		Created:	16th April 2023
+;		Name:		x16_i2c.asm
+;		Purpose:	I2C Peek/Poke
+;		Created:	9th May 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -12,27 +12,21 @@
 
 		.section code
 
-	
 ; ************************************************************************************************
 ;
-;			Generator tables. Apologies for messy way of including those for alt systems
+;											I2CPOKE 
 ;
 ; ************************************************************************************************
 
-CommandTables:
-		.include 	"commands.defc"
-		.if module_x16_compiler == 1
-		.include "../../x16_compiler/generation/x16_command.defc"
-		.include "../../x16_compiler/generated/x16_sound.defc"
-		.endif
-		.byte 	0
+X16I2CPoke: ;; [!I2CPOKE]
+		.entercmd
+		.exitcmd
 
-UnaryTables:
-		.include 	"unary.defc"
-		.include "../../x16_compiler/generation/x16_unary.defc"
-		.byte 	0
+X16I2CPeek: ;; [!I2CPEEK]		
+		.entercmd
+		.exitcmd
 
-		.send  code		
+		.send code
 
 ; ************************************************************************************************
 ;

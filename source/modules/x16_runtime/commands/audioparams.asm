@@ -1,49 +1,65 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		x16_machinecode.inc
-;		Purpose:	Addresses for SYS and USR
-;		Created:	11th April 2023
+;		Name:		audioparams.asm
+;		Purpose:	Audio Parameter functions for FM_ PSG_
+;		Created:	9th May 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-; ************************************************************************************************
-;
-;								Addresses for SYS and USR
-;
-; ************************************************************************************************
-;
-;		Vector for USR() function
-;
-USRRoutineAddress = $311
-;
-;		Register addresses for SYS command
-;
-SYS_Reg_A = $30C
-SYS_Reg_X = $30D
-SYS_Reg_Y = $30E
-SYS_Reg_S = $30F
+		.section 	code
 
 ; ************************************************************************************************
 ;
-;									Select RAM/ROM bank
+;								Get parameters either as A:0X or A:YX
 ;
 ; ************************************************************************************************
 
-SelectRAMBank = 0
-SelectROMBank = 1
+X16_Audio_Parameters8_16:
+		jsr 	X16_Audio_Parameters8_8	
+		ldy 	NSMantissa1+1
+		rts
+
+X16_Audio_Parameters8_8:
+		ldx 	#1
+		.floatinteger
+		dex
+		.floatinteger
+		jsr 	GetInteger8Bit
+		ldx 	NSMantissa0+1
+		ldy 	#0
+		rts
 
 ; ************************************************************************************************
 ;
-;						  ROM Bank audio code is in (for JSRFAR)
+;						Get parameters as a string : A:Length YX:String
 ;
 ; ************************************************************************************************
 
-X16_AudioCodeBank = $0A
-
+X16_Audio_Parameters8_String:
+		jsr 	X16_Audio_Parameters8_16 	; get as numbers.
+		;
+		phx 								; set the voice
+		phy
+		jsr 	X16_JSRFAR
+		jsr 	X16A_bas_playstringvoice
+		.byte 	X16_AudioCodeBank
+		ply
+		plx
+		;
+		stx 	zTemp0
+		sty 	zTemp0+1
+		lda 	(zTemp0) 					; read length
+		inx 								; point YX to first character.
+		bne 	_X16APSSkip
+		iny
+_X16APSSkip:
+		rts		
+		.send 	code
+		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates
