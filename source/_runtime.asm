@@ -73,6 +73,7 @@ ismain_common = 0
 	.include	"modules/runtime/commands/get.asm"
 	.include	"modules/runtime/commands/gosub.asm"
 	.include	"modules/runtime/commands/goto.asm"
+	.include	"modules/x16_runtime/commands/graphics.asm"
 	.include	"modules/x16_runtime/unary/hex.asm"
 	.include	"modules/polynomials/utility/horner.asm"
 	.include	"modules/runtime/memory/indirect.asm"
