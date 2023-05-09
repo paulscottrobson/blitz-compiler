@@ -89,22 +89,23 @@ ShiftVectorTable:
 	.word	CommandClr               ; $c580 clr
 	.word	CommandDIM               ; $c581 dim
 	.word	CommandEnd               ; $c582 end
-	.word	LinkFloatIntegerPartDown ; $c583 int
-	.word	LinkFloatSquareRoot      ; $c584 sqr
-	.word	LinkFloatLogarithm       ; $c585 log
-	.word	LinkFloatExponent        ; $c586 exp
-	.word	LinkFloatCosine          ; $c587 cos
-	.word	LinkFloatSine            ; $c588 sin
-	.word	LinkFloatTangent         ; $c589 tan
-	.word	LinkFloatArcTan          ; $c58a atn
-	.word	CommandRestore           ; $c58b restore
-	.word	CommandStop              ; $c58c stop
-	.word	CommandSYS               ; $c58d sys
-	.word	CommandTIWrite           ; $c58e ti$.write
-	.word	CommandWAIT              ; $c58f wait
-	.word	CommandBank              ; $c590 bank
-	.word	XCommandSleep            ; $c591 sleep
-	.word	CommandCls               ; $c592 cls
-	.word	CommandLocate            ; $c593 locate
-	.word	CommandColor             ; $c594 color
+	.word	UnaryJoy                 ; $c583 joy
+	.word	LinkFloatIntegerPartDown ; $c584 int
+	.word	LinkFloatSquareRoot      ; $c585 sqr
+	.word	LinkFloatLogarithm       ; $c586 log
+	.word	LinkFloatExponent        ; $c587 exp
+	.word	LinkFloatCosine          ; $c588 cos
+	.word	LinkFloatSine            ; $c589 sin
+	.word	LinkFloatTangent         ; $c58a tan
+	.word	LinkFloatArcTan          ; $c58b atn
+	.word	CommandRestore           ; $c58c restore
+	.word	CommandStop              ; $c58d stop
+	.word	CommandSYS               ; $c58e sys
+	.word	CommandTIWrite           ; $c58f ti$.write
+	.word	CommandWAIT              ; $c590 wait
+	.word	CommandBank              ; $c591 bank
+	.word	XCommandSleep            ; $c592 sleep
+	.word	CommandCls               ; $c593 cls
+	.word	CommandLocate            ; $c594 locate
+	.word	CommandColor             ; $c595 color
 	.send code

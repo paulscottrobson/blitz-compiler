@@ -79,6 +79,7 @@ ismain_common = 0
 	.include	"modules/ifloat32/float/integer.asm"
 	.include	"modules/ifloat32/float/integerdown.asm"
 	.include	"modules/runtime/support/integers.asm"
+	.include	"modules/x16_runtime/unary/joy.asm"
 	.include	"modules/runtime/functions/strings/len.asm"
 	.include	"modules/runtime/generated/links.asm"
 	.include	"modules/polynomials/utility/load.asm"

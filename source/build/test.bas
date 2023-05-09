@@ -1,6 +1,4 @@
 10 cls
-20 vpoke 1,$B000,42
-25 vpoke 1,$B002,43
-28 locate 1.4,4
-29 print vpeek(1,$B002),vpeek(1,$B000)
+20 locate 1,1:print hex$(joy(0)),joy(1)
+30 goto 20
 40 stop

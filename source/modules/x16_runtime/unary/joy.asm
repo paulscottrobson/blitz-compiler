@@ -1,8 +1,8 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		x16_sleep.asm
-;		Purpose:	Sleep for n ticks
+;		Name:		joy.asm
+;		Purpose:	Joystick function
 ;		Created:	9th May 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
@@ -11,40 +11,45 @@
 ; ************************************************************************************************
 
 		.section code
-
+		
 ; ************************************************************************************************
 ;
-;									Sleep for N ticks.
+;								JOY(n) read joystick
 ;
 ; ************************************************************************************************
 
-XCommandSleep: ;; [!sleep]
+UnaryJoy: ;; [!joy]
 		.entercmd
+		jsr 	GetInteger8Bit 				; port #
+		pha 								; zero the result.
+		jsr 	FloatSetZero
+		pla
 		phy
-		.floatinteger 						; make everything integer
-		dex
-		jsr 	XReadClock 					; read clock to YXA
-		;
-		clc 								; calculate end time in zTemp0
-		adc 	NSMantissa0
-		sta 	zTemp0
+		phx
+		jsr 	X16_joystick_get 			; read joystick.
+		cpy 	#0 							; check no hardware
+		bne 	_UJNoHardware
+
+		tay 								; move XA -> AY
 		txa
-		adc 	NSMantissa1
-		sta 	zTemp0+1
+		plx 								; we can update it now.
+		eor 	#$FF
+		sta 	NSMantissa1,x
+		tya
+		eor 	#$FF
+		sta 	NSMantissa0,x
+		ply 								; restore Y
+		.exitcmd
 
-_XCWait:
-		jsr 	XReadClock 					; and wait for it.
-		cmp 	zTemp0
-		bne 	_XCWait
-		cpx 	zTemp0+1
-		bne 	_XCWait
-
-		ldx 	#$FF
+_UJNoHardware:
+		plx
 		ply
+		lda 	#1 							; set result to -1
+		jsr 	FloatSetByte
+		jsr 	FloatNegate
 		.exitcmd
 
 		.send code
-
 
 ; ************************************************************************************************
 ;
