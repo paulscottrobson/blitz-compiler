@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.58.2974? listing file
 ; 64tass -q -Wall -c -C -L build/code.lst -l build/code.lbl -o build/blitz.prg _blitz.asm
-; Tue May  9 03:39:36 2023
+; Tue May  9 03:53:08 2023
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -341,16 +341,20 @@
 =$c589					PCD_SIN              = $c589 ; sin
 =$c58a					PCD_TAN              = $c58a ; tan
 =$c58b					PCD_ATN              = $c58b ; atn
-=$c58c					PCD_RESTORE          = $c58c ; restore
-=$c58d					PCD_STOP             = $c58d ; stop
-=$c58e					PCD_SYS              = $c58e ; sys
-=$c58f					PCD_TIDOLLARCMD_WRITE = $c58f ; ti$.write
-=$c590					PCD_WAIT             = $c590 ; wait
-=$c591					PCD_BANK             = $c591 ; bank
-=$c592					PCD_SLEEP            = $c592 ; sleep
-=$c593					PCD_CLS              = $c593 ; cls
-=$c594					PCD_LOCATE           = $c594 ; locate
-=$c595					PCD_COLOR            = $c595 ; color
+=$c58c					PCD_MOUSE            = $c58c ; mouse
+=$c58d					PCD_MB               = $c58d ; mb
+=$c58e					PCD_MX               = $c58e ; mx
+=$c58f					PCD_MY               = $c58f ; my
+=$c590					PCD_RESTORE          = $c590 ; restore
+=$c591					PCD_STOP             = $c591 ; stop
+=$c592					PCD_SYS              = $c592 ; sys
+=$c593					PCD_TIDOLLARCMD_WRITE = $c593 ; ti$.write
+=$c594					PCD_WAIT             = $c594 ; wait
+=$c595					PCD_BANK             = $c595 ; bank
+=$c596					PCD_SLEEP            = $c596 ; sleep
+=$c597					PCD_CLS              = $c597 ; cls
+=$c598					PCD_LOCATE           = $c598 ; locate
+=$c599					PCD_COLOR            = $c599 ; color
 
 ;******  Return to file: _blitz.asm
 
@@ -398,13 +402,13 @@
 .0810	15 60		ora $60,x			ora 	NSMantissa3,x
 .0812	15 61		ora $61,x			ora 	NSMantissa3+1,x
 .0814	d0 04		bne $081a			bne 	_FAUseFloat
-.0816	20 b3 19	jsr $19b3			jsr 	FloatInt32Add 				; use the int32 one.
+.0816	20 cf 19	jsr $19cf			jsr 	FloatInt32Add 				; use the int32 one.
 .0819	60		rts				rts
 .081a					_FAUseFloat:
-.081a	20 b4 17	jsr $17b4			jsr 	FloatNormalise 				; normalise S[X]
+.081a	20 d0 17	jsr $17d0			jsr 	FloatNormalise 				; normalise S[X]
 .081d	f0 51		beq $0870			beq 	_FAReturn1
 .081f	e8		inx				inx 								; normalise S[X+1]
-.0820	20 b4 17	jsr $17b4			jsr 	FloatNormalise
+.0820	20 d0 17	jsr $17d0			jsr 	FloatNormalise
 .0823	ca		dex				dex
 .0824	c9 00		cmp #$00			cmp 	#0
 .0826	f0 60		beq $0888			beq 	_FAExit 					; if so, just return A
@@ -430,20 +434,20 @@
 .0846	b5 30		lda $30,x			lda 	NSStatus,x 					; are the signs the same
 .0848	55 31		eor $31,x			eor 	NSStatus+1,x
 .084a	30 0e		bmi $085a			bmi 	_FADifferentSigns
-.084c	20 7f 19	jsr $197f			jsr 	FloatAddTopTwoStack 		; do the add of the mantissae
+.084c	20 9b 19	jsr $199b			jsr 	FloatAddTopTwoStack 		; do the add of the mantissae
 .084f	b5 60		lda $60,x			lda 	NSMantissa3,x 				; do we have an overflow in Mantissa A ?
 .0851	10 35		bpl $0888			bpl 	_FAExit 					; if no, we are done.
-.0853	20 a5 1c	jsr $1ca5			jsr 	FloatShiftRight 				; shift A right, renormalising it.
+.0853	20 c1 1c	jsr $1cc1			jsr 	FloatShiftRight 				; shift A right, renormalising it.
 .0856	f6 6c		inc $6c,x			inc 	NSExponent,x 				; bump the exponent and exit
 .0858	80 2e		bra $0888			bra 	_FAExit
 .085a					_FADifferentSigns:
-.085a	20 99 19	jsr $1999			jsr 	FloatSubTopTwoStack 		; subtract mantissa B from A
+.085a	20 b5 19	jsr $19b5			jsr 	FloatSubTopTwoStack 		; subtract mantissa B from A
 .085d	b5 60		lda $60,x			lda 	NSMantissa3,x 				; is the result negative ?
 .085f	10 06		bpl $0867			bpl 	_FACheckZero 				; if no, check for -0
-.0861	20 4e 1c	jsr $1c4e			jsr 	FloatNegate 					; netate result
-.0864	20 55 1c	jsr $1c55			jsr 	FloatNegateMantissa 			; negate (2'c) the mantissa
+.0861	20 6a 1c	jsr $1c6a			jsr 	FloatNegate 					; netate result
+.0864	20 71 1c	jsr $1c71			jsr 	FloatNegateMantissa 			; negate (2'c) the mantissa
 .0867					_FACheckZero:
-.0867	20 ae 1c	jsr $1cae			jsr 	FloatIsZero	 				; check for -0
+.0867	20 ca 1c	jsr $1cca			jsr 	FloatIsZero	 				; check for -0
 .086a	d0 1c		bne $0888			bne 	_FAExit
 .086c	74 30		stz $30,x			stz 	NSStatus,x
 .086e	80 18		bra $0888			bra 	_FAExit
@@ -467,7 +471,7 @@
 .0889	98		tya				tya 								; compare Y to exponent
 .088a	d5 6c		cmp $6c,x			cmp 	NSExponent,x 				; reached the exponent required ?
 .088c	f0 07		beq $0895			beq 	_FASEExit 					; exit if so.
-.088e	20 a5 1c	jsr $1ca5			jsr 	FloatShiftRight	 			; shift the mantissa right
+.088e	20 c1 1c	jsr $1cc1			jsr 	FloatShiftRight	 			; shift the mantissa right
 .0891	f6 6c		inc $6c,x			inc 	NSExponent,x 				; increment exponent
 .0893	80 f4		bra $0889			bra 	_FAShiftToExponent2
 .0895					_FASEExit:
@@ -489,8 +493,8 @@
 .08a2	64 2a		stz $2a				stz 	zTemp0 						; zero result
 .08a4	64 2b		stz $2b				stz 	zTemp0+1
 .08a6					_INDLoop:
-.08a6	20 42 14	jsr $1442			jsr 	LookNext 					; check next character
-.08a9	20 7e 14	jsr $147e			jsr 	ConvertHexStyle		 		; convert into range 0-35 for 0-9A-Z
+.08a6	20 5e 14	jsr $145e			jsr 	LookNext 					; check next character
+.08a9	20 9a 14	jsr $149a			jsr 	ConvertHexStyle		 		; convert into range 0-35 for 0-9A-Z
 .08ac	90 1f		bcc $08cd			bcc		_INDDone 					; didn't convert
 .08ae	c5 2c		cmp $2c				cmp 	zTemp1 						; size too large ?
 .08b0	b0 1b		bcs $08cd			bcs 	_INDDone
@@ -503,7 +507,7 @@
 .08c2					_INDNotHex:
 .08c2	05 2a		ora $2a				ora 	zTemp0 						; or digit into result
 .08c4	85 2a		sta $2a				sta 	zTemp0
-.08c6	20 53 14	jsr $1453			jsr 	GetNext 					; consume
+.08c6	20 6f 14	jsr $146f			jsr 	GetNext 					; consume
 .08c9	e6 2d		inc $2d				inc 	zTemp1+1 					; bump count
 .08cb	80 d9		bra $08a6			bra 	_INDLoop
 .08cd					_INDDone:
@@ -562,7 +566,7 @@
 .0908	48		pha				pha 								; save on stack
 .0909	da		phx				phx
 .090a	5a		phy				phy
-.090b	20 dd 1c	jsr $1cdd			jsr 	OUTPUTWriteByte
+.090b	20 f9 1c	jsr $1cf9			jsr 	OUTPUTWriteByte
 .090e	7a		ply				ply 								; restore from stack
 .090f	fa		plx				plx
 .0910	68		pla				pla
@@ -584,7 +588,7 @@
 .091c					CheckNextA:
 .091c	8d 25 06	sta $0625			sta 	checkCharacter 				; save test character
 .091f					_CNALoop:
-.091f	20 5e 14	jsr $145e			jsr 	GetNextNonSpace 			; get next skipping spaces.
+.091f	20 7a 14	jsr $147a			jsr 	GetNextNonSpace 			; get next skipping spaces.
 .0922	cd 25 06	cmp $0625			cmp 	checkCharacter 				; matches ?
 .0925	f0 03		beq $092a			beq 	_CNAExit
 .0927	4c e7 0c	jmp $0ce7		jmp	ErrorV_syntax
@@ -602,7 +606,7 @@
 .092b	a9 40		lda #$40			lda 	#(PCodeStart >> 8)
 .092d	a6 27		ldx $27				ldx 	objPtr
 .092f	a4 28		ldy $28				ldy 	objPtr+1
-.0931	20 47 1d	jsr $1d47			jsr 	XSaveMemory
+.0931	20 63 1d	jsr $1d63			jsr 	XSaveMemory
 .0934	60		rts				rts
 
 ;******  Return to file: _blitz.asm
@@ -672,7 +676,7 @@
 .0992					_FCNegative:
 .0992	a9 ff		lda #$ff			lda 	#$FF 						; and return -1 if result<0
 .0994					_FCExit:
-.0994	20 8e 1c	jsr $1c8e			jsr 	FloatSetByte 				; set the result 255,0,1
+.0994	20 aa 1c	jsr $1caa			jsr 	FloatSetByte 				; set the result 255,0,1
 .0997	60		rts				rts
 
 ;******  Return to file: _blitz.asm
@@ -681,23 +685,23 @@
 ;******  Processing file: modules/compiler/aa.compiler/compiler.asm
 
 .0998					Boot:
-.0998	20 5d 19	jsr $195d			jsr 	STRReset 					; reset storage (line#, variable)
+.0998	20 79 19	jsr $1979			jsr 	STRReset 					; reset storage (line#, variable)
 .099b	20 92 10	jsr $1092			jsr 	INPUTOpen 					; reset data input
-.099e	20 17 18	jsr $1817			jsr 	OUTPUTOpen 					; reset data output.
+.099e	20 33 18	jsr $1833			jsr 	OUTPUTOpen 					; reset data output.
 .09a1	a9 cf		lda #$cf			lda 	#PCD_CMD_VARSPACE
 .09a3	20 08 09	jsr $0908			jsr 	WriteCodeByte
 .09a6	a9 00		lda #$00			lda 	#0
 .09a8	20 08 09	jsr $0908			jsr 	WriteCodeByte
 .09ab	20 08 09	jsr $0908			jsr 	WriteCodeByte
 .09ae					MainCompileLoop:
-.09ae	20 0c 16	jsr $160c			jsr 	ReadNextLine 				; read next line into the buffer.
+.09ae	20 28 16	jsr $1628			jsr 	ReadNextLine 				; read next line into the buffer.
 .09b1	90 2e		bcc $09e1			bcc 	SaveCodeAndExit 			; end of source.
-.09b3	20 3d 16	jsr $163d			jsr 	GetLineNumber 				; get line #
-.09b6	20 44 16	jsr $1644			jsr 	STRMarkLine 				; remember the position and number of this line.
+.09b3	20 59 16	jsr $1659			jsr 	GetLineNumber 				; get line #
+.09b6	20 60 16	jsr $1660			jsr 	STRMarkLine 				; remember the position and number of this line.
 .09b9	a9 a1		lda #$a1			lda 	#PCD_NEWCMD_LINE 			; generate new command line
 .09bb	20 08 09	jsr $0908			jsr 	WriteCodeByte
 .09be					_MCLSameLine:
-.09be	20 5e 14	jsr $145e			jsr 	GetNextNonSpace 			; get the first character.
+.09be	20 7a 14	jsr $147a			jsr 	GetNextNonSpace 			; get the first character.
 .09c1	f0 eb		beq $09ae			beq 	MainCompileLoop 			; end of line, get next line.
 .09c3	c9 3a		cmp #$3a			cmp 	#":"						; if : then loop back.
 .09c5	f0 f7		beq $09be			beq 	_MCLSameLine
@@ -705,20 +709,20 @@
 .09c9	10 0c		bpl $09d7			bpl 	_MCLCheckAssignment
 .09cb	a2 e3		ldx #$e3			ldx 	#CommandTables & $FF 		; do command tables.
 .09cd	a0 10		ldy #$10			ldy 	#CommandTables >> 8
-.09cf	20 b8 12	jsr $12b8			jsr 	GeneratorProcess
+.09cf	20 d4 12	jsr $12d4			jsr 	GeneratorProcess
 .09d2	b0 ea		bcs $09be			bcs 	_MCLSameLine 				; keep trying to compile the line.
 .09d4					_MCLSyntax:
 .09d4	4c e7 0c	jmp $0ce7		jmp	ErrorV_syntax
 .09d7					_MCLCheckAssignment:
-.09d7	20 74 14	jsr $1474			jsr 	CharIsAlpha 				; if not alpha then syntax error
+.09d7	20 90 14	jsr $1490			jsr 	CharIsAlpha 				; if not alpha then syntax error
 .09da	90 f8		bcc $09d4			bcc 	_MCLSyntax
-.09dc	20 da 15	jsr $15da			jsr 	CommandLETHaveFirst  		; LET first character, do assign
+.09dc	20 f6 15	jsr $15f6			jsr 	CommandLETHaveFirst  		; LET first character, do assign
 .09df	80 dd		bra $09be			bra		_MCLSameLine 				; loop back.
 .09e1					SaveCodeAndExit:
 .09e1	20 9a 10	jsr $109a			jsr 	INPUTClose 					; finish input.
 .09e4	a9 ff		lda #$ff			lda 	#$FF 						; fake line number $FFFF for forward THEN.
 .09e6	a8		tay				tay
-.09e7	20 44 16	jsr $1644			jsr 	STRMarkLine
+.09e7	20 60 16	jsr $1660			jsr 	STRMarkLine
 .09ea	a9 bf		lda #$bf			lda 	#PCD_EXIT 					; add an END
 .09ec	20 08 09	jsr $0908			jsr 	WriteCodeByte
 .09ef	a9 ff		lda #$ff			lda 	#$FF 						; add end marker
@@ -886,12 +890,12 @@
 
 .0af0					CommandDATA:
 .0af0	20 e1 08	jsr $08e1			jsr 	BufferClear 				; copy it to the buffer
-.0af3	20 45 14	jsr $1445			jsr 	LookNextNonSpace
+.0af3	20 61 14	jsr $1461			jsr 	LookNextNonSpace
 .0af6					_CTDataLoop:
-.0af6	20 42 14	jsr $1442			jsr 	LookNext 					; reached EOL
+.0af6	20 5e 14	jsr $145e			jsr 	LookNext 					; reached EOL
 .0af9	f0 08		beq $0b03			beq 	_CTDataDone
 .0afb	20 e5 08	jsr $08e5			jsr 	BufferWrite 				; write and consume
-.0afe	20 53 14	jsr $1453			jsr 	GetNext
+.0afe	20 6f 14	jsr $146f			jsr 	GetNext
 .0b01	80 f3		bra $0af6			bra 	_CTDataLoop
 .0b03					_CTDataDone:
 .0b03	a9 ca		lda #$ca			lda 	#PCD_CMD_DATA 				; output command and buffer
@@ -907,11 +911,11 @@
 .0b0c					CommandDEF:
 .0b0c	a9 00		lda #$00			lda 	#0 							; constant 0 (for GOTOZ)
 .0b0e	20 11 0a	jsr $0a11			jsr 	PushIntegerA
-.0b11	20 3b 15	jsr $153b			jsr 	CompileGotoEOL 				; compile skip over DEF
+.0b11	20 57 15	jsr $1557			jsr 	CompileGotoEOL 				; compile skip over DEF
 .0b14	a9 a5		lda #$a5			lda 	#C64_FN
 .0b16	20 1c 09	jsr $091c			jsr 	CheckNextA
-.0b19	20 5e 14	jsr $145e			jsr 	GetNextNonSpace				; get variable name w/type must be array e.g. DEF FNx(a)
-.0b1c	20 94 14	jsr $1494			jsr 	ExtractVariableName
+.0b19	20 7a 14	jsr $147a			jsr 	GetNextNonSpace				; get variable name w/type must be array e.g. DEF FNx(a)
+.0b1c	20 b0 14	jsr $14b0			jsr 	ExtractVariableName
 .0b1f	8a		txa				txa
 .0b20	10 51		bpl $0b73			bpl 	_CDError
 .0b22	8a		txa				txa 								; convert to a function reference - bit 7:0 clear bit 7:1 set
@@ -924,8 +928,8 @@
 .0b2d	b0 44		bcs $0b73			bcs 	_CDError 					; if so, that's an error.
 .0b2f	20 7a 0a	jsr $0a7a			jsr 	CreateVariableRecord 		; create the record for it & put the data in it.
 .0b32	20 bf 0a	jsr $0abf			jsr 	SetVariableRecordToCodePosition
-.0b35	20 5e 14	jsr $145e			jsr 	GetNextNonSpace
-.0b38	20 1a 19	jsr $191a			jsr 	GetReferenceTerm 			; get var ref, not array
+.0b35	20 7a 14	jsr $147a			jsr 	GetNextNonSpace
+.0b38	20 36 19	jsr $1936			jsr 	GetReferenceTerm 			; get var ref, not array
 .0b3b	c9 00		cmp #$00			cmp 	#0
 .0b3d	30 34		bmi $0b73			bmi 	_CDError
 .0b3f	8d 26 06	sta $0626			sta 	defType 					; save type
@@ -956,7 +960,7 @@
 .0b76	ac 28 06	ldy $0628			ldy 	defVariable+1 				; set up YX
 .0b79	ae 27 06	ldx $0627			ldx 	defVariable
 .0b7c	ad 26 06	lda $0626			lda 	defType
-.0b7f	20 cc 18	jsr $18cc			jsr 	GetSetVariable
+.0b7f	20 e8 18	jsr $18e8			jsr 	GetSetVariable
 .0b82	60		rts				rts
 .0626					defType:
 >0626							.fill 	1
@@ -969,8 +973,8 @@
 ;******  Processing file: modules/compiler/commands/dim.asm
 
 .0b83					CommandDIM:
-.0b83	20 5e 14	jsr $145e			jsr 	GetNextNonSpace 			; get the first non space character
-.0b86	20 94 14	jsr $1494			jsr 	ExtractVariableName 		; variable name to XY
+.0b83	20 7a 14	jsr $147a			jsr 	GetNextNonSpace 			; get the first non space character
+.0b86	20 b0 14	jsr $14b0			jsr 	ExtractVariableName 		; variable name to XY
 .0b89	da		phx				phx 								; save name with type bits.
 .0b8a	e0 00		cpx #$00			cpx 	#0 							; check it is an array.
 .0b8c	10 37		bpl $0bc5			bpl 	_CDError
@@ -994,11 +998,11 @@
 .0bb1	7a		ply				ply
 .0bb2	a9 20		lda #$20			lda 	#NSSIFloat+NSSIInt16 		; pretend it is an int16 reference.
 .0bb4	38		sec				sec
-.0bb5	20 cc 18	jsr $18cc			jsr 	GetSetVariable 				; store the address in the reference to the array structure.
-.0bb8	20 45 14	jsr $1445			jsr 	LookNextNonSpace 			; , follows ?
+.0bb5	20 e8 18	jsr $18e8			jsr 	GetSetVariable 				; store the address in the reference to the array structure.
+.0bb8	20 61 14	jsr $1461			jsr 	LookNextNonSpace 			; , follows ?
 .0bbb	c9 2c		cmp #$2c			cmp 	#","
 .0bbd	d0 05		bne $0bc4			bne 	_CDExit
-.0bbf	20 53 14	jsr $1453			jsr 	GetNext 					; consume comma
+.0bbf	20 6f 14	jsr $146f			jsr 	GetNext 					; consume comma
 .0bc2	80 bf		bra $0b83			bra 	CommandDIM 					; do another DIM
 .0bc4					_CDExit:
 .0bc4	60		rts				rts
@@ -1014,10 +1018,10 @@
 .0bd3	c9 00		cmp #$00			cmp 	#NSSIFloat
 .0bd5	d0 19		bne $0bf0			bne 	_OIGType
 .0bd7	ee 29 06	inc $0629			inc 	IndexCount 					; bump the counter.
-.0bda	20 45 14	jsr $1445			jsr 	LookNextNonSpace 			; does a , follow ?
+.0bda	20 61 14	jsr $1461			jsr 	LookNextNonSpace 			; does a , follow ?
 .0bdd	c9 2c		cmp #$2c			cmp 	#","
 .0bdf	d0 05		bne $0be6			bne 	_OIGCheckEnd
-.0be1	20 53 14	jsr $1453			jsr 	GetNext 					; consume comma
+.0be1	20 6f 14	jsr $146f			jsr 	GetNext 					; consume comma
 .0be4	80 e8		bra $0bce			bra 	_OIGNext 					; get next dimension
 .0be6					_OIGCheckEnd:
 .0be6	20 16 09	jsr $0916			jsr 	CheckNextRParen 			; check and consume )
@@ -1035,12 +1039,12 @@
 ;******  Processing file: modules/ifloat32/binary/divide.asm
 
 .0bf3					DivideInt32:
-.0bf3	20 74 15	jsr $1574			jsr 	FloatIntegerPart 			; make both integers
+.0bf3	20 90 15	jsr $1590			jsr 	FloatIntegerPart 			; make both integers
 .0bf6	ca		dex				dex
-.0bf7	20 74 15	jsr $1574			jsr 	FloatIntegerPart
+.0bf7	20 90 15	jsr $1590			jsr 	FloatIntegerPart
 .0bfa	20 16 0c	jsr $0c16			jsr 	Int32Divide 				; divide
 .0bfd	20 05 0c	jsr $0c05			jsr 	NSMCopyPlusTwoToZero 		; copy result
-.0c00	20 31 17	jsr $1731			jsr 	FloatCalculateSign 			; calculate result sign
+.0c00	20 4d 17	jsr $174d			jsr 	FloatCalculateSign 			; calculate result sign
 .0c03	18		clc				clc
 .0c04	60		rts				rts
 .0c05					NSMCopyPlusTwoToZero:
@@ -1056,16 +1060,16 @@
 .0c16					Int32Divide:
 .0c16	48		pha				pha 								; save AXY
 .0c17	5a		phy				phy
-.0c18	20 6f 1c	jsr $1c6f			jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2]
-.0c1b	20 88 1c	jsr $1c88			jsr 	FloatSetZeroMantissaOnly 	; set S[X] to zero
+.0c18	20 8b 1c	jsr $1c8b			jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2]
+.0c1b	20 a4 1c	jsr $1ca4			jsr 	FloatSetZeroMantissaOnly 	; set S[X] to zero
 .0c1e	a0 20		ldy #$20			ldy 	#32 						; loop 32 times
 .0c20					_I32DivideLoop:
 .0c20	e8		inx				inx
 .0c21	e8		inx				inx
-.0c22	20 9b 1c	jsr $1c9b			jsr 	FloatShiftLeft				; shift S[X+2] S[X] left as a 64 bit element
+.0c22	20 b7 1c	jsr $1cb7			jsr 	FloatShiftLeft				; shift S[X+2] S[X] left as a 64 bit element
 .0c25	ca		dex				dex
 .0c26	ca		dex				dex
-.0c27	20 9c 1c	jsr $1c9c			jsr 	FloatRotateLeft
+.0c27	20 b8 1c	jsr $1cb8			jsr 	FloatRotateLeft
 .0c2a	20 56 0c	jsr $0c56			jsr 	FloatDivideCheck 			; check if subtract possible
 .0c2d	90 02		bcc $0c31			bcc 	_I32DivideNoCarryIn
 .0c2f	f6 3e		inc $3e,x			inc 	NSMantissa0+2,x 			; if possible, set Mantissa0[X+2].0
@@ -1081,7 +1085,7 @@
 .0c39	5a		phy				phy
 .0c3a	e8		inx				inx 								; clear S[X+2]
 .0c3b	e8		inx				inx
-.0c3c	20 8c 1c	jsr $1c8c			jsr 	FloatSetZero
+.0c3c	20 a8 1c	jsr $1ca8			jsr 	FloatSetZero
 .0c3f	ca		dex				dex
 .0c40	ca		dex				dex
 .0c41	a0 1f		ldy #$1f			ldy 	#31 						; loop 31 times.
@@ -1089,19 +1093,19 @@
 .0c43	20 56 0c	jsr $0c56			jsr 	FloatDivideCheck 			; check if subtract possible
 .0c46	e8		inx				inx
 .0c47	e8		inx				inx
-.0c48	20 9c 1c	jsr $1c9c			jsr 	FloatRotateLeft				; shift 64 bit FPA left, rotating carry in
+.0c48	20 b8 1c	jsr $1cb8			jsr 	FloatRotateLeft				; shift 64 bit FPA left, rotating carry in
 .0c4b	ca		dex				dex
 .0c4c	ca		dex				dex
-.0c4d	20 9c 1c	jsr $1c9c			jsr 	FloatRotateLeft
+.0c4d	20 b8 1c	jsr $1cb8			jsr 	FloatRotateLeft
 .0c50	88		dey				dey 	 							; do 31 times
 .0c51	d0 f0		bne $0c43			bne 	_I32SDLoop
 .0c53	7a		ply				ply 								; restore AY and exit
 .0c54	68		pla				pla
 .0c55	60		rts				rts
 .0c56					FloatDivideCheck:
-.0c56	20 99 19	jsr $1999			jsr 	FloatSubTopTwoStack 		; subtract Stack[X+1] from Stack[X+0]
+.0c56	20 b5 19	jsr $19b5			jsr 	FloatSubTopTwoStack 		; subtract Stack[X+1] from Stack[X+0]
 .0c59	b0 04		bcs $0c5f			bcs 	_DCSExit 					; if carry set, then could do, exit
-.0c5b	20 7f 19	jsr $197f			jsr 	FloatAddTopTwoStack 		; add it back in
+.0c5b	20 9b 19	jsr $199b			jsr 	FloatAddTopTwoStack 		; add it back in
 .0c5e	18		clc				clc 								; and return False
 .0c5f					_DCSExit:
 .0c5f	60		rts				rts
@@ -1113,16 +1117,16 @@
 
 .0c60					FloatDivide:
 .0c60	48		pha				pha
-.0c61	20 b4 17	jsr $17b4			jsr 	FloatNormalise		 		; normalise S[x+1] and error if zero.
+.0c61	20 d0 17	jsr $17d0			jsr 	FloatNormalise		 		; normalise S[x+1] and error if zero.
 .0c64	ca		dex				dex
 .0c65	c9 00		cmp #$00			cmp 	#0
 .0c67	f0 1e		beq $0c87			beq 	_FDZero
-.0c69	20 b4 17	jsr $17b4			jsr 	FloatNormalise		 		; normalise S[X] and exit if zero
+.0c69	20 d0 17	jsr $17d0			jsr 	FloatNormalise		 		; normalise S[X] and exit if zero
 .0c6c	f0 16		beq $0c84			beq 	_FDExit 					; return zero if zero (e.g. zero/something)
 .0c6e	20 38 0c	jsr $0c38			jsr 	Int32ShiftDivide 			; do the shift division for dividing.
 .0c71	20 05 0c	jsr $0c05			jsr 	NSMCopyPlusTwoToZero 		; copy the mantissa down
-.0c74	20 b4 17	jsr $17b4			jsr		FloatNormalise 				; renormalise
-.0c77	20 31 17	jsr $1731			jsr 	FloatCalculateSign 			; calculate result sign
+.0c74	20 d0 17	jsr $17d0			jsr		FloatNormalise 				; renormalise
+.0c77	20 4d 17	jsr $174d			jsr 	FloatCalculateSign 			; calculate result sign
 .0c7a	b5 6c		lda $6c,x			lda 	NSExponent,x 				; calculate exponent
 .0c7c	38		sec				sec
 .0c7d	f5 6d		sbc $6d,x			sbc 	NSExponent+1,x
@@ -1152,26 +1156,26 @@
 .0c92	a0 01		ldy #$01			ldy 	#1
 .0c94					_EHDisplayMsg:
 .0c94	b1 2a		lda ($2a),y			lda 	(zTemp0),y
-.0c96	20 3d 1d	jsr $1d3d			jsr 	XPrintCharacter
+.0c96	20 59 1d	jsr $1d59			jsr 	XPrintCharacter
 .0c99	c8		iny				iny
 .0c9a	b1 2a		lda ($2a),y			lda 	(zTemp0),y
 .0c9c	d0 f6		bne $0c94			bne 	_EHDisplayMsg
 .0c9e	a9 20		lda #$20			lda 	#32
-.0ca0	20 3d 1d	jsr $1d3d			jsr 	XPrintCharacter
+.0ca0	20 59 1d	jsr $1d59			jsr 	XPrintCharacter
 .0ca3	a9 40		lda #$40			lda 	#64
-.0ca5	20 3d 1d	jsr $1d3d			jsr 	XPrintCharacter
+.0ca5	20 59 1d	jsr $1d59			jsr 	XPrintCharacter
 .0ca8	a2 00		ldx #$00			ldx 	#0 							; convert line# to string
-.0caa	20 8e 1c	jsr $1c8e			jsr 	FloatSetByte
-.0cad	20 3d 16	jsr $163d			jsr 	GetLineNumber
+.0caa	20 aa 1c	jsr $1caa			jsr 	FloatSetByte
+.0cad	20 59 16	jsr $1659			jsr 	GetLineNumber
 .0cb0	95 3c		sta $3c,x			sta 	NSMantissa0,x
 .0cb2	98		tya				tya
 .0cb3	95 48		sta $48,x			sta 	NSMantissa1,x
-.0cb5	20 c7 1b	jsr $1bc7			jsr 	FloatToString
+.0cb5	20 e3 1b	jsr $1be3			jsr 	FloatToString
 .0cb8	a0 00		ldy #$00			ldy 	#0 							; display that string.
 .0cba	a2 00		ldx #$00			ldx 	#0
 .0cbc					_EHDisplayLine:
 .0cbc	b9 37 06	lda $0637,y			lda 	decimalBuffer,y
-.0cbf	20 3d 1d	jsr $1d3d			jsr 	XPrintCharacter
+.0cbf	20 59 1d	jsr $1d59			jsr 	XPrintCharacter
 .0cc2	c8		iny				iny
 .0cc3	b9 37 06	lda $0637,y			lda 	decimalBuffer,y
 .0cc6	d0 f4		bne $0cbc			bne 	_EHDisplayLine
@@ -1260,11 +1264,11 @@
 .0dfc	a9 00		lda #$00			lda 	#0
 .0dfe					CompileExpressionAtA:
 .0dfe	48		pha				pha  								; save level
-.0dff	20 d3 19	jsr $19d3			jsr 	CompileTerm 				; compile a term.
+.0dff	20 ef 19	jsr $19ef			jsr 	CompileTerm 				; compile a term.
 .0e02	fa		plx				plx 								; get level back into X
 .0e03					_ECALoop:
 .0e03	48		pha				pha 								; save type on stack.
-.0e04	20 45 14	jsr $1445			jsr 	LookNextNonSpace 			; get the next character
+.0e04	20 61 14	jsr $1461			jsr 	LookNextNonSpace 			; get the next character
 .0e07	c9 aa		cmp #$aa			cmp 	#C64_PLUS 					; go to be + ... < in the C64 code.
 .0e09	90 04		bcc $0e0f			bcc 	_ECAExit
 .0e0b	c9 b4		cmp #$b4			cmp 	#C64_LESS+1
@@ -1279,19 +1283,19 @@
 .0e17	c5 2a		cmp $2a				cmp 	zTemp0 						; if < then exit
 .0e19	90 f4		bcc $0e0f			bcc 	_ECAExit
 .0e1b	85 2b		sta $2b				sta 	zTemp0+1 					; save the precedence of the operator.
-.0e1d	20 53 14	jsr $1453			jsr 	GetNext 					; consume the token.
+.0e1d	20 6f 14	jsr $146f			jsr 	GetNext 					; consume the token.
 .0e20	e0 b1		cpx #$b1			cpx 	#C64_GREATER				; checks for < or > which could be two character tokens
 .0e22	f0 11		beq $0e35			beq 	_ECAGreaterCheck
 .0e24	e0 b3		cpx #$b3			cpx 	#C64_LESS
 .0e26	d0 1a		bne $0e42			bne 	_ECAHaveFullToken
-.0e28	20 42 14	jsr $1442			jsr 	LookNext 					; checks for < (<= or <>)
+.0e28	20 5e 14	jsr $145e			jsr 	LookNext 					; checks for < (<= or <>)
 .0e2b	c9 b1		cmp #$b1			cmp 	#C64_GREATER 				; <> is 2 on from <
 .0e2d	f0 0e		beq $0e3d			beq	 	_ECAToNotEqual
 .0e2f	c9 b2		cmp #$b2			cmp 	#C64_EQUAL 					; <= is 3 on from <
 .0e31	d0 0f		bne $0e42			bne 	_ECAHaveFullToken
 .0e33	80 07		bra $0e3c			bra 	_ECAAddEqual
 .0e35					_ECAGreaterCheck:
-.0e35	20 42 14	jsr $1442			jsr 	LookNext
+.0e35	20 5e 14	jsr $145e			jsr 	LookNext
 .0e38	c9 b2		cmp #$b2			cmp 	#C64_EQUAL
 .0e3a	d0 06		bne $0e42			bne 	_ECAHaveFullToken
 .0e3c					_ECAAddEqual:
@@ -1299,7 +1303,7 @@
 .0e3d					_ECAToNotEqual:
 .0e3d	e8		inx				inx
 .0e3e	e8		inx				inx
-.0e3f	20 53 14	jsr $1453			jsr 	GetNext 					; consume the = or > in >= <= <>
+.0e3f	20 6f 14	jsr $146f			jsr 	GetNext 					; consume the = or > in >= <= <>
 .0e42					_ECAHaveFullToken:
 .0e42	e0 aa		cpx #$aa			cpx 	#C64_PLUS
 .0e44	d0 0a		bne $0e50			bne 	_ECANotConcat
@@ -1452,7 +1456,7 @@
 ;******  Processing file: modules/compiler/utility/fixbranches.asm
 
 .0f13					FixBranches:
-.0f13	20 17 18	jsr $1817			jsr 	OUTPUTRewind 				; back to the start of the *object* code.
+.0f13	20 33 18	jsr $1833			jsr 	OUTPUTRewind 				; back to the start of the *object* code.
 .0f16					_FBLoop:
 .0f16	b2 27		lda ($27)			lda 	(objPtr) 					; get the next one.
 .0f18	c9 cb		cmp #$cb			cmp 	#PCD_CMD_GOTO 				; found GOTO or GOSUB, patch up.
@@ -1482,7 +1486,7 @@
 .0f40	b1 27		lda ($27),y			lda 	(objPtr),y
 .0f42	a8		tay				tay
 .0f43	68		pla				pla
-.0f44	20 72 16	jsr $1672			jsr 	STRFindLine			 		; find where it is X:YA
+.0f44	20 8e 16	jsr $168e			jsr 	STRFindLine			 		; find where it is X:YA
 .0f47	90 08		bcc $0f51			bcc 	_FBFFound 					; not found, so must be >
 .0f49	48		pha				pha
 .0f4a	b2 27		lda ($27)			lda 	(objPtr) 					; which is a fail if not CMD_GOTOCMD_Z
@@ -1490,7 +1494,7 @@
 .0f4e	d0 15		bne $0f65			bne 	_FBFFail
 .0f50	68		pla				pla
 .0f51					_FBFFound:
-.0f51	20 c7 16	jsr $16c7			jsr 	STRMakeOffset 				; make it an offset from X:YA
+.0f51	20 e3 16	jsr $16e3			jsr 	STRMakeOffset 				; make it an offset from X:YA
 .0f54	5a		phy				phy	 								; patch the GOTO/GOSUB
 .0f55	48		pha				pha
 .0f56	a0 01		ldy #$01			ldy 	#1
@@ -1526,10 +1530,10 @@
 ;******  Processing file: modules/compiler/commands/for.asm
 
 .0f84					CommandFOR:
-.0f84	20 5e 14	jsr $145e			jsr 	GetNextNonSpace 			; first letter of index variable, should be.
-.0f87	20 74 14	jsr $1474			jsr 	CharIsAlpha 				; if not alpha , error
+.0f84	20 7a 14	jsr $147a			jsr 	GetNextNonSpace 			; first letter of index variable, should be.
+.0f87	20 90 14	jsr $1490			jsr 	CharIsAlpha 				; if not alpha , error
 .0f8a	90 59		bcc $0fe5			bcc 	_CFFail
-.0f8c	20 1a 19	jsr $191a			jsr 	GetReferenceTerm 			; figure out the reference.
+.0f8c	20 36 19	jsr $1936			jsr 	GetReferenceTerm 			; figure out the reference.
 .0f8f	48		pha				pha 								; save type
 .0f90	29 40		and #$40			and 	#NSSTypeMask 				; check it is numeric
 .0f92	c9 00		cmp #$00			cmp 	#NSSIFloat
@@ -1544,7 +1548,7 @@
 .0fa2	5a		phy				phy
 .0fa3	da		phx				phx
 .0fa4	38		sec				sec 								; set initial value.
-.0fa5	20 cc 18	jsr $18cc			jsr 	GetSetVariable
+.0fa5	20 e8 18	jsr $18e8			jsr 	GetSetVariable
 .0fa8	fa		plx				plx
 .0fa9	7a		ply				ply
 .0faa	68		pla				pla
@@ -1562,10 +1566,10 @@
 .0fbf	29 40		and #$40			and 	#NSSTypeMask 				; check it is numeric
 .0fc1	c9 00		cmp #$00			cmp 	#NSSIFloat
 .0fc3	d0 20		bne $0fe5			bne 	_CFFail
-.0fc5	20 45 14	jsr $1445			jsr 	LookNextNonSpace 			; followed by STEP
+.0fc5	20 61 14	jsr $1461			jsr 	LookNextNonSpace 			; followed by STEP
 .0fc8	c9 a9		cmp #$a9			cmp 	#C64_STEP
 .0fca	d0 0e		bne $0fda			bne 	_CFNoStep
-.0fcc	20 53 14	jsr $1453			jsr 	GetNext 					; consume it.
+.0fcc	20 6f 14	jsr $146f			jsr 	GetNext 					; consume it.
 .0fcf	20 fc 0d	jsr $0dfc			jsr 	CompileExpressionAt0 		; terminal value
 .0fd2	29 40		and #$40			and 	#NSSTypeMask 				; check it is numeric
 .0fd4	c9 00		cmp #$00			cmp 	#NSSIFloat
@@ -1661,7 +1665,7 @@
 .1038	b5 30		lda $30,x			lda 	NSStatus,x 					; take absolute value
 .103a	29 7f		and #$7f			and 	#$7F
 .103c	95 30		sta $30,x			sta 	NSStatus,x
-.103e	20 b4 17	jsr $17b4			jsr 	FloatNormalise
+.103e	20 d0 17	jsr $17d0			jsr 	FloatNormalise
 .1041	b5 6c		lda $6c,x			lda 	NSExponent,x 				; calculate exponent-$E0 = digits to blank
 .1043	38		sec				sec
 .1044	e9 e0		sbc #$e0			sbc 	#$E0
@@ -1681,12 +1685,12 @@
 .1062	b5 3c		lda $3c,x			lda 	NSMantissa0,x
 .1064	20 76 10	jsr $1076			jsr 	_FFPPartial
 .1067	95 3c		sta $3c,x			sta 	NSMantissa0,x
-.1069	20 ae 1c	jsr $1cae			jsr 	FloatIsZero 					; zeroed check.
+.1069	20 ca 1c	jsr $1cca			jsr 	FloatIsZero 					; zeroed check.
 .106c	d0 03		bne $1071			bne 	_FFPExit
 .106e					_FFPZero:
-.106e	20 8c 1c	jsr $1c8c			jsr 	FloatSetZero
+.106e	20 a8 1c	jsr $1ca8			jsr 	FloatSetZero
 .1071					_FFPExit:
-.1071	20 b4 17	jsr $17b4			jsr 	FloatNormalise
+.1071	20 d0 17	jsr $17d0			jsr 	FloatNormalise
 .1074	7a		ply				ply
 .1075	60		rts				rts
 .1076					_FFPPartial:
@@ -1720,7 +1724,7 @@
 ;******  Processing file: modules/compiler/source/simple/fromram.asm
 
 .1092					INPUTOpen:
-.1092	a9 73		lda #$73			lda 	#((EndProgram+2) & $FF)
+.1092	a9 8f		lda #$8f			lda 	#((EndProgram+2) & $FF)
 .1094	85 78		sta $78				sta 	0+srcInputPtr
 .1096	a9 1d		lda #$1d			lda 	#((EndProgram+2) >> 8) & $FF
 .1098	85 79		sta $79				sta 	1+srcInputPtr
@@ -1742,8 +1746,8 @@
 ;******  Processing file: modules/compiler/evaluate/term/functions.asm
 
 .10a4					FNCompile:
-.10a4	20 5e 14	jsr $145e			jsr 	GetNextNonSpace				; get variable name w/type must be array e.g. DEF FNx(a)
-.10a7	20 94 14	jsr $1494			jsr 	ExtractVariableName
+.10a4	20 7a 14	jsr $147a			jsr 	GetNextNonSpace				; get variable name w/type must be array e.g. DEF FNx(a)
+.10a7	20 b0 14	jsr $14b0			jsr 	ExtractVariableName
 .10aa	e0 00		cpx #$00			cpx 	#0
 .10ac	10 32		bpl $10e0			bpl 	_FNError
 .10ae	8a		txa				txa 								; convert to a function reference - bit 7:0 clear bit 7:1 set
@@ -1754,7 +1758,7 @@
 .10b5	a8		tay				tay
 .10b6	20 b6 0e	jsr $0eb6			jsr 	FindVariable				; does it already exist ?
 .10b9	90 25		bcc $10e0			bcc 	_FNError 					; no.
-.10bb	20 c7 16	jsr $16c7			jsr 	STRMakeOffset 				; convert to a relative address.
+.10bb	20 e3 16	jsr $16e3			jsr 	STRMakeOffset 				; convert to a relative address.
 .10be	c9 00		cmp #$00			cmp 	#0 							; fix up.
 .10c0	d0 01		bne $10c3			bne 	_FNNoBorrow
 .10c2	88		dey				dey
@@ -1787,1176 +1791,1180 @@
 
 ;******  Processing file: modules/compiler/generation/commands.defc
 
->10e3	07 cb 00 03 f2 14 06			.byte	$07,$cb,$00,$03,CommandGOAlt & $FF,CommandGOAlt >> 8,$06
->10ea	07 89 00 03 f9 14 06			.byte	$07,$89,$00,$03,CommandGOTO & $FF,CommandGOTO >> 8,$06
->10f1	07 8d 00 03 ec 14 06			.byte	$07,$8d,$00,$03,CommandGOSUB & $FF,CommandGOSUB >> 8,$06
->10f8	07 88 00 03 d7 15 06			.byte	$07,$88,$00,$03,CommandLET & $FF,CommandLET >> 8,$06
->10ff	07 85 00 03 54 15 06			.byte	$07,$85,$00,$03,CommandINPUT & $FF,CommandINPUT >> 8,$06
->1106	07 84 00 04 68 15 06			.byte	$07,$84,$00,$04,CommandINPUTStream & $FF,CommandINPUTStream >> 8,$06
->110d	07 99 00 03 47 18 06			.byte	$07,$99,$00,$03,CommandPRINT & $FF,CommandPRINT >> 8,$06
->1114	07 98 00 04 47 18 06			.byte	$07,$98,$00,$04,CommandPRINT & $FF,CommandPRINT >> 8,$06
->111b	07 8f 00 03 52 19 06			.byte	$07,$8f,$00,$03,CommandREM & $FF,CommandREM >> 8,$06
+>10e3	07 cb 00 03 0e 15 06			.byte	$07,$cb,$00,$03,CommandGOAlt & $FF,CommandGOAlt >> 8,$06
+>10ea	07 89 00 03 15 15 06			.byte	$07,$89,$00,$03,CommandGOTO & $FF,CommandGOTO >> 8,$06
+>10f1	07 8d 00 03 08 15 06			.byte	$07,$8d,$00,$03,CommandGOSUB & $FF,CommandGOSUB >> 8,$06
+>10f8	07 88 00 03 f3 15 06			.byte	$07,$88,$00,$03,CommandLET & $FF,CommandLET >> 8,$06
+>10ff	07 85 00 03 70 15 06			.byte	$07,$85,$00,$03,CommandINPUT & $FF,CommandINPUT >> 8,$06
+>1106	07 84 00 04 84 15 06			.byte	$07,$84,$00,$04,CommandINPUTStream & $FF,CommandINPUTStream >> 8,$06
+>110d	07 99 00 03 63 18 06			.byte	$07,$99,$00,$03,CommandPRINT & $FF,CommandPRINT >> 8,$06
+>1114	07 98 00 04 63 18 06			.byte	$07,$98,$00,$04,CommandPRINT & $FF,CommandPRINT >> 8,$06
+>111b	07 8f 00 03 6e 19 06			.byte	$07,$8f,$00,$03,CommandREM & $FF,CommandREM >> 8,$06
 >1122	07 81 00 03 84 0f 06			.byte	$07,$81,$00,$03,CommandFOR & $FF,CommandFOR >> 8,$06
->1129	07 82 00 03 88 17 06			.byte	$07,$82,$00,$03,CommandNEXT & $FF,CommandNEXT >> 8,$06
->1130	07 a1 00 03 13 14 06			.byte	$07,$a1,$00,$03,CommandGET & $FF,CommandGET >> 8,$06
+>1129	07 82 00 03 a4 17 06			.byte	$07,$82,$00,$03,CommandNEXT & $FF,CommandNEXT >> 8,$06
+>1130	07 a1 00 03 2f 14 06			.byte	$07,$a1,$00,$03,CommandGET & $FF,CommandGET >> 8,$06
 >1137	07 83 00 03 f0 0a 06			.byte	$07,$83,$00,$03,CommandDATA & $FF,CommandDATA >> 8,$06
->113e	07 87 00 03 90 18 06			.byte	$07,$87,$00,$03,CommandREAD & $FF,CommandREAD >> 8,$06
+>113e	07 87 00 03 ac 18 06			.byte	$07,$87,$00,$03,CommandREAD & $FF,CommandREAD >> 8,$06
 >1145	07 86 00 03 83 0b 06			.byte	$07,$86,$00,$03,CommandDIM & $FF,CommandDIM >> 8,$06
 >114c	07 96 00 03 0c 0b 06			.byte	$07,$96,$00,$03,CommandDEF & $FF,CommandDEF >> 8,$06
->1153	07 8b 00 e3 1c 15 06			.byte	$07,$8b,$00,$e3,CommandIF & $FF,CommandIF >> 8,$06
->115a	08 92 00 ea e3 b7 1c 06			.byte	$08,$92,$00,$ea,$e3,CommandWAIT & $FF,CommandWAIT >> 8,$06
->1162	09 91 00 e1 a4 03 eb 17			.byte	$09,$91,$00,$e1,164,$03,CommandON & $FF,CommandON >> 8,$06
+>1153	07 8b 00 e3 38 15 06			.byte	$07,$8b,$00,$e3,CommandIF & $FF,CommandIF >> 8,$06
+>115a	08 92 00 ea e3 d3 1c 06			.byte	$08,$92,$00,$ea,$e3,CommandWAIT & $FF,CommandWAIT >> 8,$06
+>1162	09 91 00 e1 a4 03 07 18			.byte	$09,$91,$00,$e1,164,$03,CommandON & $FF,CommandON >> 8,$06
 >116a	06
->116b	07 9e 00 e2 c5 8e 06			.byte	$07,$9e,$00,$e2,36549 & $FF,36549 >> 8,$06
+>116b	07 9e 00 e2 c5 92 06			.byte	$07,$9e,$00,$e2,37573 & $FF,37573 >> 8,$06
 >1172	07 97 00 ea e1 a7 06			.byte	$07,$97,$00,$ea,$e1,167,$06
 >1179	06 8e 00 10 98 06			.byte	$06,$8e,$00,$10,152,$06
->117f	07 90 00 20 c5 8d 06			.byte	$07,$90,$00,$20,36293 & $FF,36293 >> 8,$06
+>117f	07 90 00 20 c5 91 06			.byte	$07,$90,$00,$20,37317 & $FF,37317 >> 8,$06
 >1186	07 80 00 20 c5 82 06			.byte	$07,$80,$00,$20,33477 & $FF,33477 >> 8,$06
->118d	07 8c 00 20 c5 8c 06			.byte	$07,$8c,$00,$20,36037 & $FF,36037 >> 8,$06
+>118d	07 8c 00 20 c5 90 06			.byte	$07,$8c,$00,$20,37061 & $FF,37061 >> 8,$06
 
 ;******  Return to file: modules/compiler/generation/gendata.asm
 
 
 ;******  Processing file: modules/compiler/generation/../../x16_compiler/generation/x16_command.defc
 
->1194	07 9d 00 e3 e6 1c 06			.byte	$07,$9d,$00,$e3,CommandCMD & $FF,CommandCMD >> 8,$06
->119b	0a 9f 00 ea e3 f9 1c 10			.byte	$0a,$9f,$00,$ea,$e3,CommandOPEN & $FF,CommandOPEN >> 8,$10,193,$06
+>1194	07 9d 00 e3 02 1d 06			.byte	$07,$9d,$00,$e3,CommandCMD & $FF,CommandCMD >> 8,$06
+>119b	0a 9f 00 ea e3 15 1d 10			.byte	$0a,$9f,$00,$ea,$e3,CommandOPEN & $FF,CommandOPEN >> 8,$10,193,$06
 >11a3	c1 06
 >11a5	06 a0 00 e1 be 06			.byte	$06,$a0,$00,$e1,190,$06
 >11ab	06 ce 86 e1 c2 06			.byte	$06,$ce,$86,$e1,194,$06
 >11b1	08 ce 84 ea ea e1 c3 06			.byte	$08,$ce,$84,$ea,$ea,$e1,195,$06
->11b9	07 ce af e2 c5 92 06			.byte	$07,$ce,$af,$e2,37573 & $FF,37573 >> 8,$06
->11c0	07 ce 90 20 c5 93 06			.byte	$07,$ce,$90,$20,37829 & $FF,37829 >> 8,$06
->11c7	0a ce 92 e3 e2 13 20 c5			.byte	$0a,$ce,$92,$e3,OptionalParameterCompile & $FF,OptionalParameterCompile >> 8,$20,38085 & $FF,38085 >> 8,$06
->11cf	94 06
->11d1	0a ce 8d e3 e2 13 20 c5			.byte	$0a,$ce,$8d,$e3,OptionalParameterCompile & $FF,OptionalParameterCompile >> 8,$20,38341 & $FF,38341 >> 8,$06
->11d9	95 06
+>11b9	07 ce af e2 c5 96 06			.byte	$07,$ce,$af,$e2,38597 & $FF,38597 >> 8,$06
+>11c0	07 ce 8c e2 c5 8c 06			.byte	$07,$ce,$8c,$e2,36037 & $FF,36037 >> 8,$06
+>11c7	07 ce 90 20 c5 97 06			.byte	$07,$ce,$90,$20,38853 & $FF,38853 >> 8,$06
+>11ce	0a ce 92 e3 fe 13 20 c5			.byte	$0a,$ce,$92,$e3,OptionalParameterCompile & $FF,OptionalParameterCompile >> 8,$20,39109 & $FF,39109 >> 8,$06
+>11d6	98 06
+>11d8	0a ce 8d e3 fe 13 20 c5			.byte	$0a,$ce,$8d,$e3,OptionalParameterCompile & $FF,OptionalParameterCompile >> 8,$20,39365 & $FF,39365 >> 8,$06
+>11e0	99 06
 
 ;******  Return to file: modules/compiler/generation/gendata.asm
 
->11db	00						.byte 	0
-.11dc					UnaryTables:
+>11e2	00						.byte 	0
+.11e3					UnaryTables:
 
 ;******  Processing file: modules/compiler/generation/unary.defc
 
->11dc	07 b4 00 8e 91 b1 06			.byte	$07,$b4,$00,$8e,$91,177,$06
->11e3	08 b5 00 8e 92 c5 84 06			.byte	$08,$b5,$00,$8e,$92,33989 & $FF,33989 >> 8,$06
->11eb	07 b6 00 8e 91 8d 06			.byte	$07,$b6,$00,$8e,$91,141,$06
->11f2	07 b7 00 8e 91 bc 06			.byte	$07,$b7,$00,$8e,$91,188,$06
->11f9	07 b8 00 8e 91 96 06			.byte	$07,$b8,$00,$8e,$91,150,$06
->1200	07 b9 00 8e 91 a8 06			.byte	$07,$b9,$00,$8e,$91,168,$06
->1207	08 ba 00 8e 92 c5 85 06			.byte	$08,$ba,$00,$8e,$92,34245 & $FF,34245 >> 8,$06
->120f	07 bb 00 8e 91 af 06			.byte	$07,$bb,$00,$8e,$91,175,$06
->1216	08 bc 00 8e 92 c5 86 06			.byte	$08,$bc,$00,$8e,$92,34501 & $FF,34501 >> 8,$06
->121e	08 bd 00 8e 92 c5 87 06			.byte	$08,$bd,$00,$8e,$92,34757 & $FF,34757 >> 8,$06
->1226	08 be 00 8e 92 c5 88 06			.byte	$08,$be,$00,$8e,$92,35013 & $FF,35013 >> 8,$06
->122e	08 bf 00 8e 92 c5 89 06			.byte	$08,$bf,$00,$8e,$92,35269 & $FF,35269 >> 8,$06
->1236	08 c0 00 8e 92 c5 8a 06			.byte	$08,$c0,$00,$8e,$92,35525 & $FF,35525 >> 8,$06
->123e	08 c1 00 8e 92 c5 8b 06			.byte	$08,$c1,$00,$8e,$92,35781 & $FF,35781 >> 8,$06
->1246	07 c2 00 8e 91 a6 06			.byte	$07,$c2,$00,$8e,$91,166,$06
->124d	07 c3 00 8f 91 9d 06			.byte	$07,$c3,$00,$8f,$91,157,$06
->1254	07 c4 00 8e 91 b5 07			.byte	$07,$c4,$00,$8e,$91,181,$07
->125b	07 c5 00 8f 91 bd 06			.byte	$07,$c5,$00,$8f,$91,189,$06
->1262	07 c6 00 8f 91 8f 06			.byte	$07,$c6,$00,$8f,$91,143,$06
->1269	07 c7 00 8e 91 93 07			.byte	$07,$c7,$00,$8e,$91,147,$07
->1270	08 c8 00 8f ae 91 b6 07			.byte	$08,$c8,$00,$8f,$ae,$91,182,$07
->1278	08 c9 00 8f ae 91 b7 07			.byte	$08,$c9,$00,$8f,$ae,$91,183,$07
->1280	0b ca 00 8f ae 03 e2 13			.byte	$0b,$ca,$00,$8f,$ae,$03,OptionalParameterCompile & $FF,OptionalParameterCompile >> 8,$91,184,$07
->1288	91 b8 07
->128b	07 a8 00 03 01 14 06			.byte	$07,$a8,$00,$03,NotUnaryCompile & $FF,NotUnaryCompile >> 8,$06
->1292	07 a5 00 03 a4 10 06			.byte	$07,$a5,$00,$03,FNCompile & $FF,FNCompile >> 8,$06
+>11e3	07 b4 00 8e 91 b1 06			.byte	$07,$b4,$00,$8e,$91,177,$06
+>11ea	08 b5 00 8e 92 c5 84 06			.byte	$08,$b5,$00,$8e,$92,33989 & $FF,33989 >> 8,$06
+>11f2	07 b6 00 8e 91 8d 06			.byte	$07,$b6,$00,$8e,$91,141,$06
+>11f9	07 b7 00 8e 91 bc 06			.byte	$07,$b7,$00,$8e,$91,188,$06
+>1200	07 b8 00 8e 91 96 06			.byte	$07,$b8,$00,$8e,$91,150,$06
+>1207	07 b9 00 8e 91 a8 06			.byte	$07,$b9,$00,$8e,$91,168,$06
+>120e	08 ba 00 8e 92 c5 85 06			.byte	$08,$ba,$00,$8e,$92,34245 & $FF,34245 >> 8,$06
+>1216	07 bb 00 8e 91 af 06			.byte	$07,$bb,$00,$8e,$91,175,$06
+>121d	08 bc 00 8e 92 c5 86 06			.byte	$08,$bc,$00,$8e,$92,34501 & $FF,34501 >> 8,$06
+>1225	08 bd 00 8e 92 c5 87 06			.byte	$08,$bd,$00,$8e,$92,34757 & $FF,34757 >> 8,$06
+>122d	08 be 00 8e 92 c5 88 06			.byte	$08,$be,$00,$8e,$92,35013 & $FF,35013 >> 8,$06
+>1235	08 bf 00 8e 92 c5 89 06			.byte	$08,$bf,$00,$8e,$92,35269 & $FF,35269 >> 8,$06
+>123d	08 c0 00 8e 92 c5 8a 06			.byte	$08,$c0,$00,$8e,$92,35525 & $FF,35525 >> 8,$06
+>1245	08 c1 00 8e 92 c5 8b 06			.byte	$08,$c1,$00,$8e,$92,35781 & $FF,35781 >> 8,$06
+>124d	07 c2 00 8e 91 a6 06			.byte	$07,$c2,$00,$8e,$91,166,$06
+>1254	07 c3 00 8f 91 9d 06			.byte	$07,$c3,$00,$8f,$91,157,$06
+>125b	07 c4 00 8e 91 b5 07			.byte	$07,$c4,$00,$8e,$91,181,$07
+>1262	07 c5 00 8f 91 bd 06			.byte	$07,$c5,$00,$8f,$91,189,$06
+>1269	07 c6 00 8f 91 8f 06			.byte	$07,$c6,$00,$8f,$91,143,$06
+>1270	07 c7 00 8e 91 93 07			.byte	$07,$c7,$00,$8e,$91,147,$07
+>1277	08 c8 00 8f ae 91 b6 07			.byte	$08,$c8,$00,$8f,$ae,$91,182,$07
+>127f	08 c9 00 8f ae 91 b7 07			.byte	$08,$c9,$00,$8f,$ae,$91,183,$07
+>1287	0b ca 00 8f ae 03 fe 13			.byte	$0b,$ca,$00,$8f,$ae,$03,OptionalParameterCompile & $FF,OptionalParameterCompile >> 8,$91,184,$07
+>128f	91 b8 07
+>1292	07 a8 00 03 1d 14 06			.byte	$07,$a8,$00,$03,NotUnaryCompile & $FF,NotUnaryCompile >> 8,$06
+>1299	07 a5 00 03 a4 10 06			.byte	$07,$a5,$00,$03,FNCompile & $FF,FNCompile >> 8,$06
 
 ;******  Return to file: modules/compiler/generation/gendata.asm
 
 
 ;******  Processing file: modules/compiler/generation/../../x16_compiler/generation/x16_unary.defc
 
->1299	07 ce d6 8e 91 91 07			.byte	$07,$ce,$d6,$8e,$91,145,$07
->12a0	07 ce d5 8e 91 99 07			.byte	$07,$ce,$d5,$8e,$91,153,$07
->12a7	08 ce d0 8e ae 91 c4 06			.byte	$08,$ce,$d0,$8e,$ae,$91,196,$06
->12af	08 ce d4 8e 92 c5 83 06			.byte	$08,$ce,$d4,$8e,$92,33733 & $FF,33733 >> 8,$06
+>12a0	07 ce d6 8e 91 91 07			.byte	$07,$ce,$d6,$8e,$91,145,$07
+>12a7	07 ce d5 8e 91 99 07			.byte	$07,$ce,$d5,$8e,$91,153,$07
+>12ae	08 ce d0 8e ae 91 c4 06			.byte	$08,$ce,$d0,$8e,$ae,$91,196,$06
+>12b6	08 ce d4 8e 92 c5 83 06			.byte	$08,$ce,$d4,$8e,$92,33733 & $FF,33733 >> 8,$06
+>12be	07 ce d3 20 c5 8d 06			.byte	$07,$ce,$d3,$20,36293 & $FF,36293 >> 8,$06
+>12c5	07 ce d1 20 c5 8e 06			.byte	$07,$ce,$d1,$20,36549 & $FF,36549 >> 8,$06
+>12cc	07 ce d2 20 c5 8f 06			.byte	$07,$ce,$d2,$20,36805 & $FF,36805 >> 8,$06
 
 ;******  Return to file: modules/compiler/generation/gendata.asm
 
->12b7	00						.byte 	0
+>12d3	00						.byte 	0
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/generation/generator.asm
 
-.12b8					GeneratorProcess:
-.12b8	86 2a		stx $2a				stx 	zTemp0 						; save generation pointer in zTemp0
-.12ba	84 2b		sty $2b				sty 	zTemp0+1
-.12bc	85 2c		sta $2c				sta 	zTemp1 						; first match token
-.12be	64 2d		stz $2d				stz 	zTemp1+1
-.12c0	c9 ce		cmp #$ce			cmp 	#$CE 						; check if shift
-.12c2	d0 05		bne $12c9			bne 	_GPNotShifted
-.12c4	20 53 14	jsr $1453			jsr 	GetNext 					; get the shifted token
-.12c7	85 2d		sta $2d				sta 	zTemp1+1 					; match CE xx
-.12c9					_GPNotShifted:
-.12c9					_GPSearch:
-.12c9	b2 2a		lda ($2a)			lda 	(zTemp0) 					; reached end ?
-.12cb	18		clc				clc
-.12cc	f0 2f		beq $12fd			beq 	_GPExit
-.12ce	a0 01		ldy #$01			ldy 	#1 							; tokens match
-.12d0	b1 2a		lda ($2a),y			lda 	(zTemp0),y
-.12d2	c5 2c		cmp $2c				cmp 	zTemp1
-.12d4	d0 09		bne $12df			bne 	_GPNext
-.12d6	a5 2d		lda $2d				lda 	zTemp1+1 					; 2nd token ?
-.12d8	f0 12		beq $12ec			beq 	_GPFound
-.12da	c8		iny				iny 								; check match.
-.12db	d1 2a		cmp ($2a),y			cmp 	(zTemp0),y
-.12dd	f0 0d		beq $12ec			beq 	_GPFound
-.12df					_GPNext:
-.12df	18		clc				clc 								; follow to next
-.12e0	a5 2a		lda $2a				lda 	zTemp0
-.12e2	72 2a		adc ($2a)			adc 	(zTemp0)
-.12e4	85 2a		sta $2a				sta 	zTemp0
-.12e6	90 e1		bcc $12c9			bcc 	_GPSearch
-.12e8	e6 2b		inc $2b				inc 	zTemp0+1
-.12ea	80 dd		bra $12c9			bra 	_GPSearch
-.12ec					_GPFound:
-.12ec	18		clc				clc 								; skip to action bytes
-.12ed	a5 2a		lda $2a				lda 	zTemp0 						; <offset> <token lo> <token hi> first
-.12ef	69 03		adc #$03			adc 	#3
-.12f1	85 2a		sta $2a				sta 	zTemp0
-.12f3	90 02		bcc $12f7			bcc 	_GPNoCarry
-.12f5	e6 2b		inc $2b				inc 	zTemp0+1
-.12f7					_GPNoCarry:
-.12f7					_GPLoop:
-.12f7	20 fe 12	jsr $12fe			jsr 	GeneratorExecute 			; execute one command
-.12fa	90 fb		bcc $12f7			bcc 	_GPLoop 					; go back if not completed.
-.12fc	38		sec				sec 								; return with CS.
-.12fd					_GPExit:
-.12fd	60		rts				rts
+.12d4					GeneratorProcess:
+.12d4	86 2a		stx $2a				stx 	zTemp0 						; save generation pointer in zTemp0
+.12d6	84 2b		sty $2b				sty 	zTemp0+1
+.12d8	85 2c		sta $2c				sta 	zTemp1 						; first match token
+.12da	64 2d		stz $2d				stz 	zTemp1+1
+.12dc	c9 ce		cmp #$ce			cmp 	#$CE 						; check if shift
+.12de	d0 05		bne $12e5			bne 	_GPNotShifted
+.12e0	20 6f 14	jsr $146f			jsr 	GetNext 					; get the shifted token
+.12e3	85 2d		sta $2d				sta 	zTemp1+1 					; match CE xx
+.12e5					_GPNotShifted:
+.12e5					_GPSearch:
+.12e5	b2 2a		lda ($2a)			lda 	(zTemp0) 					; reached end ?
+.12e7	18		clc				clc
+.12e8	f0 2f		beq $1319			beq 	_GPExit
+.12ea	a0 01		ldy #$01			ldy 	#1 							; tokens match
+.12ec	b1 2a		lda ($2a),y			lda 	(zTemp0),y
+.12ee	c5 2c		cmp $2c				cmp 	zTemp1
+.12f0	d0 09		bne $12fb			bne 	_GPNext
+.12f2	a5 2d		lda $2d				lda 	zTemp1+1 					; 2nd token ?
+.12f4	f0 12		beq $1308			beq 	_GPFound
+.12f6	c8		iny				iny 								; check match.
+.12f7	d1 2a		cmp ($2a),y			cmp 	(zTemp0),y
+.12f9	f0 0d		beq $1308			beq 	_GPFound
+.12fb					_GPNext:
+.12fb	18		clc				clc 								; follow to next
+.12fc	a5 2a		lda $2a				lda 	zTemp0
+.12fe	72 2a		adc ($2a)			adc 	(zTemp0)
+.1300	85 2a		sta $2a				sta 	zTemp0
+.1302	90 e1		bcc $12e5			bcc 	_GPSearch
+.1304	e6 2b		inc $2b				inc 	zTemp0+1
+.1306	80 dd		bra $12e5			bra 	_GPSearch
+.1308					_GPFound:
+.1308	18		clc				clc 								; skip to action bytes
+.1309	a5 2a		lda $2a				lda 	zTemp0 						; <offset> <token lo> <token hi> first
+.130b	69 03		adc #$03			adc 	#3
+.130d	85 2a		sta $2a				sta 	zTemp0
+.130f	90 02		bcc $1313			bcc 	_GPNoCarry
+.1311	e6 2b		inc $2b				inc 	zTemp0+1
+.1313					_GPNoCarry:
+.1313					_GPLoop:
+.1313	20 1a 13	jsr $131a			jsr 	GeneratorExecute 			; execute one command
+.1316	90 fb		bcc $1313			bcc 	_GPLoop 					; go back if not completed.
+.1318	38		sec				sec 								; return with CS.
+.1319					_GPExit:
+.1319	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/generation/genexec.asm
 
-.12fe					GeneratorExecute:
-.12fe	20 a9 13	jsr $13a9			jsr 	_GEFetchZTemp0 				; get next.
-.1301	48		pha				pha 								; split into 2 nibbles
-.1302	4a		lsr a				lsr 	a
-.1303	4a		lsr a				lsr 	a
-.1304	4a		lsr a				lsr		a
-.1305	4a		lsr a				lsr 	a
-.1306	20 10 13	jsr $1310			jsr 	_GEExecuteNibble 			; MSB first
-.1309	68		pla				pla
-.130a	b0 03		bcs $130f			bcs 	_GEHaveCompleted
-.130c	20 10 13	jsr $1310			jsr 	_GEExecuteNibble 			; LSB second
-.130f					_GEHaveCompleted:
-.130f	60		rts				rts
-.1310					_GEExecuteNibble:
-.1310	29 0f		and #$0f			and 	#$0F
-.1312	0a		asl a				asl 	a
-.1313	aa		tax				tax
-.1314	7c 17 13	jmp ($1317,x)			jmp 	(_GEExecuteVectors,x)
-.1317					_GEExecuteVectors:
->1317	37 13						.word 	_GEXNop 					; 0  (no operation)
->1319	3f 13						.word 	_GEXToken1 					; 1  (compile 1 byte token)
->131b	39 13						.word 	_GEXToken2 					; 2  (compile 2 byte token)
->131d	8c 13						.word 	_GEXExecute 				; 3  (run arbitrary code)
->131f	7f 13						.word 	_GEXChannelExec 			; 4  (run arbitrary code with possible channel redirection)
->1321	37 13						.word 	_GEXNop 					; 5
->1323	46 13						.word 	_GEXExitNumber 				; 6  exit return ifloat32 type
->1325	4a 13						.word 	_GEXExitString 				; 7  exit return string type
->1327	4e 13						.word 	_GEXLParam 					; 8  check ( follows
->1329	52 13						.word 	_GEXRParam 					; 9  check ) follows
->132b	56 13						.word 	_GEXComma					; A  check , follows
->132d	37 13						.word 	_GEXNop 					; B
->132f	37 13						.word 	_GEXNop 					; C
->1331	37 13						.word 	_GEXNop 					; D
->1333	66 13						.word 	_GEXNumber 					; E  compile get any number
->1335	71 13						.word 	_GEXString 					; F  compile get any string
-.1337					_GEXNop:
-.1337	18		clc				clc
-.1338	60		rts				rts
-.1339					_GEXToken2:
-.1339	20 a9 13	jsr $13a9			jsr 	_GEFetchZTemp0
-.133c	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.133f					_GEXToken1:
-.133f	20 a9 13	jsr $13a9			jsr 	_GEFetchZTemp0
-.1342	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1345	60		rts				rts
-.1346					_GEXExitNumber:
-.1346	a9 00		lda #$00			lda 	#NSSIFloat
-.1348	38		sec				sec
-.1349	60		rts				rts
-.134a					_GEXExitString:
-.134a	a9 40		lda #$40			lda 	#NSSString
-.134c	38		sec				sec
-.134d	60		rts				rts
-.134e					_GEXLParam:
-.134e	a9 28		lda #$28			lda 	#"("
-.1350	80 06		bra $1358			bra 	_GEXCheck
-.1352					_GEXRParam:
-.1352	a9 29		lda #$29			lda 	#")"
-.1354	80 02		bra $1358			bra 	_GEXCheck
-.1356					_GEXComma:
-.1356	a9 2c		lda #$2c			lda 	#","
-.1358					_GEXCheck:
-.1358	85 2e		sta $2e				sta 	zTemp2 						; save match
-.135a	20 5e 14	jsr $145e			jsr 	GetNextNonSpace 			; get next skipping spaces
-.135d	c5 2e		cmp $2e				cmp 	zTemp2 						; check matches.
-.135f	d0 02		bne $1363			bne 	_GEXSyntax
-.1361	18		clc				clc
-.1362	60		rts				rts
-.1363					_GEXSyntax:
-.1363	4c e7 0c	jmp $0ce7		jmp	ErrorV_syntax
-.1366					_GEXNumber:
-.1366	20 b2 13	jsr $13b2			jsr 	GEXCompileExpression 		; compile expression
-.1369	29 40		and #$40			and 	#NSSTypeMask
-.136b	c9 00		cmp #$00			cmp  	#NSSIFloat
-.136d	d0 0d		bne $137c			bne 	_GEXType
-.136f	18		clc				clc
-.1370	60		rts				rts
-.1371					_GEXString:
-.1371	20 b2 13	jsr $13b2			jsr 	GEXCompileExpression 		; compile expression
-.1374	29 40		and #$40			and 	#NSSTypeMask
-.1376	c9 40		cmp #$40			cmp  	#NSSString
-.1378	d0 02		bne $137c			bne 	_GEXType
-.137a	18		clc				clc
-.137b	60		rts				rts
-.137c					_GEXType:
-.137c	4c f7 0c	jmp $0cf7		jmp	ErrorV_type
-.137f					_GEXChannelExec:
-.137f	20 c2 13	jsr $13c2			jsr 	ChannelPrefix 				; set up default
-.1382	20 8c 13	jsr $138c			jsr 	_GEXExecute
-.1385	08		php				php
-.1386	20 dc 13	jsr $13dc			jsr 	ChannelPostfix 				; replace default.
-.1389	28		plp				plp
-.138a	60		rts				rts
->138b	db						.byte 	$DB 						; causes a break in the emulator
-.138c					_GEXExecute:
-.138c	20 a9 13	jsr $13a9			jsr 	_GEFetchZTemp0 				; get vector
-.138f	85 2e		sta $2e				sta 	zTemp2
-.1391	20 a9 13	jsr $13a9			jsr 	_GEFetchZTemp0
-.1394	85 2f		sta $2f				sta 	zTemp2+1
-.1396	a6 2a		ldx $2a				ldx 	zTemp0 						; push generation exec on to stack for reentrancy
-.1398	da		phx				phx
-.1399	a6 2b		ldx $2b				ldx 	zTemp0+1
-.139b	da		phx				phx
-.139c	20 a6 13	jsr $13a6			jsr 	_GECallZTemp2 				; execute code
-.139f	fa		plx				plx 								; recover generation exec
-.13a0	86 2b		stx $2b				stx 	zTemp0+1
-.13a2	fa		plx				plx
-.13a3	86 2a		stx $2a				stx 	zTemp0
-.13a5	60		rts				rts
-.13a6					_GECallZTemp2:
-.13a6	6c 2e 00	jmp ($002e)			jmp 	(zTemp2)
-.13a9					_GEFetchZTemp0:
-.13a9	b2 2a		lda ($2a)			lda 	(zTemp0)
-.13ab	e6 2a		inc $2a				inc 	zTemp0
-.13ad	d0 02		bne $13b1			bne 	_GEFZ0Skip
-.13af	e6 2b		inc $2b				inc 	zTemp0+1
-.13b1					_GEFZ0Skip:
-.13b1	60		rts				rts
-.13b2					GEXCompileExpression:
+.131a					GeneratorExecute:
+.131a	20 c5 13	jsr $13c5			jsr 	_GEFetchZTemp0 				; get next.
+.131d	48		pha				pha 								; split into 2 nibbles
+.131e	4a		lsr a				lsr 	a
+.131f	4a		lsr a				lsr 	a
+.1320	4a		lsr a				lsr		a
+.1321	4a		lsr a				lsr 	a
+.1322	20 2c 13	jsr $132c			jsr 	_GEExecuteNibble 			; MSB first
+.1325	68		pla				pla
+.1326	b0 03		bcs $132b			bcs 	_GEHaveCompleted
+.1328	20 2c 13	jsr $132c			jsr 	_GEExecuteNibble 			; LSB second
+.132b					_GEHaveCompleted:
+.132b	60		rts				rts
+.132c					_GEExecuteNibble:
+.132c	29 0f		and #$0f			and 	#$0F
+.132e	0a		asl a				asl 	a
+.132f	aa		tax				tax
+.1330	7c 33 13	jmp ($1333,x)			jmp 	(_GEExecuteVectors,x)
+.1333					_GEExecuteVectors:
+>1333	53 13						.word 	_GEXNop 					; 0  (no operation)
+>1335	5b 13						.word 	_GEXToken1 					; 1  (compile 1 byte token)
+>1337	55 13						.word 	_GEXToken2 					; 2  (compile 2 byte token)
+>1339	a8 13						.word 	_GEXExecute 				; 3  (run arbitrary code)
+>133b	9b 13						.word 	_GEXChannelExec 			; 4  (run arbitrary code with possible channel redirection)
+>133d	53 13						.word 	_GEXNop 					; 5
+>133f	62 13						.word 	_GEXExitNumber 				; 6  exit return ifloat32 type
+>1341	66 13						.word 	_GEXExitString 				; 7  exit return string type
+>1343	6a 13						.word 	_GEXLParam 					; 8  check ( follows
+>1345	6e 13						.word 	_GEXRParam 					; 9  check ) follows
+>1347	72 13						.word 	_GEXComma					; A  check , follows
+>1349	53 13						.word 	_GEXNop 					; B
+>134b	53 13						.word 	_GEXNop 					; C
+>134d	53 13						.word 	_GEXNop 					; D
+>134f	82 13						.word 	_GEXNumber 					; E  compile get any number
+>1351	8d 13						.word 	_GEXString 					; F  compile get any string
+.1353					_GEXNop:
+.1353	18		clc				clc
+.1354	60		rts				rts
+.1355					_GEXToken2:
+.1355	20 c5 13	jsr $13c5			jsr 	_GEFetchZTemp0
+.1358	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.135b					_GEXToken1:
+.135b	20 c5 13	jsr $13c5			jsr 	_GEFetchZTemp0
+.135e	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1361	60		rts				rts
+.1362					_GEXExitNumber:
+.1362	a9 00		lda #$00			lda 	#NSSIFloat
+.1364	38		sec				sec
+.1365	60		rts				rts
+.1366					_GEXExitString:
+.1366	a9 40		lda #$40			lda 	#NSSString
+.1368	38		sec				sec
+.1369	60		rts				rts
+.136a					_GEXLParam:
+.136a	a9 28		lda #$28			lda 	#"("
+.136c	80 06		bra $1374			bra 	_GEXCheck
+.136e					_GEXRParam:
+.136e	a9 29		lda #$29			lda 	#")"
+.1370	80 02		bra $1374			bra 	_GEXCheck
+.1372					_GEXComma:
+.1372	a9 2c		lda #$2c			lda 	#","
+.1374					_GEXCheck:
+.1374	85 2e		sta $2e				sta 	zTemp2 						; save match
+.1376	20 7a 14	jsr $147a			jsr 	GetNextNonSpace 			; get next skipping spaces
+.1379	c5 2e		cmp $2e				cmp 	zTemp2 						; check matches.
+.137b	d0 02		bne $137f			bne 	_GEXSyntax
+.137d	18		clc				clc
+.137e	60		rts				rts
+.137f					_GEXSyntax:
+.137f	4c e7 0c	jmp $0ce7		jmp	ErrorV_syntax
+.1382					_GEXNumber:
+.1382	20 ce 13	jsr $13ce			jsr 	GEXCompileExpression 		; compile expression
+.1385	29 40		and #$40			and 	#NSSTypeMask
+.1387	c9 00		cmp #$00			cmp  	#NSSIFloat
+.1389	d0 0d		bne $1398			bne 	_GEXType
+.138b	18		clc				clc
+.138c	60		rts				rts
+.138d					_GEXString:
+.138d	20 ce 13	jsr $13ce			jsr 	GEXCompileExpression 		; compile expression
+.1390	29 40		and #$40			and 	#NSSTypeMask
+.1392	c9 40		cmp #$40			cmp  	#NSSString
+.1394	d0 02		bne $1398			bne 	_GEXType
+.1396	18		clc				clc
+.1397	60		rts				rts
+.1398					_GEXType:
+.1398	4c f7 0c	jmp $0cf7		jmp	ErrorV_type
+.139b					_GEXChannelExec:
+.139b	20 de 13	jsr $13de			jsr 	ChannelPrefix 				; set up default
+.139e	20 a8 13	jsr $13a8			jsr 	_GEXExecute
+.13a1	08		php				php
+.13a2	20 f8 13	jsr $13f8			jsr 	ChannelPostfix 				; replace default.
+.13a5	28		plp				plp
+.13a6	60		rts				rts
+>13a7	db						.byte 	$DB 						; causes a break in the emulator
+.13a8					_GEXExecute:
+.13a8	20 c5 13	jsr $13c5			jsr 	_GEFetchZTemp0 				; get vector
+.13ab	85 2e		sta $2e				sta 	zTemp2
+.13ad	20 c5 13	jsr $13c5			jsr 	_GEFetchZTemp0
+.13b0	85 2f		sta $2f				sta 	zTemp2+1
 .13b2	a6 2a		ldx $2a				ldx 	zTemp0 						; push generation exec on to stack for reentrancy
 .13b4	da		phx				phx
 .13b5	a6 2b		ldx $2b				ldx 	zTemp0+1
 .13b7	da		phx				phx
-.13b8	20 fc 0d	jsr $0dfc			jsr 	CompileExpressionAt0 		; compile expression.
+.13b8	20 c2 13	jsr $13c2			jsr 	_GECallZTemp2 				; execute code
 .13bb	fa		plx				plx 								; recover generation exec
 .13bc	86 2b		stx $2b				stx 	zTemp0+1
 .13be	fa		plx				plx
 .13bf	86 2a		stx $2a				stx 	zTemp0
 .13c1	60		rts				rts
-.13c2					ChannelPrefix:
-.13c2	a9 a9		lda #$a9			lda 	#PCD_GETCHANNEL				; set channel onto stack
-.13c4	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.13c7	20 b2 13	jsr $13b2			jsr 	GEXCompileExpression 		; channel #
-.13ca	29 40		and #$40			and 	#NSSTypeMask
-.13cc	c9 00		cmp #$00			cmp 	#NSSIFloat
-.13ce	d0 09		bne $13d9			bne 	_CPXType
-.13d0	20 12 09	jsr $0912			jsr 	CheckNextComma 				; check , follows.
-.13d3	a9 aa		lda #$aa			lda 	#PCD_SETCHANNEL				; set channel
-.13d5	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.13d8	60		rts				rts
-.13d9					_CPXType:
-.13d9	4c f7 0c	jmp $0cf7		jmp	ErrorV_type
-.13dc					ChannelPostfix:
-.13dc	a9 aa		lda #$aa			lda 	#PCD_SETCHANNEL				; set channel from TOS.
-.13de	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.13e1	60		rts				rts
+.13c2					_GECallZTemp2:
+.13c2	6c 2e 00	jmp ($002e)			jmp 	(zTemp2)
+.13c5					_GEFetchZTemp0:
+.13c5	b2 2a		lda ($2a)			lda 	(zTemp0)
+.13c7	e6 2a		inc $2a				inc 	zTemp0
+.13c9	d0 02		bne $13cd			bne 	_GEFZ0Skip
+.13cb	e6 2b		inc $2b				inc 	zTemp0+1
+.13cd					_GEFZ0Skip:
+.13cd	60		rts				rts
+.13ce					GEXCompileExpression:
+.13ce	a6 2a		ldx $2a				ldx 	zTemp0 						; push generation exec on to stack for reentrancy
+.13d0	da		phx				phx
+.13d1	a6 2b		ldx $2b				ldx 	zTemp0+1
+.13d3	da		phx				phx
+.13d4	20 fc 0d	jsr $0dfc			jsr 	CompileExpressionAt0 		; compile expression.
+.13d7	fa		plx				plx 								; recover generation exec
+.13d8	86 2b		stx $2b				stx 	zTemp0+1
+.13da	fa		plx				plx
+.13db	86 2a		stx $2a				stx 	zTemp0
+.13dd	60		rts				rts
+.13de					ChannelPrefix:
+.13de	a9 a9		lda #$a9			lda 	#PCD_GETCHANNEL				; set channel onto stack
+.13e0	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.13e3	20 ce 13	jsr $13ce			jsr 	GEXCompileExpression 		; channel #
+.13e6	29 40		and #$40			and 	#NSSTypeMask
+.13e8	c9 00		cmp #$00			cmp 	#NSSIFloat
+.13ea	d0 09		bne $13f5			bne 	_CPXType
+.13ec	20 12 09	jsr $0912			jsr 	CheckNextComma 				; check , follows.
+.13ef	a9 aa		lda #$aa			lda 	#PCD_SETCHANNEL				; set channel
+.13f1	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.13f4	60		rts				rts
+.13f5					_CPXType:
+.13f5	4c f7 0c	jmp $0cf7		jmp	ErrorV_type
+.13f8					ChannelPostfix:
+.13f8	a9 aa		lda #$aa			lda 	#PCD_SETCHANNEL				; set channel from TOS.
+.13fa	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.13fd	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/evaluate/term/gensupport.asm
 
-.13e2					OptionalParameterCompile:
-.13e2	20 45 14	jsr $1445			jsr 	LookNextNonSpace 			; what follows.
-.13e5	c9 2c		cmp #$2c			cmp 	#","
-.13e7	d0 0e		bne $13f7			bne 	_MidDefault
-.13e9	20 53 14	jsr $1453			jsr 	GetNext 					; consume ,
-.13ec	20 fc 0d	jsr $0dfc			jsr 	CompileExpressionAt0
-.13ef	29 40		and #$40			and 	#NSSTypeMask
-.13f1	c9 00		cmp #$00			cmp 	#NSSIFloat
-.13f3	d0 09		bne $13fe			bne 	MidFailType
-.13f5	80 05		bra $13fc			bra 	_MidComplete
-.13f7					_MidDefault:
-.13f7	a9 ff		lda #$ff			lda 	#255 						; default of 255
-.13f9	20 11 0a	jsr $0a11			jsr 	PushIntegerA
-.13fc					_MidComplete:
-.13fc	18		clc				clc
-.13fd	60		rts				rts
-.13fe					MidFailType:
-.13fe	4c f7 0c	jmp $0cf7		jmp	ErrorV_type
-.1401					NotUnaryCompile:
-.1401	ad b1 0e	lda $0eb1			lda 	PrecedenceTable+C64_EQUAL-C64_PLUS
-.1404	20 fe 0d	jsr $0dfe			jsr 	CompileExpressionAtA 		; evaluate at that level
-.1407	29 40		and #$40			and 	#NSSTypeMask 				; check compile returns number.
-.1409	c9 00		cmp #$00			cmp 	#NSSIFloat
-.140b	d0 f1		bne $13fe			bne 	MidFailType
-.140d	a9 a3		lda #$a3			lda 	#PCD_NOT 					; and NOT it.
-.140f	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1412	60		rts				rts
+.13fe					OptionalParameterCompile:
+.13fe	20 61 14	jsr $1461			jsr 	LookNextNonSpace 			; what follows.
+.1401	c9 2c		cmp #$2c			cmp 	#","
+.1403	d0 0e		bne $1413			bne 	_MidDefault
+.1405	20 6f 14	jsr $146f			jsr 	GetNext 					; consume ,
+.1408	20 fc 0d	jsr $0dfc			jsr 	CompileExpressionAt0
+.140b	29 40		and #$40			and 	#NSSTypeMask
+.140d	c9 00		cmp #$00			cmp 	#NSSIFloat
+.140f	d0 09		bne $141a			bne 	MidFailType
+.1411	80 05		bra $1418			bra 	_MidComplete
+.1413					_MidDefault:
+.1413	a9 ff		lda #$ff			lda 	#255 						; default of 255
+.1415	20 11 0a	jsr $0a11			jsr 	PushIntegerA
+.1418					_MidComplete:
+.1418	18		clc				clc
+.1419	60		rts				rts
+.141a					MidFailType:
+.141a	4c f7 0c	jmp $0cf7		jmp	ErrorV_type
+.141d					NotUnaryCompile:
+.141d	ad b1 0e	lda $0eb1			lda 	PrecedenceTable+C64_EQUAL-C64_PLUS
+.1420	20 fe 0d	jsr $0dfe			jsr 	CompileExpressionAtA 		; evaluate at that level
+.1423	29 40		and #$40			and 	#NSSTypeMask 				; check compile returns number.
+.1425	c9 00		cmp #$00			cmp 	#NSSIFloat
+.1427	d0 f1		bne $141a			bne 	MidFailType
+.1429	a9 a3		lda #$a3			lda 	#PCD_NOT 					; and NOT it.
+.142b	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.142e	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/commands/get.asm
 
-.1413					CommandGET:
-.1413	20 45 14	jsr $1445			jsr 	LookNextNonSpace 			; # follows ?
-.1416	c9 23		cmp #$23			cmp 	#"#"
-.1418	d0 0d		bne $1427			bne 	CommandGetBody
-.141a	20 53 14	jsr $1453			jsr 	GetNext 					; consume #
-.141d	20 c2 13	jsr $13c2			jsr 	ChannelPrefix 				; do it as GET#
-.1420	20 27 14	jsr $1427			jsr 	CommandGetBody
-.1423	20 dc 13	jsr $13dc			jsr 	ChannelPostfix
-.1426	60		rts				rts
-.1427					CommandGetBody:
-.1427	20 5e 14	jsr $145e			jsr 	GetNextNonSpace 			; get the first character
-.142a	20 1a 19	jsr $191a			jsr 	GetReferenceTerm 			; identify variable to assign to
-.142d	48		pha				pha
-.142e	29 40		and #$40			and 	#NSSTypeMask 				; check if it is a string
-.1430	c9 40		cmp #$40			cmp 	#NSSString
-.1432	d0 0b		bne $143f			bne 	_CGType
-.1434	a9 97		lda #$97			lda 	#PCD_GET 					; compile GET
-.1436	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1439	38		sec				sec
-.143a	68		pla				pla
-.143b	20 cc 18	jsr $18cc			jsr		GetSetVariable
-.143e	60		rts				rts
-.143f					_CGType:
-.143f	4c f7 0c	jmp $0cf7		jmp	ErrorV_type
+.142f					CommandGET:
+.142f	20 61 14	jsr $1461			jsr 	LookNextNonSpace 			; # follows ?
+.1432	c9 23		cmp #$23			cmp 	#"#"
+.1434	d0 0d		bne $1443			bne 	CommandGetBody
+.1436	20 6f 14	jsr $146f			jsr 	GetNext 					; consume #
+.1439	20 de 13	jsr $13de			jsr 	ChannelPrefix 				; do it as GET#
+.143c	20 43 14	jsr $1443			jsr 	CommandGetBody
+.143f	20 f8 13	jsr $13f8			jsr 	ChannelPostfix
+.1442	60		rts				rts
+.1443					CommandGetBody:
+.1443	20 7a 14	jsr $147a			jsr 	GetNextNonSpace 			; get the first character
+.1446	20 36 19	jsr $1936			jsr 	GetReferenceTerm 			; identify variable to assign to
+.1449	48		pha				pha
+.144a	29 40		and #$40			and 	#NSSTypeMask 				; check if it is a string
+.144c	c9 40		cmp #$40			cmp 	#NSSString
+.144e	d0 0b		bne $145b			bne 	_CGType
+.1450	a9 97		lda #$97			lda 	#PCD_GET 					; compile GET
+.1452	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1455	38		sec				sec
+.1456	68		pla				pla
+.1457	20 e8 18	jsr $18e8			jsr		GetSetVariable
+.145a	60		rts				rts
+.145b					_CGType:
+.145b	4c f7 0c	jmp $0cf7		jmp	ErrorV_type
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/helpers/input/get.asm
 
-.1442					LookNext:
-.1442	b2 22		lda ($22)			lda 	(srcPtr)
-.1444	60		rts				rts
-.1445					LookNextNonSpace:
-.1445	b2 22		lda ($22)			lda 	(srcPtr)
-.1447	c9 20		cmp #$20			cmp		#' '
-.1449	f0 03		beq $144e			beq 	_LNNSkip
-.144b	c9 00		cmp #$00			cmp 	#0
-.144d	60		rts				rts
-.144e					_LNNSkip:
-.144e	20 53 14	jsr $1453			jsr 	GetNext
-.1451	80 f2		bra $1445			bra 	LookNextNonSpace
-.1453					GetNext:
-.1453	b2 22		lda ($22)			lda 	(srcPtr) 					; get next
-.1455	e6 22		inc $22				inc 	srcPtr
-.1457	d0 02		bne $145b			bne 	_GNSkip
-.1459	e6 23		inc $23				inc 	srcPtr+1
-.145b					_GNSkip:
-.145b	c9 00		cmp #$00			cmp 	#0
-.145d	60		rts				rts
-.145e					GetNextNonSpace:
-.145e	20 53 14	jsr $1453			jsr 	GetNext
-.1461	c9 20		cmp #$20			cmp 	#' '
-.1463	f0 f9		beq $145e			beq 	GetNextNonSpace
-.1465	c9 00		cmp #$00			cmp 	#0
-.1467	60		rts				rts
-.1468					CharIsDigit:
-.1468	c9 30		cmp #$30			cmp 	#"0"
-.146a	90 06		bcc $1472			bcc 	CCFalse
-.146c	c9 3a		cmp #$3a			cmp 	#"9"+1
-.146e	b0 02		bcs $1472			bcs 	CCFalse
-.1470					CCTrue:
-.1470	38		sec				sec
-.1471	60		rts				rts
-.1472					CCFalse:
-.1472	18		clc				clc
-.1473	60		rts				rts
-.1474					CharIsAlpha:
-.1474	c9 41		cmp #$41			cmp 	#"A"
-.1476	90 fa		bcc $1472			bcc 	CCFalse
-.1478	c9 5b		cmp #$5b			cmp 	#"Z"+1
-.147a	b0 f6		bcs $1472			bcs 	CCFalse
-.147c	80 f2		bra $1470			bra 	CCTrue
-.147e					ConvertHexStyle:
-.147e	38		sec				sec
-.147f	e9 30		sbc #$30			sbc 	#"0" 						; check in range 0-9 first
-.1481	90 ef		bcc $1472			bcc 	CCFalse
-.1483	c9 0a		cmp #$0a			cmp 	#9+1
-.1485	90 e9		bcc $1470			bcc 	CCTrue
-.1487	38		sec				sec 								; shift into hex space A=>0 Z=>25
-.1488	e9 11		sbc #$11			sbc 	#"A"-"0"
-.148a	90 e6		bcc $1472			bcc 	CCFalse
-.148c	c9 1a		cmp #$1a			cmp 	#26 						; past Z ?
-.148e	b0 e2		bcs $1472			bcs 	CCFalse
-.1490	69 0a		adc #$0a			adc 	#10 						; make valid quasi-hex 0-35
-.1492	80 dc		bra $1470			bra 	CCTrue
+.145e					LookNext:
+.145e	b2 22		lda ($22)			lda 	(srcPtr)
+.1460	60		rts				rts
+.1461					LookNextNonSpace:
+.1461	b2 22		lda ($22)			lda 	(srcPtr)
+.1463	c9 20		cmp #$20			cmp		#' '
+.1465	f0 03		beq $146a			beq 	_LNNSkip
+.1467	c9 00		cmp #$00			cmp 	#0
+.1469	60		rts				rts
+.146a					_LNNSkip:
+.146a	20 6f 14	jsr $146f			jsr 	GetNext
+.146d	80 f2		bra $1461			bra 	LookNextNonSpace
+.146f					GetNext:
+.146f	b2 22		lda ($22)			lda 	(srcPtr) 					; get next
+.1471	e6 22		inc $22				inc 	srcPtr
+.1473	d0 02		bne $1477			bne 	_GNSkip
+.1475	e6 23		inc $23				inc 	srcPtr+1
+.1477					_GNSkip:
+.1477	c9 00		cmp #$00			cmp 	#0
+.1479	60		rts				rts
+.147a					GetNextNonSpace:
+.147a	20 6f 14	jsr $146f			jsr 	GetNext
+.147d	c9 20		cmp #$20			cmp 	#' '
+.147f	f0 f9		beq $147a			beq 	GetNextNonSpace
+.1481	c9 00		cmp #$00			cmp 	#0
+.1483	60		rts				rts
+.1484					CharIsDigit:
+.1484	c9 30		cmp #$30			cmp 	#"0"
+.1486	90 06		bcc $148e			bcc 	CCFalse
+.1488	c9 3a		cmp #$3a			cmp 	#"9"+1
+.148a	b0 02		bcs $148e			bcs 	CCFalse
+.148c					CCTrue:
+.148c	38		sec				sec
+.148d	60		rts				rts
+.148e					CCFalse:
+.148e	18		clc				clc
+.148f	60		rts				rts
+.1490					CharIsAlpha:
+.1490	c9 41		cmp #$41			cmp 	#"A"
+.1492	90 fa		bcc $148e			bcc 	CCFalse
+.1494	c9 5b		cmp #$5b			cmp 	#"Z"+1
+.1496	b0 f6		bcs $148e			bcs 	CCFalse
+.1498	80 f2		bra $148c			bra 	CCTrue
+.149a					ConvertHexStyle:
+.149a	38		sec				sec
+.149b	e9 30		sbc #$30			sbc 	#"0" 						; check in range 0-9 first
+.149d	90 ef		bcc $148e			bcc 	CCFalse
+.149f	c9 0a		cmp #$0a			cmp 	#9+1
+.14a1	90 e9		bcc $148c			bcc 	CCTrue
+.14a3	38		sec				sec 								; shift into hex space A=>0 Z=>25
+.14a4	e9 11		sbc #$11			sbc 	#"A"-"0"
+.14a6	90 e6		bcc $148e			bcc 	CCFalse
+.14a8	c9 1a		cmp #$1a			cmp 	#26 						; past Z ?
+.14aa	b0 e2		bcs $148e			bcs 	CCFalse
+.14ac	69 0a		adc #$0a			adc 	#10 						; make valid quasi-hex 0-35
+.14ae	80 dc		bra $148c			bra 	CCTrue
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/variables/getname.asm
 
-.1494					ExtractVariableName:
-.1494	20 74 14	jsr $1474			jsr 	CharIsAlpha
-.1497	90 50		bcc $14e9			bcc 	_IVSyntax
-.1499	29 1f		and #$1f			and 	#31 						; reduce first character to 5 bits
-.149b	85 2c		sta $2c				sta 	zTemp1 						; we'll build it in zTemp1
-.149d	64 2d		stz $2d				stz 	zTemp1+1
-.149f	20 42 14	jsr $1442			jsr 	LookNext 					; is there a second character ?
-.14a2	20 74 14	jsr $1474			jsr 	CharIsAlpha  				; must be alphanumeric
-.14a5	b0 05		bcs $14ac			bcs 	_IVHasSecond
-.14a7	20 68 14	jsr $1468			jsr 	CharIsDigit
-.14aa	90 07		bcc $14b3			bcc 	_IVCheckType
-.14ac					_IVHasSecond:
-.14ac	29 3f		and #$3f			and 	#63 						; 6 bit ASCII.
-.14ae	85 2d		sta $2d				sta 	zTemp1+1
-.14b0					_IVGetNextCheck:
-.14b0	20 53 14	jsr $1453			jsr 	GetNext 					; consume it
-.14b3					_IVCheckType:
-.14b3	20 42 14	jsr $1442			jsr 	LookNext					; check if string follows.
-.14b6	20 74 14	jsr $1474			jsr 	CharIsAlpha
-.14b9	b0 f5		bcs $14b0			bcs 	_IVGetNextCheck
-.14bb	20 68 14	jsr $1468			jsr 	CharIsDigit
-.14be	b0 f0		bcs $14b0			bcs 	_IVGetNextCheck
-.14c0	a2 40		ldx #$40			ldx 	#NSSString
-.14c2	c9 24		cmp #$24			cmp 	#"$"
-.14c4	f0 06		beq $14cc			beq 	_IVHasType
-.14c6	a2 20		ldx #$20			ldx 	#NSSIInt16 					; check if short int follows e.g. 16 bit
-.14c8	c9 25		cmp #$25			cmp 	#"%"
-.14ca	d0 08		bne $14d4			bne 	_IVCheckArray
-.14cc					_IVHasType:
-.14cc	8a		txa				txa 								; Or X into zTemp1
-.14cd	05 2c		ora $2c				ora 	zTemp1
-.14cf	85 2c		sta $2c				sta 	zTemp1
-.14d1	20 53 14	jsr $1453			jsr 	GetNext 					; consume it
-.14d4					_IVCheckArray:
-.14d4	20 42 14	jsr $1442			jsr 	LookNext 					; check if array follows
-.14d7	c9 28		cmp #$28			cmp 	#"("
-.14d9	d0 09		bne $14e4			bne 	_IVNotArray
-.14db	a5 2c		lda $2c				lda 	zTemp1 						; set array bit
-.14dd	09 80		ora #$80			ora 	#NSSArray
-.14df	85 2c		sta $2c				sta 	zTemp1
-.14e1	20 53 14	jsr $1453			jsr 	GetNext 					; consume it
-.14e4					_IVNotArray:
-.14e4	a6 2c		ldx $2c				ldx 	zTemp1
-.14e6	a4 2d		ldy $2d				ldy 	zTemp1+1
-.14e8	60		rts				rts
-.14e9					_IVSyntax:
-.14e9	4c e7 0c	jmp $0ce7		jmp	ErrorV_syntax
+.14b0					ExtractVariableName:
+.14b0	20 90 14	jsr $1490			jsr 	CharIsAlpha
+.14b3	90 50		bcc $1505			bcc 	_IVSyntax
+.14b5	29 1f		and #$1f			and 	#31 						; reduce first character to 5 bits
+.14b7	85 2c		sta $2c				sta 	zTemp1 						; we'll build it in zTemp1
+.14b9	64 2d		stz $2d				stz 	zTemp1+1
+.14bb	20 5e 14	jsr $145e			jsr 	LookNext 					; is there a second character ?
+.14be	20 90 14	jsr $1490			jsr 	CharIsAlpha  				; must be alphanumeric
+.14c1	b0 05		bcs $14c8			bcs 	_IVHasSecond
+.14c3	20 84 14	jsr $1484			jsr 	CharIsDigit
+.14c6	90 07		bcc $14cf			bcc 	_IVCheckType
+.14c8					_IVHasSecond:
+.14c8	29 3f		and #$3f			and 	#63 						; 6 bit ASCII.
+.14ca	85 2d		sta $2d				sta 	zTemp1+1
+.14cc					_IVGetNextCheck:
+.14cc	20 6f 14	jsr $146f			jsr 	GetNext 					; consume it
+.14cf					_IVCheckType:
+.14cf	20 5e 14	jsr $145e			jsr 	LookNext					; check if string follows.
+.14d2	20 90 14	jsr $1490			jsr 	CharIsAlpha
+.14d5	b0 f5		bcs $14cc			bcs 	_IVGetNextCheck
+.14d7	20 84 14	jsr $1484			jsr 	CharIsDigit
+.14da	b0 f0		bcs $14cc			bcs 	_IVGetNextCheck
+.14dc	a2 40		ldx #$40			ldx 	#NSSString
+.14de	c9 24		cmp #$24			cmp 	#"$"
+.14e0	f0 06		beq $14e8			beq 	_IVHasType
+.14e2	a2 20		ldx #$20			ldx 	#NSSIInt16 					; check if short int follows e.g. 16 bit
+.14e4	c9 25		cmp #$25			cmp 	#"%"
+.14e6	d0 08		bne $14f0			bne 	_IVCheckArray
+.14e8					_IVHasType:
+.14e8	8a		txa				txa 								; Or X into zTemp1
+.14e9	05 2c		ora $2c				ora 	zTemp1
+.14eb	85 2c		sta $2c				sta 	zTemp1
+.14ed	20 6f 14	jsr $146f			jsr 	GetNext 					; consume it
+.14f0					_IVCheckArray:
+.14f0	20 5e 14	jsr $145e			jsr 	LookNext 					; check if array follows
+.14f3	c9 28		cmp #$28			cmp 	#"("
+.14f5	d0 09		bne $1500			bne 	_IVNotArray
+.14f7	a5 2c		lda $2c				lda 	zTemp1 						; set array bit
+.14f9	09 80		ora #$80			ora 	#NSSArray
+.14fb	85 2c		sta $2c				sta 	zTemp1
+.14fd	20 6f 14	jsr $146f			jsr 	GetNext 					; consume it
+.1500					_IVNotArray:
+.1500	a6 2c		ldx $2c				ldx 	zTemp1
+.1502	a4 2d		ldy $2d				ldy 	zTemp1+1
+.1504	60		rts				rts
+.1505					_IVSyntax:
+.1505	4c e7 0c	jmp $0ce7		jmp	ErrorV_syntax
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/commands/gosub.asm
 
-.14ec					CommandGOSUB:
-.14ec	a9 cc		lda #$cc			lda 	#PCD_CMD_GOSUB
-.14ee	20 ff 14	jsr $14ff			jsr 	CompileBranchCommand
-.14f1	60		rts				rts
+.1508					CommandGOSUB:
+.1508	a9 cc		lda #$cc			lda 	#PCD_CMD_GOSUB
+.150a	20 1b 15	jsr $151b			jsr 	CompileBranchCommand
+.150d	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/commands/goto.asm
 
-.14f2					CommandGOAlt:
-.14f2	a9 a4		lda #$a4			lda 	#C64_TO 					; GO TO alternative
-.14f4	20 1c 09	jsr $091c			jsr 	CheckNextA
-.14f7	80 00		bra $14f9			bra 	CommandGOTO
-.14f9					CommandGOTO:
-.14f9	a9 cb		lda #$cb			lda 	#PCD_CMD_GOTO
-.14fb	20 ff 14	jsr $14ff			jsr 	CompileBranchCommand
-.14fe	60		rts				rts
-.14ff					CompileBranchCommand:
-.14ff	20 08 09	jsr $0908			jsr 	WriteCodeByte 				; write the command out.
-.1502	20 5e 14	jsr $145e			jsr 	GetNextNonSpace
-.1505	20 22 18	jsr $1822			jsr 	ParseConstant 				; get constant into YA
-.1508	90 0f		bcc $1519			bcc 	_CBCSyntax
-.150a	48		pha				pha
-.150b	a9 ff		lda #$ff			lda 	#$FF 						; no address yet.
-.150d	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1510	68		pla				pla 								; and compile the actual line number
-.1511	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1514	98		tya				tya
-.1515	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1518	60		rts				rts
-.1519					_CBCSyntax:
-.1519	4c e7 0c	jmp $0ce7		jmp	ErrorV_syntax
+.150e					CommandGOAlt:
+.150e	a9 a4		lda #$a4			lda 	#C64_TO 					; GO TO alternative
+.1510	20 1c 09	jsr $091c			jsr 	CheckNextA
+.1513	80 00		bra $1515			bra 	CommandGOTO
+.1515					CommandGOTO:
+.1515	a9 cb		lda #$cb			lda 	#PCD_CMD_GOTO
+.1517	20 1b 15	jsr $151b			jsr 	CompileBranchCommand
+.151a	60		rts				rts
+.151b					CompileBranchCommand:
+.151b	20 08 09	jsr $0908			jsr 	WriteCodeByte 				; write the command out.
+.151e	20 7a 14	jsr $147a			jsr 	GetNextNonSpace
+.1521	20 3e 18	jsr $183e			jsr 	ParseConstant 				; get constant into YA
+.1524	90 0f		bcc $1535			bcc 	_CBCSyntax
+.1526	48		pha				pha
+.1527	a9 ff		lda #$ff			lda 	#$FF 						; no address yet.
+.1529	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.152c	68		pla				pla 								; and compile the actual line number
+.152d	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1530	98		tya				tya
+.1531	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1534	60		rts				rts
+.1535					_CBCSyntax:
+.1535	4c e7 0c	jmp $0ce7		jmp	ErrorV_syntax
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/commands/if.asm
 
-.151c					CommandIF:
-.151c	20 45 14	jsr $1445			jsr 	LookNextNonSpace 			; what follows the tests ?
-.151f	c9 89		cmp #$89			cmp 	#C64_GOTO 					; IF .. GOTO
-.1521	f0 0f		beq $1532			beq 	_CIGoto
-.1523	a9 a7		lda #$a7			lda 	#C64_THEN 					; should be THEN
-.1525	20 1c 09	jsr $091c			jsr 	CheckNextA
-.1528	20 45 14	jsr $1445			jsr 	LookNextNonSpace 			; THEN <number>
-.152b	20 68 14	jsr $1468			jsr 	CharIsDigit
-.152e	b0 05		bcs $1535			bcs 	_CIGoto2
-.1530	80 09		bra $153b			bra 	CompileGotoEOL
-.1532					_CIGoto:
-.1532	20 53 14	jsr $1453			jsr 	GetNext
-.1535					_CIGoto2:
-.1535	a9 ce		lda #$ce			lda 	#PCD_CMD_GOTOCMD_NZ
-.1537	20 ff 14	jsr $14ff			jsr 	CompileBranchCommand
-.153a	60		rts				rts
-.153b					CompileGotoEOL:
-.153b	a9 cd		lda #$cd			lda 	#PCD_CMD_GOTOCMD_Z
-.153d	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1540	a9 ff		lda #$ff			lda 	#$FF
-.1542	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1545	20 3d 16	jsr $163d			jsr 	GetLineNumber 				; Get the current line number => YA
-.1548	1a		inc a				inc 	a 							; and branch to +1
-.1549	d0 01		bne $154c			bne 	_CGENoCarry
-.154b	c8		iny				iny
-.154c					_CGENoCarry:
-.154c	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.154f	98		tya				tya
-.1550	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1553	60		rts				rts
+.1538					CommandIF:
+.1538	20 61 14	jsr $1461			jsr 	LookNextNonSpace 			; what follows the tests ?
+.153b	c9 89		cmp #$89			cmp 	#C64_GOTO 					; IF .. GOTO
+.153d	f0 0f		beq $154e			beq 	_CIGoto
+.153f	a9 a7		lda #$a7			lda 	#C64_THEN 					; should be THEN
+.1541	20 1c 09	jsr $091c			jsr 	CheckNextA
+.1544	20 61 14	jsr $1461			jsr 	LookNextNonSpace 			; THEN <number>
+.1547	20 84 14	jsr $1484			jsr 	CharIsDigit
+.154a	b0 05		bcs $1551			bcs 	_CIGoto2
+.154c	80 09		bra $1557			bra 	CompileGotoEOL
+.154e					_CIGoto:
+.154e	20 6f 14	jsr $146f			jsr 	GetNext
+.1551					_CIGoto2:
+.1551	a9 ce		lda #$ce			lda 	#PCD_CMD_GOTOCMD_NZ
+.1553	20 1b 15	jsr $151b			jsr 	CompileBranchCommand
+.1556	60		rts				rts
+.1557					CompileGotoEOL:
+.1557	a9 cd		lda #$cd			lda 	#PCD_CMD_GOTOCMD_Z
+.1559	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.155c	a9 ff		lda #$ff			lda 	#$FF
+.155e	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1561	20 59 16	jsr $1659			jsr 	GetLineNumber 				; Get the current line number => YA
+.1564	1a		inc a				inc 	a 							; and branch to +1
+.1565	d0 01		bne $1568			bne 	_CGENoCarry
+.1567	c8		iny				iny
+.1568					_CGENoCarry:
+.1568	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.156b	98		tya				tya
+.156c	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.156f	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/commands/input.asm
 
-.1554					CommandINPUT:
-.1554	20 45 14	jsr $1445			jsr 	LookNextNonSpace 			; check for "
-.1557	c9 22		cmp #$22			cmp 	#'"'
-.1559	d0 0d		bne $1568			bne 	CommandINPUTStream
-.155b	20 fc 0d	jsr $0dfc			jsr 	CompileExpressionAt0
-.155e	a9 ac		lda #$ac			lda 	#(PCD_PRINTCMD_S) & $FF
-.1560	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1563	a9 2c		lda #$2c			lda 	#","
-.1565	20 12 09	jsr $0912			jsr 	CheckNextComma
-.1568					CommandINPUTStream:
-.1568	a9 9c		lda #$9c			lda 	#(PCD_INPUTCMD_START) & $FF
-.156a	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.156d	a2 9a		ldx #$9a			ldx 	#PCD_INPUT 					; do READ with Data from INPUT
-.156f	a0 9b		ldy #$9b			ldy 	#PCD_INPUTDOLLAR
-.1571	4c 94 18	jmp $1894			jmp 	CommandReadInputCommon
+.1570					CommandINPUT:
+.1570	20 61 14	jsr $1461			jsr 	LookNextNonSpace 			; check for "
+.1573	c9 22		cmp #$22			cmp 	#'"'
+.1575	d0 0d		bne $1584			bne 	CommandINPUTStream
+.1577	20 fc 0d	jsr $0dfc			jsr 	CompileExpressionAt0
+.157a	a9 ac		lda #$ac			lda 	#(PCD_PRINTCMD_S) & $FF
+.157c	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.157f	a9 2c		lda #$2c			lda 	#","
+.1581	20 12 09	jsr $0912			jsr 	CheckNextComma
+.1584					CommandINPUTStream:
+.1584	a9 9c		lda #$9c			lda 	#(PCD_INPUTCMD_START) & $FF
+.1586	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1589	a2 9a		ldx #$9a			ldx 	#PCD_INPUT 					; do READ with Data from INPUT
+.158b	a0 9b		ldy #$9b			ldy 	#PCD_INPUTDOLLAR
+.158d	4c b0 18	jmp $18b0			jmp 	CommandReadInputCommon
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/ifloat32/float/integer.asm
 
-.1574					FloatIntegerPart:
-.1574	48		pha				pha
-.1575	b5 6c		lda $6c,x			lda 	NSExponent,x 				; is it integer already ?
-.1577	f0 1d		beq $1596			beq 	_FIPExit 					; if so do nothing
-.1579	20 ae 1c	jsr $1cae			jsr 	FloatIsZero 				; is it zero ?
-.157c	f0 15		beq $1593			beq 	_FIPZero 					; if so return zero.
-.157e	20 b4 17	jsr $17b4			jsr 	FloatNormalise 				; normalise
-.1581	f0 10		beq $1593			beq 	_FIPZero 					; normalised to zero, exit zero
-.1583					_FIPShift:
-.1583	b5 6c		lda $6c,x			lda 	NSExponent,x 				; if Exponent >= 0 exit.
-.1585	10 07		bpl $158e			bpl 	_FIPCheckZero
-.1587	20 a5 1c	jsr $1ca5			jsr 	FloatShiftRight 			; shift mantissa right
-.158a	f6 6c		inc $6c,x			inc 	NSExponent,x 				; bump exponent
-.158c	80 f5		bra $1583			bra 	_FIPShift
-.158e					_FIPCheckZero:
-.158e	20 ae 1c	jsr $1cae			jsr 	FloatIsZero 				; avoid -0 problem
-.1591	d0 03		bne $1596			bne 	_FIPExit 					; set to zero if mantissa zero.
-.1593					_FIPZero:
-.1593	20 8c 1c	jsr $1c8c			jsr 	FloatSetZero
-.1596					_FIPExit:
-.1596	68		pla				pla
-.1597	60		rts				rts
+.1590					FloatIntegerPart:
+.1590	48		pha				pha
+.1591	b5 6c		lda $6c,x			lda 	NSExponent,x 				; is it integer already ?
+.1593	f0 1d		beq $15b2			beq 	_FIPExit 					; if so do nothing
+.1595	20 ca 1c	jsr $1cca			jsr 	FloatIsZero 				; is it zero ?
+.1598	f0 15		beq $15af			beq 	_FIPZero 					; if so return zero.
+.159a	20 d0 17	jsr $17d0			jsr 	FloatNormalise 				; normalise
+.159d	f0 10		beq $15af			beq 	_FIPZero 					; normalised to zero, exit zero
+.159f					_FIPShift:
+.159f	b5 6c		lda $6c,x			lda 	NSExponent,x 				; if Exponent >= 0 exit.
+.15a1	10 07		bpl $15aa			bpl 	_FIPCheckZero
+.15a3	20 c1 1c	jsr $1cc1			jsr 	FloatShiftRight 			; shift mantissa right
+.15a6	f6 6c		inc $6c,x			inc 	NSExponent,x 				; bump exponent
+.15a8	80 f5		bra $159f			bra 	_FIPShift
+.15aa					_FIPCheckZero:
+.15aa	20 ca 1c	jsr $1cca			jsr 	FloatIsZero 				; avoid -0 problem
+.15ad	d0 03		bne $15b2			bne 	_FIPExit 					; set to zero if mantissa zero.
+.15af					_FIPZero:
+.15af	20 a8 1c	jsr $1ca8			jsr 	FloatSetZero
+.15b2					_FIPExit:
+.15b2	68		pla				pla
+.15b3	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/ifloat32/float/integerdown.asm
 
-.1598					FloatIntegerPartDown:
-.1598	48		pha				pha
-.1599	5a		phy				phy
-.159a	b5 6c		lda $6c,x			lda 	NSExponent,x 				; is it integer already ?
-.159c	f0 36		beq $15d4			beq 	_FIPExit 					; if so do nothing
-.159e	20 ae 1c	jsr $1cae			jsr 	FloatIsZero 				; is it zero ?
-.15a1	f0 2e		beq $15d1			beq 	_FIPZero 					; if so return zero.
-.15a3	20 b4 17	jsr $17b4			jsr 	FloatNormalise 				; normalise
-.15a6	f0 29		beq $15d1			beq 	_FIPZero 					; normalised to zero, exit zero
-.15a8	a0 00		ldy #$00			ldy 	#0 							; reset the count of bits.
-.15aa					_FIPShift:
-.15aa	b5 6c		lda $6c,x			lda 	NSExponent,x 				; if Exponent >= 0 exit.
-.15ac	10 0a		bpl $15b8			bpl 	_FIPCheckDown
-.15ae	20 a5 1c	jsr $1ca5			jsr 	FloatShiftRight 			; shift mantissa right
-.15b1	90 01		bcc $15b4			bcc 	_FIPNoFrac 					; shifted a zero out ?
-.15b3	c8		iny				iny
-.15b4					_FIPNoFrac:
-.15b4	f6 6c		inc $6c,x			inc 	NSExponent,x 				; bump exponent
-.15b6	80 f2		bra $15aa			bra 	_FIPShift
-.15b8					_FIPCheckDown:
-.15b8	c0 00		cpy #$00			cpy 	#0 							; were there any fractional bits.
-.15ba	f0 10		beq $15cc			beq 	_FIPCheckZero
-.15bc	34 30		bit $30,x			bit 	NSStatus,x 					; +ve
-.15be	10 0c		bpl $15cc			bpl 	_FIPCheckZero
-.15c0	e8		inx				inx 								; -ve so round *down*.
-.15c1	a9 01		lda #$01			lda 	#1
-.15c3	20 8e 1c	jsr $1c8e			jsr 	FloatSetByte
-.15c6	20 4e 1c	jsr $1c4e			jsr 	FloatNegate
-.15c9	20 0b 08	jsr $080b			jsr 	FloatAdd
-.15cc					_FIPCheckZero:
-.15cc	20 ae 1c	jsr $1cae			jsr 	FloatIsZero 				; avoid -0 problem
-.15cf	d0 03		bne $15d4			bne 	_FIPExit 					; set to zero if mantissa zero.
-.15d1					_FIPZero:
-.15d1	20 8c 1c	jsr $1c8c			jsr 	FloatSetZero
-.15d4					_FIPExit:
-.15d4	7a		ply				ply
-.15d5	68		pla				pla
-.15d6	60		rts				rts
+.15b4					FloatIntegerPartDown:
+.15b4	48		pha				pha
+.15b5	5a		phy				phy
+.15b6	b5 6c		lda $6c,x			lda 	NSExponent,x 				; is it integer already ?
+.15b8	f0 36		beq $15f0			beq 	_FIPExit 					; if so do nothing
+.15ba	20 ca 1c	jsr $1cca			jsr 	FloatIsZero 				; is it zero ?
+.15bd	f0 2e		beq $15ed			beq 	_FIPZero 					; if so return zero.
+.15bf	20 d0 17	jsr $17d0			jsr 	FloatNormalise 				; normalise
+.15c2	f0 29		beq $15ed			beq 	_FIPZero 					; normalised to zero, exit zero
+.15c4	a0 00		ldy #$00			ldy 	#0 							; reset the count of bits.
+.15c6					_FIPShift:
+.15c6	b5 6c		lda $6c,x			lda 	NSExponent,x 				; if Exponent >= 0 exit.
+.15c8	10 0a		bpl $15d4			bpl 	_FIPCheckDown
+.15ca	20 c1 1c	jsr $1cc1			jsr 	FloatShiftRight 			; shift mantissa right
+.15cd	90 01		bcc $15d0			bcc 	_FIPNoFrac 					; shifted a zero out ?
+.15cf	c8		iny				iny
+.15d0					_FIPNoFrac:
+.15d0	f6 6c		inc $6c,x			inc 	NSExponent,x 				; bump exponent
+.15d2	80 f2		bra $15c6			bra 	_FIPShift
+.15d4					_FIPCheckDown:
+.15d4	c0 00		cpy #$00			cpy 	#0 							; were there any fractional bits.
+.15d6	f0 10		beq $15e8			beq 	_FIPCheckZero
+.15d8	34 30		bit $30,x			bit 	NSStatus,x 					; +ve
+.15da	10 0c		bpl $15e8			bpl 	_FIPCheckZero
+.15dc	e8		inx				inx 								; -ve so round *down*.
+.15dd	a9 01		lda #$01			lda 	#1
+.15df	20 aa 1c	jsr $1caa			jsr 	FloatSetByte
+.15e2	20 6a 1c	jsr $1c6a			jsr 	FloatNegate
+.15e5	20 0b 08	jsr $080b			jsr 	FloatAdd
+.15e8					_FIPCheckZero:
+.15e8	20 ca 1c	jsr $1cca			jsr 	FloatIsZero 				; avoid -0 problem
+.15eb	d0 03		bne $15f0			bne 	_FIPExit 					; set to zero if mantissa zero.
+.15ed					_FIPZero:
+.15ed	20 a8 1c	jsr $1ca8			jsr 	FloatSetZero
+.15f0					_FIPExit:
+.15f0	7a		ply				ply
+.15f1	68		pla				pla
+.15f2	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/commands/let.asm
 
-.15d7					CommandLET:
-.15d7	20 5e 14	jsr $145e			jsr 	GetNextNonSpace 			; get the first character
-.15da					CommandLETHaveFirst:
-.15da	20 1a 19	jsr $191a			jsr 	GetReferenceTerm 			; identify variable to assign to
-.15dd	da		phx				phx 								; save target on the stack.
-.15de	5a		phy				phy
-.15df	48		pha				pha
-.15e0	a9 b2		lda #$b2			lda 	#C64_EQUAL 					; check next is =
-.15e2	20 1c 09	jsr $091c			jsr 	CheckNextA
-.15e5	20 fc 0d	jsr $0dfc			jsr 	CompileExpressionAt0 		; evaluate the RHS.
-.15e8	85 2a		sta $2a				sta 	zTemp0 						; save type returned
-.15ea	68		pla				pla 								; get type of assignment
-.15eb	48		pha				pha
-.15ec	45 2a		eor $2a				eor 	zTemp0 						; compare using EOR
-.15ee	29 40		and #$40			and 	#NSSTypeMask 				; so we can mask type as we only need n/s
-.15f0	d0 17		bne $1609			bne 	_CLType
-.15f2	68		pla				pla 								; restore and compile save code
-.15f3	7a		ply				ply
-.15f4	fa		plx				plx
-.15f5	c0 c0		cpy #$c0			cpy 	#$C0 						; is it TI$ = "xxxxx"
-.15f7	f0 05		beq $15fe			beq 	_CLTIString
-.15f9	38		sec				sec
-.15fa	20 cc 18	jsr $18cc			jsr		GetSetVariable
-.15fd	60		rts				rts
-.15fe					_CLTIString:
-.15fe	a9 c5		lda #$c5			lda 	#(PCD_TIDOLLARCMD_WRITE) >> 8
-.1600	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1603	a9 8f		lda #$8f			lda 	#(PCD_TIDOLLARCMD_WRITE) & $FF
-.1605	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1608	60		rts				rts
-.1609					_CLType:
-.1609	4c f7 0c	jmp $0cf7		jmp	ErrorV_type
+.15f3					CommandLET:
+.15f3	20 7a 14	jsr $147a			jsr 	GetNextNonSpace 			; get the first character
+.15f6					CommandLETHaveFirst:
+.15f6	20 36 19	jsr $1936			jsr 	GetReferenceTerm 			; identify variable to assign to
+.15f9	da		phx				phx 								; save target on the stack.
+.15fa	5a		phy				phy
+.15fb	48		pha				pha
+.15fc	a9 b2		lda #$b2			lda 	#C64_EQUAL 					; check next is =
+.15fe	20 1c 09	jsr $091c			jsr 	CheckNextA
+.1601	20 fc 0d	jsr $0dfc			jsr 	CompileExpressionAt0 		; evaluate the RHS.
+.1604	85 2a		sta $2a				sta 	zTemp0 						; save type returned
+.1606	68		pla				pla 								; get type of assignment
+.1607	48		pha				pha
+.1608	45 2a		eor $2a				eor 	zTemp0 						; compare using EOR
+.160a	29 40		and #$40			and 	#NSSTypeMask 				; so we can mask type as we only need n/s
+.160c	d0 17		bne $1625			bne 	_CLType
+.160e	68		pla				pla 								; restore and compile save code
+.160f	7a		ply				ply
+.1610	fa		plx				plx
+.1611	c0 c0		cpy #$c0			cpy 	#$C0 						; is it TI$ = "xxxxx"
+.1613	f0 05		beq $161a			beq 	_CLTIString
+.1615	38		sec				sec
+.1616	20 e8 18	jsr $18e8			jsr		GetSetVariable
+.1619	60		rts				rts
+.161a					_CLTIString:
+.161a	a9 c5		lda #$c5			lda 	#(PCD_TIDOLLARCMD_WRITE) >> 8
+.161c	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.161f	a9 93		lda #$93			lda 	#(PCD_TIDOLLARCMD_WRITE) & $FF
+.1621	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1624	60		rts				rts
+.1625					_CLType:
+.1625	4c f7 0c	jmp $0cf7		jmp	ErrorV_type
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/helpers/input/line.asm
 
-.160c					ReadNextLine:
-.160c	20 9b 10	jsr $109b			jsr 	INPUTGet 					; check offset is not zero.
-.160f	85 2a		sta $2a				sta 	zTemp0
-.1611	20 9b 10	jsr $109b			jsr 	INPUTGet
-.1614	05 2a		ora $2a				ora 	zTemp0
-.1616	d0 02		bne $161a			bne 	_RNLBody
-.1618	18		clc				clc
-.1619	60		rts				rts						; end of file.
-.161a					_RNLBody:
-.161a	20 9b 10	jsr $109b			jsr 	INPUTGet 					; read and save line number
-.161d	8d 00 05	sta $0500			sta 	currentLineNumber
-.1620	20 9b 10	jsr $109b			jsr 	INPUTGet
-.1623	8d 01 05	sta $0501			sta 	currentLineNumber+1
-.1626	a2 00		ldx #$00			ldx 	#0 							; read line into buffer
-.1628					_RNLRead:
-.1628	20 9b 10	jsr $109b			jsr 	INPUTGet
-.162b	9d 00 04	sta $0400,x			sta 	sourceBuffer,x
-.162e	e8		inx				inx
-.162f	c9 00		cmp #$00			cmp 	#0
-.1631	d0 f5		bne $1628			bne 	_RNLRead
-.1633	a9 00		lda #$00			lda 	#((sourceBuffer) & $FF)
-.1635	85 22		sta $22				sta 	0+srcPtr
-.1637	a9 04		lda #$04			lda 	#((sourceBuffer) >> 8) & $FF
-.1639	85 23		sta $23				sta 	1+srcPtr
-.163b	38		sec				sec
-.163c	60		rts				rts
-.163d					GetLineNumber:
-.163d	ac 01 05	ldy $0501			ldy 	currentLineNumber+1
-.1640	ad 00 05	lda $0500			lda 	currentLineNumber
-.1643	60		rts				rts
+.1628					ReadNextLine:
+.1628	20 9b 10	jsr $109b			jsr 	INPUTGet 					; check offset is not zero.
+.162b	85 2a		sta $2a				sta 	zTemp0
+.162d	20 9b 10	jsr $109b			jsr 	INPUTGet
+.1630	05 2a		ora $2a				ora 	zTemp0
+.1632	d0 02		bne $1636			bne 	_RNLBody
+.1634	18		clc				clc
+.1635	60		rts				rts						; end of file.
+.1636					_RNLBody:
+.1636	20 9b 10	jsr $109b			jsr 	INPUTGet 					; read and save line number
+.1639	8d 00 05	sta $0500			sta 	currentLineNumber
+.163c	20 9b 10	jsr $109b			jsr 	INPUTGet
+.163f	8d 01 05	sta $0501			sta 	currentLineNumber+1
+.1642	a2 00		ldx #$00			ldx 	#0 							; read line into buffer
+.1644					_RNLRead:
+.1644	20 9b 10	jsr $109b			jsr 	INPUTGet
+.1647	9d 00 04	sta $0400,x			sta 	sourceBuffer,x
+.164a	e8		inx				inx
+.164b	c9 00		cmp #$00			cmp 	#0
+.164d	d0 f5		bne $1644			bne 	_RNLRead
+.164f	a9 00		lda #$00			lda 	#((sourceBuffer) & $FF)
+.1651	85 22		sta $22				sta 	0+srcPtr
+.1653	a9 04		lda #$04			lda 	#((sourceBuffer) >> 8) & $FF
+.1655	85 23		sta $23				sta 	1+srcPtr
+.1657	38		sec				sec
+.1658	60		rts				rts
+.1659					GetLineNumber:
+.1659	ac 01 05	ldy $0501			ldy 	currentLineNumber+1
+.165c	ad 00 05	lda $0500			lda 	currentLineNumber
+.165f	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/storage/line.asm
 
-.1644					STRMarkLine:
-.1644	48		pha				pha
-.1645	38		sec				sec 								; allocate 5 bytes (line #, page+address)
-.1646	ad 2c 06	lda $062c			lda 	lineNumberTable 			; and copy to zTemp0
-.1649	e9 05		sbc #$05			sbc 	#5
-.164b	8d 2c 06	sta $062c			sta 	lineNumberTable
-.164e	85 2a		sta $2a				sta 	zTemp0
-.1650	ad 2d 06	lda $062d			lda 	lineNumberTable+1
-.1653	e9 00		sbc #$00			sbc 	#0
-.1655	8d 2d 06	sta $062d			sta 	lineNumberTable+1
-.1658	85 2b		sta $2b				sta 	zTemp0+1
-.165a	68		pla				pla
-.165b	92 2a		sta ($2a)			sta 	(zTemp0) 					; save it in +0,+1
-.165d	98		tya				tya
-.165e	a0 01		ldy #$01			ldy 	#1
-.1660	91 2a		sta ($2a),y			sta 	(zTemp0),y
-.1662	a5 29		lda $29				lda 	objPage 					; and page# in +2
-.1664	c8		iny				iny
-.1665	91 2a		sta ($2a),y			sta 	(zTemp0),y
-.1667	a5 27		lda $27				lda 	objPtr 						; save current address in +3,+4
-.1669	c8		iny				iny
-.166a	91 2a		sta ($2a),y			sta 	(zTemp0),y
-.166c	a5 28		lda $28				lda 	objPtr+1
-.166e	c8		iny				iny
-.166f	91 2a		sta ($2a),y			sta 	(zTemp0),y
-.1671	60		rts				rts
-.1672					STRFindLine:
-.1672	85 2a		sta $2a				sta 	zTemp0 						; zTemp0 line number being searched
-.1674	84 2b		sty $2b				sty 	zTemp0+1
-.1676	a9 00		lda #$00			lda 	#((WorkArea+WorkAreaSize) & $FF)
-.1678	85 2c		sta $2c				sta 	0+zTemp1
-.167a	a9 9f		lda #$9f			lda 	#((WorkArea+WorkAreaSize) >> 8) & $FF
-.167c	85 2d		sta $2d				sta 	1+zTemp1
-.167e					_STRSearch:
-.167e	20 b9 16	jsr $16b9			jsr 	_STRPrevLine 				; look at previous record.
-.1681	a0 01		ldy #$01			ldy 	#1
-.1683	b2 2c		lda ($2c)			lda 	(zTemp1) 					; check table line # >= target
-.1685	c5 2a		cmp $2a				cmp 	zTemp0
-.1687	b1 2c		lda ($2c),y			lda 	(zTemp1),y
-.1689	e5 2b		sbc $2b				sbc 	zTemp0+1
-.168b	b0 0b		bcs $1698			bcs 	_STRFound 					; >=
-.168d					_STRNext:
-.168d	a0 01		ldy #$01			ldy 	#1 							; should not be required !
-.168f	b1 2c		lda ($2c),y			lda 	(zTemp1),y
-.1691	c9 ff		cmp #$ff			cmp 	#$FF
-.1693	d0 e9		bne $167e			bne 	_STRSearch
-.1695	4c 41 0d	jmp $0d41		jmp	ErrorV_internal
-.1698					_STRFound:
-.1698	b2 2c		lda ($2c)			lda 	(zTemp1) 					; set A = 0 if the same, 0 if different.
-.169a	45 2a		eor $2a				eor 	zTemp0
-.169c	d0 06		bne $16a4			bne 	_STRDifferent
-.169e	b2 2c		lda ($2c)			lda 	(zTemp1)
-.16a0	45 2a		eor $2a				eor 	zTemp0
-.16a2	f0 02		beq $16a6			beq 	_STROut 					; if zero, exit with A = 0 and correct line.
-.16a4					_STRDifferent:
-.16a4	a9 ff		lda #$ff			lda 	#$FF
-.16a6					_STROut:
-.16a6	18		clc				clc  								; set carry if different, e.g. > rather than >=
-.16a7	69 ff		adc #$ff			adc 	#255
-.16a9	08		php				php
-.16aa	c8		iny				iny 								; page into X
+.1660					STRMarkLine:
+.1660	48		pha				pha
+.1661	38		sec				sec 								; allocate 5 bytes (line #, page+address)
+.1662	ad 2c 06	lda $062c			lda 	lineNumberTable 			; and copy to zTemp0
+.1665	e9 05		sbc #$05			sbc 	#5
+.1667	8d 2c 06	sta $062c			sta 	lineNumberTable
+.166a	85 2a		sta $2a				sta 	zTemp0
+.166c	ad 2d 06	lda $062d			lda 	lineNumberTable+1
+.166f	e9 00		sbc #$00			sbc 	#0
+.1671	8d 2d 06	sta $062d			sta 	lineNumberTable+1
+.1674	85 2b		sta $2b				sta 	zTemp0+1
+.1676	68		pla				pla
+.1677	92 2a		sta ($2a)			sta 	(zTemp0) 					; save it in +0,+1
+.1679	98		tya				tya
+.167a	a0 01		ldy #$01			ldy 	#1
+.167c	91 2a		sta ($2a),y			sta 	(zTemp0),y
+.167e	a5 29		lda $29				lda 	objPage 					; and page# in +2
+.1680	c8		iny				iny
+.1681	91 2a		sta ($2a),y			sta 	(zTemp0),y
+.1683	a5 27		lda $27				lda 	objPtr 						; save current address in +3,+4
+.1685	c8		iny				iny
+.1686	91 2a		sta ($2a),y			sta 	(zTemp0),y
+.1688	a5 28		lda $28				lda 	objPtr+1
+.168a	c8		iny				iny
+.168b	91 2a		sta ($2a),y			sta 	(zTemp0),y
+.168d	60		rts				rts
+.168e					STRFindLine:
+.168e	85 2a		sta $2a				sta 	zTemp0 						; zTemp0 line number being searched
+.1690	84 2b		sty $2b				sty 	zTemp0+1
+.1692	a9 00		lda #$00			lda 	#((WorkArea+WorkAreaSize) & $FF)
+.1694	85 2c		sta $2c				sta 	0+zTemp1
+.1696	a9 9f		lda #$9f			lda 	#((WorkArea+WorkAreaSize) >> 8) & $FF
+.1698	85 2d		sta $2d				sta 	1+zTemp1
+.169a					_STRSearch:
+.169a	20 d5 16	jsr $16d5			jsr 	_STRPrevLine 				; look at previous record.
+.169d	a0 01		ldy #$01			ldy 	#1
+.169f	b2 2c		lda ($2c)			lda 	(zTemp1) 					; check table line # >= target
+.16a1	c5 2a		cmp $2a				cmp 	zTemp0
+.16a3	b1 2c		lda ($2c),y			lda 	(zTemp1),y
+.16a5	e5 2b		sbc $2b				sbc 	zTemp0+1
+.16a7	b0 0b		bcs $16b4			bcs 	_STRFound 					; >=
+.16a9					_STRNext:
+.16a9	a0 01		ldy #$01			ldy 	#1 							; should not be required !
 .16ab	b1 2c		lda ($2c),y			lda 	(zTemp1),y
-.16ad	aa		tax				tax
-.16ae	c8		iny				iny 								; address into YA
-.16af	b1 2c		lda ($2c),y			lda 	(zTemp1),y
-.16b1	48		pha				pha
-.16b2	c8		iny				iny
-.16b3	b1 2c		lda ($2c),y			lda 	(zTemp1),y
-.16b5	a8		tay				tay
-.16b6	68		pla				pla
-.16b7	28		plp				plp
-.16b8	60		rts				rts
-.16b9					_STRPrevLine:
-.16b9	38		sec				sec 								; move backwards one entry.
-.16ba	a5 2c		lda $2c				lda 	zTemp1
-.16bc	e9 05		sbc #$05			sbc 	#5
-.16be	85 2c		sta $2c				sta 	zTemp1
-.16c0	a5 2d		lda $2d				lda 	zTemp1+1
-.16c2	e9 00		sbc #$00			sbc 	#0
-.16c4	85 2d		sta $2d				sta 	zTemp1+1
-.16c6	60		rts				rts
-.16c7					STRMakeOffset:
-.16c7	18		clc				clc 								; borrow 1
-.16c8	e5 27		sbc $27				sbc 	objPtr
-.16ca	48		pha				pha
-.16cb	98		tya				tya
-.16cc	e5 28		sbc $28				sbc 	objPtr+1
-.16ce	a8		tay				tay
-.16cf	68		pla				pla
-.16d0	60		rts				rts
+.16ad	c9 ff		cmp #$ff			cmp 	#$FF
+.16af	d0 e9		bne $169a			bne 	_STRSearch
+.16b1	4c 41 0d	jmp $0d41		jmp	ErrorV_internal
+.16b4					_STRFound:
+.16b4	b2 2c		lda ($2c)			lda 	(zTemp1) 					; set A = 0 if the same, 0 if different.
+.16b6	45 2a		eor $2a				eor 	zTemp0
+.16b8	d0 06		bne $16c0			bne 	_STRDifferent
+.16ba	b2 2c		lda ($2c)			lda 	(zTemp1)
+.16bc	45 2a		eor $2a				eor 	zTemp0
+.16be	f0 02		beq $16c2			beq 	_STROut 					; if zero, exit with A = 0 and correct line.
+.16c0					_STRDifferent:
+.16c0	a9 ff		lda #$ff			lda 	#$FF
+.16c2					_STROut:
+.16c2	18		clc				clc  								; set carry if different, e.g. > rather than >=
+.16c3	69 ff		adc #$ff			adc 	#255
+.16c5	08		php				php
+.16c6	c8		iny				iny 								; page into X
+.16c7	b1 2c		lda ($2c),y			lda 	(zTemp1),y
+.16c9	aa		tax				tax
+.16ca	c8		iny				iny 								; address into YA
+.16cb	b1 2c		lda ($2c),y			lda 	(zTemp1),y
+.16cd	48		pha				pha
+.16ce	c8		iny				iny
+.16cf	b1 2c		lda ($2c),y			lda 	(zTemp1),y
+.16d1	a8		tay				tay
+.16d2	68		pla				pla
+.16d3	28		plp				plp
+.16d4	60		rts				rts
+.16d5					_STRPrevLine:
+.16d5	38		sec				sec 								; move backwards one entry.
+.16d6	a5 2c		lda $2c				lda 	zTemp1
+.16d8	e9 05		sbc #$05			sbc 	#5
+.16da	85 2c		sta $2c				sta 	zTemp1
+.16dc	a5 2d		lda $2d				lda 	zTemp1+1
+.16de	e9 00		sbc #$00			sbc 	#0
+.16e0	85 2d		sta $2d				sta 	zTemp1+1
+.16e2	60		rts				rts
+.16e3					STRMakeOffset:
+.16e3	18		clc				clc 								; borrow 1
+.16e4	e5 27		sbc $27				sbc 	objPtr
+.16e6	48		pha				pha
+.16e7	98		tya				tya
+.16e8	e5 28		sbc $28				sbc 	objPtr+1
+.16ea	a8		tay				tay
+.16eb	68		pla				pla
+.16ec	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/ifloat32/binary/mult8x8.asm
 
-.16d1					FloatInt8Multiply:
-.16d1	5a		phy				phy
-.16d2	b5 3c		lda $3c,x			lda 	NSMantissa0,x 				; right shifted multiplier in Y
-.16d4	a8		tay				tay
-.16d5	74 3c		stz $3c,x			stz 	NSMantissa0,x 				; zero the result (already 8 bit constant)
-.16d7					_FI8MLoop:
-.16d7	98		tya				tya 								; shift right shifter right into carry
-.16d8	4a		lsr a				lsr 	a
-.16d9	a8		tay				tay
-.16da	90 0d		bcc $16e9			bcc 	_FI8MNoAdd
-.16dc	18		clc				clc
-.16dd	b5 3c		lda $3c,x			lda 	NSMantissa0,x
-.16df	75 3d		adc $3d,x			adc 	NSMantissa0+1,x
-.16e1	95 3c		sta $3c,x			sta 	NSMantissa0,x
-.16e3	b5 48		lda $48,x			lda 	NSMantissa1,x
-.16e5	75 49		adc $49,x			adc 	NSMantissa1+1,x
-.16e7	95 48		sta $48,x			sta 	NSMantissa1,x
-.16e9					_FI8MNoAdd:
-.16e9	16 3d		asl $3d,x			asl 	NSMantissa0+1,x 			; shift adder left
-.16eb	36 49		rol $49,x			rol 	NSMantissa1+1,x
-.16ed	c0 00		cpy #$00			cpy 	#0
-.16ef	d0 e6		bne $16d7			bne 	_FI8MLoop 					; until right shifter zero.
-.16f1	7a		ply				ply
-.16f2	60		rts				rts
+.16ed					FloatInt8Multiply:
+.16ed	5a		phy				phy
+.16ee	b5 3c		lda $3c,x			lda 	NSMantissa0,x 				; right shifted multiplier in Y
+.16f0	a8		tay				tay
+.16f1	74 3c		stz $3c,x			stz 	NSMantissa0,x 				; zero the result (already 8 bit constant)
+.16f3					_FI8MLoop:
+.16f3	98		tya				tya 								; shift right shifter right into carry
+.16f4	4a		lsr a				lsr 	a
+.16f5	a8		tay				tay
+.16f6	90 0d		bcc $1705			bcc 	_FI8MNoAdd
+.16f8	18		clc				clc
+.16f9	b5 3c		lda $3c,x			lda 	NSMantissa0,x
+.16fb	75 3d		adc $3d,x			adc 	NSMantissa0+1,x
+.16fd	95 3c		sta $3c,x			sta 	NSMantissa0,x
+.16ff	b5 48		lda $48,x			lda 	NSMantissa1,x
+.1701	75 49		adc $49,x			adc 	NSMantissa1+1,x
+.1703	95 48		sta $48,x			sta 	NSMantissa1,x
+.1705					_FI8MNoAdd:
+.1705	16 3d		asl $3d,x			asl 	NSMantissa0+1,x 			; shift adder left
+.1707	36 49		rol $49,x			rol 	NSMantissa1+1,x
+.1709	c0 00		cpy #$00			cpy 	#0
+.170b	d0 e6		bne $16f3			bne 	_FI8MLoop 					; until right shifter zero.
+.170d	7a		ply				ply
+.170e	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/ifloat32/binary/multiply.asm
 
-.16f3					FloatMultiplyShort:
-.16f3	5a		phy				phy 								; save Y
-.16f4	20 6f 1c	jsr $1c6f			jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2]
-.16f7	20 88 1c	jsr $1c88			jsr 	FloatSetZeroMantissaOnly 	; set mantissa S[X] to zero
-.16fa	a0 00		ldy #$00			ldy 	#0 							; Y is the shift count.
-.16fc					_I32MLoop:
-.16fc	b5 3e		lda $3e,x			lda 	NSMantissa0+2,x 			; check S[X+2] is zero
-.16fe	15 4a		ora $4a,x			ora 	NSMantissa1+2,x
-.1700	15 56		ora $56,x			ora 	NSMantissa2+2,x
-.1702	15 62		ora $62,x			ora 	NSMantissa3+2,x
-.1704	f0 25		beq $172b			beq 	_I32MExit 					; exit if zero
-.1706	b5 3e		lda $3e,x			lda 	NSMantissa0+2,x 			; check LSB of n1
-.1708	29 01		and #$01			and 	#1
-.170a	f0 0d		beq $1719			beq 	_I32MNoAdd
-.170c	20 7f 19	jsr $197f			jsr 	FloatAddTopTwoStack 		; if so add S[X+1] to S[X+0]
-.170f	b5 60		lda $60,x			lda 	NSMantissa3,x 				; has MantissaA overflowed ?
-.1711	10 06		bpl $1719			bpl 	_I32MNoAdd
-.1713					_I32ShiftRight:
-.1713	20 a5 1c	jsr $1ca5			jsr 	FloatShiftRight 			; shift S[X] right
-.1716	c8		iny				iny 								; increment shift count
-.1717	80 09		bra $1722			bra 	_I32MShiftUpper 			; n2 is doubled by default.
-.1719					_I32MNoAdd:
-.1719	34 61		bit $61,x			bit 	NSMantissa3+1,x				; if we can't shift S[X+1] left, shift everything right
-.171b	70 f6		bvs $1713			bvs 	_I32ShiftRight 				; instead.
-.171d	e8		inx				inx
-.171e	20 9b 1c	jsr $1c9b			jsr 	FloatShiftLeft 				; shift additive S[X+1] left
-.1721	ca		dex				dex
-.1722					_I32MShiftUpper:
-.1722	e8		inx				inx 								; shift S[X+2] right
-.1723	e8		inx				inx
-.1724	20 a5 1c	jsr $1ca5			jsr 	FloatShiftRight
-.1727	ca		dex				dex
-.1728	ca		dex				dex
-.1729	80 d1		bra $16fc			bra 	_I32MLoop 					; try again.
-.172b					_I32MExit:
-.172b	20 31 17	jsr $1731			jsr 	FloatCalculateSign
-.172e	98		tya				tya 								; shift in A
-.172f	7a		ply				ply 								; restore Y and exit
-.1730	60		rts				rts
-.1731					FloatCalculateSign:
-.1731	b5 30		lda $30,x			lda 	NSStatus,x 					; sign of result is 0 if same, 1 if different.
-.1733	16 30		asl $30,x			asl 	NSStatus,x 					; shift result left
-.1735	55 31		eor $31,x			eor 	NSStatus+1,x
-.1737	0a		asl a				asl 	a 							; shift bit 7 into carry
-.1738	76 30		ror $30,x			ror 	NSStatus,x 					; shift right into status byte.
-.173a	60		rts				rts
+.170f					FloatMultiplyShort:
+.170f	5a		phy				phy 								; save Y
+.1710	20 8b 1c	jsr $1c8b			jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2]
+.1713	20 a4 1c	jsr $1ca4			jsr 	FloatSetZeroMantissaOnly 	; set mantissa S[X] to zero
+.1716	a0 00		ldy #$00			ldy 	#0 							; Y is the shift count.
+.1718					_I32MLoop:
+.1718	b5 3e		lda $3e,x			lda 	NSMantissa0+2,x 			; check S[X+2] is zero
+.171a	15 4a		ora $4a,x			ora 	NSMantissa1+2,x
+.171c	15 56		ora $56,x			ora 	NSMantissa2+2,x
+.171e	15 62		ora $62,x			ora 	NSMantissa3+2,x
+.1720	f0 25		beq $1747			beq 	_I32MExit 					; exit if zero
+.1722	b5 3e		lda $3e,x			lda 	NSMantissa0+2,x 			; check LSB of n1
+.1724	29 01		and #$01			and 	#1
+.1726	f0 0d		beq $1735			beq 	_I32MNoAdd
+.1728	20 9b 19	jsr $199b			jsr 	FloatAddTopTwoStack 		; if so add S[X+1] to S[X+0]
+.172b	b5 60		lda $60,x			lda 	NSMantissa3,x 				; has MantissaA overflowed ?
+.172d	10 06		bpl $1735			bpl 	_I32MNoAdd
+.172f					_I32ShiftRight:
+.172f	20 c1 1c	jsr $1cc1			jsr 	FloatShiftRight 			; shift S[X] right
+.1732	c8		iny				iny 								; increment shift count
+.1733	80 09		bra $173e			bra 	_I32MShiftUpper 			; n2 is doubled by default.
+.1735					_I32MNoAdd:
+.1735	34 61		bit $61,x			bit 	NSMantissa3+1,x				; if we can't shift S[X+1] left, shift everything right
+.1737	70 f6		bvs $172f			bvs 	_I32ShiftRight 				; instead.
+.1739	e8		inx				inx
+.173a	20 b7 1c	jsr $1cb7			jsr 	FloatShiftLeft 				; shift additive S[X+1] left
+.173d	ca		dex				dex
+.173e					_I32MShiftUpper:
+.173e	e8		inx				inx 								; shift S[X+2] right
+.173f	e8		inx				inx
+.1740	20 c1 1c	jsr $1cc1			jsr 	FloatShiftRight
+.1743	ca		dex				dex
+.1744	ca		dex				dex
+.1745	80 d1		bra $1718			bra 	_I32MLoop 					; try again.
+.1747					_I32MExit:
+.1747	20 4d 17	jsr $174d			jsr 	FloatCalculateSign
+.174a	98		tya				tya 								; shift in A
+.174b	7a		ply				ply 								; restore Y and exit
+.174c	60		rts				rts
+.174d					FloatCalculateSign:
+.174d	b5 30		lda $30,x			lda 	NSStatus,x 					; sign of result is 0 if same, 1 if different.
+.174f	16 30		asl $30,x			asl 	NSStatus,x 					; shift result left
+.1751	55 31		eor $31,x			eor 	NSStatus+1,x
+.1753	0a		asl a				asl 	a 							; shift bit 7 into carry
+.1754	76 30		ror $30,x			ror 	NSStatus,x 					; shift right into status byte.
+.1756	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/ifloat32/float/multiply.asm
 
-.173b					FloatMultiply:
-.173b	ca		dex				dex
-.173c	b5 6c		lda $6c,x			lda 	NSExponent,x 				; can use optimised ?
-.173e	15 6d		ora $6d,x			ora 	NSExponent+1,x
-.1740	15 60		ora $60,x			ora 	NSMantissa3,x
-.1742	15 61		ora $61,x			ora 	NSMantissa3+1,x
-.1744	d0 21		bne $1767			bne 	_FMUseFloat
-.1746	b5 30		lda $30,x			lda 	NSStatus,x 					; check if it is 8 bit unsigned
-.1748	15 31		ora $31,x			ora 	NSStatus+1,x
-.174a	29 80		and #$80			and 	#$80
-.174c	15 60		ora $60,x			ora 	NSMantissa3,x
-.174e	15 54		ora $54,x			ora 	NSMantissa2,x
-.1750	15 48		ora $48,x			ora 	NSMantissa1,x
-.1752	15 61		ora $61,x			ora 	NSMantissa3+1,x
-.1754	15 55		ora $55,x			ora 	NSMantissa2+1,x
-.1756	15 49		ora $49,x			ora 	NSMantissa1+1,x
-.1758	d0 04		bne $175e			bne 	_FMInt32
-.175a	20 d1 16	jsr $16d1			jsr 	FloatInt8Multiply 			; use fast 8x8 multiply.
-.175d	60		rts				rts
-.175e					_FMInt32:
-.175e	20 f3 16	jsr $16f3			jsr 	FloatMultiplyShort			; use the int32 one.
-.1761	18		clc				clc 								; fix it up if gone out of range
-.1762	75 6c		adc $6c,x			adc 	NSExponent,x
-.1764	95 6c		sta $6c,x			sta 	NSExponent,x
-.1766	60		rts				rts
-.1767					_FMUseFloat:
-.1767	20 b4 17	jsr $17b4			jsr 	FloatNormalise		 		; normalise S[X] and exit if zero
-.176a	f0 18		beq $1784			beq 	_FDExit 					; return zero if zero (e.g. zero*something)
-.176c	e8		inx				inx
-.176d	20 b4 17	jsr $17b4			jsr 	FloatNormalise		 		; normalise S[x+1] and error if zero.
-.1770	ca		dex				dex
-.1771	c9 00		cmp #$00			cmp 	#0
-.1773	f0 0c		beq $1781			beq 	_FDSetZero
-.1775	20 f3 16	jsr $16f3			jsr 	FloatMultiplyShort 			; calculate the result.
-.1778	75 6c		adc $6c,x			adc 	NSExponent,x 				; calculate exponent including the shift.
-.177a	18		clc				clc
-.177b	75 6d		adc $6d,x			adc 	NSExponent+1,x
-.177d	95 6c		sta $6c,x			sta 	NSExponent,x
-.177f	80 03		bra $1784			bra 	_FDExit
-.1781					_FDSetZero:
-.1781	20 8c 1c	jsr $1c8c			jsr 	FloatSetZero 				; return 0
-.1784					_FDExit:
-.1784	20 b4 17	jsr $17b4			jsr 	FloatNormalise 				; normalise the result
-.1787	60		rts				rts
+.1757					FloatMultiply:
+.1757	ca		dex				dex
+.1758	b5 6c		lda $6c,x			lda 	NSExponent,x 				; can use optimised ?
+.175a	15 6d		ora $6d,x			ora 	NSExponent+1,x
+.175c	15 60		ora $60,x			ora 	NSMantissa3,x
+.175e	15 61		ora $61,x			ora 	NSMantissa3+1,x
+.1760	d0 21		bne $1783			bne 	_FMUseFloat
+.1762	b5 30		lda $30,x			lda 	NSStatus,x 					; check if it is 8 bit unsigned
+.1764	15 31		ora $31,x			ora 	NSStatus+1,x
+.1766	29 80		and #$80			and 	#$80
+.1768	15 60		ora $60,x			ora 	NSMantissa3,x
+.176a	15 54		ora $54,x			ora 	NSMantissa2,x
+.176c	15 48		ora $48,x			ora 	NSMantissa1,x
+.176e	15 61		ora $61,x			ora 	NSMantissa3+1,x
+.1770	15 55		ora $55,x			ora 	NSMantissa2+1,x
+.1772	15 49		ora $49,x			ora 	NSMantissa1+1,x
+.1774	d0 04		bne $177a			bne 	_FMInt32
+.1776	20 ed 16	jsr $16ed			jsr 	FloatInt8Multiply 			; use fast 8x8 multiply.
+.1779	60		rts				rts
+.177a					_FMInt32:
+.177a	20 0f 17	jsr $170f			jsr 	FloatMultiplyShort			; use the int32 one.
+.177d	18		clc				clc 								; fix it up if gone out of range
+.177e	75 6c		adc $6c,x			adc 	NSExponent,x
+.1780	95 6c		sta $6c,x			sta 	NSExponent,x
+.1782	60		rts				rts
+.1783					_FMUseFloat:
+.1783	20 d0 17	jsr $17d0			jsr 	FloatNormalise		 		; normalise S[X] and exit if zero
+.1786	f0 18		beq $17a0			beq 	_FDExit 					; return zero if zero (e.g. zero*something)
+.1788	e8		inx				inx
+.1789	20 d0 17	jsr $17d0			jsr 	FloatNormalise		 		; normalise S[x+1] and error if zero.
+.178c	ca		dex				dex
+.178d	c9 00		cmp #$00			cmp 	#0
+.178f	f0 0c		beq $179d			beq 	_FDSetZero
+.1791	20 0f 17	jsr $170f			jsr 	FloatMultiplyShort 			; calculate the result.
+.1794	75 6c		adc $6c,x			adc 	NSExponent,x 				; calculate exponent including the shift.
+.1796	18		clc				clc
+.1797	75 6d		adc $6d,x			adc 	NSExponent+1,x
+.1799	95 6c		sta $6c,x			sta 	NSExponent,x
+.179b	80 03		bra $17a0			bra 	_FDExit
+.179d					_FDSetZero:
+.179d	20 a8 1c	jsr $1ca8			jsr 	FloatSetZero 				; return 0
+.17a0					_FDExit:
+.17a0	20 d0 17	jsr $17d0			jsr 	FloatNormalise 				; normalise the result
+.17a3	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/commands/next.asm
 
-.1788					CommandNEXT:
-.1788	20 45 14	jsr $1445			jsr 	LookNextNonSpace 			; first letter of index variable, should be.
-.178b	20 74 14	jsr $1474			jsr 	CharIsAlpha 				; if not alpha , error
-.178e	90 0c		bcc $179c			bcc 	_CNNoReferenceGiven
-.1790	20 53 14	jsr $1453			jsr 	GetNext
-.1793	20 1a 19	jsr $191a			jsr 	GetReferenceTerm 			; figure out the reference.
-.1796	8a		txa				txa 								; reference in YA
-.1797	20 fe 09	jsr $09fe			jsr 	PushIntegerYA 				; write it out.
-.179a	80 06		bra $17a2			bra 	_CNParametersDone
-.179c					_CNNoReferenceGiven:
-.179c	a9 ff		lda #$ff			lda 	#255 						; write out -1 no
-.179e	a8		tay				tay
-.179f	20 fe 09	jsr $09fe			jsr 	PushIntegerYA 				; write it out.
-.17a2					_CNParametersDone:
-.17a2	a9 a2		lda #$a2			lda 	#PCD_NEXT  					; compile FOR word.
-.17a4	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.17a7	20 45 14	jsr $1445			jsr 	LookNextNonSpace 			; look for ,
-.17aa	c9 2c		cmp #$2c			cmp 	#","
-.17ac	d0 05		bne $17b3			bne 	_CNExit
-.17ae	20 53 14	jsr $1453			jsr 	GetNext 					; consume ,
-.17b1	80 d5		bra $1788			bra 	CommandNEXT 				; and go round.
-.17b3					_CNExit:
-.17b3	60		rts				rts
+.17a4					CommandNEXT:
+.17a4	20 61 14	jsr $1461			jsr 	LookNextNonSpace 			; first letter of index variable, should be.
+.17a7	20 90 14	jsr $1490			jsr 	CharIsAlpha 				; if not alpha , error
+.17aa	90 0c		bcc $17b8			bcc 	_CNNoReferenceGiven
+.17ac	20 6f 14	jsr $146f			jsr 	GetNext
+.17af	20 36 19	jsr $1936			jsr 	GetReferenceTerm 			; figure out the reference.
+.17b2	8a		txa				txa 								; reference in YA
+.17b3	20 fe 09	jsr $09fe			jsr 	PushIntegerYA 				; write it out.
+.17b6	80 06		bra $17be			bra 	_CNParametersDone
+.17b8					_CNNoReferenceGiven:
+.17b8	a9 ff		lda #$ff			lda 	#255 						; write out -1 no
+.17ba	a8		tay				tay
+.17bb	20 fe 09	jsr $09fe			jsr 	PushIntegerYA 				; write it out.
+.17be					_CNParametersDone:
+.17be	a9 a2		lda #$a2			lda 	#PCD_NEXT  					; compile FOR word.
+.17c0	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.17c3	20 61 14	jsr $1461			jsr 	LookNextNonSpace 			; look for ,
+.17c6	c9 2c		cmp #$2c			cmp 	#","
+.17c8	d0 05		bne $17cf			bne 	_CNExit
+.17ca	20 6f 14	jsr $146f			jsr 	GetNext 					; consume ,
+.17cd	80 d5		bra $17a4			bra 	CommandNEXT 				; and go round.
+.17cf					_CNExit:
+.17cf	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/ifloat32/float/normalise.asm
 
-.17b4					FloatNormalise:
-.17b4	20 ae 1c	jsr $1cae			jsr 	FloatIsZero 				; if zero exit
-.17b7	d0 07		bne $17c0			bne 	_NSNormaliseOptimise 		; if so, normalise it.
-.17b9	16 30		asl $30,x			asl 	NSStatus,x 					; clear the sign bit.
-.17bb	76 30		ror $30,x			ror 	NSStatus,x 					; (no -0)
-.17bd	a9 00		lda #$00			lda 	#0 							; set Z flag
-.17bf	60		rts				rts
-.17c0					_NSNormaliseOptimise:
-.17c0	b5 60		lda $60,x			lda 	NSMantissa3,x 				; upper byte zero ?
-.17c2	d0 19		bne $17dd			bne 	_NSNormaliseLoop
-.17c4	b5 54		lda $54,x			lda 	NSMantissa2,x 				; byte normalise
-.17c6	30 15		bmi $17dd			bmi 	_NSNormaliseLoop 			; can't do it if bit 7 set of 2
-.17c8	95 60		sta $60,x			sta 	NSMantissa3,x
-.17ca	b5 48		lda $48,x			lda 	NSMantissa1,x
-.17cc	95 54		sta $54,x			sta 	NSMantissa2,x
-.17ce	b5 3c		lda $3c,x			lda 	NSMantissa0,x
-.17d0	95 48		sta $48,x			sta 	NSMantissa1,x
-.17d2	74 3c		stz $3c,x			stz 	NSMantissa0,x
-.17d4	b5 6c		lda $6c,x			lda 	NSExponent,x
-.17d6	38		sec				sec
-.17d7	e9 08		sbc #$08			sbc 	#8
-.17d9	95 6c		sta $6c,x			sta 	NSExponent,x
-.17db	80 e3		bra $17c0			bra 	_NSNormaliseOptimise
-.17dd					_NSNormaliseLoop:
-.17dd	34 60		bit $60,x			bit 	NSMantissa3,x 				; bit 30 set ?
-.17df	70 07		bvs $17e8			bvs 	_NSNExit 					; exit if so with Z flag clear
-.17e1	20 9b 1c	jsr $1c9b			jsr 	FloatShiftLeft 				; shift mantissa left
-.17e4	d6 6c		dec $6c,x			dec 	NSExponent,x 				; adjust exponent
-.17e6	80 f5		bra $17dd			bra 	_NSNormaliseLoop
-.17e8					_NSNExit:
-.17e8	a9 ff		lda #$ff			lda 	#$FF 						; clear Z flag
-.17ea	60		rts				rts
+.17d0					FloatNormalise:
+.17d0	20 ca 1c	jsr $1cca			jsr 	FloatIsZero 				; if zero exit
+.17d3	d0 07		bne $17dc			bne 	_NSNormaliseOptimise 		; if so, normalise it.
+.17d5	16 30		asl $30,x			asl 	NSStatus,x 					; clear the sign bit.
+.17d7	76 30		ror $30,x			ror 	NSStatus,x 					; (no -0)
+.17d9	a9 00		lda #$00			lda 	#0 							; set Z flag
+.17db	60		rts				rts
+.17dc					_NSNormaliseOptimise:
+.17dc	b5 60		lda $60,x			lda 	NSMantissa3,x 				; upper byte zero ?
+.17de	d0 19		bne $17f9			bne 	_NSNormaliseLoop
+.17e0	b5 54		lda $54,x			lda 	NSMantissa2,x 				; byte normalise
+.17e2	30 15		bmi $17f9			bmi 	_NSNormaliseLoop 			; can't do it if bit 7 set of 2
+.17e4	95 60		sta $60,x			sta 	NSMantissa3,x
+.17e6	b5 48		lda $48,x			lda 	NSMantissa1,x
+.17e8	95 54		sta $54,x			sta 	NSMantissa2,x
+.17ea	b5 3c		lda $3c,x			lda 	NSMantissa0,x
+.17ec	95 48		sta $48,x			sta 	NSMantissa1,x
+.17ee	74 3c		stz $3c,x			stz 	NSMantissa0,x
+.17f0	b5 6c		lda $6c,x			lda 	NSExponent,x
+.17f2	38		sec				sec
+.17f3	e9 08		sbc #$08			sbc 	#8
+.17f5	95 6c		sta $6c,x			sta 	NSExponent,x
+.17f7	80 e3		bra $17dc			bra 	_NSNormaliseOptimise
+.17f9					_NSNormaliseLoop:
+.17f9	34 60		bit $60,x			bit 	NSMantissa3,x 				; bit 30 set ?
+.17fb	70 07		bvs $1804			bvs 	_NSNExit 					; exit if so with Z flag clear
+.17fd	20 b7 1c	jsr $1cb7			jsr 	FloatShiftLeft 				; shift mantissa left
+.1800	d6 6c		dec $6c,x			dec 	NSExponent,x 				; adjust exponent
+.1802	80 f5		bra $17f9			bra 	_NSNormaliseLoop
+.1804					_NSNExit:
+.1804	a9 ff		lda #$ff			lda 	#$FF 						; clear Z flag
+.1806	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/commands/on.asm
 
-.17eb					CommandON:
-.17eb	20 5e 14	jsr $145e			jsr 	GetNextNonSpace 			; GOTO / GOSUB must follow
-.17ee	48		pha				pha 								; save on stack
-.17ef	a2 cb		ldx #$cb			ldx 	#PCD_CMD_GOTO
-.17f1	c9 89		cmp #$89			cmp 	#C64_GOTO 					; must be GOTO/GOSUB
-.17f3	f0 09		beq $17fe			beq 	_COCreateLoop
-.17f5	a2 cc		ldx #$cc			ldx 	#PCD_CMD_GOSUB
-.17f7	c9 8d		cmp #$8d			cmp 	#C64_GOSUB
-.17f9	f0 03		beq $17fe			beq 	_COCreateLoop
-.17fb	4c e7 0c	jmp $0ce7		jmp	ErrorV_syntax
-.17fe					_COCreateLoop:
-.17fe	8a		txa				txa 								; compile a goto/gosub somewhere
-.17ff	da		phx				phx
-.1800	20 ff 14	jsr $14ff			jsr 	CompileBranchCommand
-.1803	fa		plx				plx
-.1804	20 45 14	jsr $1445			jsr 	LookNextNonSpace			; ',' follows
-.1807	c9 2c		cmp #$2c			cmp 	#","
-.1809	d0 0a		bne $1815			bne 	_COComplete 				; if so, more line numbers
-.180b	a9 a5		lda #$a5			lda 	#PCD_MOREON 				; ON extends.
-.180d	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1810	20 53 14	jsr $1453			jsr 	GetNext
-.1813	80 e9		bra $17fe			bra 	_COCreateLoop
-.1815					_COComplete:
-.1815	68		pla				pla 								; throw GOTO/GOSUB
-.1816	60		rts				rts
+.1807					CommandON:
+.1807	20 7a 14	jsr $147a			jsr 	GetNextNonSpace 			; GOTO / GOSUB must follow
+.180a	48		pha				pha 								; save on stack
+.180b	a2 cb		ldx #$cb			ldx 	#PCD_CMD_GOTO
+.180d	c9 89		cmp #$89			cmp 	#C64_GOTO 					; must be GOTO/GOSUB
+.180f	f0 09		beq $181a			beq 	_COCreateLoop
+.1811	a2 cc		ldx #$cc			ldx 	#PCD_CMD_GOSUB
+.1813	c9 8d		cmp #$8d			cmp 	#C64_GOSUB
+.1815	f0 03		beq $181a			beq 	_COCreateLoop
+.1817	4c e7 0c	jmp $0ce7		jmp	ErrorV_syntax
+.181a					_COCreateLoop:
+.181a	8a		txa				txa 								; compile a goto/gosub somewhere
+.181b	da		phx				phx
+.181c	20 1b 15	jsr $151b			jsr 	CompileBranchCommand
+.181f	fa		plx				plx
+.1820	20 61 14	jsr $1461			jsr 	LookNextNonSpace			; ',' follows
+.1823	c9 2c		cmp #$2c			cmp 	#","
+.1825	d0 0a		bne $1831			bne 	_COComplete 				; if so, more line numbers
+.1827	a9 a5		lda #$a5			lda 	#PCD_MOREON 				; ON extends.
+.1829	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.182c	20 6f 14	jsr $146f			jsr 	GetNext
+.182f	80 e9		bra $181a			bra 	_COCreateLoop
+.1831					_COComplete:
+.1831	68		pla				pla 								; throw GOTO/GOSUB
+.1832	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/object/simple/open.asm
 
-.1817					OUTPUTOpen:
-.1817					OUTPUTRewind:
-.1817	64 29		stz $29				stz 	objPage
-.1819	a9 00		lda #$00			lda 	#((PCodeStart) & $FF)
-.181b	85 27		sta $27				sta 	0+objPtr
-.181d	a9 40		lda #$40			lda 	#((PCodeStart) >> 8) & $FF
-.181f	85 28		sta $28				sta 	1+objPtr
-.1821	60		rts				rts
+.1833					OUTPUTOpen:
+.1833					OUTPUTRewind:
+.1833	64 29		stz $29				stz 	objPage
+.1835	a9 00		lda #$00			lda 	#((PCodeStart) & $FF)
+.1837	85 27		sta $27				sta 	0+objPtr
+.1839	a9 40		lda #$40			lda 	#((PCodeStart) >> 8) & $FF
+.183b	85 28		sta $28				sta 	1+objPtr
+.183d	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/evaluate/term/parsenumber.asm
 
-.1822					ParseConstant:
-.1822	a2 00		ldx #$00			ldx 	#0
-.1824	20 6c 1a	jsr $1a6c			jsr 	FloatEncodeStart 			; send first
-.1827					_ParseLoop:
-.1827	20 42 14	jsr $1442			jsr 	LookNext 					; send subsequent
-.182a	20 6f 1a	jsr $1a6f			jsr 	FloatEncodeContinue
-.182d	90 05		bcc $1834			bcc 	_ParseDone
-.182f	20 53 14	jsr $1453			jsr 	GetNext 					; consume it
-.1832	80 f3		bra $1827			bra 	_ParseLoop
-.1834					_ParseDone:
-.1834	b5 30		lda $30,x			lda 	NSStatus,x 					; shouldn't be -ve ....
-.1836	29 80		and #$80			and 	#$80
-.1838	15 6c		ora $6c,x			ora 	NSExponent,x 				; 16 bit int check
-.183a	15 54		ora $54,x			ora 	NSMantissa2,x
-.183c	15 60		ora $60,x			ora 	NSMantissa3,x
-.183e	18		clc				clc
-.183f	d0 05		bne $1846			bne 	_ParseExit 					; exit with CC if need float to compile
-.1841	b5 3c		lda $3c,x			lda 	NSMantissa0,x 				; read into YA.
-.1843	b4 48		ldy $48,x			ldy		NSMantissa1,x
-.1845	38		sec				sec
-.1846					_ParseExit:
-.1846	60		rts				rts
+.183e					ParseConstant:
+.183e	a2 00		ldx #$00			ldx 	#0
+.1840	20 88 1a	jsr $1a88			jsr 	FloatEncodeStart 			; send first
+.1843					_ParseLoop:
+.1843	20 5e 14	jsr $145e			jsr 	LookNext 					; send subsequent
+.1846	20 8b 1a	jsr $1a8b			jsr 	FloatEncodeContinue
+.1849	90 05		bcc $1850			bcc 	_ParseDone
+.184b	20 6f 14	jsr $146f			jsr 	GetNext 					; consume it
+.184e	80 f3		bra $1843			bra 	_ParseLoop
+.1850					_ParseDone:
+.1850	b5 30		lda $30,x			lda 	NSStatus,x 					; shouldn't be -ve ....
+.1852	29 80		and #$80			and 	#$80
+.1854	15 6c		ora $6c,x			ora 	NSExponent,x 				; 16 bit int check
+.1856	15 54		ora $54,x			ora 	NSMantissa2,x
+.1858	15 60		ora $60,x			ora 	NSMantissa3,x
+.185a	18		clc				clc
+.185b	d0 05		bne $1862			bne 	_ParseExit 					; exit with CC if need float to compile
+.185d	b5 3c		lda $3c,x			lda 	NSMantissa0,x 				; read into YA.
+.185f	b4 48		ldy $48,x			ldy		NSMantissa1,x
+.1861	38		sec				sec
+.1862					_ParseExit:
+.1862	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/commands/print.asm
 
-.1847					CommandPRINT:
-.1847	20 45 14	jsr $1445			jsr 	LookNextNonSpace			; what follows ?
-.184a	c9 3b		cmp #$3b			cmp 	#";" 						; semicolon, check end of command
-.184c	f0 1f		beq $186d			beq 	_CPCheckEnd
-.184e	c9 2c		cmp #$2c			cmp 	#"," 						; , TAB and check end of command
-.1850	f0 16		beq $1868			beq 	_CPTabCheckEnd
-.1852	20 84 18	jsr $1884			jsr 	_CPAtEnd 					; check for : and EOL
-.1855	b0 22		bcs $1879			bcs 	_CPExitCR 					; exit with CR
-.1857	20 fc 0d	jsr $0dfc			jsr 	CompileExpressionAt0 		; so it is something to print
-.185a	a2 ac		ldx #$ac			ldx 	#PCD_PRINTCMD_S
-.185c	29 40		and #$40			and 	#NSSString 					; if string
-.185e	d0 02		bne $1862			bne 	_CPOut
-.1860	a2 ab		ldx #$ab			ldx 	#PCD_PRINTCMD_N
-.1862					_CPOut:
-.1862	8a		txa				txa 								; print that thing
-.1863	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1866	80 df		bra $1847			bra 	CommandPRINT 				; and loop round/
-.1868					_CPTabCheckEnd:
-.1868	a9 b2		lda #$b2			lda 	#PCD_PRINTCMD_TAB 			; , next tab stop
-.186a	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.186d					_CPCheckEnd:
-.186d	20 53 14	jsr $1453			jsr 	GetNext 					; consume it.
-.1870	20 45 14	jsr $1445			jsr 	LookNextNonSpace 			; what follows ?
-.1873	20 84 18	jsr $1884			jsr 	_CPAtEnd 					; reached end
-.1876	90 cf		bcc $1847			bcc 	CommandPRINT 				; no, loop back
-.1878	60		rts				rts
-.1879					_CPExitCR:
-.1879	a9 0d		lda #$0d			lda 	#13 						; code to print CR
-.187b	20 11 0a	jsr $0a11			jsr 	PushIntegerA
-.187e	a9 92		lda #$92			lda 	#PCD_PRINTCMD_CHR
-.1880	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1883	60		rts				rts
-.1884					_CPAtEnd:
-.1884	c9 00		cmp #$00			cmp 	#0
-.1886	f0 06		beq $188e			beq 	_CPIsEnd
-.1888	c9 3a		cmp #$3a			cmp 	#":"
-.188a	f0 02		beq $188e			beq 	_CPIsEnd
-.188c	18		clc				clc
-.188d	60		rts				rts
-.188e					_CPIsEnd:
-.188e	38		sec				sec
-.188f	60		rts				rts
+.1863					CommandPRINT:
+.1863	20 61 14	jsr $1461			jsr 	LookNextNonSpace			; what follows ?
+.1866	c9 3b		cmp #$3b			cmp 	#";" 						; semicolon, check end of command
+.1868	f0 1f		beq $1889			beq 	_CPCheckEnd
+.186a	c9 2c		cmp #$2c			cmp 	#"," 						; , TAB and check end of command
+.186c	f0 16		beq $1884			beq 	_CPTabCheckEnd
+.186e	20 a0 18	jsr $18a0			jsr 	_CPAtEnd 					; check for : and EOL
+.1871	b0 22		bcs $1895			bcs 	_CPExitCR 					; exit with CR
+.1873	20 fc 0d	jsr $0dfc			jsr 	CompileExpressionAt0 		; so it is something to print
+.1876	a2 ac		ldx #$ac			ldx 	#PCD_PRINTCMD_S
+.1878	29 40		and #$40			and 	#NSSString 					; if string
+.187a	d0 02		bne $187e			bne 	_CPOut
+.187c	a2 ab		ldx #$ab			ldx 	#PCD_PRINTCMD_N
+.187e					_CPOut:
+.187e	8a		txa				txa 								; print that thing
+.187f	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1882	80 df		bra $1863			bra 	CommandPRINT 				; and loop round/
+.1884					_CPTabCheckEnd:
+.1884	a9 b2		lda #$b2			lda 	#PCD_PRINTCMD_TAB 			; , next tab stop
+.1886	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1889					_CPCheckEnd:
+.1889	20 6f 14	jsr $146f			jsr 	GetNext 					; consume it.
+.188c	20 61 14	jsr $1461			jsr 	LookNextNonSpace 			; what follows ?
+.188f	20 a0 18	jsr $18a0			jsr 	_CPAtEnd 					; reached end
+.1892	90 cf		bcc $1863			bcc 	CommandPRINT 				; no, loop back
+.1894	60		rts				rts
+.1895					_CPExitCR:
+.1895	a9 0d		lda #$0d			lda 	#13 						; code to print CR
+.1897	20 11 0a	jsr $0a11			jsr 	PushIntegerA
+.189a	a9 92		lda #$92			lda 	#PCD_PRINTCMD_CHR
+.189c	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.189f	60		rts				rts
+.18a0					_CPAtEnd:
+.18a0	c9 00		cmp #$00			cmp 	#0
+.18a2	f0 06		beq $18aa			beq 	_CPIsEnd
+.18a4	c9 3a		cmp #$3a			cmp 	#":"
+.18a6	f0 02		beq $18aa			beq 	_CPIsEnd
+.18a8	18		clc				clc
+.18a9	60		rts				rts
+.18aa					_CPIsEnd:
+.18aa	38		sec				sec
+.18ab	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/commands/read.asm
 
-.1890					CommandREAD:
-.1890	a2 ad		ldx #$ad			ldx 	#PCD_READ
-.1892	a0 ae		ldy #$ae			ldy 	#PCD_READDOLLAR
-.1894					CommandReadInputCommon:
-.1894	8e 2a 06	stx $062a			stx 	numberPCode
-.1897	8c 2b 06	sty $062b			sty 	stringPCode
-.189a					_CRLoop:
-.189a	20 5e 14	jsr $145e			jsr 	GetNextNonSpace 			; first char of identifier
-.189d	20 74 14	jsr $1474			jsr 	CharIsAlpha 				; check A-Z
-.18a0	90 27		bcc $18c9			bcc 	_CRSyntax
-.18a2	20 1a 19	jsr $191a			jsr 	GetReferenceTerm 			; get the variable.
-.18a5	48		pha				pha 								; save type.
-.18a6	29 40		and #$40			and 	#NSSTypeMask 				; is it a string ?
-.18a8	c9 40		cmp #$40			cmp 	#NSSString
-.18aa	f0 05		beq $18b1			beq 	_CRString
-.18ac	ad 2a 06	lda $062a			lda 	numberPCode 				; output read/input
-.18af	80 03		bra $18b4			bra 	_CRHaveType
-.18b1					_CRString:
-.18b1	ad 2b 06	lda $062b			lda 	stringPCode					; output read$/input$
-.18b4					_CRHaveType:
-.18b4	20 08 09	jsr $0908			jsr 	WriteCodeByte 				; so we have one typed data item.
-.18b7	68		pla				pla 								; restore type
-.18b8	38		sec				sec  								; write update code.
-.18b9	20 cc 18	jsr $18cc			jsr 	GetSetVariable
-.18bc	20 45 14	jsr $1445			jsr 	LookNextNonSpace 			; , follows ?
-.18bf	c9 2c		cmp #$2c			cmp 	#","
-.18c1	d0 05		bne $18c8			bne 	_CRExit 					; if not, end of READ.
-.18c3	20 53 14	jsr $1453			jsr 	GetNext 					; consume comma
-.18c6	80 d2		bra $189a			bra 	_CRLoop 					; keep going
-.18c8					_CRExit:
-.18c8	60		rts				rts
-.18c9					_CRSyntax:
-.18c9	4c e7 0c	jmp $0ce7		jmp	ErrorV_syntax
+.18ac					CommandREAD:
+.18ac	a2 ad		ldx #$ad			ldx 	#PCD_READ
+.18ae	a0 ae		ldy #$ae			ldy 	#PCD_READDOLLAR
+.18b0					CommandReadInputCommon:
+.18b0	8e 2a 06	stx $062a			stx 	numberPCode
+.18b3	8c 2b 06	sty $062b			sty 	stringPCode
+.18b6					_CRLoop:
+.18b6	20 7a 14	jsr $147a			jsr 	GetNextNonSpace 			; first char of identifier
+.18b9	20 90 14	jsr $1490			jsr 	CharIsAlpha 				; check A-Z
+.18bc	90 27		bcc $18e5			bcc 	_CRSyntax
+.18be	20 36 19	jsr $1936			jsr 	GetReferenceTerm 			; get the variable.
+.18c1	48		pha				pha 								; save type.
+.18c2	29 40		and #$40			and 	#NSSTypeMask 				; is it a string ?
+.18c4	c9 40		cmp #$40			cmp 	#NSSString
+.18c6	f0 05		beq $18cd			beq 	_CRString
+.18c8	ad 2a 06	lda $062a			lda 	numberPCode 				; output read/input
+.18cb	80 03		bra $18d0			bra 	_CRHaveType
+.18cd					_CRString:
+.18cd	ad 2b 06	lda $062b			lda 	stringPCode					; output read$/input$
+.18d0					_CRHaveType:
+.18d0	20 08 09	jsr $0908			jsr 	WriteCodeByte 				; so we have one typed data item.
+.18d3	68		pla				pla 								; restore type
+.18d4	38		sec				sec  								; write update code.
+.18d5	20 e8 18	jsr $18e8			jsr 	GetSetVariable
+.18d8	20 61 14	jsr $1461			jsr 	LookNextNonSpace 			; , follows ?
+.18db	c9 2c		cmp #$2c			cmp 	#","
+.18dd	d0 05		bne $18e4			bne 	_CRExit 					; if not, end of READ.
+.18df	20 6f 14	jsr $146f			jsr 	GetNext 					; consume comma
+.18e2	80 d2		bra $18b6			bra 	_CRLoop 					; keep going
+.18e4					_CRExit:
+.18e4	60		rts				rts
+.18e5					_CRSyntax:
+.18e5	4c e7 0c	jmp $0ce7		jmp	ErrorV_syntax
 .062a					numberPCode:
 >062a							.fill 	1
 .062b					stringPCode:
@@ -2967,133 +2975,133 @@
 
 ;******  Processing file: modules/compiler/variables/readwrite.asm
 
-.18cc					GetSetVariable:
-.18cc	08		php				php 								; save direction on stack
-.18cd	c0 00		cpy #$00			cpy 	#$00
-.18cf	30 21		bmi $18f2			bmi 	_GSVReadWriteSpecial
-.18d1	c9 00		cmp #$00			cmp 	#$00
-.18d3	30 33		bmi $1908			bmi 	_GSVArray
-.18d5	29 60		and #$60			and 	#NSSTypeMask+NSSIInt16 		; get type bits
-.18d7	4a		lsr a				lsr 	a 							; divide by 2
-.18d8	09 40		ora #$40			ora 	#64 						; and set bit 6.
-.18da	28		plp				plp
-.18db	90 02		bcc $18df			bcc 	_GSVNotWrite
-.18dd	09 08		ora #$08			ora 	#8  						; set bit 3 if it is write.
-.18df					_GSVNotWrite:
-.18df	85 2a		sta $2a				sta 	zTemp0
-.18e1	98		tya				tya 	 							; shift X/Y right as the address stored is halved
-.18e2	4a		lsr a				lsr 	a
-.18e3	a8		tay				tay
-.18e4	8a		txa				txa
-.18e5	6a		ror a				ror 	a
-.18e6	aa		tax				tax
-.18e7	98		tya				tya 								; lower 3 bits of YX are ORed into the opcode
-.18e8	05 2a		ora $2a				ora 	zTemp0 						; which is the first byte of the opcode
-.18ea	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.18ed	8a		txa				txa 								; and the lower 8 bits of YX are the second byte
-.18ee	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.18f1	60		rts				rts
-.18f2					_GSVReadWriteSpecial:
-.18f2	28		plp				plp
-.18f3	b0 10		bcs $1905			bcs 	_GSVSyntax
-.18f5	c0 c0		cpy #$c0			cpy 	#$C0 						; TI$ ?
-.18f7	f0 06		beq $18ff			beq 	_GSVRWString
-.18f9	a9 ba		lda #$ba			lda 	#(PCD_TI) & $FF
-.18fb	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.18fe	60		rts				rts
-.18ff					_GSVRWString:
-.18ff	a9 bb		lda #$bb			lda 	#(PCD_TIDOLLAR) & $FF
-.1901	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1904	60		rts				rts
-.1905					_GSVSyntax:
-.1905	4c e7 0c	jmp $0ce7		jmp	ErrorV_syntax
-.1908					_GSVArray:
-.1908	29 60		and #$60			and 	#NSSTypeMask+NSSIInt16 		; mask out 2 bits of type data
-.190a	4a		lsr a				lsr 	a		 					; shift from 5,6 to 0,1
-.190b	4a		lsr a				lsr 	a
-.190c	4a		lsr a				lsr 	a
-.190d	4a		lsr a				lsr 	a
-.190e	4a		lsr a				lsr 	a
-.190f	28		plp				plp 								; if writing array then set bit 2.
-.1910	90 02		bcc $1914			bcc 	_GSVANotWrite
-.1912	09 04		ora #$04			ora 	#4
-.1914					_GSVANotWrite:
-.1914	09 78		ora #$78			ora 	#$78 						; make a valid opcode.
-.1916	20 08 09	jsr $0908			jsr 	WriteCodeByte 				; and write it out
-.1919	60		rts				rts
+.18e8					GetSetVariable:
+.18e8	08		php				php 								; save direction on stack
+.18e9	c0 00		cpy #$00			cpy 	#$00
+.18eb	30 21		bmi $190e			bmi 	_GSVReadWriteSpecial
+.18ed	c9 00		cmp #$00			cmp 	#$00
+.18ef	30 33		bmi $1924			bmi 	_GSVArray
+.18f1	29 60		and #$60			and 	#NSSTypeMask+NSSIInt16 		; get type bits
+.18f3	4a		lsr a				lsr 	a 							; divide by 2
+.18f4	09 40		ora #$40			ora 	#64 						; and set bit 6.
+.18f6	28		plp				plp
+.18f7	90 02		bcc $18fb			bcc 	_GSVNotWrite
+.18f9	09 08		ora #$08			ora 	#8  						; set bit 3 if it is write.
+.18fb					_GSVNotWrite:
+.18fb	85 2a		sta $2a				sta 	zTemp0
+.18fd	98		tya				tya 	 							; shift X/Y right as the address stored is halved
+.18fe	4a		lsr a				lsr 	a
+.18ff	a8		tay				tay
+.1900	8a		txa				txa
+.1901	6a		ror a				ror 	a
+.1902	aa		tax				tax
+.1903	98		tya				tya 								; lower 3 bits of YX are ORed into the opcode
+.1904	05 2a		ora $2a				ora 	zTemp0 						; which is the first byte of the opcode
+.1906	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1909	8a		txa				txa 								; and the lower 8 bits of YX are the second byte
+.190a	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.190d	60		rts				rts
+.190e					_GSVReadWriteSpecial:
+.190e	28		plp				plp
+.190f	b0 10		bcs $1921			bcs 	_GSVSyntax
+.1911	c0 c0		cpy #$c0			cpy 	#$C0 						; TI$ ?
+.1913	f0 06		beq $191b			beq 	_GSVRWString
+.1915	a9 ba		lda #$ba			lda 	#(PCD_TI) & $FF
+.1917	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.191a	60		rts				rts
+.191b					_GSVRWString:
+.191b	a9 bb		lda #$bb			lda 	#(PCD_TIDOLLAR) & $FF
+.191d	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1920	60		rts				rts
+.1921					_GSVSyntax:
+.1921	4c e7 0c	jmp $0ce7		jmp	ErrorV_syntax
+.1924					_GSVArray:
+.1924	29 60		and #$60			and 	#NSSTypeMask+NSSIInt16 		; mask out 2 bits of type data
+.1926	4a		lsr a				lsr 	a		 					; shift from 5,6 to 0,1
+.1927	4a		lsr a				lsr 	a
+.1928	4a		lsr a				lsr 	a
+.1929	4a		lsr a				lsr 	a
+.192a	4a		lsr a				lsr 	a
+.192b	28		plp				plp 								; if writing array then set bit 2.
+.192c	90 02		bcc $1930			bcc 	_GSVANotWrite
+.192e	09 04		ora #$04			ora 	#4
+.1930					_GSVANotWrite:
+.1930	09 78		ora #$78			ora 	#$78 						; make a valid opcode.
+.1932	20 08 09	jsr $0908			jsr 	WriteCodeByte 				; and write it out
+.1935	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/variables/refterm.asm
 
-.191a					GetReferenceTerm:
-.191a	20 94 14	jsr $1494			jsr 	ExtractVariableName 		; get name & type info
-.191d	e0 00		cpx #$00			cpx 	#0 							; check for array handler
-.191f	30 10		bmi $1931			bmi 	_GRTArray
-.1921	da		phx				phx 								; save type on stack
-.1922	20 b6 0e	jsr $0eb6			jsr 	FindVariable 				; find it
-.1925	b0 06		bcs $192d			bcs 	_GRTNoCreate 				; create if required.
-.1927	20 7a 0a	jsr $0a7a			jsr 	CreateVariableRecord 		; create a variable.
-.192a	20 d4 0a	jsr $0ad4			jsr 	AllocateBytesForType 		; allocate memory for it
-.192d					_GRTNoCreate:
-.192d	68		pla				pla 								; get type back, strip out type information.
-.192e	29 60		and #$60			and 	#NSSTypeMask+NSSIInt16
-.1930	60		rts				rts
-.1931					_GRTArray:
-.1931	da		phx				phx 								; save type information
-.1932	20 b6 0e	jsr $0eb6			jsr 	FindVariable 				; read its data, the base address in YX
-.1935	90 18		bcc $194f			bcc 	_GRTUndeclared 				; undeclared array.
-.1937	da		phx				phx 								; save base address
-.1938	5a		phy				phy
-.1939	20 cb 0b	jsr $0bcb			jsr 	OutputIndexGroup 			; create an index group and generate them
-.193c	7a		ply				ply 								; get the array base address into YX
-.193d	fa		plx				plx
-.193e	a9 20		lda #$20			lda 	#NSSIFloat+NSSIInt16 		; pretend it is an int16 reference.
-.1940	18		clc				clc
-.1941	20 cc 18	jsr $18cc			jsr 	GetSetVariable 				; load the address of the array structure.
-.1944	a9 8e		lda #$8e			lda 	#(PCD_ARRAY) & $FF
-.1946	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1949	68		pla				pla 								; and the type data into A
+.1936					GetReferenceTerm:
+.1936	20 b0 14	jsr $14b0			jsr 	ExtractVariableName 		; get name & type info
+.1939	e0 00		cpx #$00			cpx 	#0 							; check for array handler
+.193b	30 10		bmi $194d			bmi 	_GRTArray
+.193d	da		phx				phx 								; save type on stack
+.193e	20 b6 0e	jsr $0eb6			jsr 	FindVariable 				; find it
+.1941	b0 06		bcs $1949			bcs 	_GRTNoCreate 				; create if required.
+.1943	20 7a 0a	jsr $0a7a			jsr 	CreateVariableRecord 		; create a variable.
+.1946	20 d4 0a	jsr $0ad4			jsr 	AllocateBytesForType 		; allocate memory for it
+.1949					_GRTNoCreate:
+.1949	68		pla				pla 								; get type back, strip out type information.
 .194a	29 60		and #$60			and 	#NSSTypeMask+NSSIInt16
-.194c	09 80		ora #$80			ora 	#$80 						; with the array flag set.
-.194e	60		rts				rts
-.194f					_GRTUndeclared:
-.194f	4c 9e 0d	jmp $0d9e		jmp	ErrorV_undeclared
+.194c	60		rts				rts
+.194d					_GRTArray:
+.194d	da		phx				phx 								; save type information
+.194e	20 b6 0e	jsr $0eb6			jsr 	FindVariable 				; read its data, the base address in YX
+.1951	90 18		bcc $196b			bcc 	_GRTUndeclared 				; undeclared array.
+.1953	da		phx				phx 								; save base address
+.1954	5a		phy				phy
+.1955	20 cb 0b	jsr $0bcb			jsr 	OutputIndexGroup 			; create an index group and generate them
+.1958	7a		ply				ply 								; get the array base address into YX
+.1959	fa		plx				plx
+.195a	a9 20		lda #$20			lda 	#NSSIFloat+NSSIInt16 		; pretend it is an int16 reference.
+.195c	18		clc				clc
+.195d	20 e8 18	jsr $18e8			jsr 	GetSetVariable 				; load the address of the array structure.
+.1960	a9 8e		lda #$8e			lda 	#(PCD_ARRAY) & $FF
+.1962	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1965	68		pla				pla 								; and the type data into A
+.1966	29 60		and #$60			and 	#NSSTypeMask+NSSIInt16
+.1968	09 80		ora #$80			ora 	#$80 						; with the array flag set.
+.196a	60		rts				rts
+.196b					_GRTUndeclared:
+.196b	4c 9e 0d	jmp $0d9e		jmp	ErrorV_undeclared
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/commands/rem.asm
 
-.1952					CommandREM:
-.1952	20 42 14	jsr $1442			jsr 	LookNext
-.1955	f0 05		beq $195c			beq 	_CRExit
-.1957	20 53 14	jsr $1453			jsr 	GetNext
-.195a	80 f6		bra $1952			bra 	CommandREM
-.195c					_CRExit:
-.195c	60		rts				rts
+.196e					CommandREM:
+.196e	20 5e 14	jsr $145e			jsr 	LookNext
+.1971	f0 05		beq $1978			beq 	_CRExit
+.1973	20 6f 14	jsr $146f			jsr 	GetNext
+.1976	80 f6		bra $196e			bra 	CommandREM
+.1978					_CRExit:
+.1978	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/storage/reset.asm
 
-.195d					STRReset:
-.195d	a9 00		lda #$00			lda 	#((WorkArea) & $FF)
-.195f	8d 2e 06	sta $062e			sta 	0+variableListEnd
-.1962	a9 80		lda #$80			lda 	#((WorkArea) >> 8) & $FF
-.1964	8d 2f 06	sta $062f			sta 	1+variableListEnd
-.1967	a9 00		lda #$00			lda 	#((WorkArea+WorkAreaSize) & $FF)
-.1969	8d 2c 06	sta $062c			sta 	0+lineNumberTable
-.196c	a9 9f		lda #$9f			lda 	#((WorkArea+WorkAreaSize) >> 8) & $FF
-.196e	8d 2d 06	sta $062d			sta 	1+lineNumberTable
-.1971	9c 00 80	stz $8000			stz 	WorkArea
-.1974	a9 00		lda #$00			lda 	#((0) & $FF)
-.1976	8d 30 06	sta $0630			sta 	0+freeVariableMemory
-.1979	a9 00		lda #$00			lda 	#((0) >> 8) & $FF
-.197b	8d 31 06	sta $0631			sta 	1+freeVariableMemory
-.197e	60		rts				rts
+.1979					STRReset:
+.1979	a9 00		lda #$00			lda 	#((WorkArea) & $FF)
+.197b	8d 2e 06	sta $062e			sta 	0+variableListEnd
+.197e	a9 80		lda #$80			lda 	#((WorkArea) >> 8) & $FF
+.1980	8d 2f 06	sta $062f			sta 	1+variableListEnd
+.1983	a9 00		lda #$00			lda 	#((WorkArea+WorkAreaSize) & $FF)
+.1985	8d 2c 06	sta $062c			sta 	0+lineNumberTable
+.1988	a9 9f		lda #$9f			lda 	#((WorkArea+WorkAreaSize) >> 8) & $FF
+.198a	8d 2d 06	sta $062d			sta 	1+lineNumberTable
+.198d	9c 00 80	stz $8000			stz 	WorkArea
+.1990	a9 00		lda #$00			lda 	#((0) & $FF)
+.1992	8d 30 06	sta $0630			sta 	0+freeVariableMemory
+.1995	a9 00		lda #$00			lda 	#((0) >> 8) & $FF
+.1997	8d 31 06	sta $0631			sta 	1+freeVariableMemory
+.199a	60		rts				rts
 .062c					lineNumberTable:
 >062c							.fill 	2
 .062e					variableListEnd:
@@ -3106,146 +3114,146 @@
 
 ;******  Processing file: modules/ifloat32/binary/simple.asm
 
-.197f					FloatAddTopTwoStack:
-.197f	18		clc				clc
-.1980	b5 3c		lda $3c,x			lda		NSMantissa0,x
-.1982	75 3d		adc $3d,x			adc 		NSMantissa0+1,x
-.1984	95 3c		sta $3c,x			sta 	NSMantissa0,x
-.1986	b5 48		lda $48,x			lda		NSMantissa1,x
-.1988	75 49		adc $49,x			adc 		NSMantissa1+1,x
-.198a	95 48		sta $48,x			sta 	NSMantissa1,x
-.198c	b5 54		lda $54,x			lda		NSMantissa2,x
-.198e	75 55		adc $55,x			adc 		NSMantissa2+1,x
-.1990	95 54		sta $54,x			sta 	NSMantissa2,x
-.1992	b5 60		lda $60,x			lda		NSMantissa3,x
-.1994	75 61		adc $61,x			adc 		NSMantissa3+1,x
-.1996	95 60		sta $60,x			sta 	NSMantissa3,x
-.1998	60		rts				rts
-.1999					FloatSubTopTwoStack:
-.1999	38		sec				sec
-.199a	b5 3c		lda $3c,x			lda		NSMantissa0,x
-.199c	f5 3d		sbc $3d,x			sbc 		NSMantissa0+1,x
-.199e	95 3c		sta $3c,x			sta 	NSMantissa0,x
-.19a0	b5 48		lda $48,x			lda		NSMantissa1,x
-.19a2	f5 49		sbc $49,x			sbc 		NSMantissa1+1,x
-.19a4	95 48		sta $48,x			sta 	NSMantissa1,x
-.19a6	b5 54		lda $54,x			lda		NSMantissa2,x
-.19a8	f5 55		sbc $55,x			sbc 		NSMantissa2+1,x
-.19aa	95 54		sta $54,x			sta 	NSMantissa2,x
-.19ac	b5 60		lda $60,x			lda		NSMantissa3,x
-.19ae	f5 61		sbc $61,x			sbc 		NSMantissa3+1,x
-.19b0	95 60		sta $60,x			sta 	NSMantissa3,x
-.19b2	60		rts				rts
-.19b3					FloatInt32Add:
-.19b3	b5 30		lda $30,x			lda 	NSStatus,x 					; signs are the same, can just add the mantissae.
-.19b5	55 31		eor $31,x			eor 	NSStatus+1,x
-.19b7	30 04		bmi $19bd			bmi 	_DiffSigns
-.19b9	20 7f 19	jsr $197f			jsr		FloatAddTopTwoStack
-.19bc	60		rts				rts
-.19bd					_DiffSigns:
-.19bd	20 99 19	jsr $1999			jsr 	FloatSubTopTwoStack 		; do a physical subtraction
-.19c0	34 60		bit $60,x			bit 	NSMantissa3,x 				; result is +ve, okay
-.19c2	10 07		bpl $19cb			bpl 	_AddExit
-.19c4	b5 31		lda $31,x			lda 	NSStatus+1,x 				; sign is that of 11th value
-.19c6	95 30		sta $30,x			sta 	NSStatus,x
-.19c8	20 55 1c	jsr $1c55			jsr 	FloatNegateMantissa 		; negate the mantissa and exit
-.19cb					_AddExit:
-.19cb	20 ae 1c	jsr $1cae			jsr 	FloatIsZero 				; check for -0
-.19ce	d0 02		bne $19d2			bne 	_AddNonZero
-.19d0	74 30		stz $30,x			stz 	NSStatus,x
-.19d2					_AddNonZero:
-.19d2	60		rts				rts
+.199b					FloatAddTopTwoStack:
+.199b	18		clc				clc
+.199c	b5 3c		lda $3c,x			lda		NSMantissa0,x
+.199e	75 3d		adc $3d,x			adc 		NSMantissa0+1,x
+.19a0	95 3c		sta $3c,x			sta 	NSMantissa0,x
+.19a2	b5 48		lda $48,x			lda		NSMantissa1,x
+.19a4	75 49		adc $49,x			adc 		NSMantissa1+1,x
+.19a6	95 48		sta $48,x			sta 	NSMantissa1,x
+.19a8	b5 54		lda $54,x			lda		NSMantissa2,x
+.19aa	75 55		adc $55,x			adc 		NSMantissa2+1,x
+.19ac	95 54		sta $54,x			sta 	NSMantissa2,x
+.19ae	b5 60		lda $60,x			lda		NSMantissa3,x
+.19b0	75 61		adc $61,x			adc 		NSMantissa3+1,x
+.19b2	95 60		sta $60,x			sta 	NSMantissa3,x
+.19b4	60		rts				rts
+.19b5					FloatSubTopTwoStack:
+.19b5	38		sec				sec
+.19b6	b5 3c		lda $3c,x			lda		NSMantissa0,x
+.19b8	f5 3d		sbc $3d,x			sbc 		NSMantissa0+1,x
+.19ba	95 3c		sta $3c,x			sta 	NSMantissa0,x
+.19bc	b5 48		lda $48,x			lda		NSMantissa1,x
+.19be	f5 49		sbc $49,x			sbc 		NSMantissa1+1,x
+.19c0	95 48		sta $48,x			sta 	NSMantissa1,x
+.19c2	b5 54		lda $54,x			lda		NSMantissa2,x
+.19c4	f5 55		sbc $55,x			sbc 		NSMantissa2+1,x
+.19c6	95 54		sta $54,x			sta 	NSMantissa2,x
+.19c8	b5 60		lda $60,x			lda		NSMantissa3,x
+.19ca	f5 61		sbc $61,x			sbc 		NSMantissa3+1,x
+.19cc	95 60		sta $60,x			sta 	NSMantissa3,x
+.19ce	60		rts				rts
+.19cf					FloatInt32Add:
+.19cf	b5 30		lda $30,x			lda 	NSStatus,x 					; signs are the same, can just add the mantissae.
+.19d1	55 31		eor $31,x			eor 	NSStatus+1,x
+.19d3	30 04		bmi $19d9			bmi 	_DiffSigns
+.19d5	20 9b 19	jsr $199b			jsr		FloatAddTopTwoStack
+.19d8	60		rts				rts
+.19d9					_DiffSigns:
+.19d9	20 b5 19	jsr $19b5			jsr 	FloatSubTopTwoStack 		; do a physical subtraction
+.19dc	34 60		bit $60,x			bit 	NSMantissa3,x 				; result is +ve, okay
+.19de	10 07		bpl $19e7			bpl 	_AddExit
+.19e0	b5 31		lda $31,x			lda 	NSStatus+1,x 				; sign is that of 11th value
+.19e2	95 30		sta $30,x			sta 	NSStatus,x
+.19e4	20 71 1c	jsr $1c71			jsr 	FloatNegateMantissa 		; negate the mantissa and exit
+.19e7					_AddExit:
+.19e7	20 ca 1c	jsr $1cca			jsr 	FloatIsZero 				; check for -0
+.19ea	d0 02		bne $19ee			bne 	_AddNonZero
+.19ec	74 30		stz $30,x			stz 	NSStatus,x
+.19ee					_AddNonZero:
+.19ee	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/evaluate/term/term.asm
 
-.19d3					CompileTerm:
-.19d3	20 5e 14	jsr $145e			jsr 	GetNextNonSpace 			; get first non space character.
-.19d6	30 72		bmi $1a4a			bmi 	_CTUnaryFunctions
-.19d8	20 68 14	jsr $1468			jsr 	CharIsDigit 				; found a number
-.19db	b0 3a		bcs $1a17			bcs 	_CTDigit
-.19dd	c9 2e		cmp #$2e			cmp 	#"."
-.19df	f0 36		beq $1a17			beq 	_CTDigit
-.19e1	c9 22		cmp #$22			cmp 	#'"' 						; found a string ?
-.19e3	f0 43		beq $1a28			beq 	_CTString
-.19e5	c9 25		cmp #$25			cmp 	#"%"						; binary or hexadecimal ?
-.19e7	f0 28		beq $1a11			beq 	_CTOtherBase
-.19e9	c9 24		cmp #$24			cmp 	#"$"
-.19eb	f0 24		beq $1a11			beq 	_CTOtherBase
-.19ed	c9 28		cmp #$28			cmp 	#"(" 						; check parenthesis
-.19ef	f0 17		beq $1a08			beq 	_CTBrackets
-.19f1	c9 41		cmp #$41			cmp 	#"A" 						; check variable/array ?
-.19f3	90 10		bcc $1a05			bcc 	_CTSyntax
-.19f5	c9 5b		cmp #$5b			cmp 	#"Z"+1
-.19f7	b0 0c		bcs $1a05			bcs 	_CTSyntax
-.19f9	20 1a 19	jsr $191a			jsr 	GetReferenceTerm 			; figure out what it is.
-.19fc	48		pha				pha 								; save type on stack
-.19fd	18		clc				clc 								; read it
-.19fe	20 cc 18	jsr $18cc			jsr 	GetSetVariable
-.1a01	68		pla				pla
-.1a02	29 40		and #$40			and 	#NSSTypeMask 				; reduce to basic type
-.1a04	60		rts				rts
-.1a05					_CTSyntax:
-.1a05	4c e7 0c	jmp $0ce7		jmp	ErrorV_syntax
-.1a08					_CTBrackets:
-.1a08	20 fc 0d	jsr $0dfc			jsr 	CompileExpressionAt0
-.1a0b	48		pha				pha
-.1a0c	20 16 09	jsr $0916			jsr 	CheckNextRParen
-.1a0f	68		pla				pla
-.1a10	60		rts				rts
-.1a11					_CTOtherBase:
-.1a11	20 96 08	jsr $0896			jsr 	InlineNonDecimal 			; non decimal constant handler
-.1a14	a9 00		lda #$00			lda 	#NSSIFloat					; return a iFloat32 integer
-.1a16	60		rts				rts
-.1a17					_CTDigit:
-.1a17	20 22 18	jsr $1822			jsr 	ParseConstant 				; parse out an number, first is in A already.
-.1a1a	90 06		bcc $1a22			bcc	 	_CTFloat 					; have a float or long int.
-.1a1c	20 fe 09	jsr $09fe			jsr 	PushIntegerYA 				; code to push on stack
-.1a1f	a9 00		lda #$00			lda 	#NSSIFloat					; return a iFloat32 integer
-.1a21	60		rts				rts
-.1a22					_CTFloat:
-.1a22	20 20 0a	jsr $0a20			jsr 	PushFloat  					; code to push float
-.1a25	a9 00		lda #$00			lda 	#NSSIFloat 					; return a iFloat32
-.1a27	60		rts				rts
-.1a28					_CTString:
-.1a28	20 e1 08	jsr $08e1			jsr 	BufferClear 				; copy it to the buffer
-.1a2b					_CTStringLoop:
-.1a2b	20 42 14	jsr $1442			jsr 	LookNext 					; reached EOL/EOS
-.1a2e	f0 d5		beq $1a05			beq 	_CTSyntax
-.1a30	c9 22		cmp #$22			cmp 	#'"'
-.1a32	f0 08		beq $1a3c			beq 	_CTStringDone
-.1a34	20 e5 08	jsr $08e5			jsr 	BufferWrite 				; write and consume
-.1a37	20 53 14	jsr $1453			jsr 	GetNext
-.1a3a	80 ef		bra $1a2b			bra 	_CTStringLoop
-.1a3c					_CTStringDone:
-.1a3c	20 53 14	jsr $1453			jsr 	GetNext 					; consume closing quote.
-.1a3f	a9 c9		lda #$c9			lda 	#PCD_CMD_STRING 			; output command and buffer
-.1a41	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1a44	20 f1 08	jsr $08f1			jsr 	BufferOutput
-.1a47	a9 40		lda #$40			lda 	#NSSString 					; string type
-.1a49	60		rts				rts
-.1a4a					_CTUnaryFunctions:
-.1a4a	c9 ab		cmp #$ab			cmp 	#C64_MINUS 					; negation of term.
-.1a4c	f0 0a		beq $1a58			beq 	_CTNegation
-.1a4e	a2 dc		ldx #$dc			ldx 	#UnaryTables & $FF 			; check vs unary tables.
-.1a50	a0 11		ldy #$11			ldy 	#UnaryTables >> 8
-.1a52	20 b8 12	jsr $12b8			jsr 	GeneratorProcess
-.1a55	90 ae		bcc $1a05			bcc		_CTSyntax
-.1a57	60		rts				rts
-.1a58					_CTNegation:
-.1a58	20 d3 19	jsr $19d3			jsr 	CompileTerm 				; compile a term.
-.1a5b	48		pha				pha
-.1a5c	29 40		and #$40			and 	#NSSTypeMask 				; if not an ifloat32 of some sort.
-.1a5e	c9 00		cmp #$00			cmp 	#NSSIFloat
-.1a60	d0 07		bne $1a69			bne 	_CTType 					; error
-.1a62	a9 a0		lda #$a0			lda 	#PCD_NEGATE 				; compile negate
-.1a64	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1a67	68		pla				pla 								; return original type.
-.1a68	60		rts				rts
-.1a69					_CTType:
-.1a69	4c f7 0c	jmp $0cf7		jmp	ErrorV_type
+.19ef					CompileTerm:
+.19ef	20 7a 14	jsr $147a			jsr 	GetNextNonSpace 			; get first non space character.
+.19f2	30 72		bmi $1a66			bmi 	_CTUnaryFunctions
+.19f4	20 84 14	jsr $1484			jsr 	CharIsDigit 				; found a number
+.19f7	b0 3a		bcs $1a33			bcs 	_CTDigit
+.19f9	c9 2e		cmp #$2e			cmp 	#"."
+.19fb	f0 36		beq $1a33			beq 	_CTDigit
+.19fd	c9 22		cmp #$22			cmp 	#'"' 						; found a string ?
+.19ff	f0 43		beq $1a44			beq 	_CTString
+.1a01	c9 25		cmp #$25			cmp 	#"%"						; binary or hexadecimal ?
+.1a03	f0 28		beq $1a2d			beq 	_CTOtherBase
+.1a05	c9 24		cmp #$24			cmp 	#"$"
+.1a07	f0 24		beq $1a2d			beq 	_CTOtherBase
+.1a09	c9 28		cmp #$28			cmp 	#"(" 						; check parenthesis
+.1a0b	f0 17		beq $1a24			beq 	_CTBrackets
+.1a0d	c9 41		cmp #$41			cmp 	#"A" 						; check variable/array ?
+.1a0f	90 10		bcc $1a21			bcc 	_CTSyntax
+.1a11	c9 5b		cmp #$5b			cmp 	#"Z"+1
+.1a13	b0 0c		bcs $1a21			bcs 	_CTSyntax
+.1a15	20 36 19	jsr $1936			jsr 	GetReferenceTerm 			; figure out what it is.
+.1a18	48		pha				pha 								; save type on stack
+.1a19	18		clc				clc 								; read it
+.1a1a	20 e8 18	jsr $18e8			jsr 	GetSetVariable
+.1a1d	68		pla				pla
+.1a1e	29 40		and #$40			and 	#NSSTypeMask 				; reduce to basic type
+.1a20	60		rts				rts
+.1a21					_CTSyntax:
+.1a21	4c e7 0c	jmp $0ce7		jmp	ErrorV_syntax
+.1a24					_CTBrackets:
+.1a24	20 fc 0d	jsr $0dfc			jsr 	CompileExpressionAt0
+.1a27	48		pha				pha
+.1a28	20 16 09	jsr $0916			jsr 	CheckNextRParen
+.1a2b	68		pla				pla
+.1a2c	60		rts				rts
+.1a2d					_CTOtherBase:
+.1a2d	20 96 08	jsr $0896			jsr 	InlineNonDecimal 			; non decimal constant handler
+.1a30	a9 00		lda #$00			lda 	#NSSIFloat					; return a iFloat32 integer
+.1a32	60		rts				rts
+.1a33					_CTDigit:
+.1a33	20 3e 18	jsr $183e			jsr 	ParseConstant 				; parse out an number, first is in A already.
+.1a36	90 06		bcc $1a3e			bcc	 	_CTFloat 					; have a float or long int.
+.1a38	20 fe 09	jsr $09fe			jsr 	PushIntegerYA 				; code to push on stack
+.1a3b	a9 00		lda #$00			lda 	#NSSIFloat					; return a iFloat32 integer
+.1a3d	60		rts				rts
+.1a3e					_CTFloat:
+.1a3e	20 20 0a	jsr $0a20			jsr 	PushFloat  					; code to push float
+.1a41	a9 00		lda #$00			lda 	#NSSIFloat 					; return a iFloat32
+.1a43	60		rts				rts
+.1a44					_CTString:
+.1a44	20 e1 08	jsr $08e1			jsr 	BufferClear 				; copy it to the buffer
+.1a47					_CTStringLoop:
+.1a47	20 5e 14	jsr $145e			jsr 	LookNext 					; reached EOL/EOS
+.1a4a	f0 d5		beq $1a21			beq 	_CTSyntax
+.1a4c	c9 22		cmp #$22			cmp 	#'"'
+.1a4e	f0 08		beq $1a58			beq 	_CTStringDone
+.1a50	20 e5 08	jsr $08e5			jsr 	BufferWrite 				; write and consume
+.1a53	20 6f 14	jsr $146f			jsr 	GetNext
+.1a56	80 ef		bra $1a47			bra 	_CTStringLoop
+.1a58					_CTStringDone:
+.1a58	20 6f 14	jsr $146f			jsr 	GetNext 					; consume closing quote.
+.1a5b	a9 c9		lda #$c9			lda 	#PCD_CMD_STRING 			; output command and buffer
+.1a5d	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1a60	20 f1 08	jsr $08f1			jsr 	BufferOutput
+.1a63	a9 40		lda #$40			lda 	#NSSString 					; string type
+.1a65	60		rts				rts
+.1a66					_CTUnaryFunctions:
+.1a66	c9 ab		cmp #$ab			cmp 	#C64_MINUS 					; negation of term.
+.1a68	f0 0a		beq $1a74			beq 	_CTNegation
+.1a6a	a2 e3		ldx #$e3			ldx 	#UnaryTables & $FF 			; check vs unary tables.
+.1a6c	a0 11		ldy #$11			ldy 	#UnaryTables >> 8
+.1a6e	20 d4 12	jsr $12d4			jsr 	GeneratorProcess
+.1a71	90 ae		bcc $1a21			bcc		_CTSyntax
+.1a73	60		rts				rts
+.1a74					_CTNegation:
+.1a74	20 ef 19	jsr $19ef			jsr 	CompileTerm 				; compile a term.
+.1a77	48		pha				pha
+.1a78	29 40		and #$40			and 	#NSSTypeMask 				; if not an ifloat32 of some sort.
+.1a7a	c9 00		cmp #$00			cmp 	#NSSIFloat
+.1a7c	d0 07		bne $1a85			bne 	_CTType 					; error
+.1a7e	a9 a0		lda #$a0			lda 	#PCD_NEGATE 				; compile negate
+.1a80	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1a83	68		pla				pla 								; return original type.
+.1a84	60		rts				rts
+.1a85					_CTType:
+.1a85	4c f7 0c	jmp $0cf7		jmp	ErrorV_type
 
 ;******  Return to file: _blitz.asm
 
@@ -3261,170 +3269,170 @@
 =1					ESTA_Low = 1 								; state 1 is 1 byte, switches when A >= 24.
 =2					ESTA_High = 2 								; loading up to 32 bit integer in the mantissa
 =3					ESTA_Decimal = 3 							; fractional part.
-.1a6c					FloatEncodeStart:
-.1a6c	38		sec				sec
-.1a6d	80 01		bra $1a70			bra 	FloatEncodeContinue+1
-.1a6f					FloatEncodeContinue:
-.1a6f	18		clc				clc
-.1a70					FloatEncode:
-.1a70	08		php				php 								; save reset flag.
-.1a71	c9 2e		cmp #$2e			cmp 	#"." 						; only accept 0-9 and .
-.1a73	f0 15		beq $1a8a			beq 	_ENIsOkay
-.1a75	c9 30		cmp #$30			cmp 	#"0"
-.1a77	90 04		bcc $1a7d			bcc 	_ENBadNumber
-.1a79	c9 3a		cmp #$3a			cmp 	#"9"+1
-.1a7b	90 0d		bcc $1a8a			bcc 	_ENIsOkay
-.1a7d					_ENBadNumber:
-.1a7d	28		plp				plp 								; throw saved reset
-.1a7e	ad 32 06	lda $0632			lda 	encodeState 				; if in decimal mode, construct final number
-.1a81	c9 03		cmp #$03			cmp 	#ESTA_Decimal
-.1a83	d0 03		bne $1a88			bne 	_ENFail
-.1a85	4c 02 1b	jmp $1b02			jmp 	_ENConstructFinal
-.1a88					_ENFail:
-.1a88	18		clc				clc 								; not allowed
-.1a89	60		rts				rts
-.1a8a					_ENIsOkay:
-.1a8a	28		plp				plp 								; are we restarting
-.1a8b	90 15		bcc $1aa2			bcc 	_ENNoRestart
-.1a8d					_ENStartEncode:
-.1a8d	c9 2e		cmp #$2e			cmp 	#'.'						; first is decimal place, go straight to that.
-.1a8f	f0 0c		beq $1a9d			beq 	_ENFirstDP
-.1a91	29 0f		and #$0f			and 	#15 						; put digit in mantissa, initially a single digit constant
-.1a93	20 8e 1c	jsr $1c8e			jsr 	FloatSetByte 				; in single byte mode.
-.1a96	a9 01		lda #$01			lda 	#ESTA_Low
-.1a98					_ENExitChange:
-.1a98	8d 32 06	sta $0632			sta 	encodeState 				; save new state
-.1a9b	38		sec				sec
-.1a9c	60		rts				rts
-.1a9d					_ENFirstDP:
-.1a9d	20 8c 1c	jsr $1c8c			jsr 	FloatSetZero 				; clear integer part
-.1aa0	80 3c		bra $1ade			bra 	_ESTASwitchFloat			; go straight to float and exi
-.1aa2					_ENNoRestart:
-.1aa2	48		pha				pha 								; save digit or DP on stack.
-.1aa3	ad 32 06	lda $0632			lda 	encodeState 				; get current state
-.1aa6	c9 01		cmp #$01			cmp 	#ESTA_Low
-.1aa8	f0 09		beq $1ab3			beq  	_ESTALowState
-.1aaa	c9 02		cmp #$02			cmp 	#ESTA_High
-.1aac	f0 26		beq $1ad4			beq 	_ESTAHighState
-.1aae	c9 03		cmp #$03			cmp 	#ESTA_Decimal
-.1ab0	f0 38		beq $1aea			beq 	_ESTADecimalState
->1ab2	db						.byte 	$DB 						; causes a break in the emulator
-.1ab3					_ESTALowState:
-.1ab3	68		pla				pla 								; get value back
-.1ab4	c9 2e		cmp #$2e			cmp 	#"."						; decimal point
-.1ab6	f0 26		beq $1ade			beq 	_ESTASwitchFloat 			; then we need to do the floating point bit
-.1ab8	29 0f		and #$0f			and 	#15 						; make digit
-.1aba	8d 33 06	sta $0633			sta 	digitTemp 					; save it.
-.1abd	b5 3c		lda $3c,x			lda 	NSMantissa0,x 				; x mantissa0 x 10 and add it
-.1abf	0a		asl a				asl 	a
-.1ac0	0a		asl a				asl 	a
-.1ac1	75 3c		adc $3c,x			adc 	NSMantissa0,x
-.1ac3	0a		asl a				asl 	a
-.1ac4	6d 33 06	adc $0633			adc 	digitTemp
-.1ac7	95 3c		sta $3c,x			sta 	NSMantissa0,x
-.1ac9	c9 19		cmp #$19			cmp 	#25 						; if >= 25 cannot guarantee next will be okay
-.1acb	90 05		bcc $1ad2			bcc 	_ESTANoSwitch 				; as could be 25 x 10 + 9
-.1acd	a9 02		lda #$02			lda 	#ESTA_High 					; so if so, switch to the high encoding state
-.1acf	8d 32 06	sta $0632			sta 	encodeState
-.1ad2					_ESTANoSwitch:
-.1ad2	38		sec				sec
-.1ad3	60		rts				rts
-.1ad4					_ESTAHighState:
-.1ad4	68		pla				pla 								; get value back
-.1ad5	c9 2e		cmp #$2e			cmp 	#"." 						; if DP switch to dloat
-.1ad7	f0 05		beq $1ade			beq 	_ESTASwitchFloat
-.1ad9	20 34 1b	jsr $1b34			jsr 	ESTAShiftDigitIntoMantissa 	; a routine does this.
-.1adc	38		sec				sec
-.1add	60		rts				rts
-.1ade					_ESTASwitchFloat:
-.1ade	9c 34 06	stz $0634			stz 	decimalCount 				; reset the count of digits - we divide by 10^n at the end.
-.1ae1	e8		inx				inx 								; zero the decimal additive.
-.1ae2	20 8c 1c	jsr $1c8c			jsr 	FloatSetZero
-.1ae5	ca		dex				dex
-.1ae6	a9 03		lda #$03			lda 	#ESTA_Decimal 				; switch to decimal mode
-.1ae8	80 ae		bra $1a98			bra 	_ENExitChange
-.1aea					_ESTADecimalState:
-.1aea	68		pla				pla 								; digit.
-.1aeb	c9 2e		cmp #$2e			cmp 	#"." 						; fail on 11th decimal point.
-.1aed	f0 99		beq $1a88			beq 	_ENFail
-.1aef	e8		inx				inx 								; put digit into fractional part of X+1
-.1af0	20 34 1b	jsr $1b34			jsr 	ESTAShiftDigitIntoMantissa
-.1af3	ca		dex				dex
-.1af4	ee 34 06	inc $0634			inc 	decimalCount 				; bump the count of decimals
-.1af7	ad 34 06	lda $0634			lda 	decimalCount 				; too many decimal digits.
-.1afa	c9 0b		cmp #$0b			cmp 	#11
-.1afc	f0 02		beq $1b00			beq 	_ESTADSFail
-.1afe	38		sec				sec
-.1aff	60		rts				rts
-.1b00					_ESTADSFail:
-.1b00	18		clc				clc
-.1b01	60		rts				rts
-.1b02					_ENConstructFinal:
-.1b02	ad 34 06	lda $0634			lda 	decimalCount 				; get decimal count
-.1b05	f0 2b		beq $1b32			beq 	_ENCFExit 					; no decimals
-.1b07	5a		phy				phy
-.1b08	0a		asl a				asl 	a 							; x 4 and CLC
-.1b09	0a		asl a				asl 	a
-.1b0a	6d 34 06	adc $0634			adc 	decimalCount
-.1b0d	a8		tay				tay
-.1b0e	b9 3e 0a	lda $0a3e,y			lda 	FloatScalarTable-5,y 		; copy decimal scalar to X+2
-.1b11	95 3e		sta $3e,x			sta 	NSMantissa0+2,x  			; this is 10^-n
-.1b13	b9 3f 0a	lda $0a3f,y			lda 	FloatScalarTable-5+1,y
-.1b16	95 4a		sta $4a,x			sta 	NSMantissa1+2,x
-.1b18	b9 40 0a	lda $0a40,y			lda 	FloatScalarTable-5+2,y
-.1b1b	95 56		sta $56,x			sta 	NSMantissa2+2,x
-.1b1d	b9 41 0a	lda $0a41,y			lda 	FloatScalarTable-5+3,y
-.1b20	95 62		sta $62,x			sta 	NSMantissa3+2,x
-.1b22	b9 42 0a	lda $0a42,y			lda 	FloatScalarTable-5+4,y
-.1b25	95 6e		sta $6e,x			sta 	NSExponent+2,x
-.1b27	74 32		stz $32,x			stz 	NSStatus+2,x 				; make +ve
-.1b29	e8		inx				inx 								; multiply decimal const by decimal scalar
-.1b2a	e8		inx				inx
-.1b2b	20 3b 17	jsr $173b			jsr 	FloatMultiply
-.1b2e	20 0b 08	jsr $080b			jsr 	FloatAdd 					; add to integer part.
-.1b31	7a		ply				ply
-.1b32					_ENCFExit:
-.1b32	18		clc				clc 								; reject the digit.
-.1b33	60		rts				rts
-.1b34					ESTAShiftDigitIntoMantissa:
-.1b34	29 0f		and #$0f			and 	#15 						; save digit
-.1b36	48		pha				pha
-.1b37	b5 60		lda $60,x			lda 	NSMantissa3,x 				; push mantissa on stack
-.1b39	48		pha				pha
-.1b3a	b5 54		lda $54,x			lda 	NSMantissa2,x
-.1b3c	48		pha				pha
-.1b3d	b5 48		lda $48,x			lda 	NSMantissa1,x
-.1b3f	48		pha				pha
-.1b40	b5 3c		lda $3c,x			lda 	NSMantissa0,x
-.1b42	48		pha				pha
-.1b43	20 9b 1c	jsr $1c9b			jsr 	FloatShiftLeft 				; x 2
-.1b46	20 9b 1c	jsr $1c9b			jsr 	FloatShiftLeft 				; x 4
-.1b49	18		clc				clc 								; pop mantissa and add
-.1b4a	68		pla				pla
-.1b4b	75 3c		adc $3c,x			adc 	NSMantissa0,x
-.1b4d	95 3c		sta $3c,x			sta 	NSMantissa0,x
-.1b4f	68		pla				pla
-.1b50	75 48		adc $48,x			adc 	NSMantissa1,x
-.1b52	95 48		sta $48,x			sta 	NSMantissa1,x
-.1b54	68		pla				pla
-.1b55	75 54		adc $54,x			adc 	NSMantissa2,x
-.1b57	95 54		sta $54,x			sta 	NSMantissa2,x
-.1b59	68		pla				pla
-.1b5a	75 60		adc $60,x			adc 	NSMantissa3,x
-.1b5c	95 60		sta $60,x			sta 	NSMantissa3,x 				; x 5
-.1b5e	20 9b 1c	jsr $1c9b			jsr 	FloatShiftLeft 				; x 10
-.1b61	68		pla				pla 								; add digit
-.1b62	18		clc				clc
-.1b63	75 3c		adc $3c,x			adc 	NSMantissa0,x
-.1b65	95 3c		sta $3c,x			sta 	NSMantissa0,x
-.1b67	90 0a		bcc $1b73			bcc 	_ESTASDExit
-.1b69	f6 48		inc $48,x			inc 	NSMantissa1,x
-.1b6b	d0 06		bne $1b73			bne 	_ESTASDExit
-.1b6d	f6 54		inc $54,x			inc 	NSMantissa2,x
-.1b6f	d0 02		bne $1b73			bne 	_ESTASDExit
-.1b71	f6 60		inc $60,x			inc 	NSMantissa3,x
-.1b73					_ESTASDExit:
-.1b73	60		rts				rts
+.1a88					FloatEncodeStart:
+.1a88	38		sec				sec
+.1a89	80 01		bra $1a8c			bra 	FloatEncodeContinue+1
+.1a8b					FloatEncodeContinue:
+.1a8b	18		clc				clc
+.1a8c					FloatEncode:
+.1a8c	08		php				php 								; save reset flag.
+.1a8d	c9 2e		cmp #$2e			cmp 	#"." 						; only accept 0-9 and .
+.1a8f	f0 15		beq $1aa6			beq 	_ENIsOkay
+.1a91	c9 30		cmp #$30			cmp 	#"0"
+.1a93	90 04		bcc $1a99			bcc 	_ENBadNumber
+.1a95	c9 3a		cmp #$3a			cmp 	#"9"+1
+.1a97	90 0d		bcc $1aa6			bcc 	_ENIsOkay
+.1a99					_ENBadNumber:
+.1a99	28		plp				plp 								; throw saved reset
+.1a9a	ad 32 06	lda $0632			lda 	encodeState 				; if in decimal mode, construct final number
+.1a9d	c9 03		cmp #$03			cmp 	#ESTA_Decimal
+.1a9f	d0 03		bne $1aa4			bne 	_ENFail
+.1aa1	4c 1e 1b	jmp $1b1e			jmp 	_ENConstructFinal
+.1aa4					_ENFail:
+.1aa4	18		clc				clc 								; not allowed
+.1aa5	60		rts				rts
+.1aa6					_ENIsOkay:
+.1aa6	28		plp				plp 								; are we restarting
+.1aa7	90 15		bcc $1abe			bcc 	_ENNoRestart
+.1aa9					_ENStartEncode:
+.1aa9	c9 2e		cmp #$2e			cmp 	#'.'						; first is decimal place, go straight to that.
+.1aab	f0 0c		beq $1ab9			beq 	_ENFirstDP
+.1aad	29 0f		and #$0f			and 	#15 						; put digit in mantissa, initially a single digit constant
+.1aaf	20 aa 1c	jsr $1caa			jsr 	FloatSetByte 				; in single byte mode.
+.1ab2	a9 01		lda #$01			lda 	#ESTA_Low
+.1ab4					_ENExitChange:
+.1ab4	8d 32 06	sta $0632			sta 	encodeState 				; save new state
+.1ab7	38		sec				sec
+.1ab8	60		rts				rts
+.1ab9					_ENFirstDP:
+.1ab9	20 a8 1c	jsr $1ca8			jsr 	FloatSetZero 				; clear integer part
+.1abc	80 3c		bra $1afa			bra 	_ESTASwitchFloat			; go straight to float and exi
+.1abe					_ENNoRestart:
+.1abe	48		pha				pha 								; save digit or DP on stack.
+.1abf	ad 32 06	lda $0632			lda 	encodeState 				; get current state
+.1ac2	c9 01		cmp #$01			cmp 	#ESTA_Low
+.1ac4	f0 09		beq $1acf			beq  	_ESTALowState
+.1ac6	c9 02		cmp #$02			cmp 	#ESTA_High
+.1ac8	f0 26		beq $1af0			beq 	_ESTAHighState
+.1aca	c9 03		cmp #$03			cmp 	#ESTA_Decimal
+.1acc	f0 38		beq $1b06			beq 	_ESTADecimalState
+>1ace	db						.byte 	$DB 						; causes a break in the emulator
+.1acf					_ESTALowState:
+.1acf	68		pla				pla 								; get value back
+.1ad0	c9 2e		cmp #$2e			cmp 	#"."						; decimal point
+.1ad2	f0 26		beq $1afa			beq 	_ESTASwitchFloat 			; then we need to do the floating point bit
+.1ad4	29 0f		and #$0f			and 	#15 						; make digit
+.1ad6	8d 33 06	sta $0633			sta 	digitTemp 					; save it.
+.1ad9	b5 3c		lda $3c,x			lda 	NSMantissa0,x 				; x mantissa0 x 10 and add it
+.1adb	0a		asl a				asl 	a
+.1adc	0a		asl a				asl 	a
+.1add	75 3c		adc $3c,x			adc 	NSMantissa0,x
+.1adf	0a		asl a				asl 	a
+.1ae0	6d 33 06	adc $0633			adc 	digitTemp
+.1ae3	95 3c		sta $3c,x			sta 	NSMantissa0,x
+.1ae5	c9 19		cmp #$19			cmp 	#25 						; if >= 25 cannot guarantee next will be okay
+.1ae7	90 05		bcc $1aee			bcc 	_ESTANoSwitch 				; as could be 25 x 10 + 9
+.1ae9	a9 02		lda #$02			lda 	#ESTA_High 					; so if so, switch to the high encoding state
+.1aeb	8d 32 06	sta $0632			sta 	encodeState
+.1aee					_ESTANoSwitch:
+.1aee	38		sec				sec
+.1aef	60		rts				rts
+.1af0					_ESTAHighState:
+.1af0	68		pla				pla 								; get value back
+.1af1	c9 2e		cmp #$2e			cmp 	#"." 						; if DP switch to dloat
+.1af3	f0 05		beq $1afa			beq 	_ESTASwitchFloat
+.1af5	20 50 1b	jsr $1b50			jsr 	ESTAShiftDigitIntoMantissa 	; a routine does this.
+.1af8	38		sec				sec
+.1af9	60		rts				rts
+.1afa					_ESTASwitchFloat:
+.1afa	9c 34 06	stz $0634			stz 	decimalCount 				; reset the count of digits - we divide by 10^n at the end.
+.1afd	e8		inx				inx 								; zero the decimal additive.
+.1afe	20 a8 1c	jsr $1ca8			jsr 	FloatSetZero
+.1b01	ca		dex				dex
+.1b02	a9 03		lda #$03			lda 	#ESTA_Decimal 				; switch to decimal mode
+.1b04	80 ae		bra $1ab4			bra 	_ENExitChange
+.1b06					_ESTADecimalState:
+.1b06	68		pla				pla 								; digit.
+.1b07	c9 2e		cmp #$2e			cmp 	#"." 						; fail on 11th decimal point.
+.1b09	f0 99		beq $1aa4			beq 	_ENFail
+.1b0b	e8		inx				inx 								; put digit into fractional part of X+1
+.1b0c	20 50 1b	jsr $1b50			jsr 	ESTAShiftDigitIntoMantissa
+.1b0f	ca		dex				dex
+.1b10	ee 34 06	inc $0634			inc 	decimalCount 				; bump the count of decimals
+.1b13	ad 34 06	lda $0634			lda 	decimalCount 				; too many decimal digits.
+.1b16	c9 0b		cmp #$0b			cmp 	#11
+.1b18	f0 02		beq $1b1c			beq 	_ESTADSFail
+.1b1a	38		sec				sec
+.1b1b	60		rts				rts
+.1b1c					_ESTADSFail:
+.1b1c	18		clc				clc
+.1b1d	60		rts				rts
+.1b1e					_ENConstructFinal:
+.1b1e	ad 34 06	lda $0634			lda 	decimalCount 				; get decimal count
+.1b21	f0 2b		beq $1b4e			beq 	_ENCFExit 					; no decimals
+.1b23	5a		phy				phy
+.1b24	0a		asl a				asl 	a 							; x 4 and CLC
+.1b25	0a		asl a				asl 	a
+.1b26	6d 34 06	adc $0634			adc 	decimalCount
+.1b29	a8		tay				tay
+.1b2a	b9 3e 0a	lda $0a3e,y			lda 	FloatScalarTable-5,y 		; copy decimal scalar to X+2
+.1b2d	95 3e		sta $3e,x			sta 	NSMantissa0+2,x  			; this is 10^-n
+.1b2f	b9 3f 0a	lda $0a3f,y			lda 	FloatScalarTable-5+1,y
+.1b32	95 4a		sta $4a,x			sta 	NSMantissa1+2,x
+.1b34	b9 40 0a	lda $0a40,y			lda 	FloatScalarTable-5+2,y
+.1b37	95 56		sta $56,x			sta 	NSMantissa2+2,x
+.1b39	b9 41 0a	lda $0a41,y			lda 	FloatScalarTable-5+3,y
+.1b3c	95 62		sta $62,x			sta 	NSMantissa3+2,x
+.1b3e	b9 42 0a	lda $0a42,y			lda 	FloatScalarTable-5+4,y
+.1b41	95 6e		sta $6e,x			sta 	NSExponent+2,x
+.1b43	74 32		stz $32,x			stz 	NSStatus+2,x 				; make +ve
+.1b45	e8		inx				inx 								; multiply decimal const by decimal scalar
+.1b46	e8		inx				inx
+.1b47	20 57 17	jsr $1757			jsr 	FloatMultiply
+.1b4a	20 0b 08	jsr $080b			jsr 	FloatAdd 					; add to integer part.
+.1b4d	7a		ply				ply
+.1b4e					_ENCFExit:
+.1b4e	18		clc				clc 								; reject the digit.
+.1b4f	60		rts				rts
+.1b50					ESTAShiftDigitIntoMantissa:
+.1b50	29 0f		and #$0f			and 	#15 						; save digit
+.1b52	48		pha				pha
+.1b53	b5 60		lda $60,x			lda 	NSMantissa3,x 				; push mantissa on stack
+.1b55	48		pha				pha
+.1b56	b5 54		lda $54,x			lda 	NSMantissa2,x
+.1b58	48		pha				pha
+.1b59	b5 48		lda $48,x			lda 	NSMantissa1,x
+.1b5b	48		pha				pha
+.1b5c	b5 3c		lda $3c,x			lda 	NSMantissa0,x
+.1b5e	48		pha				pha
+.1b5f	20 b7 1c	jsr $1cb7			jsr 	FloatShiftLeft 				; x 2
+.1b62	20 b7 1c	jsr $1cb7			jsr 	FloatShiftLeft 				; x 4
+.1b65	18		clc				clc 								; pop mantissa and add
+.1b66	68		pla				pla
+.1b67	75 3c		adc $3c,x			adc 	NSMantissa0,x
+.1b69	95 3c		sta $3c,x			sta 	NSMantissa0,x
+.1b6b	68		pla				pla
+.1b6c	75 48		adc $48,x			adc 	NSMantissa1,x
+.1b6e	95 48		sta $48,x			sta 	NSMantissa1,x
+.1b70	68		pla				pla
+.1b71	75 54		adc $54,x			adc 	NSMantissa2,x
+.1b73	95 54		sta $54,x			sta 	NSMantissa2,x
+.1b75	68		pla				pla
+.1b76	75 60		adc $60,x			adc 	NSMantissa3,x
+.1b78	95 60		sta $60,x			sta 	NSMantissa3,x 				; x 5
+.1b7a	20 b7 1c	jsr $1cb7			jsr 	FloatShiftLeft 				; x 10
+.1b7d	68		pla				pla 								; add digit
+.1b7e	18		clc				clc
+.1b7f	75 3c		adc $3c,x			adc 	NSMantissa0,x
+.1b81	95 3c		sta $3c,x			sta 	NSMantissa0,x
+.1b83	90 0a		bcc $1b8f			bcc 	_ESTASDExit
+.1b85	f6 48		inc $48,x			inc 	NSMantissa1,x
+.1b87	d0 06		bne $1b8f			bne 	_ESTASDExit
+.1b89	f6 54		inc $54,x			inc 	NSMantissa2,x
+.1b8b	d0 02		bne $1b8f			bne 	_ESTASDExit
+.1b8d	f6 60		inc $60,x			inc 	NSMantissa3,x
+.1b8f					_ESTASDExit:
+.1b8f	60		rts				rts
 .0632					encodeState:
 >0632							.fill 	1
 .0633					digitTemp:
@@ -3437,133 +3445,133 @@
 
 ;******  Processing file: modules/ifloat32/binary/tostring.asm
 
-.1b74					ConvertInt16:
-.1b74	85 3c		sta $3c				sta 	NSMantissa0 				; set up as 32 bit conversion
-.1b76	86 48		stx $48				stx 	NSMantissa1
-.1b78	64 54		stz $54				stz 	NSMantissa2
-.1b7a	64 60		stz $60				stz 	NSMantissa3
-.1b7c	64 30		stz $30				stz 	NSStatus 					; positive integer
-.1b7e	a2 00		ldx #$00			ldx 	#0 							; stack level
-.1b80	a9 0a		lda #$0a			lda 	#10 						; base 10 decimal.
-.1b82	80 00		bra $1b84			bra 	ConvertInt32
-.1b84					ConvertInt32:
-.1b84	5a		phy				phy
-.1b85	a0 00		ldy #$00			ldy  	#0 							; index into buffer.
-.1b87	24 30		bit $30				bit 	NSStatus 					; output a - if not negative.
-.1b89	10 08		bpl $1b93			bpl 	_CI32NotNeg
-.1b8b	48		pha				pha
-.1b8c	a9 2d		lda #$2d			lda 	#'-'
-.1b8e	99 02 05	sta $0502,y			sta 	numberBuffer,y
-.1b91	c8		iny				iny
-.1b92	68		pla				pla
-.1b93					_CI32NotNeg:
-.1b93	20 a1 1b	jsr $1ba1			jsr 	_CI32DivideConvert 			; recursive conversion
-.1b96	a9 00		lda #$00			lda 	#0 							; make ASCIIZ
-.1b98	99 02 05	sta $0502,y			sta 	numberBuffer,y
-.1b9b	7a		ply				ply
-.1b9c	a2 05		ldx #$05			ldx 	#numberBuffer >> 8 			; return address in XA
-.1b9e	a9 02		lda #$02			lda 	#numberBuffer & $FF
-.1ba0	60		rts				rts
-.1ba1					_CI32DivideConvert:
-.1ba1	e8		inx				inx 								; write to next slot up
-.1ba2	20 8e 1c	jsr $1c8e			jsr 	FloatSetByte 		 		; write the base out.
-.1ba5	ca		dex				dex
-.1ba6	20 16 0c	jsr $0c16			jsr 	Int32Divide 				; divide
-.1ba9	b5 3c		lda $3c,x			lda 	NSMantissa0,x 				; save remainder
-.1bab	48		pha				pha
-.1bac	20 05 0c	jsr $0c05			jsr 	NSMCopyPlusTwoToZero 		; Copy the divide result into place.
-.1baf	20 ae 1c	jsr $1cae			jsr 	FloatIsZero 				; is it zero ?
-.1bb2	f0 05		beq $1bb9			beq 	_CI32NoRecurse 				; if so, don't recursively call.
-.1bb4	b5 3d		lda $3d,x			lda 	NSMantissa0+1,x 			; this is the base which is not changed by divide
-.1bb6	20 a1 1b	jsr $1ba1			jsr 	_CI32DivideConvert 			; and recusrively call.
-.1bb9					_CI32NoRecurse:
-.1bb9	68		pla				pla 								; remainder
-.1bba	c9 0a		cmp #$0a			cmp 	#10 						; convert to ASCII, allowing for hexadecimal.
-.1bbc	90 02		bcc $1bc0			bcc 	_CI32NotHex
-.1bbe	69 26		adc #$26			adc 	#6+32
-.1bc0					_CI32NotHex:
-.1bc0	69 30		adc #$30			adc 	#48
-.1bc2	99 02 05	sta $0502,y			sta 	numberBuffer,y 				; write out and exit
-.1bc5	c8		iny				iny
-.1bc6	60		rts				rts
+.1b90					ConvertInt16:
+.1b90	85 3c		sta $3c				sta 	NSMantissa0 				; set up as 32 bit conversion
+.1b92	86 48		stx $48				stx 	NSMantissa1
+.1b94	64 54		stz $54				stz 	NSMantissa2
+.1b96	64 60		stz $60				stz 	NSMantissa3
+.1b98	64 30		stz $30				stz 	NSStatus 					; positive integer
+.1b9a	a2 00		ldx #$00			ldx 	#0 							; stack level
+.1b9c	a9 0a		lda #$0a			lda 	#10 						; base 10 decimal.
+.1b9e	80 00		bra $1ba0			bra 	ConvertInt32
+.1ba0					ConvertInt32:
+.1ba0	5a		phy				phy
+.1ba1	a0 00		ldy #$00			ldy  	#0 							; index into buffer.
+.1ba3	24 30		bit $30				bit 	NSStatus 					; output a - if not negative.
+.1ba5	10 08		bpl $1baf			bpl 	_CI32NotNeg
+.1ba7	48		pha				pha
+.1ba8	a9 2d		lda #$2d			lda 	#'-'
+.1baa	99 02 05	sta $0502,y			sta 	numberBuffer,y
+.1bad	c8		iny				iny
+.1bae	68		pla				pla
+.1baf					_CI32NotNeg:
+.1baf	20 bd 1b	jsr $1bbd			jsr 	_CI32DivideConvert 			; recursive conversion
+.1bb2	a9 00		lda #$00			lda 	#0 							; make ASCIIZ
+.1bb4	99 02 05	sta $0502,y			sta 	numberBuffer,y
+.1bb7	7a		ply				ply
+.1bb8	a2 05		ldx #$05			ldx 	#numberBuffer >> 8 			; return address in XA
+.1bba	a9 02		lda #$02			lda 	#numberBuffer & $FF
+.1bbc	60		rts				rts
+.1bbd					_CI32DivideConvert:
+.1bbd	e8		inx				inx 								; write to next slot up
+.1bbe	20 aa 1c	jsr $1caa			jsr 	FloatSetByte 		 		; write the base out.
+.1bc1	ca		dex				dex
+.1bc2	20 16 0c	jsr $0c16			jsr 	Int32Divide 				; divide
+.1bc5	b5 3c		lda $3c,x			lda 	NSMantissa0,x 				; save remainder
+.1bc7	48		pha				pha
+.1bc8	20 05 0c	jsr $0c05			jsr 	NSMCopyPlusTwoToZero 		; Copy the divide result into place.
+.1bcb	20 ca 1c	jsr $1cca			jsr 	FloatIsZero 				; is it zero ?
+.1bce	f0 05		beq $1bd5			beq 	_CI32NoRecurse 				; if so, don't recursively call.
+.1bd0	b5 3d		lda $3d,x			lda 	NSMantissa0+1,x 			; this is the base which is not changed by divide
+.1bd2	20 bd 1b	jsr $1bbd			jsr 	_CI32DivideConvert 			; and recusrively call.
+.1bd5					_CI32NoRecurse:
+.1bd5	68		pla				pla 								; remainder
+.1bd6	c9 0a		cmp #$0a			cmp 	#10 						; convert to ASCII, allowing for hexadecimal.
+.1bd8	90 02		bcc $1bdc			bcc 	_CI32NotHex
+.1bda	69 26		adc #$26			adc 	#6+32
+.1bdc					_CI32NotHex:
+.1bdc	69 30		adc #$30			adc 	#48
+.1bde	99 02 05	sta $0502,y			sta 	numberBuffer,y 				; write out and exit
+.1be1	c8		iny				iny
+.1be2	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/ifloat32/float/tostring.asm
 
-.1bc7					FloatToString:
-.1bc7	da		phx				phx
-.1bc8	5a		phy				phy 								; save code position
-.1bc9	8d 35 06	sta $0635			sta 	decimalPlaces	 			; save number of DPs.
-.1bcc	9c 36 06	stz $0636			stz 	dbOffset 					; offset into decimal buffer = start.
-.1bcf	b5 30		lda $30,x			lda 	NSStatus,x  				; is it -ve.
-.1bd1	10 08		bpl $1bdb			bpl 	_CNTSNotNegative
-.1bd3	29 7f		and #$7f			and 	#$7F 						; make +ve
-.1bd5	95 30		sta $30,x			sta 	NSStatus,x
-.1bd7	a9 2d		lda #$2d			lda 	#"-"
-.1bd9	80 02		bra $1bdd			bra 	_CNTMain
-.1bdb					_CNTSNotNegative:
-.1bdb	a9 20		lda #$20			lda 	#" "
-.1bdd					_CNTMain:
-.1bdd	20 3f 1c	jsr $1c3f			jsr 	WriteDecimalBuffer
-.1be0	b5 6c		lda $6c,x			lda 	NSExponent,x 				; check if decimal
-.1be2	f0 0d		beq $1bf1			beq 	_CNTSNotFloat
-.1be4	e8		inx				inx 								; round up so we don't get too many 6.999999
-.1be5	a9 01		lda #$01			lda 	#1
-.1be7	20 8e 1c	jsr $1c8e			jsr 	FloatSetByte
-.1bea	b5 6b		lda $6b,x			lda		NSExponent-1,x
-.1bec	95 6c		sta $6c,x			sta 	NSExponent,x
-.1bee	20 0b 08	jsr $080b			jsr 	FloatAdd
-.1bf1					_CNTSNotFloat:
-.1bf1	20 21 1c	jsr $1c21			jsr 	MakePlusTwoString 			; do the integer part.
-.1bf4	20 37 10	jsr $1037			jsr 	FloatFractionalPart 		; get the fractional part
-.1bf7	20 b4 17	jsr $17b4			jsr 	FloatNormalise					; normalise , exit if zero
-.1bfa	f0 22		beq $1c1e			beq 	_CNTSExit
-.1bfc	a9 2e		lda #$2e			lda 	#"."
-.1bfe	20 3f 1c	jsr $1c3f			jsr 	WriteDecimalBuffer 			; write decimal place
-.1c01					_CNTSDecimal:
-.1c01	ce 35 06	dec $0635			dec 	decimalPlaces 				; done all the decimals
-.1c04	30 18		bmi $1c1e			bmi 	_CNTSExit
-.1c06	e8		inx				inx 								; x 10.0
-.1c07	a9 0a		lda #$0a			lda 	#10
-.1c09	20 8e 1c	jsr $1c8e			jsr 	FloatSetByte
-.1c0c	20 3b 17	jsr $173b			jsr 	FloatMultiply
-.1c0f	20 21 1c	jsr $1c21			jsr 	MakePlusTwoString 			; put the integer e.g. next digit out.
-.1c12	20 37 10	jsr $1037			jsr 	FloatFractionalPart 		; get the fractional part
-.1c15	20 b4 17	jsr $17b4			jsr 	FloatNormalise 				; normalise it.
-.1c18	b5 6c		lda $6c,x			lda 	NSExponent,x 				; gone to zero, exit.
-.1c1a	c9 d0		cmp #$d0			cmp 	#$D0 						; very small remainder, so don't bother.
-.1c1c	b0 e3		bcs $1c01			bcs 	_CNTSDecimal 				; keep going.
-.1c1e					_CNTSExit:
-.1c1e	7a		ply				ply
-.1c1f	fa		plx				plx
-.1c20	60		rts				rts
-.1c21					MakePlusTwoString:
-.1c21	da		phx				phx
-.1c22	20 6f 1c	jsr $1c6f			jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2] - we will use S[X+2] for the intege part.
-.1c25	e8		inx				inx 								; access it
-.1c26	e8		inx				inx
-.1c27	20 74 15	jsr $1574			jsr 	FloatIntegerPart 			; make it an integer
-.1c2a	a9 0a		lda #$0a			lda 	#10 						; convert it in base 10
-.1c2c	20 84 1b	jsr $1b84			jsr 	ConvertInt32
-.1c2f	a2 00		ldx #$00			ldx	 	#0 							; write that to the decimal buffer.
-.1c31					_MPTSCopy:
-.1c31	bd 02 05	lda $0502,x			lda 	numberBuffer,x
-.1c34	20 3f 1c	jsr $1c3f			jsr 	WriteDecimalBuffer
-.1c37	e8		inx				inx
-.1c38	bd 02 05	lda $0502,x			lda 	numberBuffer,x
-.1c3b	d0 f4		bne $1c31			bne 	_MPTSCopy
-.1c3d	fa		plx				plx
-.1c3e	60		rts				rts
-.1c3f					WriteDecimalBuffer:
-.1c3f	da		phx				phx
-.1c40	ae 36 06	ldx $0636			ldx 	dbOffset
-.1c43	9d 37 06	sta $0637,x			sta 	decimalBuffer,x
-.1c46	9e 38 06	stz $0638,x			stz 	decimalBuffer+1,x
-.1c49	ee 36 06	inc $0636			inc 	dbOffset
-.1c4c	fa		plx				plx
-.1c4d	60		rts				rts
+.1be3					FloatToString:
+.1be3	da		phx				phx
+.1be4	5a		phy				phy 								; save code position
+.1be5	8d 35 06	sta $0635			sta 	decimalPlaces	 			; save number of DPs.
+.1be8	9c 36 06	stz $0636			stz 	dbOffset 					; offset into decimal buffer = start.
+.1beb	b5 30		lda $30,x			lda 	NSStatus,x  				; is it -ve.
+.1bed	10 08		bpl $1bf7			bpl 	_CNTSNotNegative
+.1bef	29 7f		and #$7f			and 	#$7F 						; make +ve
+.1bf1	95 30		sta $30,x			sta 	NSStatus,x
+.1bf3	a9 2d		lda #$2d			lda 	#"-"
+.1bf5	80 02		bra $1bf9			bra 	_CNTMain
+.1bf7					_CNTSNotNegative:
+.1bf7	a9 20		lda #$20			lda 	#" "
+.1bf9					_CNTMain:
+.1bf9	20 5b 1c	jsr $1c5b			jsr 	WriteDecimalBuffer
+.1bfc	b5 6c		lda $6c,x			lda 	NSExponent,x 				; check if decimal
+.1bfe	f0 0d		beq $1c0d			beq 	_CNTSNotFloat
+.1c00	e8		inx				inx 								; round up so we don't get too many 6.999999
+.1c01	a9 01		lda #$01			lda 	#1
+.1c03	20 aa 1c	jsr $1caa			jsr 	FloatSetByte
+.1c06	b5 6b		lda $6b,x			lda		NSExponent-1,x
+.1c08	95 6c		sta $6c,x			sta 	NSExponent,x
+.1c0a	20 0b 08	jsr $080b			jsr 	FloatAdd
+.1c0d					_CNTSNotFloat:
+.1c0d	20 3d 1c	jsr $1c3d			jsr 	MakePlusTwoString 			; do the integer part.
+.1c10	20 37 10	jsr $1037			jsr 	FloatFractionalPart 		; get the fractional part
+.1c13	20 d0 17	jsr $17d0			jsr 	FloatNormalise					; normalise , exit if zero
+.1c16	f0 22		beq $1c3a			beq 	_CNTSExit
+.1c18	a9 2e		lda #$2e			lda 	#"."
+.1c1a	20 5b 1c	jsr $1c5b			jsr 	WriteDecimalBuffer 			; write decimal place
+.1c1d					_CNTSDecimal:
+.1c1d	ce 35 06	dec $0635			dec 	decimalPlaces 				; done all the decimals
+.1c20	30 18		bmi $1c3a			bmi 	_CNTSExit
+.1c22	e8		inx				inx 								; x 10.0
+.1c23	a9 0a		lda #$0a			lda 	#10
+.1c25	20 aa 1c	jsr $1caa			jsr 	FloatSetByte
+.1c28	20 57 17	jsr $1757			jsr 	FloatMultiply
+.1c2b	20 3d 1c	jsr $1c3d			jsr 	MakePlusTwoString 			; put the integer e.g. next digit out.
+.1c2e	20 37 10	jsr $1037			jsr 	FloatFractionalPart 		; get the fractional part
+.1c31	20 d0 17	jsr $17d0			jsr 	FloatNormalise 				; normalise it.
+.1c34	b5 6c		lda $6c,x			lda 	NSExponent,x 				; gone to zero, exit.
+.1c36	c9 d0		cmp #$d0			cmp 	#$D0 						; very small remainder, so don't bother.
+.1c38	b0 e3		bcs $1c1d			bcs 	_CNTSDecimal 				; keep going.
+.1c3a					_CNTSExit:
+.1c3a	7a		ply				ply
+.1c3b	fa		plx				plx
+.1c3c	60		rts				rts
+.1c3d					MakePlusTwoString:
+.1c3d	da		phx				phx
+.1c3e	20 8b 1c	jsr $1c8b			jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2] - we will use S[X+2] for the intege part.
+.1c41	e8		inx				inx 								; access it
+.1c42	e8		inx				inx
+.1c43	20 90 15	jsr $1590			jsr 	FloatIntegerPart 			; make it an integer
+.1c46	a9 0a		lda #$0a			lda 	#10 						; convert it in base 10
+.1c48	20 a0 1b	jsr $1ba0			jsr 	ConvertInt32
+.1c4b	a2 00		ldx #$00			ldx	 	#0 							; write that to the decimal buffer.
+.1c4d					_MPTSCopy:
+.1c4d	bd 02 05	lda $0502,x			lda 	numberBuffer,x
+.1c50	20 5b 1c	jsr $1c5b			jsr 	WriteDecimalBuffer
+.1c53	e8		inx				inx
+.1c54	bd 02 05	lda $0502,x			lda 	numberBuffer,x
+.1c57	d0 f4		bne $1c4d			bne 	_MPTSCopy
+.1c59	fa		plx				plx
+.1c5a	60		rts				rts
+.1c5b					WriteDecimalBuffer:
+.1c5b	da		phx				phx
+.1c5c	ae 36 06	ldx $0636			ldx 	dbOffset
+.1c5f	9d 37 06	sta $0637,x			sta 	decimalBuffer,x
+.1c62	9e 38 06	stz $0638,x			stz 	decimalBuffer+1,x
+.1c65	ee 36 06	inc $0636			inc 	dbOffset
+.1c68	fa		plx				plx
+.1c69	60		rts				rts
 .0635					decimalPlaces:
 >0635							.fill 	1
 .0636					dbOffset:
@@ -3576,219 +3584,219 @@
 
 ;******  Processing file: modules/ifloat32/utility/utility.asm
 
-.1c4e					FloatNegate:
-.1c4e	b5 30		lda $30,x			lda 	NSStatus,x 					; everything is sign/magnitude usually so just
-.1c50	49 80		eor #$80			eor 	#$80  						; toggle the negative flag
-.1c52	95 30		sta $30,x			sta 	NSStatus,x
-.1c54	60		rts				rts
-.1c55					FloatNegateMantissa:
-.1c55	38		sec				sec 								; when we want an actual 32 bit 2's complement value.
-.1c56	a9 00		lda #$00			lda 	#0
-.1c58	f5 3c		sbc $3c,x			sbc 	NSMantissa0,x
-.1c5a	95 3c		sta $3c,x			sta 	NSMantissa0,x
-.1c5c	a9 00		lda #$00			lda 	#0
-.1c5e	f5 48		sbc $48,x			sbc 	NSMantissa1,x
-.1c60	95 48		sta $48,x			sta 	NSMantissa1,x
-.1c62	a9 00		lda #$00			lda 	#0
-.1c64	f5 54		sbc $54,x			sbc 	NSMantissa2,x
-.1c66	95 54		sta $54,x			sta 	NSMantissa2,x
-.1c68	a9 00		lda #$00			lda 	#0
-.1c6a	f5 60		sbc $60,x			sbc 	NSMantissa3,x
-.1c6c	95 60		sta $60,x			sta 	NSMantissa3,x
-.1c6e	60		rts				rts
-.1c6f					FloatShiftUpTwo:
-.1c6f	b5 3c		lda $3c,x			lda 	NSMantissa0,x
-.1c71	95 3e		sta $3e,x			sta 	NSMantissa0+2,x
-.1c73	b5 48		lda $48,x			lda 	NSMantissa1,x
-.1c75	95 4a		sta $4a,x			sta 	NSMantissa1+2,x
-.1c77	b5 54		lda $54,x			lda 	NSMantissa2,x
-.1c79	95 56		sta $56,x			sta 	NSMantissa2+2,x
-.1c7b	b5 60		lda $60,x			lda 	NSMantissa3,x
-.1c7d	95 62		sta $62,x			sta 	NSMantissa3+2,x
-.1c7f	b5 6c		lda $6c,x			lda 	NSExponent,x
-.1c81	95 6e		sta $6e,x			sta 	NSExponent+2,x
-.1c83	b5 30		lda $30,x			lda 	NSStatus,x
-.1c85	95 32		sta $32,x			sta 	NSStatus+2,x
-.1c87	60		rts				rts
-.1c88					FloatSetZeroMantissaOnly:
-.1c88	74 3c		stz $3c,x			stz 	NSMantissa0,x
-.1c8a	80 08		bra $1c94			bra 	FloatZero13
-.1c8c					FloatSetZero:
-.1c8c	a9 00		lda #$00			lda 	#0
-.1c8e					FloatSetByte:
-.1c8e	74 6c		stz $6c,x			stz 	NSExponent,x 				; zero exponent, as +ve integer value.
-.1c90					FloatSetMantissa:
-.1c90	95 3c		sta $3c,x			sta 	NSMantissa0,x 				; zero mantissa
-.1c92	74 30		stz $30,x			stz 	NSStatus,x
-.1c94					FloatZero13:
-.1c94	74 48		stz $48,x			stz 	NSMantissa1,x
-.1c96	74 54		stz $54,x			stz 	NSMantissa2,x
-.1c98	74 60		stz $60,x			stz 	NSMantissa3,x
-.1c9a	60		rts				rts
-.1c9b					FloatShiftLeft:
-.1c9b	18		clc				clc
-.1c9c					FloatRotateLeft:
-.1c9c	36 3c		rol $3c,x			rol 	NSMantissa0,x
-.1c9e	36 48		rol $48,x			rol		NSMantissa1,x
-.1ca0	36 54		rol $54,x			rol		NSMantissa2,x
-.1ca2	36 60		rol $60,x			rol		NSMantissa3,x
-.1ca4	60		rts				rts
-.1ca5					FloatShiftRight:
-.1ca5	56 60		lsr $60,x			lsr 	NSMantissa3,x
-.1ca7	76 54		ror $54,x			ror		NSMantissa2,x
-.1ca9	76 48		ror $48,x			ror		NSMantissa1,x
-.1cab	76 3c		ror $3c,x			ror		NSMantissa0,x
-.1cad	60		rts				rts
-.1cae					FloatIsZero:
-.1cae	b5 60		lda $60,x			lda 	NSMantissa3,x
-.1cb0	15 54		ora $54,x			ora		NSMantissa2,x
-.1cb2	15 48		ora $48,x			ora		NSMantissa1,x
-.1cb4	15 3c		ora $3c,x			ora		NSMantissa0,x
+.1c6a					FloatNegate:
+.1c6a	b5 30		lda $30,x			lda 	NSStatus,x 					; everything is sign/magnitude usually so just
+.1c6c	49 80		eor #$80			eor 	#$80  						; toggle the negative flag
+.1c6e	95 30		sta $30,x			sta 	NSStatus,x
+.1c70	60		rts				rts
+.1c71					FloatNegateMantissa:
+.1c71	38		sec				sec 								; when we want an actual 32 bit 2's complement value.
+.1c72	a9 00		lda #$00			lda 	#0
+.1c74	f5 3c		sbc $3c,x			sbc 	NSMantissa0,x
+.1c76	95 3c		sta $3c,x			sta 	NSMantissa0,x
+.1c78	a9 00		lda #$00			lda 	#0
+.1c7a	f5 48		sbc $48,x			sbc 	NSMantissa1,x
+.1c7c	95 48		sta $48,x			sta 	NSMantissa1,x
+.1c7e	a9 00		lda #$00			lda 	#0
+.1c80	f5 54		sbc $54,x			sbc 	NSMantissa2,x
+.1c82	95 54		sta $54,x			sta 	NSMantissa2,x
+.1c84	a9 00		lda #$00			lda 	#0
+.1c86	f5 60		sbc $60,x			sbc 	NSMantissa3,x
+.1c88	95 60		sta $60,x			sta 	NSMantissa3,x
+.1c8a	60		rts				rts
+.1c8b					FloatShiftUpTwo:
+.1c8b	b5 3c		lda $3c,x			lda 	NSMantissa0,x
+.1c8d	95 3e		sta $3e,x			sta 	NSMantissa0+2,x
+.1c8f	b5 48		lda $48,x			lda 	NSMantissa1,x
+.1c91	95 4a		sta $4a,x			sta 	NSMantissa1+2,x
+.1c93	b5 54		lda $54,x			lda 	NSMantissa2,x
+.1c95	95 56		sta $56,x			sta 	NSMantissa2+2,x
+.1c97	b5 60		lda $60,x			lda 	NSMantissa3,x
+.1c99	95 62		sta $62,x			sta 	NSMantissa3+2,x
+.1c9b	b5 6c		lda $6c,x			lda 	NSExponent,x
+.1c9d	95 6e		sta $6e,x			sta 	NSExponent+2,x
+.1c9f	b5 30		lda $30,x			lda 	NSStatus,x
+.1ca1	95 32		sta $32,x			sta 	NSStatus+2,x
+.1ca3	60		rts				rts
+.1ca4					FloatSetZeroMantissaOnly:
+.1ca4	74 3c		stz $3c,x			stz 	NSMantissa0,x
+.1ca6	80 08		bra $1cb0			bra 	FloatZero13
+.1ca8					FloatSetZero:
+.1ca8	a9 00		lda #$00			lda 	#0
+.1caa					FloatSetByte:
+.1caa	74 6c		stz $6c,x			stz 	NSExponent,x 				; zero exponent, as +ve integer value.
+.1cac					FloatSetMantissa:
+.1cac	95 3c		sta $3c,x			sta 	NSMantissa0,x 				; zero mantissa
+.1cae	74 30		stz $30,x			stz 	NSStatus,x
+.1cb0					FloatZero13:
+.1cb0	74 48		stz $48,x			stz 	NSMantissa1,x
+.1cb2	74 54		stz $54,x			stz 	NSMantissa2,x
+.1cb4	74 60		stz $60,x			stz 	NSMantissa3,x
 .1cb6	60		rts				rts
+.1cb7					FloatShiftLeft:
+.1cb7	18		clc				clc
+.1cb8					FloatRotateLeft:
+.1cb8	36 3c		rol $3c,x			rol 	NSMantissa0,x
+.1cba	36 48		rol $48,x			rol		NSMantissa1,x
+.1cbc	36 54		rol $54,x			rol		NSMantissa2,x
+.1cbe	36 60		rol $60,x			rol		NSMantissa3,x
+.1cc0	60		rts				rts
+.1cc1					FloatShiftRight:
+.1cc1	56 60		lsr $60,x			lsr 	NSMantissa3,x
+.1cc3	76 54		ror $54,x			ror		NSMantissa2,x
+.1cc5	76 48		ror $48,x			ror		NSMantissa1,x
+.1cc7	76 3c		ror $3c,x			ror		NSMantissa0,x
+.1cc9	60		rts				rts
+.1cca					FloatIsZero:
+.1cca	b5 60		lda $60,x			lda 	NSMantissa3,x
+.1ccc	15 54		ora $54,x			ora		NSMantissa2,x
+.1cce	15 48		ora $48,x			ora		NSMantissa1,x
+.1cd0	15 3c		ora $3c,x			ora		NSMantissa0,x
+.1cd2	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/commands/wait.asm
 
-.1cb7					CommandWAIT:
-.1cb7	20 45 14	jsr $1445			jsr 	LookNextNonSpace
-.1cba	c9 2c		cmp #$2c			cmp 	#","
-.1cbc	f0 10		beq $1cce			beq 	_CWThirdParameter
-.1cbe	a9 00		lda #$00			lda 	#0
-.1cc0	20 11 0a	jsr $0a11			jsr 	PushIntegerA
-.1cc3					_CWExit:
-.1cc3	a9 c5		lda #$c5			lda 	#(PCD_WAIT) >> 8
-.1cc5	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1cc8	a9 90		lda #$90			lda 	#(PCD_WAIT) & $FF
-.1cca	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1ccd	60		rts				rts
-.1cce					_CWThirdParameter:
-.1cce	20 53 14	jsr $1453			jsr 	GetNext
-.1cd1	20 fe 0d	jsr $0dfe			jsr 	CompileExpressionAtA
-.1cd4	29 40		and #$40			and 	#NSSTypeMask
-.1cd6	c9 00		cmp #$00			cmp 	#NSSIFloat
-.1cd8	f0 e9		beq $1cc3			beq 	_CWExit
-.1cda	4c f7 0c	jmp $0cf7		jmp	ErrorV_type
+.1cd3					CommandWAIT:
+.1cd3	20 61 14	jsr $1461			jsr 	LookNextNonSpace
+.1cd6	c9 2c		cmp #$2c			cmp 	#","
+.1cd8	f0 10		beq $1cea			beq 	_CWThirdParameter
+.1cda	a9 00		lda #$00			lda 	#0
+.1cdc	20 11 0a	jsr $0a11			jsr 	PushIntegerA
+.1cdf					_CWExit:
+.1cdf	a9 c5		lda #$c5			lda 	#(PCD_WAIT) >> 8
+.1ce1	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1ce4	a9 94		lda #$94			lda 	#(PCD_WAIT) & $FF
+.1ce6	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1ce9	60		rts				rts
+.1cea					_CWThirdParameter:
+.1cea	20 6f 14	jsr $146f			jsr 	GetNext
+.1ced	20 fe 0d	jsr $0dfe			jsr 	CompileExpressionAtA
+.1cf0	29 40		and #$40			and 	#NSSTypeMask
+.1cf2	c9 00		cmp #$00			cmp 	#NSSIFloat
+.1cf4	f0 e9		beq $1cdf			beq 	_CWExit
+.1cf6	4c f7 0c	jmp $0cf7		jmp	ErrorV_type
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/compiler/object/simple/writebyte.asm
 
-.1cdd					OUTPUTWriteByte:
-.1cdd	92 27		sta ($27)			sta 	(objPtr)
-.1cdf	e6 27		inc $27				inc 	objPtr
-.1ce1	d0 02		bne $1ce5			bne 	_HWOWBNoCarry
-.1ce3	e6 28		inc $28				inc 	objPtr+1
-.1ce5					_HWOWBNoCarry:
-.1ce5	60		rts				rts
+.1cf9					OUTPUTWriteByte:
+.1cf9	92 27		sta ($27)			sta 	(objPtr)
+.1cfb	e6 27		inc $27				inc 	objPtr
+.1cfd	d0 02		bne $1d01			bne 	_HWOWBNoCarry
+.1cff	e6 28		inc $28				inc 	objPtr+1
+.1d01					_HWOWBNoCarry:
+.1d01	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/x16_compiler/commands/x16_cmd.asm
 
-.1ce6					CommandCMD:
-.1ce6	a9 aa		lda #$aa			lda 	#PCD_SETCHANNEL 			; set the channel to this now forever.
-.1ce8	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1ceb	20 45 14	jsr $1445			jsr 	LookNextNonSpace 			; followed by a , ?
-.1cee	c9 2c		cmp #$2c			cmp 	#","
-.1cf0	d0 06		bne $1cf8			bne 	_CCMDExit
-.1cf2	20 53 14	jsr $1453			jsr 	GetNext 					; consume comma.
-.1cf5	20 47 18	jsr $1847			jsr 	CommandPRINT 				; do the print code
-.1cf8					_CCMDExit:
-.1cf8	60		rts				rts
+.1d02					CommandCMD:
+.1d02	a9 aa		lda #$aa			lda 	#PCD_SETCHANNEL 			; set the channel to this now forever.
+.1d04	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1d07	20 61 14	jsr $1461			jsr 	LookNextNonSpace 			; followed by a , ?
+.1d0a	c9 2c		cmp #$2c			cmp 	#","
+.1d0c	d0 06		bne $1d14			bne 	_CCMDExit
+.1d0e	20 6f 14	jsr $146f			jsr 	GetNext 					; consume comma.
+.1d11	20 63 18	jsr $1863			jsr 	CommandPRINT 				; do the print code
+.1d14					_CCMDExit:
+.1d14	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/x16_compiler/commands/x16_open.asm
 
-.1cf9					CommandOPEN:
-.1cf9	20 45 14	jsr $1445			jsr 	LookNextNonSpace 			; followed by a , ?
-.1cfc	c9 2c		cmp #$2c			cmp 	#","
-.1cfe	d0 15		bne $1d15			bne 	_COTwoDefaults
-.1d00	20 53 14	jsr $1453			jsr 	GetNext 					; consume comma
-.1d03	20 fc 0d	jsr $0dfc			jsr 	CompileExpressionAt0 		; what follows could be text or number.
-.1d06	29 40		and #$40			and 	#NSSString 					; if a number want a string to follow
-.1d08	f0 1e		beq $1d28			beq 	_COThreeIntegers
-.1d0a	a9 00		lda #$00			lda 	#0		 					; so we have n,n,$,0 so swap !
-.1d0c	20 11 0a	jsr $0a11			jsr 	PushIntegerA
-.1d0f	a9 b9		lda #$b9			lda 	#(PCD_SWAP) & $FF
-.1d11	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1d14	60		rts				rts
-.1d15					_COTwoDefaults:
-.1d15	a9 00		lda #$00			lda 	#0
-.1d17	20 11 0a	jsr $0a11			jsr 	PushIntegerA
-.1d1a					_COCompileNullString:
-.1d1a	a9 c9		lda #$c9			lda 	#(PCD_CMD_STRING) & $FF
-.1d1c	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1d1f	a9 00		lda #$00			lda 	#0
-.1d21	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1d24	20 08 09	jsr $0908			jsr 	WriteCodeByte
-.1d27	60		rts				rts
-.1d28					_COThreeIntegers:
-.1d28	20 45 14	jsr $1445			jsr 	LookNextNonSpace 			; is there a ,
-.1d2b	c9 2c		cmp #$2c			cmp 	#","
-.1d2d	d0 eb		bne $1d1a			bne 	_COCompileNullString 		; if not it is n,n,n so default filename.
-.1d2f	20 53 14	jsr $1453			jsr 	GetNext
-.1d32	20 fc 0d	jsr $0dfc			jsr 	CompileExpressionAt0 		; should be a filename
-.1d35	29 40		and #$40			and 	#NSSString
-.1d37	f0 01		beq $1d3a			beq 	_COType
-.1d39	60		rts				rts
-.1d3a					_COType:
-.1d3a	4c f7 0c	jmp $0cf7		jmp	ErrorV_type
+.1d15					CommandOPEN:
+.1d15	20 61 14	jsr $1461			jsr 	LookNextNonSpace 			; followed by a , ?
+.1d18	c9 2c		cmp #$2c			cmp 	#","
+.1d1a	d0 15		bne $1d31			bne 	_COTwoDefaults
+.1d1c	20 6f 14	jsr $146f			jsr 	GetNext 					; consume comma
+.1d1f	20 fc 0d	jsr $0dfc			jsr 	CompileExpressionAt0 		; what follows could be text or number.
+.1d22	29 40		and #$40			and 	#NSSString 					; if a number want a string to follow
+.1d24	f0 1e		beq $1d44			beq 	_COThreeIntegers
+.1d26	a9 00		lda #$00			lda 	#0		 					; so we have n,n,$,0 so swap !
+.1d28	20 11 0a	jsr $0a11			jsr 	PushIntegerA
+.1d2b	a9 b9		lda #$b9			lda 	#(PCD_SWAP) & $FF
+.1d2d	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1d30	60		rts				rts
+.1d31					_COTwoDefaults:
+.1d31	a9 00		lda #$00			lda 	#0
+.1d33	20 11 0a	jsr $0a11			jsr 	PushIntegerA
+.1d36					_COCompileNullString:
+.1d36	a9 c9		lda #$c9			lda 	#(PCD_CMD_STRING) & $FF
+.1d38	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1d3b	a9 00		lda #$00			lda 	#0
+.1d3d	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1d40	20 08 09	jsr $0908			jsr 	WriteCodeByte
+.1d43	60		rts				rts
+.1d44					_COThreeIntegers:
+.1d44	20 61 14	jsr $1461			jsr 	LookNextNonSpace 			; is there a ,
+.1d47	c9 2c		cmp #$2c			cmp 	#","
+.1d49	d0 eb		bne $1d36			bne 	_COCompileNullString 		; if not it is n,n,n so default filename.
+.1d4b	20 6f 14	jsr $146f			jsr 	GetNext
+.1d4e	20 fc 0d	jsr $0dfc			jsr 	CompileExpressionAt0 		; should be a filename
+.1d51	29 40		and #$40			and 	#NSSString
+.1d53	f0 01		beq $1d56			beq 	_COType
+.1d55	60		rts				rts
+.1d56					_COType:
+.1d56	4c f7 0c	jmp $0cf7		jmp	ErrorV_type
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/x16_compiler/external/x16_printchar.asm
 
-.1d3d					XPrintCharacter
-.1d3d	48		pha				pha
-.1d3e	da		phx				phx
-.1d3f	5a		phy				phy
-.1d40	20 d2 ff	jsr $ffd2			jsr 	$FFD2
-.1d43	7a		ply				ply
-.1d44	fa		plx				plx
-.1d45	68		pla				pla
-.1d46	60		rts				rts
+.1d59					XPrintCharacter
+.1d59	48		pha				pha
+.1d5a	da		phx				phx
+.1d5b	5a		phy				phy
+.1d5c	20 d2 ff	jsr $ffd2			jsr 	$FFD2
+.1d5f	7a		ply				ply
+.1d60	fa		plx				plx
+.1d61	68		pla				pla
+.1d62	60		rts				rts
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/x16_compiler/external/x16_save.asm
 
-.1d47					XSaveMemory:
-.1d47	da		phx				phx
-.1d48	5a		phy				phy
-.1d49	48		pha				pha
-.1d4a	a9 00		lda #$00			lda 	#0 							; set LFS
-.1d4c	a2 08		ldx #$08			ldx 	#8
-.1d4e	a0 00		ldy #$00			ldy 	#0
-.1d50	20 ba ff	jsr $ffba			jsr 	$FFBA
-.1d53	a9 08		lda #$08			lda 	#8 							; set file name
-.1d55	a2 69		ldx #$69			ldx 	#SaveName & $FF
-.1d57	a0 1d		ldy #$1d			ldy 	#SaveName >> 8
-.1d59	20 bd ff	jsr $ffbd			jsr 	$FFBD
-.1d5c	68		pla				pla 								; set up the start address.
-.1d5d	85 2b		sta $2b				sta 	zTemp0+1
-.1d5f	64 2a		stz $2a				stz 	zTemp0
-.1d61	a9 2a		lda #$2a			lda 	#zTemp0 					; from index.
-.1d63	7a		ply				ply 								; end in YX
-.1d64	fa		plx				plx
-.1d65	20 d8 ff	jsr $ffd8			jsr 	$FFD8 						; write out.
-.1d68	60		rts				rts
-.1d69					SaveName:
->1d69	43 4f 44 45 2e 42 49 4e				.text 	"CODE.BIN"
+.1d63					XSaveMemory:
+.1d63	da		phx				phx
+.1d64	5a		phy				phy
+.1d65	48		pha				pha
+.1d66	a9 00		lda #$00			lda 	#0 							; set LFS
+.1d68	a2 08		ldx #$08			ldx 	#8
+.1d6a	a0 00		ldy #$00			ldy 	#0
+.1d6c	20 ba ff	jsr $ffba			jsr 	$FFBA
+.1d6f	a9 08		lda #$08			lda 	#8 							; set file name
+.1d71	a2 85		ldx #$85			ldx 	#SaveName & $FF
+.1d73	a0 1d		ldy #$1d			ldy 	#SaveName >> 8
+.1d75	20 bd ff	jsr $ffbd			jsr 	$FFBD
+.1d78	68		pla				pla 								; set up the start address.
+.1d79	85 2b		sta $2b				sta 	zTemp0+1
+.1d7b	64 2a		stz $2a				stz 	zTemp0
+.1d7d	a9 2a		lda #$2a			lda 	#zTemp0 					; from index.
+.1d7f	7a		ply				ply 								; end in YX
+.1d80	fa		plx				plx
+.1d81	20 d8 ff	jsr $ffd8			jsr 	$FFD8 						; write out.
+.1d84	60		rts				rts
+.1d85					SaveName:
+>1d85	43 4f 44 45 2e 42 49 4e				.text 	"CODE.BIN"
 
 ;******  Return to file: _blitz.asm
 
 
 ;******  Processing file: modules/common/boot.end/zzEnd.asm
 
-.1d71					EndProgram:
+.1d8d					EndProgram:
 
 ;******  Return to file: _blitz.asm
 

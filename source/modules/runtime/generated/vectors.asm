@@ -98,14 +98,18 @@ ShiftVectorTable:
 	.word	LinkFloatSine            ; $c589 sin
 	.word	LinkFloatTangent         ; $c58a tan
 	.word	LinkFloatArcTan          ; $c58b atn
-	.word	CommandRestore           ; $c58c restore
-	.word	CommandStop              ; $c58d stop
-	.word	CommandSYS               ; $c58e sys
-	.word	CommandTIWrite           ; $c58f ti$.write
-	.word	CommandWAIT              ; $c590 wait
-	.word	CommandBank              ; $c591 bank
-	.word	XCommandSleep            ; $c592 sleep
-	.word	CommandCls               ; $c593 cls
-	.word	CommandLocate            ; $c594 locate
-	.word	CommandColor             ; $c595 color
+	.word	XCommandMouse            ; $c58c mouse
+	.word	XUnaryMB                 ; $c58d mb
+	.word	XUnaryMX                 ; $c58e mx
+	.word	XUnaryMY                 ; $c58f my
+	.word	CommandRestore           ; $c590 restore
+	.word	CommandStop              ; $c591 stop
+	.word	CommandSYS               ; $c592 sys
+	.word	CommandTIWrite           ; $c593 ti$.write
+	.word	CommandWAIT              ; $c594 wait
+	.word	CommandBank              ; $c595 bank
+	.word	XCommandSleep            ; $c596 sleep
+	.word	CommandCls               ; $c597 cls
+	.word	CommandLocate            ; $c598 locate
+	.word	CommandColor             ; $c599 color
 	.send code

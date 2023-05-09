@@ -86,6 +86,7 @@ ismain_common = 0
 	.include	"modules/runtime/stack/location.asm"
 	.include	"modules/polynomials/unary/log.asm"
 	.include	"modules/polynomials/core/log_core.asm"
+	.include	"modules/x16_runtime/commands/mouse.asm"
 	.include	"modules/ifloat32/binary/mult8x8.asm"
 	.include	"modules/ifloat32/binary/multiply.asm"
 	.include	"modules/ifloat32/float/multiply.asm"
