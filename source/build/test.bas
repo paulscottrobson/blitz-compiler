@@ -1,3 +1,3 @@
-10 fminst 0,160
-20 fmplay 0,"ABC"
+10 screen 128
+20 rect 300,140,10,10,2
 40 stop
