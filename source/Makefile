@@ -34,7 +34,7 @@ RTMODULES = ifloat32 polynomials runtime $(HARDWARE)_runtime -o_runtime.asm -mru
 CMMODULES = compiler ifloat32 $(HARDWARE)_compiler -o_blitz.asm -mcompiler
 CAT = $(PYTHON) $(SCRIPTDIR)cat.py
 
-all: prelim compiler runtime parenthesis
+all: prelim compiler runtime 
 
 #
 #		Build the compiler
@@ -178,6 +178,7 @@ benchmark : prelim
 #
 prelim: 
 	$(CDEL) _*.asm
+	$(PYTHON) $(SCRIPTDIR)genx16.py
 	$(PYTHON) $(SCRIPTDIR)constants.py
 	$(PYTHON) $(SCRIPTDIR)mathconstants.py
 	$(PYTHON) $(SCRIPTDIR)coremaths.py
