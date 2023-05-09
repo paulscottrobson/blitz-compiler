@@ -1,5 +1,6 @@
 10 cls
-20 locate 10,2:color 3:print mid$("abcdef",2,3);
-30 locate 20:color 14,3:print mid$("abcdef",2);
-35 locate 1,1:print "*";
-40 goto 40
+20 vpoke 1,$B000,42
+25 vpoke 1,$B002,43
+28 locate 1,4
+29 print vpeek(1,$B002),vpeek(1,$B000)
+40 stop

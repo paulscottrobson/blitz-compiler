@@ -71,38 +71,39 @@ VectorTable:
 	.word	CommandOpen              ; $c1 open
 	.word	CommandScreen            ; $c2 screen
 	.word	CommandVPOKE             ; $c3 vpoke
-	.word	CommandShift             ; $c4 .shift
-	.word	PushByteCommand          ; $c5 .byte
-	.word	PushWordCommand          ; $c6 .word
-	.word	CommandPushN             ; $c7 .float
-	.word	CommandPushS             ; $c8 .string
-	.word	CommandData              ; $c9 .data
-	.word	CommandGoto              ; $ca .goto
-	.word	CommandGosub             ; $cb .gosub
-	.word	CommandGotoZ             ; $cc .goto.z
-	.word	CommandGotoNZ            ; $cd .goto.nz
-	.word	CommandVarSpace          ; $ce .varspace
+	.word	CommandVPEEK             ; $c4 vpeek
+	.word	CommandShift             ; $c5 .shift
+	.word	PushByteCommand          ; $c6 .byte
+	.word	PushWordCommand          ; $c7 .word
+	.word	CommandPushN             ; $c8 .float
+	.word	CommandPushS             ; $c9 .string
+	.word	CommandData              ; $ca .data
+	.word	CommandGoto              ; $cb .goto
+	.word	CommandGosub             ; $cc .gosub
+	.word	CommandGotoZ             ; $cd .goto.z
+	.word	CommandGotoNZ            ; $ce .goto.nz
+	.word	CommandVarSpace          ; $cf .varspace
 
 
 ShiftVectorTable:
-	.word	CommandClr               ; $c480 clr
-	.word	CommandDIM               ; $c481 dim
-	.word	CommandEnd               ; $c482 end
-	.word	LinkFloatIntegerPartDown ; $c483 int
-	.word	LinkFloatSquareRoot      ; $c484 sqr
-	.word	LinkFloatLogarithm       ; $c485 log
-	.word	LinkFloatExponent        ; $c486 exp
-	.word	LinkFloatCosine          ; $c487 cos
-	.word	LinkFloatSine            ; $c488 sin
-	.word	LinkFloatTangent         ; $c489 tan
-	.word	LinkFloatArcTan          ; $c48a atn
-	.word	CommandRestore           ; $c48b restore
-	.word	CommandStop              ; $c48c stop
-	.word	CommandSYS               ; $c48d sys
-	.word	CommandTIWrite           ; $c48e ti$.write
-	.word	CommandWAIT              ; $c48f wait
-	.word	CommandBank              ; $c490 bank
-	.word	CommandCls               ; $c491 cls
-	.word	CommandLocate            ; $c492 locate
-	.word	CommandColor             ; $c493 color
+	.word	CommandClr               ; $c580 clr
+	.word	CommandDIM               ; $c581 dim
+	.word	CommandEnd               ; $c582 end
+	.word	LinkFloatIntegerPartDown ; $c583 int
+	.word	LinkFloatSquareRoot      ; $c584 sqr
+	.word	LinkFloatLogarithm       ; $c585 log
+	.word	LinkFloatExponent        ; $c586 exp
+	.word	LinkFloatCosine          ; $c587 cos
+	.word	LinkFloatSine            ; $c588 sin
+	.word	LinkFloatTangent         ; $c589 tan
+	.word	LinkFloatArcTan          ; $c58a atn
+	.word	CommandRestore           ; $c58b restore
+	.word	CommandStop              ; $c58c stop
+	.word	CommandSYS               ; $c58d sys
+	.word	CommandTIWrite           ; $c58e ti$.write
+	.word	CommandWAIT              ; $c58f wait
+	.word	CommandBank              ; $c590 bank
+	.word	CommandCls               ; $c591 cls
+	.word	CommandLocate            ; $c592 locate
+	.word	CommandColor             ; $c593 color
 	.send code

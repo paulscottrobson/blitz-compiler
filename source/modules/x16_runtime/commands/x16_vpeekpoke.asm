@@ -42,6 +42,30 @@ CommandVPOKE: ;; [vpoke]
 
 		.exitcmd
 
+; ************************************************************************************************
+;
+;								VPOKE bank,address,data
+;
+; ************************************************************************************************
+
+CommandVPEEK: ;; [vpeek]
+		.entercmd
+
+		.floatinteger 						; address (MED/LO)
+		lda 	NSMantissa0,x
+		sta 	VRAMLow0
+		lda 	NSMantissa1,x
+		sta 	VRAMMed0
+		dex
+
+		.floatinteger 						; address (HI)
+		jsr 	GetInteger8Bit
+		sta 	VRAMHigh0
+
+		lda 	VRAMData0					; read data
+		jsr 	FloatSetByte 				; return as byte
+		.exitcmd
+
 		.send code
 
 ; ************************************************************************************************

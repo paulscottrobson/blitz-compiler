@@ -21,7 +21,16 @@
 XPokeMemory:
 		stx 	zTemp0
 		sty 	zTemp0+1
-		sta 	(zTemp0)
+
+		ldy 	SelectRAMBank 				; old RAM bank in Y
+		ldx 	ramBank 					; switch to BANKed RAMBank if not $FF
+		cpx 	#$FF
+		beq 	_XPMNoSwitch
+		stx 	SelectRAMBank
+_XPMNoSwitch:
+		sta 	(zTemp0) 					; do the POKE
+		sty 	SelectRAMBank 				; reselect previous RAM Bank.		
+_XPMExit:
 		rts
 
 ; ************************************************************************************************
@@ -33,8 +42,17 @@ XPokeMemory:
 XPeekMemory:
 		stx 	zTemp0
 		sty 	zTemp0+1
-		lda 	(zTemp0)
+
+		ldy 	SelectRAMBank 				; old RAM bank in Y
+		ldx 	ramBank 					; switch to BANKed RAMBank if not $FF
+		cpx 	#$FF
+		beq 	_XPMNoSwitch
+		stx 	SelectRAMBank
+_XPMNoSwitch:
+		lda 	(zTemp0) 					; do the PEEK
+		sty 	SelectRAMBank 				; reselect previous RAM bank.
 		rts
+
 
 ; ************************************************************************************************
 ;

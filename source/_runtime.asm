@@ -150,5 +150,5 @@ ismain_common = 0
 	.include	"modules/x16_runtime/interface/x16_readwriteclock.asm"
 	.include	"modules/x16_runtime/commands/x16_screen.asm"
 	.include	"modules/x16_runtime/commands/x16_text.asm"
-	.include	"modules/x16_runtime/commands/x16_vpoke.asm"
+	.include	"modules/x16_runtime/commands/x16_vpeekpoke.asm"
 	.include	"modules/common/boot.end/zzEnd.asm"
