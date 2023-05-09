@@ -92,8 +92,30 @@ Command_FRAME: ;; [frame]
 Command_CHAR: ;; [char]
 		.entercmd
 		phy
-
-		
+		dex  								; set the draw colour
+		jsr 	GraphicsColour
+		ldx 	#0 							; copy 0/1 to r0,r1
+		ldy 	#X16_r0
+		jsr 	GraphicsCopy2
+		;
+		lda 	NSMantissa0+3 				; copy string address to zTemp0
+		sta 	zTemp0
+		lda 	NSMantissa1+3
+		sta 	zTemp0+1
+		lda 	(zTemp0) 					; count of chars to zTemp1
+		sta 	zTemp1
+_CCLoop:
+		lda 	zTemp1 						; done all chars ?
+		beq 	_CCExit
+		dec 	zTemp1 						; dec counter		
+		inc 	zTemp0 						; pre-bump pointer
+		bne 	_CCNoCarry
+		inc 	zTemp0+1
+_CCNoCarry:
+		lda 	(zTemp0) 					; get character 
+		jsr 	X16_GRAPH_put_char 			; write it
+		bra 	_CCLoop						; go round.
+_CCExit:		
 		ply
 		ldx 	#$FF
 		.exitcmd
