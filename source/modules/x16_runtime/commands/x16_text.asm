@@ -32,6 +32,10 @@ CommandCls: ;; [!cls]
 
 CommandLocate: ;; [!locate]
 		.entercmd
+		.floatinteger 						; make everything integer
+		dex
+		.floatinteger
+		dex
 		lda 	#$13 						; home.
 		jsr 	XPrintCharacterToChannel
 		lda 	#$1D 						; do cursor rights
@@ -40,7 +44,6 @@ CommandLocate: ;; [!locate]
 		lda 	#$11 						; do cursor downs.
 		ldx 	NSMantissa0+1
 		jsr 	_CLOutputXA
-		ldx 	#$FF
 		.exitcmd
 
 _CLOutputXA: 								; output X A's, 1 based.
@@ -60,6 +63,10 @@ _CLOExit:
 
 CommandColor: ;; [!color]
 		.entercmd
+		.floatinteger 						; make everything integer
+		dex
+		.floatinteger
+		dex
 		lda 	NSMantissa0+1 				; bgr specified
 		cmp 	#$FF  				
 		beq 	_CCNoBGR 					; if so, change background
@@ -69,7 +76,6 @@ CommandColor: ;; [!color]
 _CCNoBGR:
 		lda 	NSMantissa0
 		jsr 	_CCSetColour		
-		ldx 	#$FF
 		.exitcmd
 
 _CCSetColour:

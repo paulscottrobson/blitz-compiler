@@ -103,7 +103,8 @@ ShiftVectorTable:
 	.word	CommandTIWrite           ; $c58e ti$.write
 	.word	CommandWAIT              ; $c58f wait
 	.word	CommandBank              ; $c590 bank
-	.word	CommandCls               ; $c591 cls
-	.word	CommandLocate            ; $c592 locate
-	.word	CommandColor             ; $c593 color
+	.word	XCommandSleep            ; $c591 sleep
+	.word	CommandCls               ; $c592 cls
+	.word	CommandLocate            ; $c593 locate
+	.word	CommandColor             ; $c594 color
 	.send code
