@@ -46,6 +46,15 @@ compiler: prelim
 	$(CDEL) CODE.BIN
 	$(CDEL) $(BTEMP)cout.bin
 #
+#		Build the runtime
+#
+runtime:prelim
+	$(PYTHON) $(SCRIPTDIR)build.py $(RTMODULES) 
+	$(CDEL) WTEST*
+	$(ASM) $(ASMOPTS) _runtime.asm -o $(BUILD)runtime.prg -L $(BUILD)rcode.lst -l $(BUILD)code.lbl 
+	$(CCOPY) $(BUILD)runtime.prg $(BINDIR)
+	$(CDEL) dump*.bin
+#
 #		Convert basic code to tokenised form
 #
 basic:
@@ -92,16 +101,6 @@ grun: crun runtime
 	$(CAT) $(BUILD)runtime.prg $(BTEMP)cout.bin $(BTEMP)pcodebin.prg
 	$(CDEL) dump*.bin
 	$(TIME) $(RUNEMU) -gif $(BTEMP)blitz.gif -prg $(BTEMP)pcodebin.prg,801 -run 
-#
-#		Build the runtime
-#
-runtime:prelim
-	$(PYTHON) $(SCRIPTDIR)build.py $(RTMODULES) 
-	$(CDEL) WTEST*
-	$(ASM) $(ASMOPTS) _runtime.asm -o $(BUILD)runtime.prg
-	$(ASM) $(ASMOPTS) _blitz.asm -o $(BUILD)blitz.prg -L $(BUILD)rcode.lst -l $(BUILD)code.lbl 
-	$(CCOPY) $(BUILD)runtime.prg $(BINDIR)
-	$(CDEL) dump*.bin
 #
 #		Build the compiled ocode
 #
