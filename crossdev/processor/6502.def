@@ -3,7 +3,7 @@
 //
 //		Name : 		6502.def
 //		Purpose :	6502 source code.
-//		Date :		15th April 2023
+//		Date :		10th May 2023
 //		Author : 	Paul Robson (paul@robsons.org.uk)
 //
 // *******************************************************************************************
@@ -11,11 +11,12 @@
 //
 //		Read(addr)
 //		Write(addr)
-//		ReadWord(addr)
-//
 //		Fetch()
+//
+//		ReadWord(addr)
 //		FetchWord()
 //
+// *******************************************************************************************
 
 :static BYTE8 temp8;
 :static WORD16 eac,temp16;
@@ -89,6 +90,13 @@
 :	zValue = (n & a);
 :	sValue = n & 0x80;
 :	overflowFlag = (n & 0x40) ? 1 : 0;
+:}
+
+:static void trsbCode(WORD16 eac,BYTE8 set) {
+:	BYTE8 n = Read(eac);
+:	zValue = (n & a);
+:	n = set ? (n | a) : (n & (a^0xFF));
+:	Write(eac,n);
 :}
 
 :static BYTE8 add8Bit(BYTE8 n1,BYTE8 n2,BYTE8 isDecimalMode) {
@@ -178,6 +186,12 @@
 
 "ror a"		2 	6A																
 		a = rorCode(a)
+
+"rmb% @O" 	4 	(Z:07)
+		@EAC;temp8 = Read(eac)&((1 << %)^0xFF);Write(eac,temp8)
+
+"smb% @O" 	4 	(Z:87)
+		@EAC;temp8 = Read(eac)|(1 << %);Write(eac,temp8)
 
 :static BYTE8 aslCode(BYTE8 n) {
 :	carryFlag = (n >> 7);

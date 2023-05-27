@@ -5,6 +5,12 @@ static void bitCode(BYTE8 n) {
  sValue = n & 0x80;
  overflowFlag = (n & 0x40) ? 1 : 0;
 }
+static void trsbCode(WORD16 eac,BYTE8 set) {
+ BYTE8 n = Read(eac);
+ zValue = (n & a);
+ n = set ? (n | a) : (n & (a^0xFF));
+ Write(eac,n);
+}
 static BYTE8 add8Bit(BYTE8 n1,BYTE8 n2,BYTE8 isDecimalMode) {
  WORD16 result;
   BYTE8 r,t;

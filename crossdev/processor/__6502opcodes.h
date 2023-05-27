@@ -8,6 +8,8 @@ case 0x05: /* $05 ora @1 */
 	Cycles(3);eac = Fetch();sValue = zValue = a = a | Read(eac);break;
 case 0x06: /* $06 asl @1 */
 	Cycles(5);eac = Fetch(); Write(eac,aslCode(Read(eac)));break;
+case 0x07: /* $07 rmb0 @1 */
+	Cycles(3);eac = Fetch();temp8 = Read(eac)&((1 << 0)^0xFF);Write(eac,temp8);break;
 case 0x08: /* $08 php */
 	Cycles(3);Push(constructFlagRegister());break;
 case 0x09: /* $09 ora #@1 */
@@ -34,6 +36,8 @@ case 0x15: /* $15 ora @1,x */
 	Cycles(4);eac = (Fetch()+x) & 0xFF;sValue = zValue = a = a | Read(eac);break;
 case 0x16: /* $16 asl @1,x */
 	Cycles(6);eac = (Fetch()+x) & 0xFF; Write(eac,aslCode(Read(eac)));break;
+case 0x17: /* $17 rmb1 @1 */
+	Cycles(3);eac = Fetch();temp8 = Read(eac)&((1 << 1)^0xFF);Write(eac,temp8);break;
 case 0x18: /* $18 clc */
 	Cycles(2);carryFlag = 0;break;
 case 0x19: /* $19 ora @2,y */
@@ -58,6 +62,8 @@ case 0x25: /* $25 and @1 */
 	Cycles(3);eac = Fetch(); a = a & Read(eac) ; sValue = zValue = a;break;
 case 0x26: /* $26 rol @1 */
 	Cycles(3);eac = Fetch(); Write(eac,rolCode(Read(eac)));break;
+case 0x27: /* $27 rmb2 @1 */
+	Cycles(3);eac = Fetch();temp8 = Read(eac)&((1 << 2)^0xFF);Write(eac,temp8);break;
 case 0x28: /* $28 plp */
 	Cycles(4);explodeFlagRegister(Pop());break;
 case 0x29: /* $29 and #@1 */
@@ -84,6 +90,8 @@ case 0x35: /* $35 and @1,x */
 	Cycles(4);eac = (Fetch()+x) & 0xFF; a = a & Read(eac) ; sValue = zValue = a;break;
 case 0x36: /* $36 rol @1,x */
 	Cycles(4);eac = (Fetch()+x) & 0xFF; Write(eac,rolCode(Read(eac)));break;
+case 0x37: /* $37 rmb3 @1 */
+	Cycles(3);eac = Fetch();temp8 = Read(eac)&((1 << 3)^0xFF);Write(eac,temp8);break;
 case 0x38: /* $38 sec */
 	Cycles(2);carryFlag = 1;break;
 case 0x39: /* $39 and @2,y */
@@ -106,6 +114,8 @@ case 0x45: /* $45 eor @1 */
 	Cycles(3);eac = Fetch();sValue = zValue = a = a ^ Read(eac);break;
 case 0x46: /* $46 lsr @1 */
 	Cycles(3);eac = Fetch(); Write(eac,lsrCode(Read(eac)));break;
+case 0x47: /* $47 rmb4 @1 */
+	Cycles(3);eac = Fetch();temp8 = Read(eac)&((1 << 4)^0xFF);Write(eac,temp8);break;
 case 0x48: /* $48 pha */
 	Cycles(3);Push(a);break;
 case 0x49: /* $49 eor #@1 */
@@ -130,6 +140,8 @@ case 0x55: /* $55 eor @1,x */
 	Cycles(4);eac = (Fetch()+x) & 0xFF;sValue = zValue = a = a ^ Read(eac);break;
 case 0x56: /* $56 lsr @1,x */
 	Cycles(4);eac = (Fetch()+x) & 0xFF; Write(eac,lsrCode(Read(eac)));break;
+case 0x57: /* $57 rmb5 @1 */
+	Cycles(3);eac = Fetch();temp8 = Read(eac)&((1 << 5)^0xFF);Write(eac,temp8);break;
 case 0x58: /* $58 cli */
 	Cycles(2);interruptDisableFlag = 0;break;
 case 0x59: /* $59 eor @2,y */
@@ -152,6 +164,8 @@ case 0x65: /* $65 adc @1 */
 	Cycles(3);eac = Fetch();sValue = zValue = a = add8Bit(a,Read(eac),decimalFlag);break;
 case 0x66: /* $66 ror @1 */
 	Cycles(3);eac = Fetch(); Write(eac,rorCode(Read(eac)));break;
+case 0x67: /* $67 rmb6 @1 */
+	Cycles(3);eac = Fetch();temp8 = Read(eac)&((1 << 6)^0xFF);Write(eac,temp8);break;
 case 0x68: /* $68 pla */
 	Cycles(4);a = sValue = zValue = Pop();break;
 case 0x69: /* $69 adc #@1 */
@@ -178,6 +192,8 @@ case 0x75: /* $75 adc @1,x */
 	Cycles(4);eac = (Fetch()+x) & 0xFF;sValue = zValue = a = add8Bit(a,Read(eac),decimalFlag);break;
 case 0x76: /* $76 ror @1,x */
 	Cycles(4);eac = (Fetch()+x) & 0xFF; Write(eac,rorCode(Read(eac)));break;
+case 0x77: /* $77 rmb7 @1 */
+	Cycles(3);eac = Fetch();temp8 = Read(eac)&((1 << 7)^0xFF);Write(eac,temp8);break;
 case 0x78: /* $78 sei */
 	Cycles(2);interruptDisableFlag = 1;break;
 case 0x79: /* $79 adc @2,y */
@@ -202,6 +218,8 @@ case 0x85: /* $85 sta @1 */
 	Cycles(3);eac = Fetch();Write(eac,a);break;
 case 0x86: /* $86 stx @1 */
 	Cycles(3);eac = Fetch();Write(eac,x);break;
+case 0x87: /* $87 smb0 @1 */
+	Cycles(3);eac = Fetch();temp8 = Read(eac)|(1 << 0);Write(eac,temp8);break;
 case 0x88: /* $88 dey */
 	Cycles(2);sValue = zValue = y = (y - 1) & 0xFF;break;
 case 0x89: /* $89 bit #@1 */
@@ -228,6 +246,8 @@ case 0x95: /* $95 sta @1,x */
 	Cycles(4);eac = (Fetch()+x) & 0xFF;Write(eac,a);break;
 case 0x96: /* $96 stx @1,y */
 	Cycles(4);eac = (Fetch()+y) & 0xFF;Write(eac,x);break;
+case 0x97: /* $97 smb1 @1 */
+	Cycles(3);eac = Fetch();temp8 = Read(eac)|(1 << 1);Write(eac,temp8);break;
 case 0x98: /* $98 tya */
 	Cycles(2);sValue = zValue = a = y;break;
 case 0x99: /* $99 sta @2,y */
@@ -254,6 +274,8 @@ case 0xa5: /* $a5 lda @1 */
 	Cycles(3);eac = Fetch();a = sValue = zValue = Read(eac);break;
 case 0xa6: /* $a6 ldx @1 */
 	Cycles(3);eac = Fetch();x = sValue = zValue = Read(eac);break;
+case 0xa7: /* $a7 smb2 @1 */
+	Cycles(3);eac = Fetch();temp8 = Read(eac)|(1 << 2);Write(eac,temp8);break;
 case 0xa8: /* $a8 tay */
 	Cycles(2);sValue = zValue = y = a;break;
 case 0xa9: /* $a9 lda #@1 */
@@ -280,6 +302,8 @@ case 0xb5: /* $b5 lda @1,x */
 	Cycles(4);eac = (Fetch()+x) & 0xFF;a = sValue = zValue = Read(eac);break;
 case 0xb6: /* $b6 ldx @1,y */
 	Cycles(4);eac = (Fetch()+y) & 0xFF;x = sValue = zValue = Read(eac);break;
+case 0xb7: /* $b7 smb3 @1 */
+	Cycles(3);eac = Fetch();temp8 = Read(eac)|(1 << 3);Write(eac,temp8);break;
 case 0xb8: /* $b8 clv */
 	Cycles(2);overflowFlag = 0;break;
 case 0xb9: /* $b9 lda @2,y */
@@ -304,6 +328,8 @@ case 0xc5: /* $c5 cmp @1 */
 	Cycles(3);eac = Fetch();carryFlag = 1;sValue = zValue = sub8Bit(a,Read(eac),0);break;
 case 0xc6: /* $c6 dec @1 */
 	Cycles(5);eac = Fetch();sValue = zValue = (Read(eac)-1) & 0xFF; Write(eac,sValue);break;
+case 0xc7: /* $c7 smb4 @1 */
+	Cycles(3);eac = Fetch();temp8 = Read(eac)|(1 << 4);Write(eac,temp8);break;
 case 0xc8: /* $c8 iny */
 	Cycles(2);sValue = zValue = y = (y + 1) & 0xFF;break;
 case 0xc9: /* $c9 cmp #@1 */
@@ -328,6 +354,8 @@ case 0xd5: /* $d5 cmp @1,x */
 	Cycles(4);eac = (Fetch()+x) & 0xFF;carryFlag = 1;sValue = zValue = sub8Bit(a,Read(eac),0);break;
 case 0xd6: /* $d6 dec @1,x */
 	Cycles(6);eac = (Fetch()+x) & 0xFF;sValue = zValue = (Read(eac)-1) & 0xFF; Write(eac,sValue);break;
+case 0xd7: /* $d7 smb5 @1 */
+	Cycles(3);eac = Fetch();temp8 = Read(eac)|(1 << 5);Write(eac,temp8);break;
 case 0xd8: /* $d8 cld */
 	Cycles(2);decimalFlag = 0;break;
 case 0xd9: /* $d9 cmp @2,y */
@@ -350,6 +378,8 @@ case 0xe5: /* $e5 sbc @1 */
 	Cycles(3);eac = Fetch();sValue = zValue = a = sub8Bit(a,Read(eac),decimalFlag);break;
 case 0xe6: /* $e6 inc @1 */
 	Cycles(5);eac = Fetch();sValue = zValue = (Read(eac)+1) & 0xFF; Write(eac, sValue);break;
+case 0xe7: /* $e7 smb6 @1 */
+	Cycles(3);eac = Fetch();temp8 = Read(eac)|(1 << 6);Write(eac,temp8);break;
 case 0xe8: /* $e8 inx */
 	Cycles(2);sValue = zValue = x = (x + 1) & 0xFF;break;
 case 0xe9: /* $e9 sbc #@1 */
@@ -374,6 +404,8 @@ case 0xf5: /* $f5 sbc @1,x */
 	Cycles(4);eac = (Fetch()+x) & 0xFF;sValue = zValue = a = sub8Bit(a,Read(eac),decimalFlag);break;
 case 0xf6: /* $f6 inc @1,x */
 	Cycles(6);eac = (Fetch()+x) & 0xFF;sValue = zValue = (Read(eac)+1) & 0xFF; Write(eac, sValue);break;
+case 0xf7: /* $f7 smb7 @1 */
+	Cycles(3);eac = Fetch();temp8 = Read(eac)|(1 << 7);Write(eac,temp8);break;
 case 0xf8: /* $f8 sed */
 	Cycles(2);decimalFlag = 1;break;
 case 0xf9: /* $f9 sbc @2,y */
