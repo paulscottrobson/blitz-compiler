@@ -7,11 +7,11 @@ rem 	*********************************************************
 rem
 rem		Convert the test.bas source file to a tokenised format
 rem
-python3 tokenise.py test.bas temp\test.prg
+python tokenise.py test.bas temp\test.prg
 rem
 rem		Concatenate to the compiler
 rem
-python3 cat.py blitz.prg temp\test.prg temp\compile.prg
+python cat.py blitz.prg temp\test.prg temp\compile.prg
 rem
 rem		Delete the old object file, code.bin and the dump file from the emulator
 rem

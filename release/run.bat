@@ -7,7 +7,7 @@ rem 	*********************************************************
 rem
 rem		Concatenate the p-code to the runtime
 rem
-python3 cat.py runtime.prg temp\pcode.bin temp\runnable.prg
+python cat.py runtime.prg temp\pcode.bin temp\runnable.prg
 rem
 rem		Delete the dump file from the emulator
 rem

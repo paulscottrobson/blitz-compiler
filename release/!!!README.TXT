@@ -2,19 +2,52 @@
 											Welcome to Blitz X16 early Alpha release
 											========================================
 
+------------
 Introduction
 ------------
+
 This is very similar to Blitz on the C64 ; it converts tokenised BASIC to a pseudo code which 
 is subsequently interpreted. Hopefully it will eventually compile almost all BASIC programs.
 
-Scripts are provided to compile and run BASIC programs. The interface is currently primitive, 
-source is appended to the compiler (blitz.prg), and run to compile it (compile.sh/bat) ; this output 
-(pcode.bin) is then appended to the runtime (runtime.prg) and run (run.sh/bat).  Both of these 
-leverage the emulator to do this. 
-
 Python3 is a prerequisite. I think everything else is in the release directory.
 
-This is not the final interface, which will hopefully be reasonably closely integrated in the machine.
+---------------------------------------------------------------------------------------------------------
+
+--------------
+Making it work
+--------------
+
+The compilation process is currently very "old school". It is not integrated into the system at all. 
+
+It is run either from a Windows command prompt, or from a Linux Shell.
+
+The source file is "test.bas". This is a (slightly) modified version of David Murray's "Balls" demo.
+
+I would check it is working by varying the first line which sets the number of displayed balls. This 
+demo definitely works on Windows/Linux.
+
+-----------
+First Check
+-----------
+Check the include x16 emulator works (either ./x16emu or x16emu.exe) ; it should start as normal.
+
+-------
+Compiling
+-------
+To compile it, run either compile.sh (Linux) or compile.bat (Windows). I do not own a Mac so cannot 
+test it but it probably will work (!)
+
+The X16 emulator should appear and quickly disappear.
+
+This creates an program file temp/pcode.bin which is the pseudo-code for the program.
+
+-------
+Running
+-------
+To run it, run either run.sh (Linux) or run.bat (Windows). This creates the final executable and runs
+it.
+
+---------------------------------------------------------------------------------------------------------
 
 Notes
 -----
@@ -33,9 +66,6 @@ embedded machine code.
 
 The speed increase varies but probably will be of the range 4-8 times. Things like floating point aren't
 any quicker because you are still using a 6502. Something like 'balls' which uses integers works better.
-
-It doesn't support most X16 commands (at the time of writing VPOKE HEX$ SCREEN BIN$ work) and these will
-be progressively added. 
 
 I have included TODO so you can see what does and doesn't work. Some things aren't worth doing or have
 no real point ; things like GEOS, OLD, LIST, MON don't make a lot of sense in a compiled context.
