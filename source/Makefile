@@ -41,7 +41,7 @@ all: prelim compiler runtime
 #		
 compiler: prelim
 	$(PYTHON) $(SCRIPTDIR)build.py $(CMMODULES) 
-	$(ASM) $(ASMOPTS) _blitz.asm -o $(BUILD)blitz.prg -L $(BUILD)ccode.lst -l $(BUILD)ccode.lbl 
+	$(ASM) $(ASMOPTS) _blitz.asm -o $(BUILD)blitz.prg -L $(BUILD)ccode.lst -l $(BUILD)code.lbl 
 	$(CDEL) dump.bin
 	$(CDEL) CODE.BIN
 	$(CDEL) $(BTEMP)cout.bin
@@ -99,7 +99,7 @@ runtime:prelim
 	$(PYTHON) $(SCRIPTDIR)build.py $(RTMODULES) 
 	$(CDEL) WTEST*
 	$(ASM) $(ASMOPTS) _runtime.asm -o $(BUILD)runtime.prg
-	$(ASM) $(ASMOPTS) _blitz.asm -o $(BUILD)blitz.prg -L $(BUILD)rcode.lst -l $(BUILD)rcode.lbl 
+	$(ASM) $(ASMOPTS) _blitz.asm -o $(BUILD)blitz.prg -L $(BUILD)rcode.lst -l $(BUILD)code.lbl 
 	$(CCOPY) $(BUILD)runtime.prg $(BINDIR)
 	$(CDEL) dump*.bin
 #
