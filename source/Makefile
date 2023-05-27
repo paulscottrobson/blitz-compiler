@@ -20,7 +20,7 @@ endif
 BINDIR = ..$(S)bin$(S)
 SCRIPTDIR = scripts$(S)
 ASMCTRLS = -q -Wall -c -C 
-ASMOPTS =  $(ASMCTRLS) -L $(BUILD)code.lst -l $(BUILD)code.lbl 
+ASMOPTS =  $(ASMCTRLS) 
 EMULATOR = $(BINDIR)x16emu$(APPSTEM) # -zeroram
 RUNEMU = $(EMULATOR) -rom $(BINDIR)rom.bin -keymap en-gb -dump R -scale 2 -rtc -debug 
 HRUNEMU = $(RUNEMU) -testbench 
@@ -41,7 +41,7 @@ all: prelim compiler runtime
 #		
 compiler: prelim
 	$(PYTHON) $(SCRIPTDIR)build.py $(CMMODULES) 
-	$(ASM) $(ASMOPTS) _blitz.asm -o $(BUILD)blitz.prg
+	$(ASM) $(ASMOPTS) _blitz.asm -o $(BUILD)blitz.prg -L $(BUILD)ccode.lst -l $(BUILD)ccode.lbl 
 	$(CDEL) dump.bin
 	$(CDEL) CODE.BIN
 	$(CDEL) $(BTEMP)cout.bin
@@ -99,6 +99,7 @@ runtime:prelim
 	$(PYTHON) $(SCRIPTDIR)build.py $(RTMODULES) 
 	$(CDEL) WTEST*
 	$(ASM) $(ASMOPTS) _runtime.asm -o $(BUILD)runtime.prg
+	$(ASM) $(ASMOPTS) _blitz.asm -o $(BUILD)blitz.prg -L $(BUILD)rcode.lst -l $(BUILD)rcode.lbl 
 	$(CCOPY) $(BUILD)runtime.prg $(BINDIR)
 	$(CDEL) dump*.bin
 #

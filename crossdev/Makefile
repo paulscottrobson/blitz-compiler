@@ -27,10 +27,10 @@ CC = g++
 all: emulator
 
 run: emulator
-	$(EMULATOR)
+	..$(S)bin$(S)$(APPNAME) binaries/runcompiler.prg@7FF
 	
 emulator: prebuild $(APPNAME)
-	$(CCOPY) $(APPNAME) ..$(S)bin
+	$(CCOPY) $(APPNAME) ..$(S)bin 
 	
 %.o:%.cpp
 	$(CC) $(CADDRESSES) $(CXXFLAGS) -D INCLUDE_DEBUGGING_SUPPORT -I cpu -I framework -I include -c -o $@ $<
@@ -46,3 +46,9 @@ $(APPNAME): $(SOURCES)
 prebuild:
 	make -C processor
 	make -C keyboard
+
+compiler:
+	make -B -C ../source all basic
+	$(CCOPY) ../source/build/blitz.prg binaries
+	$(CCOPY) ../source/build/runtime.prg binaries
+	$(CCOPY) ../source/build/temp/runcompiler.prg binaries

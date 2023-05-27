@@ -89,7 +89,7 @@ void CPUSaveArguments(int argc,char *argv[]) {
 
 void CPUReset(void) {
 	HWReset();																		// Reset Hardware
-	Write(0xFFFC,0);Write(0xFFFD,0x10);												// Boot to $1000 if no
+	Write(0xFFFC,0x01);Write(0xFFFD,0x08);												// Boot to $1000 if no
 
 	for (int i = 1;i < argumentCount;i++) {
 		char szBuffer[128];
