@@ -7,7 +7,7 @@
 #
 #		Convert the test.bas source file to a tokenised format
 #
-python3 tokenise.py test.bas temp/test.prg
+python3 tokenise.zip test.bas temp/test.prg
 #
 #		Concatenate to the compiler
 #

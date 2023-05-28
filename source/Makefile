@@ -55,10 +55,18 @@ runtime:prelim
 	$(CCOPY) $(BUILD)runtime.prg $(BINDIR)
 	$(CDEL) dump*.bin
 #
+#		Tokenise app
+#
+tokapp:
+	$(CCOPY) scripts$(S)tokenise.py __main__.py
+	zip -j tokenise.zip __main__.py scripts$(S)c64tokens.py
+	$(CCOPY) tokenise.zip $(BINDIR)
+	$(CDEL) __main__.py
+#
 #		Convert basic code to tokenised form
 #
-basic:
-	$(PYTHON) $(SCRIPTDIR)tokenise.py  $(BUILD)test.bas $(BTEMP)basic_code.bin
+basic:tokapp
+	$(PYTHON) $(BINDIR)tokenise.zip  $(BUILD)test.bas $(BTEMP)basic_code.bin
 	$(CAT) $(BUILD)blitz.prg $(BTEMP)basic_code.bin $(BTEMP)runcompiler.prg
 #
 #		Hex dump of BASIC code tokenised
@@ -121,8 +129,7 @@ release: runtime compiler
 	$(CCOPY) $(BUILD)blitz.prg $(RELEASE) 
 	$(CCOPY) $(BINDIR)x16emu $(RELEASE)
 	$(CCOPY) $(BINDIR)rom.bin $(RELEASE)
-	$(CCOPY) $(SCRIPTDIR)tokenise.py $(RELEASE)
-	$(CCOPY) $(SCRIPTDIR)c64tokens.py $(RELEASE)
+	$(CCOPY) $(BINDIR)tokenise.zip $(RELEASE)
 	$(CCOPY) $(SCRIPTDIR)cat.py $(RELEASE)
 	$(CCOPY) ..$(S)TODO $(RELEASE)
 	$(CDEL) $(RELEASE)release.zip
@@ -191,7 +198,7 @@ prelim:
 #
 #		Update tools
 #	
-tools: 
+tools: tokapp
 	cd $(EMU_REPO) ; git pull ; make
 	cd $(ROM_REPO) ; git pull ; make
 	$(CCOPY) $(EMU_REPO)$(S)x16emu$(APPSTEM) $(BINDIR)

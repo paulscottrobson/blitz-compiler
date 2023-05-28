@@ -7,7 +7,7 @@ rem 	*********************************************************
 rem
 rem		Convert the test.bas source file to a tokenised format
 rem
-python tokenise.py test.bas temp\test.prg
+python tokenise.zip test.bas temp\test.prg
 rem
 rem		Concatenate to the compiler
 rem
