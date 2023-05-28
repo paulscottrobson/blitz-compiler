@@ -89,26 +89,36 @@ void CPUSaveArguments(int argc,char *argv[]) {
 
 void CPUReset(void) {
 	HWReset();																		// Reset Hardware
-	Write(0xFFFC,0x01);Write(0xFFFD,0x08);												// Boot to $1000 if no
+	Write(0xFFFC,0x01);Write(0xFFFD,0x08);											// Boot to $1000 if no
+
+	Write(0xFFD2,0x03);Write(0xFFD3,0x60);											// Char out
+	Write(0xFFBA,0x60);Write(0xFFBB,0x60); 											// Set LFS
+	Write(0xFFBD,0x60);Write(0xFFBE,0x60);											// Set Name
+	Write(0xFFD8,0xDB);Write(0xFFD9,0x60);											// Save
+
+	int loadAddress = 0x801;
 
 	for (int i = 1;i < argumentCount;i++) {
 		char szBuffer[128];
-		int loadAddress;
 		strcpy(szBuffer,argumentList[i]);											// Get buffer
 		
 		char *p = strchr(szBuffer,'@');
 		if (p == NULL) exit(fprintf(stderr,"Bad argument %s\n",argumentList[i]));
 		*p++ = '\0';
-		if (sscanf(p,"%x",&loadAddress) != 1) exit(fprintf(stderr,"Bad argument %s\n",argumentList[i]));
+		if (*p != '\0') {															// Can just do file@ adds on.
+			if (sscanf(p,"%x",&loadAddress) != 1) exit(fprintf(stderr,"Bad argument %s\n",argumentList[i]));
+		}
 		printf("Loading '%s' to $%06x ..",szBuffer,loadAddress);
 		FILE *f = fopen(szBuffer,"rb");
 		if (f == NULL) exit(fprintf(stderr,"No file %s\n",argumentList[i]));
-		while (!feof(f) && loadAddress < MEMSIZE) {
-			ramMemory[loadAddress++] = fgetc(f);
+		int c;
+		while (c = fgetc(f),c >= 0 && loadAddress < MEMSIZE) {
+			ramMemory[loadAddress++] = c;
 		}
 		fclose(f);
 		printf("Okay\n");		
 	}
+	printf("Loaded to %06x\n",loadAddress);
 	inFastMode = 0;																	// Fast mode flag reset
 	resetProcessor();																// Reset CPU
 }
@@ -134,6 +144,9 @@ BYTE8 CPUExecuteInstruction(void) {
 	BYTE8 opcode = Fetch();															// Fetch opcode.
 	switch(opcode) {																// Execute it.
 		#include "6502/__6502opcodes.h"
+
+		case 0x03:
+			printf("%c",a);break;
 	}
 	int cycleMax = inFastMode ? CYCLES_PER_FRAME*10:CYCLES_PER_FRAME; 		
 	if (cycles < cycleMax) return 0;												// Not completed a frame.

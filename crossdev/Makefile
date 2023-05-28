@@ -27,6 +27,9 @@ CC = g++
 all: emulator
 
 run: emulator
+	..$(S)bin$(S)$(APPNAME) binaries/blitz.prg@7FF binaries/basic_code.bin@
+
+run2: emulator
 	..$(S)bin$(S)$(APPNAME) binaries/runcompiler.prg@7FF
 	
 emulator: prebuild $(APPNAME)

@@ -45,8 +45,9 @@ _EHDisplayLine:
 		iny
 		lda 	decimalBuffer,y
 		bne 	_EHDisplayLine
-
-_EHStop:bra 	_EHStop
+		lda 	#13
+		jsr 	XPrintCharacter
+		jmp 	ExitCompiler
 						
 		.send code
 
