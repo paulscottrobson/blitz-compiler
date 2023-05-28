@@ -122,19 +122,6 @@ debugpcode: runtime prelim pcode
 	$(CAT) $(BUILD)runtime.prg $(BTEMP)pcodebin.bin $(BTEMP)pcodebin.prg
 	$(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
 #
-#		Build / Copy relevant files to Release
-#	
-release: runtime compiler
-	$(CCOPY) $(BUILD)runtime.prg $(RELEASE)
-	$(CCOPY) $(BUILD)blitz.prg $(RELEASE) 
-	$(CCOPY) $(BINDIR)x16emu $(RELEASE)
-	$(CCOPY) $(BINDIR)rom.bin $(RELEASE)
-	$(CCOPY) $(BINDIR)tokenise.zip $(RELEASE)
-	$(CCOPY) $(SCRIPTDIR)cat.py $(RELEASE)
-	$(CCOPY) ..$(S)TODO $(RELEASE)
-	$(CDEL) $(RELEASE)release.zip
-	cd $(RELEASE) ; zip -r release.zip *
-#
 #		A test_pcode.py run
 #	
 tpcode: prelim
@@ -196,9 +183,9 @@ prelim:
 	$(PYTHON) $(SCRIPTDIR)vectors.py $(RTMODULES) >modules$(S)runtime$(S)generated$(S)vectors.asm
 	$(PYTHON) $(SCRIPTDIR)gencom.py $(CMMODULES) 
 #
-		Update tools (weird shit going on ?)
+#		Update tools (weird shit going on ?)
 #
-#tools: tokapp
+tools: tokapp
 #	cd $(EMU_REPO) ; git pull ; make
 #	cd $(ROM_REPO) ; git pull ; make
 #	$(CCOPY) $(EMU_REPO)$(S)x16emu$(APPSTEM) $(BINDIR)
