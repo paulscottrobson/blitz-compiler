@@ -196,13 +196,13 @@ prelim:
 	$(PYTHON) $(SCRIPTDIR)vectors.py $(RTMODULES) >modules$(S)runtime$(S)generated$(S)vectors.asm
 	$(PYTHON) $(SCRIPTDIR)gencom.py $(CMMODULES) 
 #
-#		Update tools
-#	
-tools: tokapp
-	cd $(EMU_REPO) ; git pull ; make
-	cd $(ROM_REPO) ; git pull ; make
-	$(CCOPY) $(EMU_REPO)$(S)x16emu$(APPSTEM) $(BINDIR)
-	$(CCOPY) $(ROM_REPO)$(S)$(BUILD)x16$(S)rom.bin $(BINDIR)
+		Update tools (weird shit going on ?)
+#
+#tools: tokapp
+#	cd $(EMU_REPO) ; git pull ; make
+#	cd $(ROM_REPO) ; git pull ; make
+#	$(CCOPY) $(EMU_REPO)$(S)x16emu$(APPSTEM) $(BINDIR)
+#	$(CCOPY) $(ROM_REPO)$(S)$(BUILD)x16$(S)rom.bin $(BINDIR)
 #
 #		Show stack
 #

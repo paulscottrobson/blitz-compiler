@@ -15,6 +15,7 @@ else
 include ../documents/common.make
 endif
 
+BINDIR = ..$(S)bin$(S)
 APPNAME = blitz$(APPSTEM)
 
 SOURCES = 	src$(S)core$(S)sys_processor.o  framework$(S)main.o framework$(S)gfx.o framework$(S)debugger.o \
@@ -26,12 +27,17 @@ CC = g++
 
 all: emulator
 
-run: emulator
-	..$(S)bin$(S)$(APPNAME) binaries/blitz.prg@7FF binaries/basic_code.bin@
+exec: tokenise compile run
 
-run2: emulator
-	..$(S)bin$(S)$(APPNAME) binaries/runcompiler.prg@7FF
-	
+tokenise:
+	$(PYTHON) $(BINDIR)tokenise.zip balls.bas source.prg
+
+compile: emulator
+	..$(S)bin$(S)$(APPNAME) 
+
+run:
+	$(BINDIR)x16emu$(APPSTEM) -prg target.prg,801 -scale 2 -run
+
 emulator: prebuild $(APPNAME)
 	$(CCOPY) $(APPNAME) ..$(S)bin 
 	
@@ -41,6 +47,7 @@ emulator: prebuild $(APPNAME)
 clean:
 	$(CDEL) $(APPNAME) 
 	$(CDEL) src$(S)*.o 
+	$(CDEL) src$(S)core$(S)*.o 
 	$(CDEL) framework$(S)*.o
 
 $(APPNAME): $(SOURCES)
@@ -50,8 +57,6 @@ prebuild:
 	make -C processor
 	make -C keyboard
 
-compiler:
-	make -B -C ../source all basic
-	$(CCOPY) ../source/build/blitz.prg binaries
-	$(CCOPY) ../source/build/runtime.prg binaries
-	$(CCOPY) ../source/build/temp/runcompiler.prg binaries
+update:
+	make -B -C ../source
+	make -C binaries

@@ -86,17 +86,33 @@ void CPUSaveArguments(int argc,char *argv[]) {
 //														Reset the CPU
 // *******************************************************************************************************************************
 
+#include "blitz_code.h"																// Compiler code
 
 void CPUReset(void) {
+	int c;
+
 	HWReset();																		// Reset Hardware
 	Write(0xFFFC,0x01);Write(0xFFFD,0x08);											// Boot to $1000 if no
 
 	Write(0xFFD2,0x03);Write(0xFFD3,0x60);											// Char out
 	Write(0xFFBA,0x60);Write(0xFFBB,0x60); 											// Set LFS
 	Write(0xFFBD,0x60);Write(0xFFBE,0x60);											// Set Name
-	Write(0xFFD8,0xDB);Write(0xFFD9,0x60);											// Save
+	Write(0xFFD8,0x13);Write(0xFFD9,0x60);											// Save
 
-	int loadAddress = 0x801;
+	int loadAddress = 0x7FF;
+
+	for (int i = 0;i < BLITZ_SIZE;i++) { 											// default load of compiler.
+		ramMemory[loadAddress++] = blitz_code[i];
+	}
+
+	FILE *f = fopen("source.prg","rb");												// load in source.prg if specified.
+	int t = loadAddress;
+	if (f != NULL) {
+		while (c = fgetc(f),c >= 0) {
+			ramMemory[t++] = c;
+		}
+		fclose(f);
+	}
 
 	for (int i = 1;i < argumentCount;i++) {
 		char szBuffer[128];
@@ -111,7 +127,6 @@ void CPUReset(void) {
 		printf("Loading '%s' to $%06x ..",szBuffer,loadAddress);
 		FILE *f = fopen(szBuffer,"rb");
 		if (f == NULL) exit(fprintf(stderr,"No file %s\n",argumentList[i]));
-		int c;
 		while (c = fgetc(f),c >= 0 && loadAddress < MEMSIZE) {
 			ramMemory[loadAddress++] = c;
 		}
@@ -132,6 +147,27 @@ void CPUInterruptMaskable(void) {
 }
 
 // *******************************************************************************************************************************
+//														Output binary
+// *******************************************************************************************************************************
+
+#include "runtime_code.h"
+
+void CPUWriteBinary(void) {
+	int end = x + (y << 8);
+	int start = Read(a) + (Read(a+1) << 8);
+	printf("Code from %x to %x\n",start,end);
+	FILE *f = fopen("target.prg","wb");
+	for (int i = 0;i < RUNTIME_SIZE;i++) {
+		fputc(runtime_code[i],f);
+	}
+	fputc(0x00,f);fputc(0x00,f);													// Fucking load bytes
+	for (int i = start;i < end;i++) {
+		fputc(Read(i),f);
+	}
+	fclose(f);
+}
+
+// *******************************************************************************************************************************
 //												Execute a single instruction
 // *******************************************************************************************************************************
 
@@ -144,7 +180,8 @@ BYTE8 CPUExecuteInstruction(void) {
 	BYTE8 opcode = Fetch();															// Fetch opcode.
 	switch(opcode) {																// Execute it.
 		#include "6502/__6502opcodes.h"
-
+		case 0x13:
+			CPUWriteBinary();break;
 		case 0x03:
 			printf("%c",a);break;
 	}
