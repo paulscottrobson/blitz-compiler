@@ -17,35 +17,25 @@ Python3 is a prerequisite. I think everything else is in the release directory.
 Making it work
 --------------
 
-The compilation process is currently very "old school". It is not integrated into the system at all. 
+The compiler is written in 6502 assembler. To make it easy to use, as it is not integrated into the X16
+a program "blitz" now exists, which is a 6502 emulator wrapper for the code.
 
-It is run either from a Windows command prompt, or from a Linux Shell.
+There are two script files runme.bat and runme.sh for Windows and Linux. 
 
-The source file is "test.bas". This is a (slightly) modified version of David Murray's "Balls" demo.
+Each of these does the same three steps.
 
-I would check it is working by varying the first line which sets the number of displayed balls. This 
-demo definitely works on Windows/Linux.
+1) 	Convert the text files balls.bas to source.prg (tokenised from) using a Python script.
+2) 	Compile the source.prg to target.prg using the blitz program
+3)  Run the target.prg using the emulator
 
------------
-First Check
------------
-Check the include x16 emulator works (either ./x16emu or x16emu.exe) ; it should start as normal.
+I'd suggest starting with running this script to check everything is working, then changing the ball
+count in balls.bas to check it is actually compiling the program.
 
--------
-Compiling
--------
-To compile it, run either compile.sh (Linux) or compile.bat (Windows). I do not own a Mac so cannot 
-test it but it probably will work (!)
-
-The X16 emulator should appear and quickly disappear.
-
-This creates an program file temp/pcode.bin which is the pseudo-code for the program.
-
--------
-Running
--------
-To run it, run either run.sh (Linux) or run.bat (Windows). This creates the final executable and runs
-it.
+I do not have a Mac so cannot  test it though it should build and work. I don't use Windows, so it is 
+built and tested on Windows 8.1 running on Virtual Box, but it seems to work fine. Any problems with 
+this one get in touch. The Linux binary was built on Arch (the source is in the crossdev directory 
+in the github and should compile easily enough, only dependency is SDL2 and that might go sooner rather
+than later).
 
 ---------------------------------------------------------------------------------------------------------
 
@@ -79,5 +69,7 @@ problem and a BASIC source will be all I need.
 (Note the error addresses on the runtime are machine code addresses not line numbers)
 
 Paul Robson
-paul@robsons.org.uk
-https://github.com/paulscottrobson/blitz-compiler
+
+Email 					: paul@robsons.org.uk
+Source code 			: https://github.com/paulscottrobson/blitz-compiler
+Discord and most forums : PaulScottRobson
