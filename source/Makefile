@@ -200,3 +200,8 @@ stack:
 #
 variables:
 	$(PYTHON) $(SCRIPTDIR)variables.py
+#
+#		Make release zip
+#
+release:
+	make -B -C ..$(S)crossdev release
