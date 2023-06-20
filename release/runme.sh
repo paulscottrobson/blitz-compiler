@@ -9,4 +9,4 @@ python tokenise.zip balls.bas source.prg
 #
 #			Run it with the emulator
 #
-./x16emu -scale 2 -prg target.prg,801 -run
+./x16emu -scale 2 -prg target.prg -run

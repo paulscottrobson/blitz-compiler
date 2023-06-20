@@ -17,9 +17,9 @@ endif
 
 
 all: 
-	$(CCOPY) ../../source/build/blitz.prg binaries
-	$(CCOPY) ../../source/build/runtime.prg binaries
-	$(CCOPY) ../../source/build/temp/runcompiler.prg binaries
+	$(CCOPY) ..$(S)..$(S)source$(S)build$(S)blitz.prg .
+	$(CCOPY) ..$(S)..$(S)source$(S)build$(S)runtime.prg .
+	$(CCOPY) ..$(S)..$(S)source$(S)build$(S)temp$(S)runcompiler.prg .
 	$(PYTHON) tobinary.py blitz.prg
 	$(PYTHON) tobinary.py runtime.prg
-	$(CCOPY) *.h ../include
+	$(CCOPY) *.h ..$(S)include

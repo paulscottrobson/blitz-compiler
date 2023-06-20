@@ -33,6 +33,7 @@ BTEMP = $(BUILD)temp$(S)
 RTMODULES = ifloat32 polynomials runtime $(HARDWARE)_runtime -o_runtime.asm -mruntime
 CMMODULES = compiler ifloat32 $(HARDWARE)_compiler -o_blitz.asm -mcompiler
 CAT = $(PYTHON) $(SCRIPTDIR)cat.py
+RUNADDR = 
 
 all: prelim compiler runtime 
 
@@ -82,13 +83,13 @@ decode: basic
 #		Run/Debug the compiler ; append tokenised BASIC to runtime and start it.
 #
 cdebug : compiler basic
-	$(RUNEMU) -prg $(BTEMP)runcompiler.prg,801 -run 
+	$(RUNEMU) -prg $(BTEMP)runcompiler.prg$(RUNADDR) -run 
 	$(CCOPY) CODE.BIN $(BTEMP)cout.bin
 	$(CDEL) CODE.BIN
 	$(PYTHON) $(SCRIPTDIR)compileinfo.py >$(BTEMP)program.data
 #
 crun : compiler basic
-	$(HRUNEMU) -prg $(BTEMP)runcompiler.prg,801 -run 
+	$(HRUNEMU) -prg $(BTEMP)runcompiler.prg$(RUNADDR) -run 
 	$(CCOPY) CODE.BIN $(BTEMP)cout.bin
 	$(CDEL) CODE.BIN
 	$(PYTHON) $(SCRIPTDIR)compileinfo.py >$(BTEMP)program.data
@@ -98,17 +99,17 @@ crun : compiler basic
 rdebug: cdebug runtime 
 	$(CAT) $(BUILD)runtime.prg $(BTEMP)cout.bin $(BTEMP)pcodebin.prg
 	$(CDEL) dump*.bin
-	$(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
+	$(RUNEMU) -prg $(BTEMP)pcodebin.prg$(RUNADDR) -run 
 
 rrun: crun runtime 
 	$(CAT) $(BUILD)runtime.prg $(BTEMP)cout.bin $(BTEMP)pcodebin.prg
 	$(CDEL) dump*.bin
-	$(TIME) $(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
+	$(TIME) $(RUNEMU) -prg $(BTEMP)pcodebin.prg$(RUNADDR) -run 
 
 grun: crun runtime 
 	$(CAT) $(BUILD)runtime.prg $(BTEMP)cout.bin $(BTEMP)pcodebin.prg
 	$(CDEL) dump*.bin
-	$(TIME) $(RUNEMU) -gif $(BTEMP)blitz.gif -prg $(BTEMP)pcodebin.prg,801 -run 
+	$(TIME) $(RUNEMU) -gif $(BTEMP)blitz.gif -prg $(BTEMP)pcodebin.prg$(RUNADDR) -run 
 #
 #		Build the compiled ocode
 #
@@ -120,7 +121,7 @@ pcode: prelim
 #
 debugpcode: runtime prelim pcode
 	$(CAT) $(BUILD)runtime.prg $(BTEMP)pcodebin.bin $(BTEMP)pcodebin.prg
-	$(RUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run 
+	$(RUNEMU) -prg $(BTEMP)pcodebin.prg$(RUNADDR) -run 
 #
 #		A test_pcode.py run
 #	
@@ -131,7 +132,7 @@ tpcode: prelim
 
 testpcode: runtime prelim tpcode 
 	$(CAT) $(BUILD)runtime.prg $(BTEMP)pcodebin.bin $(BTEMP)pcodebin.prg
-	$(HRUNEMU) -prg $(BTEMP)pcodebin.prg,801 -run -warp
+	$(HRUNEMU) -prg $(BTEMP)pcodebin.prg$(RUNADDR) -run -warp
 #
 #		Test the floating point mathematics
 #
@@ -142,7 +143,7 @@ testmaths : prelim
 	$(ASM) $(ASMOPTS) _float.asm -o $(BTEMP)float.prg
 	$(CCOPY) $(BTEMP)float.prg $(BINDIR)
 	$(CDEL) dump*.bin
-	$(HRUNEMU) -prg $(BTEMP)float.prg,801 -run -warp
+	$(HRUNEMU) -prg $(BTEMP)float.prg$(RUNADDR) -run -warp
 	$(PYTHON) $(SCRIPTDIR)stack.py
 #
 #		Test unary functions / polynomials and the power operator.
@@ -154,7 +155,7 @@ testfuncs : prelim
 	$(ASM) $(ASMOPTS) _float.asm -o $(BTEMP)float.prg
 	$(CCOPY) $(BTEMP)float.prg $(BINDIR)
 	$(CDEL) dump*.bin
-	$(HRUNEMU) -prg $(BTEMP)float.prg,801 -run -warp
+	$(HRUNEMU) -prg $(BTEMP)float.prg$(RUNADDR) -run -warp
 	$(PYTHON) $(SCRIPTDIR)stack.py
 #
 #		Benchmark the floating point mathematics
@@ -165,7 +166,7 @@ benchmark : prelim
 	$(ASM) $(ASMOPTS) _float.asm -o $(BTEMP)float.prg
 	$(CCOPY) $(BTEMP)float.prg $(BINDIR)
 	$(CDEL) dump*.bin
-	$(HRUNEMU) -prg $(BTEMP)float.prg,801 -run
+	$(HRUNEMU) -prg $(BTEMP)float.prg$(RUNADDR) -run
 	$(PYTHON) $(SCRIPTDIR)stack.py	
 #
 #		Do stuff before building.
@@ -205,3 +206,5 @@ variables:
 #
 release:
 	make -B -C ..$(S)crossdev release
+
+	

@@ -92,7 +92,7 @@ void CPUReset(void) {
 	int c;
 
 	HWReset();																		// Reset Hardware
-	Write(0xFFFC,0x01);Write(0xFFFD,0x08);											// Boot to $1000 if no
+	Write(0xFFFC,0x0D);Write(0xFFFD,0x08);											// Boot to $80D by default.
 
 	Write(0xFFD2,0x03);Write(0xFFD3,0x60);											// Char out
 	Write(0xFFBA,0x60);Write(0xFFBB,0x60); 											// Set LFS

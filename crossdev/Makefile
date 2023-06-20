@@ -36,7 +36,7 @@ compile: emulator
 	..$(S)bin$(S)$(APPNAME) 
 
 run:
-	$(BINDIR)x16emu$(APPSTEM) -prg target.prg,801 -scale 2 -run
+	$(BINDIR)x16emu$(APPSTEM) -prg target.prg -scale 2 -run
 
 emulator: prebuild $(APPNAME)
 	$(CCOPY) $(APPNAME) ..$(S)bin 
@@ -53,6 +53,8 @@ $(APPNAME): $(SOURCES)
 	$(CC) $(SOURCES) $(LDFLAGS) $(SDL_LDFLAGS) -o $@
 
 prebuild:
+	$(CDEL) src$(S)core$(S)sys_processor.o
+	make -C binaries
 	make -C processor
 	make -C keyboard
 
