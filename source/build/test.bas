@@ -1,45 +1,43 @@
-10 n = 15
-20 screen 3
-60 print chr$(147);
-70 dim bx(n):dim by(n):dim bc(n)
-75 dim dx(n):dim dy(n)
-80 for b=0 to n
-90 bx(b)=int(rnd(1)*40)*2+1
-100 by(b)=int(rnd(1)*30)*256
-105 bc(b)=int(rnd(1)*14)+1
-106 dx(b)=int(rnd(1)*2)
-108 rem dy(b)=int(rnd(1)*2)
-109 dy(b)=1
-110 next b
-120 rem
-130 fory=0to29:forx=0to39
-140 q=y*256+x*2+45056
-150 vpoke 1,q,81:vpoke1,q+1,0
-160 nextx:next y
-200 for b=1ton
-210 vpoke 1,45056+by(b)+bx(b),0
-230 dxb=dx(b)
-240 ifdxb=0thengosub1010
-250 ifdxb=1thengosub1040
-255 dyb=dy(b)
-260 ifdyb=0thengosub1070
-270 ifdyb=1thengosub1100
-280 vpoke 1,45056+by(b)+bx(b),bc(b)
-290 nextb
-300 goto 200
-1000 rem
-1010 bxb=bx(b)
-1011 ifbxb=1thendx(b)=1:return
-1020 bx(b)=bxb-2:return
-1030 rem
-1040 bxb=bx(b)
-1041 ifbxb=79then bx(b)=77:dx(b)=0:return
-1050 bx(b)=bxb+2:return
-1060 rem
-1070 byb=by(b)
-1071 ifbyb=0thendy(b)=1:return
-1080 by(b)=byb-256:return
-1090 rem
-1100 byb=by(b)
-1101 ifbyb=7424thenby(b)=7168:dy(b)=0:return
-1110 by(b)=byb+256:return
+5 REM BALLS...A SLIGHTLY MODIFIED VERSION OF
+6 REM THE ONE SHOWN IN DAVID'S VIDEO. I HOPE HE DON'T MIND.
+10 REM IFPEEK(217)<>40THENSYS65375
+20 PRINT"NUMBER OF BALLS (1-255)?"
+30 INPUT N
+40 IF N<1 OR N>255 THEN 20
+60 PRINT CHR$(147);
+70 DIM BX(255):DIM BY(255):DIM BC(255)
+75 DIM DX(255):DIM DY(255)
+80 FOR B=0TON
+90 BX(B)=INT(RND(1)*40)
+100 BY(B)=INT(RND(1)*30)
+105 BC(B)=INT(RND(1)*14)+1
+106 DX(B)=INT(RND(1)*2)
+108 REM DY(B)=INT(RND(1)*2)
+109 DY(B)=1
+110 NEXT B
+120 REM
+130 FORY=0TO29:FORX=0TO39
+140 Q=Y*256+X*2
+150 VPOKE0,Q,81:VPOKE0,Q+1,0
+160 NEXTX,Y
+200 FOR B=1TON
+210 VPOKE0,BY(B)*256+BX(B)*2+1,0
+240 IFDX(B)=0THENGOSUB1010
+250 IFDX(B)=1THENGOSUB1040
+260 IFDY(B)=0THENGOSUB1070
+270 IFDY(B)=1THENGOSUB1100
+280 VPOKE0,BY(B)*256+BX(B)*2+1,BC(B)
+290 NEXTB
+300 GOTO 200
+1000 REM
+1010 IFBX(B)=0THENDX(B)=1:RETURN
+1020 BX(B)=BX(B)-1:RETURN
+1030 REM
+1040 IFBX(B)=39THENBX(B)=38:DX(B)=0:RETURN
+1050 BX(B)=BX(B)+1:RETURN
+1060 REM
+1070 IFBY(B)=0THENDY(B)=1:RETURN
+1080 BY(B)=BY(B)-1:RETURN
+1090 REM
+1100 IFBY(B)=29THENBY(B)=28:DY(B)=0:RETURN
+1110 BY(B)=BY(B)+1:RETURN
