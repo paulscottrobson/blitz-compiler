@@ -15,11 +15,8 @@ else
 include ../../documents/common.make
 endif
 
+BINDIR = ..$(S)..$(S)bin$(S)
 
 all: 
-	$(CCOPY) ..$(S)..$(S)source$(S)build$(S)blitz.prg .
-	$(CCOPY) ..$(S)..$(S)source$(S)build$(S)runtime.prg .
-	$(CCOPY) ..$(S)..$(S)source$(S)build$(S)temp$(S)runcompiler.prg .
-	$(PYTHON) tobinary.py blitz.prg
-	$(PYTHON) tobinary.py runtime.prg
-	$(CCOPY) *.h ..$(S)include
+	$(PYTHON) tobinary.py $(BINDIR)blitz.prg blitz_code.h
+	$(PYTHON) tobinary.py $(BINDIR)runtime.prg runtime_code.h

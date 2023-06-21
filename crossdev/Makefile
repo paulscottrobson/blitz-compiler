@@ -42,7 +42,7 @@ emulator: prebuild $(APPNAME)
 	$(CCOPY) $(APPNAME) ..$(S)bin 
 	
 %.o:%.cpp
-	$(CC) $(CADDRESSES) $(CXXFLAGS) -D INCLUDE_DEBUGGING_SUPPORT -I cpu -I framework -I include -c -o $@ $<
+	$(CC) $(CADDRESSES) $(CXXFLAGS) -D INCLUDE_DEBUGGING_SUPPORT -I incbin -I cpu -I framework -I include -c -o $@ $<
 
 clean:
 	$(CDEL) src$(S)*.o 
@@ -54,23 +54,13 @@ $(APPNAME): $(SOURCES)
 
 prebuild:
 	$(CDEL) src$(S)core$(S)sys_processor.o
-	make -C binaries
+	make -B -C ../source
+	make -C incbin
 	make -C processor
 	make -C keyboard
 
 update:
-	make -B -C ../source
+
 	make -C binaries
 
-#
-#		Build / Copy relevant files to Release
-#	
-release: update emulator
-	$(CCOPY) $(BINDIR)x16emu* $(RELEASE)
-	$(CCOPY) $(BINDIR)rom.bin $(RELEASE)
-	$(CCOPY) $(BINDIR)*.dll $(RELEASE)
-	$(CCOPY) $(BINDIR)tokenise.zip $(RELEASE)
-	$(CCOPY) ..$(S)TODO $(RELEASE)
-	$(CCOPY) blitz* $(RELEASE)
-	$(CDEL) $(RELEASE)release.zip
-	cd $(RELEASE) ; zip -r release.zip * ; zip -d release.zip *.prg memory.dump
+
