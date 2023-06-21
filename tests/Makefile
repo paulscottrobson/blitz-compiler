@@ -50,7 +50,7 @@ arrays: system
 define run_test
 	$(CDEL) dump*.bin
 	$(PYTHON) $1.py >$(TMPDIR)$1.bas
-	$(PYTHON) $(SCRIPTDIR)tokenise.py $(TMPDIR)$1.bas $(TMPDIR)$1.prg
+	$(PYTHON) $(BINDIR)tokenise.zip $(TMPDIR)$1.bas $(TMPDIR)$1.prg
 	$(CAT) $(BINDIR)blitz.prg $(TMPDIR)$1.prg $(TMPDIR)_compile.prg
 	$(RUNEMU)  -prg $(TMPDIR)_compile.prg -run 
 	$(CCOPY) CODE.BIN $(TMPDIR)_pcode.bin 
