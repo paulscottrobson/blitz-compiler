@@ -17,6 +17,11 @@ include ../documents/common.make
 TIME=time -f=%e 
 endif
 
+RTMODULES = ifloat32 polynomials runtime $(HARDWARE)_runtime -o_runtime.asm -mruntime
+CMMODULES = compiler ifloat32 $(HARDWARE)_compiler -o_blitz.asm -mcompiler
+REVISION = r43
+HARDWARE = x16
+
 BINDIR = ..$(S)bin$(S)
 SCRIPTDIR = scripts$(S)
 ASMCTRLS = -q -Wall -c -C 
@@ -24,18 +29,11 @@ ASMOPTS =  $(ASMCTRLS)
 EMULATOR = $(BINDIR)x16emu$(APPSTEM) # -zeroram
 RUNEMU = $(EMULATOR) -rom $(BINDIR)rom.bin -keymap en-gb -dump R -scale 2 -rtc -debug 
 HRUNEMU = $(RUNEMU) -testbench 
-EMU_REPO= ..$(S)..$(S)x16-emulator
-ROM_REPO= ..$(S)..$(S)x16-rom
-HARDWARE = x16
 BUILD = build$(S)
-RELEASE = ..$(S)release
 BTEMP = $(BUILD)temp$(S)
-RTMODULES = ifloat32 polynomials runtime $(HARDWARE)_runtime -o_runtime.asm -mruntime
-CMMODULES = compiler ifloat32 $(HARDWARE)_compiler -o_blitz.asm -mcompiler
 CAT = $(PYTHON) $(SCRIPTDIR)cat.py
-RUNADDR = 
 
-all: prelim compiler runtime 
+all: tokapp prelim compiler runtime 
 
 #
 #		Build the compiler
@@ -43,6 +41,7 @@ all: prelim compiler runtime
 compiler: prelim
 	$(PYTHON) $(SCRIPTDIR)build.py $(CMMODULES) 
 	$(ASM) $(ASMOPTS) _blitz.asm -o $(BUILD)blitz.prg -L $(BUILD)ccode.lst -l $(BUILD)code.lbl 
+	$(CCOPY) $(BUILD)blitz.prg $(BINDIR)
 	$(CDEL) dump.bin
 	$(CDEL) CODE.BIN
 	$(CDEL) $(BTEMP)cout.bin
@@ -56,7 +55,7 @@ runtime:prelim
 	$(CCOPY) $(BUILD)runtime.prg $(BINDIR)
 	$(CDEL) dump*.bin
 #
-#		Tokenise app
+#		Build Tokenise app
 #
 tokapp:
 	$(CCOPY) scripts$(S)tokenise.py __main__.py
@@ -184,13 +183,18 @@ prelim:
 	$(PYTHON) $(SCRIPTDIR)vectors.py $(RTMODULES) >modules$(S)runtime$(S)generated$(S)vectors.asm
 	$(PYTHON) $(SCRIPTDIR)gencom.py $(CMMODULES) 
 #
-#		Update tools (weird shit going on ?)
+#		Update X16 emulator latest revision
 #
-tools: tokapp
-#	cd $(EMU_REPO) ; git pull ; make
-#	cd $(ROM_REPO) ; git pull ; make
-#	$(CCOPY) $(EMU_REPO)$(S)x16emu$(APPSTEM) $(BINDIR)
-#	$(CCOPY) $(ROM_REPO)$(S)$(BUILD)x16$(S)rom.bin $(BINDIR)
+x16emu:
+	wget -q -c https://github.com/X16Community/x16-emulator/releases/download/$(REVISION)/x16emu_linux-x86_64-$(REVISION).zip -P $(BTEMP)
+	wget -q -c https://github.com/X16Community/x16-emulator/releases/download/$(REVISION)/x16emu_win64-$(REVISION).zip -P $(BTEMP)
+	cd $(BTEMP) ; unzip -q -o x16emu_linux-x86_64-$(REVISION).zip
+	cd $(BTEMP) ; unzip -q -o x16emu_win64-$(REVISION).zip
+	$(CDEL) $(BTEMP)*.sym
+	$(CCOPY) $(BTEMP)x16emu $(BINDIR)
+	$(CCOPY) $(BTEMP)x16emu.exe $(BINDIR)
+	$(CCOPY) $(BTEMP)rom.bin $(BINDIR)	
+	$(CCOPY) $(BTEMP)*.dll $(BINDIR)	
 #
 #		Show stack
 #
@@ -201,10 +205,5 @@ stack:
 #
 variables:
 	$(PYTHON) $(SCRIPTDIR)variables.py
-#
-#		Make release zip
-#
-release:
-	make -B -C ..$(S)crossdev release
 
 	
