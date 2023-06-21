@@ -38,7 +38,7 @@ all: tokapp prelim compiler runtime
 #
 #		Build the compiler
 #		
-compiler: prelim
+compiler: tracker prelim
 	$(PYTHON) $(SCRIPTDIR)build.py $(CMMODULES) 
 	$(ASM) $(ASMOPTS) _blitz.asm -o $(BUILD)blitz.prg -L $(BUILD)ccode.lst -l $(BUILD)code.lbl 
 	$(CCOPY) $(BUILD)blitz.prg $(BINDIR)
@@ -48,12 +48,17 @@ compiler: prelim
 #
 #		Build the runtime
 #
-runtime:prelim
+runtime:tracker prelim
 	$(PYTHON) $(SCRIPTDIR)build.py $(RTMODULES) 
 	$(CDEL) WTEST*
 	$(ASM) $(ASMOPTS) _runtime.asm -o $(BUILD)runtime.prg -L $(BUILD)rcode.lst -l $(BUILD)code.lbl 
 	$(CCOPY) $(BUILD)runtime.prg $(BINDIR)
-	$(CDEL) dump*.bin
+	$(CDEL) dump*.bin 
+#
+#		Track builds
+#
+tracker:
+	$(PYTHON) $(SCRIPTDIR)tracker.py >modules$(S)common$(S)generated$(S)buildinfo.dat
 #
 #		Build Tokenise app
 #

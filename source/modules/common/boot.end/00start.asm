@@ -23,6 +23,8 @@
 Start:	jmp 	Boot
 		rts 								; waste one byte to test SYS.
 
+		.include "../generated/buildinfo.dat"
+	
 		.send code
 
 

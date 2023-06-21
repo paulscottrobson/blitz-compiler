@@ -23,6 +23,11 @@ BINDIR = ..$(S)bin$(S)
 #		Build release.
 #
 all: system crossdev
+ifeq ($(OS),Windows_NT)
+else
+	$(CDEL) x16emu*
+	$(CDEL) blitz*
+
 	$(CCOPY) $(BINDIR)x16emu* .
 	$(CCOPY) $(BINDIR)rom.bin .
 	$(CCOPY) $(BINDIR)*.dll .
@@ -37,7 +42,7 @@ all: system crossdev
 	$(CDEL) release.zip
 	zip -r -q 	release.zip * 
 	zip -d -q release.zip memory.dump Makefile
-
+endif
 #
 #		Build Linux emulator. Must force build of Windows version manually on Virtualbox or Windows MC.
 #
