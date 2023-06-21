@@ -185,12 +185,14 @@ prelim:
 #
 #		Update X16 emulator latest revision
 #
-x16emu:
+tools:
 	wget -q -c https://github.com/X16Community/x16-emulator/releases/download/$(REVISION)/x16emu_linux-x86_64-$(REVISION).zip -P $(BTEMP)
 	wget -q -c https://github.com/X16Community/x16-emulator/releases/download/$(REVISION)/x16emu_win64-$(REVISION).zip -P $(BTEMP)
 	cd $(BTEMP) ; unzip -q -o x16emu_linux-x86_64-$(REVISION).zip
 	cd $(BTEMP) ; unzip -q -o x16emu_win64-$(REVISION).zip
 	$(CDEL) $(BTEMP)*.sym
+	$(CDEL) $(BTEMP)*.pdf
+	$(CDEL) $(BTEMP)*.zip
 	$(CCOPY) $(BTEMP)x16emu $(BINDIR)
 	$(CCOPY) $(BTEMP)x16emu.exe $(BINDIR)
 	$(CCOPY) $(BTEMP)rom.bin $(BINDIR)	

@@ -2,8 +2,8 @@
 11 n=10:dima(n)
 12 fort=0ton:a(t)=rnd(1):next
 13 t1=ti:l=0:r=n:gosub100:t2=ti
-14 remfort=0ton:printa(t):next
-15 printt2-t1
+14 fort=0ton:printa(t):next
+15 printt2-t1:stop
 16 end
 18 :
 19 rem ** bubble-sort
