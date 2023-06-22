@@ -20,8 +20,9 @@
 
 CommandNext: ;; [next]
 		.entercmd
-		lda 	#FRAME_FOR 					; check in a FOR 
-		jsr 	StackCheckFrame
+_CNRetry:		
+		lda 	#FRAME_FOR 					; find the FOR 
+		jsr 	StackFindFrame
 		jsr 	FixUpY 						; so we can use Y		
 		;
 		;		Index variable check ?
@@ -40,7 +41,10 @@ CommandNext: ;; [next]
 		cmp 	(runtimeStackPtr),y
 		beq 	_CNNoIndexVariable
 _CNNIndexFail:		
-		.error_structure		
+		jsr 	StackCloseFrame 			; close this frame
+		bra 	_CNRetry
+
+
 _CNNoIndexVariable:
 		dex
 
@@ -200,5 +204,7 @@ CopyOffsetYToTOS:
 ;
 ;		Date			Notes
 ;		==== 			=====
+;		23/06/23 		Does a search rather than a check. If the index variable match fails,
+; 						keeps closing frames until it finds the right one.
 ;
 ; ************************************************************************************************
