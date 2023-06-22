@@ -28,7 +28,7 @@ CommandGosub: ;; [.gosub]
 CommandReturn: ;; [return]
 		.entercmd
 		lda 	#FRAME_GOSUB
-		jsr 	StackCheckFrame
+		jsr 	StackFindFrame
 		jsr 	StackLoadCurrentPosition
 		iny
 		iny
@@ -47,5 +47,6 @@ CommandReturn: ;; [return]
 ;
 ;		Date			Notes
 ;		==== 			=====
+;		22/06/23 		Uses FindFrame on Return, so will throw any incomplete NEXTs.
 ;
 ; ************************************************************************************************

@@ -20,7 +20,7 @@
 
 CommandVarSpace: ;; [.varspace]
 		.entercmd
-		  
+		
 		lda 	(codePtr),y					; 3 byte opcode, which is 'free' memory in variable area.
 		sta 	availableMemory
 		iny 
