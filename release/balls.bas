@@ -1,4 +1,4 @@
-10 n = 5
+10 n = 15
 20 screen 3
 60 print chr$(147);
 70 dim bx(n):dim by(n):dim bc(n)
