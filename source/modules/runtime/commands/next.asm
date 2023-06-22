@@ -41,6 +41,7 @@ _CNRetry:
 		cmp 	(runtimeStackPtr),y
 		beq 	_CNNoIndexVariable
 _CNNIndexFail:		
+		ldy 	#0 							; so we don't fix up Y again !
 		jsr 	StackCloseFrame 			; close this frame
 		bra 	_CNRetry
 
@@ -205,6 +206,6 @@ CopyOffsetYToTOS:
 ;		Date			Notes
 ;		==== 			=====
 ;		23/06/23 		Does a search rather than a check. If the index variable match fails,
-; 						keeps closing frames until it finds the right one.
+; 						keeps closing frames until it finds the right one, copying MS Basic standard.
 ;
 ; ************************************************************************************************
