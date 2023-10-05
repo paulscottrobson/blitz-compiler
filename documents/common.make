@@ -40,17 +40,23 @@ endif
 #
 ROOTDIR =  $(dir $(realpath $(lastword $(MAKEFILE_LIST))))..$(S)
 BINDIR = $(ROOTDIR)bin$(S)
-SRCDIR = $(ROODIR)source$(S)
-CSCRIPTS = $(ROOTDIR)common-scripts$(S)
+SRCDIR = $(ROOTDIR)source$(S)
+CSCRIPTS = $(SRCDIR)common-scripts$(S)
+CSOURCE =  $(SRCDIR)common-source$(S)
 #
 #		Current applications.
 # 
-ASM = 64tass
+ASM = 64tass -c -Wall -o build$(S)code.prg -L build$(S)code.lst
 PYTHON = python3
 EMULATOR = $(BINDIR)x16emu$(APPSTEM) -scale 2 -debug 
+EXECUTE = $(EMULATOR) -prg build$(S)code.prg,1000 -run
 
-#		Uncommenting .SILENT will shut the whole build up.
 #
+# 		Add to library assembler line to make it work - defines everything.
+#
+WRAPPER = $(CSOURCE)wrapper.asm 
+#
+#		Uncommenting .SILENT will shut the whole build up.
 #
 ifndef VERBOSE
 #.SILENT:
