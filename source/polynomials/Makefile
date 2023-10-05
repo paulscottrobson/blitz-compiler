@@ -18,18 +18,19 @@ endif
 all: build
 
 prelim:
-	$(PYTHON) scripts$(S)constants.py
+	$(PYTHON) scripts$(S)mathconstants.py
+	$(PYTHON) scripts$(S)coremaths.py
 	$(PYTHON) $(CSCRIPTS)build.py
-	$(CCOPY) _library.asm $(BINDIR)ifloat32.library
+	$(CCOPY) _library.asm $(BINDIR)polynomials.library
 
 build: prelim
-	$(ASM) $(WRAPPER) testing$(S)testing.asm $(BINDIR)ifloat32.library
+	$(ASM) $(WRAPPER) testing$(S)testing.asm $(BINDIR)ifloat32.library $(BINDIR)polynomials.library
 
 run: build
 	$(EXECUTE) $(FAST)
 	
-test : prebinary prelim build run
+test : prepoly prelim build run
 
-prebinary:
-	$(PYTHON) scripts$(S)test_binary.py >build$(S)float.code
+prepoly:
+	$(PYTHON) scripts$(S)test_functions.py >build$(S)float.code
 	$(PYTHON) $(CSCRIPTS)floatcom.py build$(S)float.code >testing$(S)generated$(S)testcode.dat

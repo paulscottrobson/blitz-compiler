@@ -49,7 +49,9 @@ CSOURCE =  $(SRCDIR)common-source$(S)
 ASM = 64tass -c -Wall -o build$(S)code.prg -L build$(S)code.lst -l build$(S)code.lbl
 PYTHON = python3
 EMULATOR = $(BINDIR)x16emu$(APPSTEM) -scale 2 -debug 
-EXECUTE = $(EMULATOR) -prg build$(S)code.prg,1000 -run
+EXECUTE = $(CDEL) dump*.bin ; $(EMULATOR) -prg build$(S)code.prg,1000 -run
+QEXECUTE = $(EXECUTE) -testbench
+FAST = -warp
 #
 # 		Add to library assembler line to make it work - defines everything.
 #

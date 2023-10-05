@@ -9,18 +9,28 @@
 # *******************************************************************************************
 # *******************************************************************************************
 
+#
+#		Bl**dy Windows.
+#
 ifeq ($(OS),Windows_NT)
 include documents\common.make
 else
 include documents/common.make
 endif
+
 #
 #		The revision of the current release
 #
 REVISION = r43
-BTEMP = $(BINDIR)temp$(S)
 
-all: latest
+all: latest libraries
+
+#
+#		Build the library version of the components. 
+#
+libraries:	
+	make -C source/ifloat32
+	make -C source/polynomials
 	
 #
 #		Get the most recent version of the emulator & docs. Requires the three
@@ -35,6 +45,8 @@ gitrev:
 #
 #		Get latest release.
 #	
+BTEMP = $(BINDIR)temp$(S)
+
 latest:
 	wget -q -c https://github.com/X16Community/x16-emulator/releases/download/$(REVISION)/x16emu_linux-x86_64-$(REVISION).zip -P $(BTEMP)
 	wget -q -c https://github.com/X16Community/x16-emulator/releases/download/$(REVISION)/x16emu_win64-$(REVISION).zip -P $(BTEMP)
