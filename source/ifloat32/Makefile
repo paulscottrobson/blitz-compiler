@@ -18,12 +18,13 @@ endif
 all: build
 
 prelim:
+	$(PYTHON) scripts$(S)constants.py
 	$(PYTHON) $(CSCRIPTS)build.py
 	$(CCOPY) _library.asm $(BINDIR)ifloat32.library
 
 build: prelim
 	$(ASM) $(WRAPPER) testing$(S)testing.asm $(BINDIR)ifloat32.library
 
-test: build
+run: build
 	$(EXECUTE)	
 	

@@ -46,15 +46,22 @@ CSOURCE =  $(SRCDIR)common-source$(S)
 #
 #		Current applications.
 # 
-ASM = 64tass -c -Wall -o build$(S)code.prg -L build$(S)code.lst
+ASM = 64tass -c -Wall -o build$(S)code.prg -L build$(S)code.lst -l build$(S)code.lbl
 PYTHON = python3
 EMULATOR = $(BINDIR)x16emu$(APPSTEM) -scale 2 -debug 
 EXECUTE = $(EMULATOR) -prg build$(S)code.prg,1000 -run
-
 #
 # 		Add to library assembler line to make it work - defines everything.
 #
 WRAPPER = $(CSOURCE)wrapper.asm 
+#
+#		Export path to the common scripts.
+#
+ifeq ($(OS),Windows_NT)
+SET PYTHONPATH=$(CSCRIPTS)
+else
+export PYTHONPATH=$(CSCRIPTS)
+endif
 #
 #		Uncommenting .SILENT will shut the whole build up.
 #
