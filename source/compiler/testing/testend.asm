@@ -13,7 +13,7 @@
 		.section code
 
 EndProgram:
-		.binary "code/balls.bin"
+		.binary "code/tokenised.dat"
 
 		.send code
 

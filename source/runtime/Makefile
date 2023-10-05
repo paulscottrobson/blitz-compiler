@@ -31,7 +31,7 @@ common-code:
 	$(CCOPY) $(CSOURCE)forward.asm source$(S)common
 
 build: prelim
-	$(ASM) $(WRAPPER) testing$(S)testing.asm $(BINDIR)runtime.library $(BINDIR)ifloat32.library $(BINDIR)polynomials.library testing$(S)testend.asm
+	$(ASM) $(WRAPPER) testing$(S)testing.asm $(BINDIR)runtime.library $(BINDIR)ifloat32.library testing$(S)testend.asm
 
 run: build
 	$(EXECUTE) 
