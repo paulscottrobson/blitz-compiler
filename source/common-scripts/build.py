@@ -45,5 +45,10 @@ class Builder(object):
 				h.write(s)				
 		h.close()
 
+	def getINCFiles(self):
+		return self.incFiles
+	def getASMFiles(self):
+		return self.asmFiles
+		
 if __name__ == "__main__":
  	Builder().createFile()

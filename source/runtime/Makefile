@@ -18,7 +18,12 @@ endif
 all: build
 
 prelim: common-code
-#	$(PYTHON) scripts$(S)constants.py
+	$(PYTHON) scripts$(S)errors.py
+	$(PYTHON) scripts$(S)c64tokens.py >source$(S)generated$(S)c64tokens.inc
+	$(PYTHON) scripts$(S)genmapping.py >source$(S)generated$(S)links.asm
+	$(PYTHON) scripts$(S)pcode.py $(RTMODULES)  >source$(S)generated$(S)pcodetokens.inc
+	$(PYTHON) scripts$(S)vectors.py $(RTMODULES) >source$(S)generated$(S)vectors.asm
+
 	$(PYTHON) $(CSCRIPTS)build.py
 	$(CCOPY) _library.asm $(BINDIR)runtime.library
 
