@@ -34,7 +34,7 @@ build: prelim
 	$(ASM) $(WRAPPER) testing$(S)testing.asm $(BINDIR)runtime.library $(BINDIR)ifloat32.library $(BINDIR)polynomials.library testing$(S)testend.asm
 
 run: build
-	$(EXECUTE) $(FAST)
+	$(EXECUTE) 
 	
 test : prebinary prelim build run
 

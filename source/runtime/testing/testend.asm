@@ -13,7 +13,7 @@
 		.section code
 
 EndProgram:
-		.binary "code/cout.bin"
+		.binary "code/balls.bin"
 
 		.send code
 
