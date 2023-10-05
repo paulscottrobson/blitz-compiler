@@ -20,13 +20,13 @@
 ; ************************************************************************************************
 
 CommandTables:
-		.include 	"source/generation/commands.defc"
+		#include 	"commands.defc"
 		;.include "../../x16_compiler/generation/x16_command.defc"
 		;.include "../../x16_compiler/generated/x16_sound.defc"
 		.byte 	0
 
 UnaryTables:
-		;.include 	"unary.defc"
+		#include 	"unary.defc"
 		;	.include "../../x16_compiler/generation/x16_unary.defc"
 		.byte 	0
 
