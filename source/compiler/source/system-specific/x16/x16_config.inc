@@ -1,22 +1,23 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		testing.asm
-;		Purpose:	Basic testing for runtim
-;		Created:	11th April 2023
+;		Name:		x16_config.inc
+;		Purpose:	Configuration for compiler
+;		Created:	15th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
-
-		.section code
-
-WrapperBoot:	
-		jmp 	StartCompiler
-
-		.send code
-
+;
+;		Runtime p-code goes here. Needs to be on a page boundary.
+;
+PCodeStart = $4000
+;
+;		Work area space and size. Upwards is variables, Downwards is line number positions.
+;
+WorkArea = $8000
+WorkAreaSize = $1F00
 
 ; ************************************************************************************************
 ;
@@ -28,3 +29,4 @@ WrapperBoot:
 ;		==== 			=====
 ;
 ; ************************************************************************************************
+

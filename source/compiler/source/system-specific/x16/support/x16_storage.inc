@@ -1,22 +1,20 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		testing.asm
-;		Purpose:	Basic testing for runtim
-;		Created:	11th April 2023
+;		Name:		x16_storage.inc
+;		Purpose:	Storage access macros
+;		Created:	15th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section code
+storage_access .macro
+		.endm
 
-WrapperBoot:	
-		jmp 	StartCompiler
-
-		.send code
-
+storage_release .macro
+		.endm
 
 ; ************************************************************************************************
 ;

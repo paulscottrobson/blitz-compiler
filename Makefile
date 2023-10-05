@@ -32,6 +32,7 @@ libraries:
 	make -C source/ifloat32
 	make -C source/polynomials
 	make -C source/runtime
+	make -C source/compiler
 	
 #
 #		Get the most recent version of the emulator & docs. Requires the three

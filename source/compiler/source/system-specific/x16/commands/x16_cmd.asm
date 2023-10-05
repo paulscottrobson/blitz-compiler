@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		testing.asm
-;		Purpose:	Basic testing for runtim
-;		Created:	11th April 2023
+;		Name:		x16_cmd.asm
+;		Purpose:	CMD command
+;		Created:	24th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -12,11 +12,23 @@
 
 		.section code
 
-WrapperBoot:	
-		jmp 	StartCompiler
+; ************************************************************************************************
+;
+;											CMD command
+;
+; ************************************************************************************************
 
+CommandCMD:
+		lda 	#PCD_SETCHANNEL 			; set the channel to this now forever.
+		jsr 	WriteCodeByte
+		jsr 	LookNextNonSpace 			; followed by a , ?
+		cmp 	#","
+		bne 	_CCMDExit
+		jsr 	GetNext 					; consume comma.
+		jsr 	CommandPRINT 				; do the print code
+_CCMDExit:
+		rts		
 		.send code
-
 
 ; ************************************************************************************************
 ;

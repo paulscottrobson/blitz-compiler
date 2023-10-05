@@ -12,7 +12,7 @@
 
 		.section code
 
-Boot:	
+StartCompiler:	
 		jsr 	STRReset 					; reset storage (line#, variable)
 		jsr 	INPUTOpen 					; reset data input
 		jsr 	OUTPUTOpen 					; reset data output.

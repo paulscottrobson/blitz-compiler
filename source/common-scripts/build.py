@@ -18,15 +18,15 @@ import os,re,sys
 # *******************************************************************************************
 
 class Builder(object):
-	def __init__(self):
+	def __init__(self,searchDir = "."):
 		self.incFiles = []
 		self.asmFiles = []
-		self.scanForFiles()
+		self.scanForFiles(searchDir)
 	#
 	#		Scan source the for required modules.
 	#
-	def scanForFiles(self):
-		for root,dirs,files in os.walk("source"):
+	def scanForFiles(self,searchDir):
+		for root,dirs,files in os.walk(searchDir+os.sep+"source"):
 			for f in files:
 				if not f.startswith("_"):
 					if f.endswith(".inc"):

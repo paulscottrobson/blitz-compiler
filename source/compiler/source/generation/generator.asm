@@ -28,13 +28,11 @@ GeneratorProcess:
 		;
 		;		X16 shift of $CE
 		;
-		.if module_x16_compiler == 1
 		cmp 	#$CE 						; check if shift
 		bne 	_GPNotShifted
 		jsr 	GetNext 					; get the shifted token
 		sta 	zTemp1+1 					; match CE xx
 _GPNotShifted:
-		.endif
 		;
 		;		Find the generator entry.
 		;		

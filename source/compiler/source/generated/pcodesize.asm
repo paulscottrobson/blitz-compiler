@@ -3,15 +3,15 @@
 ;
 .section code
 MOFSizeTable:
-	.byte	1         	; $8d .shift
-	.byte	1         	; $8e .byte
-	.byte	2         	; $8f .word
-	.byte	5         	; $90 .float
-	.byte	255       	; $91 .string
-	.byte	255       	; $92 .data
-	.byte	3         	; $93 .goto
-	.byte	3         	; $94 .gosub
-	.byte	3         	; $95 .goto.z
-	.byte	3         	; $96 .goto.nz
-	.byte	2         	; $97 .varspace
+	.byte	1         	; $ca .shift
+	.byte	1         	; $cb .byte
+	.byte	2         	; $cc .word
+	.byte	5         	; $cd .float
+	.byte	255       	; $ce .string
+	.byte	255       	; $cf .data
+	.byte	3         	; $d0 .goto
+	.byte	3         	; $d1 .gosub
+	.byte	3         	; $d2 .goto.z
+	.byte	3         	; $d3 .goto.nz
+	.byte	2         	; $d4 .varspace
 .send code

@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		testing.asm
-;		Purpose:	Basic testing for runtim
-;		Created:	11th April 2023
+;		Name:		x16_save.asm
+;		Purpose:	Write out the object data.
+;		Created:	15th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -12,9 +12,39 @@
 
 		.section code
 
-WrapperBoot:	
-		jmp 	StartCompiler
+; ************************************************************************************************
+;
+;							Save compiled code from A:00 to YX
+;
+; ************************************************************************************************
 
+XSaveMemory:
+		phx
+		phy
+		pha
+
+		lda 	#0 							; set LFS
+		ldx 	#8
+		ldy 	#0
+		jsr 	$FFBA
+
+		lda 	#8 							; set file name
+		ldx 	#SaveName & $FF
+		ldy 	#SaveName >> 8
+		jsr 	$FFBD
+
+		pla 								; set up the start address.
+		sta 	zTemp0+1
+		stz 	zTemp0
+
+		lda 	#zTemp0 					; from index.
+		ply 								; end in YX
+		plx
+		jsr 	$FFD8 						; write out.
+		rts
+
+SaveName:
+		.text 	"CODE.BIN"
 		.send code
 
 

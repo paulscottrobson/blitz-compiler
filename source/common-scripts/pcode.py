@@ -29,7 +29,7 @@ class PCode(object):
 
 	def doCommands(self):
 		self.define("PCD_STARTCOMMAND")		
-		for f in Builder().getASMFiles():
+		for f in Builder("../runtime").getASMFiles():
 			for s in open(f).readlines():
 				if s.find(";;") >= 0:
 					m = re.match("^(.*?)\\:\\s*\\;\\;\\s*\\[(.*)\\]\\s*$",s)

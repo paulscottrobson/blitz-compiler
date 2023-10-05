@@ -297,9 +297,9 @@ keyword .macro
 PCD_STARTBINARY = $80
 PCD_ENDBINARY = $8d
 PCD_STARTCOMMAND = $8d
-PCD_ENDCOMMAND = $8d
-PCD_STARTSYSTEM = $8d
-PCD_ENDSYSTEM = $98
+PCD_ENDCOMMAND = $ca
+PCD_STARTSYSTEM = $ca
+PCD_ENDSYSTEM = $d5
 
 PCD_PLUS             = $80 ; +
 PCD_MINUS            = $81 ; -
@@ -314,17 +314,185 @@ PCD_LESS             = $89 ; <
 PCD_GREATEREQUAL     = $8a ; >=
 PCD_LESSGREATER      = $8b ; <>
 PCD_LESSEQUAL        = $8c ; <=
-PCD_CMD_SHIFT        = $8d ; .shift
-PCD_CMD_BYTE         = $8e ; .byte
-PCD_CMD_WORD         = $8f ; .word
-PCD_CMD_FLOAT        = $90 ; .float
-PCD_CMD_STRING       = $91 ; .string
-PCD_CMD_DATA         = $92 ; .data
-PCD_CMD_GOTO         = $93 ; .goto
-PCD_CMD_GOSUB        = $94 ; .gosub
-PCD_CMD_GOTOCMD_Z    = $95 ; .goto.z
-PCD_CMD_GOTOCMD_NZ   = $96 ; .goto.nz
-PCD_CMD_VARSPACE     = $97 ; .varspace
+PCD_ABS              = $8d ; abs
+PCD_ARRAY            = $8e ; array
+PCD_ASC              = $8f ; asc
+PCD_ASSERT           = $90 ; assert
+PCD_BINDOLLAR        = $91 ; bin$
+PCD_PRINTCMD_CHR     = $92 ; print.chr
+PCD_CHRDOLLAR        = $93 ; chr$
+PCD_SCMD_CMP         = $94 ; s.cmp
+PCD_FOR              = $95 ; for
+PCD_FRE              = $96 ; fre
+PCD_GET              = $97 ; get
+PCD_RETURN           = $98 ; return
+PCD_PSET             = $99 ; pset
+PCD_LINE             = $9a ; line
+PCD_RECT             = $9b ; rect
+PCD_FRAME            = $9c ; frame
+PCD_CHAR             = $9d ; char
+PCD_HEXDOLLAR        = $9e ; hex$
+PCD_INPUT            = $9f ; input
+PCD_INPUTDOLLAR      = $a0 ; input$
+PCD_INPUTCMD_START   = $a1 ; input.start
+PCD_LEN              = $a2 ; len
+PCD_FCMD_CMP         = $a3 ; f.cmp
+PCD_INTCMD_DIV       = $a4 ; int.div
+PCD_NEGATE           = $a5 ; negate
+PCD_NEWCMD_LINE      = $a6 ; new.line
+PCD_NEXT             = $a7 ; next
+PCD_NOT              = $a8 ; not
+PCD_ON               = $a9 ; on
+PCD_MOREON           = $aa ; moreon
+PCD_PEEK             = $ab ; peek
+PCD_POKE             = $ac ; poke
+PCD_POS              = $ad ; pos
+PCD_GETCHANNEL       = $ae ; getchannel
+PCD_SETCHANNEL       = $af ; setchannel
+PCD_PRINTCMD_N       = $b0 ; print.n
+PCD_PRINTCMD_S       = $b1 ; print.s
+PCD_READ             = $b2 ; read
+PCD_READDOLLAR       = $b3 ; read$
+PCD_RND              = $b4 ; rnd
+PCD_CONCAT           = $b5 ; concat
+PCD_SGN              = $b6 ; sgn
+PCD_PRINTCMD_TAB     = $b7 ; print.tab
+PCD_PRINTCMD_POS     = $b8 ; print.pos
+PCD_PRINTCMD_SPC     = $b9 ; print.spc
+PCD_STRDOLLAR        = $ba ; str$
+PCD_LEFTDOLLAR       = $bb ; left$
+PCD_RIGHTDOLLAR      = $bc ; right$
+PCD_MIDDOLLAR        = $bd ; mid$
+PCD_SWAP             = $be ; swap
+PCD_TI               = $bf ; ti
+PCD_TIDOLLAR         = $c0 ; ti$
+PCD_USR              = $c1 ; usr
+PCD_VAL              = $c2 ; val
+PCD_CLOSE            = $c3 ; close
+PCD_EXIT             = $c4 ; exit
+PCD_DEBUG            = $c5 ; debug
+PCD_OPEN             = $c6 ; open
+PCD_SCREEN           = $c7 ; screen
+PCD_VPOKE            = $c8 ; vpoke
+PCD_VPEEK            = $c9 ; vpeek
+PCD_CMD_SHIFT        = $ca ; .shift
+PCD_CMD_BYTE         = $cb ; .byte
+PCD_CMD_WORD         = $cc ; .word
+PCD_CMD_FLOAT        = $cd ; .float
+PCD_CMD_STRING       = $ce ; .string
+PCD_CMD_DATA         = $cf ; .data
+PCD_CMD_GOTO         = $d0 ; .goto
+PCD_CMD_GOSUB        = $d1 ; .gosub
+PCD_CMD_GOTOCMD_Z    = $d2 ; .goto.z
+PCD_CMD_GOTOCMD_NZ   = $d3 ; .goto.nz
+PCD_CMD_VARSPACE     = $d4 ; .varspace
+PCD_CLR              = $ca80 ; clr
+PCD_DIM              = $ca81 ; dim
+PCD_END              = $ca82 ; end
+PCD_JOY              = $ca83 ; joy
+PCD_INT              = $ca84 ; int
+PCD_SQR              = $ca85 ; sqr
+PCD_LOG              = $ca86 ; log
+PCD_EXP              = $ca87 ; exp
+PCD_COS              = $ca88 ; cos
+PCD_SIN              = $ca89 ; sin
+PCD_TAN              = $ca8a ; tan
+PCD_ATN              = $ca8b ; atn
+PCD_MOUSE            = $ca8c ; mouse
+PCD_MB               = $ca8d ; mb
+PCD_MX               = $ca8e ; mx
+PCD_MY               = $ca8f ; my
+PCD_RESTORE          = $ca90 ; restore
+PCD_STOP             = $ca91 ; stop
+PCD_SYS              = $ca92 ; sys
+PCD_TIDOLLARCMD_WRITE = $ca93 ; ti$.write
+PCD_WAIT             = $ca94 ; wait
+PCD_I2CPOKE          = $ca95 ; i2cpoke
+PCD_I2CPEEK          = $ca96 ; i2cpeek
+PCD_BANK             = $ca97 ; bank
+PCD_SLEEP            = $ca98 ; sleep
+PCD_FMINIT           = $ca99 ; fminit
+PCD_FMNOTE           = $ca9a ; fmnote
+PCD_FMDRUM           = $ca9b ; fmdrum
+PCD_FMINST           = $ca9c ; fminst
+PCD_FMVIB            = $ca9d ; fmvib
+PCD_FMFREQ           = $ca9e ; fmfreq
+PCD_FMVOL            = $ca9f ; fmvol
+PCD_FMPAN            = $caa0 ; fmpan
+PCD_FMPLAY           = $caa1 ; fmplay
+PCD_FMCHORD          = $caa2 ; fmchord
+PCD_FMPOKE           = $caa3 ; fmpoke
+PCD_PSGINIT          = $caa4 ; psginit
+PCD_PSGNOTE          = $caa5 ; psgnote
+PCD_PSGVOL           = $caa6 ; psgvol
+PCD_PSGWAV           = $caa7 ; psgwav
+PCD_PSGFREQ          = $caa8 ; psgfreq
+PCD_PSGPAN           = $caa9 ; psgpan
+PCD_PSGPLAY          = $caaa ; psgplay
+PCD_PSGCHORD         = $caab ; psgchord
+PCD_CLS              = $caac ; cls
+PCD_LOCATE           = $caad ; locate
+PCD_COLOR            = $caae ; color
+; ************************************************************************************************
+; ************************************************************************************************
+;
+;		Name:		x16_config.inc
+;		Purpose:	Configuration for compiler
+;		Created:	15th April 2023
+;		Reviewed: 	No
+;		Author:		Paul Robson (paul@robsons.org.uk)
+;
+; ************************************************************************************************
+; ************************************************************************************************
+;
+;		Runtime p-code goes here. Needs to be on a page boundary.
+;
+PCodeStart = $4000
+;
+;		Work area space and size. Upwards is variables, Downwards is line number positions.
+;
+WorkArea = $8000
+WorkAreaSize = $1F00
+
+; ************************************************************************************************
+;
+;									Changes and Updates
+;
+; ************************************************************************************************
+;
+;		Date			Notes
+;		==== 			=====
+;
+; ************************************************************************************************
+
+; ************************************************************************************************
+; ************************************************************************************************
+;
+;		Name:		x16_storage.inc
+;		Purpose:	Storage access macros
+;		Created:	15th April 2023
+;		Reviewed: 	No
+;		Author:		Paul Robson (paul@robsons.org.uk)
+;
+; ************************************************************************************************
+; ************************************************************************************************
+
+storage_access .macro
+		.endm
+
+storage_release .macro
+		.endm
+
+; ************************************************************************************************
+;
+;									Changes and Updates
+;
+; ************************************************************************************************
+;
+;		Date			Notes
+;		==== 			=====
+;
+; ************************************************************************************************
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
@@ -633,7 +801,7 @@ OUTPUTClose:
 
 		.section code
 
-Boot:	
+StartCompiler:	
 		jsr 	STRReset 					; reset storage (line#, variable)
 		jsr 	INPUTOpen 					; reset data input
 		jsr 	OUTPUTOpen 					; reset data output.
@@ -2094,16 +2262,14 @@ _FNError:
 ; ************************************************************************************************
 
 CommandTables:
-		.include 	"commands.defc"
-		.if module_x16_compiler == 1
-		.include "../../x16_compiler/generation/x16_command.defc"
-		.include "../../x16_compiler/generated/x16_sound.defc"
-		.endif
+		.include 	"source/generation/commands.defc"
+		;.include "../../x16_compiler/generation/x16_command.defc"
+		;.include "../../x16_compiler/generated/x16_sound.defc"
 		.byte 	0
 
 UnaryTables:
-		.include 	"unary.defc"
-		.include "../../x16_compiler/generation/x16_unary.defc"
+		;.include 	"unary.defc"
+		;	.include "../../x16_compiler/generation/x16_unary.defc"
 		.byte 	0
 
 		.send  code		
@@ -2148,13 +2314,11 @@ GeneratorProcess:
 		;
 		;		X16 shift of $CE
 		;
-		.if module_x16_compiler == 1
 		cmp 	#$CE 						; check if shift
 		bne 	_GPNotShifted
 		jsr 	GetNext 					; get the shifted token
 		sta 	zTemp1+1 					; match CE xx
 _GPNotShifted:
-		.endif
 		;
 		;		Find the generator entry.
 		;		
@@ -3586,17 +3750,17 @@ _ParseExit:
 ;
 .section code
 MOFSizeTable:
-	.byte	1         	; $8d .shift
-	.byte	1         	; $8e .byte
-	.byte	2         	; $8f .word
-	.byte	5         	; $90 .float
-	.byte	255       	; $91 .string
-	.byte	255       	; $92 .data
-	.byte	3         	; $93 .goto
-	.byte	3         	; $94 .gosub
-	.byte	3         	; $95 .goto.z
-	.byte	3         	; $96 .goto.nz
-	.byte	2         	; $97 .varspace
+	.byte	1         	; $ca .shift
+	.byte	1         	; $cb .byte
+	.byte	2         	; $cc .word
+	.byte	5         	; $cd .float
+	.byte	255       	; $ce .string
+	.byte	255       	; $cf .data
+	.byte	3         	; $d0 .goto
+	.byte	3         	; $d1 .gosub
+	.byte	3         	; $d2 .goto.z
+	.byte	3         	; $d3 .goto.nz
+	.byte	2         	; $d4 .varspace
 .send code
 ; ************************************************************************************************
 ; ************************************************************************************************
@@ -4269,6 +4433,229 @@ _HWOWBNoCarry:
 		rts
 		
 		.send code
+
+; ************************************************************************************************
+;
+;									Changes and Updates
+;
+; ************************************************************************************************
+;
+;		Date			Notes
+;		==== 			=====
+;
+; ************************************************************************************************
+; ************************************************************************************************
+; ************************************************************************************************
+;
+;		Name:		x16_cmd.asm
+;		Purpose:	CMD command
+;		Created:	24th April 2023
+;		Reviewed: 	No
+;		Author:		Paul Robson (paul@robsons.org.uk)
+;
+; ************************************************************************************************
+; ************************************************************************************************
+
+		.section code
+
+; ************************************************************************************************
+;
+;											CMD command
+;
+; ************************************************************************************************
+
+CommandCMD:
+		lda 	#PCD_SETCHANNEL 			; set the channel to this now forever.
+		jsr 	WriteCodeByte
+		jsr 	LookNextNonSpace 			; followed by a , ?
+		cmp 	#","
+		bne 	_CCMDExit
+		jsr 	GetNext 					; consume comma.
+		jsr 	CommandPRINT 				; do the print code
+_CCMDExit:
+		rts		
+		.send code
+
+; ************************************************************************************************
+;
+;									Changes and Updates
+;
+; ************************************************************************************************
+;
+;		Date			Notes
+;		==== 			=====
+;
+; ************************************************************************************************
+; ************************************************************************************************
+; ************************************************************************************************
+;
+;		Name:		x16_open.asm
+;		Purpose:	OPEN command
+;		Created:	2nd May 2023
+;		Reviewed: 	No
+;		Author:		Paul Robson (paul@robsons.org.uk)
+;
+; ************************************************************************************************
+; ************************************************************************************************
+
+		.section code
+
+; ************************************************************************************************
+;
+;						OPEN command - first 2 are already on the stack.
+;
+;		supports 	OPEN #,#
+;					OPEN #,#,#
+;					OPEN #,#,$
+;					OPEN #,#,#,$
+;
+;		Adds dummies so whatever there are three integers and a string compiled.
+;
+; ************************************************************************************************
+
+CommandOPEN:
+		jsr 	LookNextNonSpace 			; followed by a , ?
+		cmp 	#","
+		bne 	_COTwoDefaults
+		jsr 	GetNext 					; consume comma
+		jsr 	CompileExpressionAt0 		; what follows could be text or number.
+		and 	#NSSString 					; if a number want a string to follow
+		beq 	_COThreeIntegers
+		;
+		;		n,n,$
+		;
+		lda 	#0		 					; so we have n,n,$,0 so swap !
+		jsr 	PushIntegerA
+		.keyword PCD_SWAP
+		rts
+		;
+		;		Two numeric values, add default 0 and empty string.
+		;
+_COTwoDefaults:
+		lda 	#0
+		jsr 	PushIntegerA
+_COCompileNullString:
+		.keyword PCD_CMD_STRING
+		lda 	#0
+		jsr 	WriteCodeByte
+		jsr 	WriteCodeByte
+		rts		
+		;
+		;		Full constants e.g. 1,8,2 possibly no file name
+		;
+_COThreeIntegers:		
+		jsr 	LookNextNonSpace 			; is there a , 
+		cmp 	#","
+		bne 	_COCompileNullString 		; if not it is n,n,n so default filename.
+		jsr 	GetNext
+		jsr 	CompileExpressionAt0 		; should be a filename
+		and 	#NSSString
+		beq 	_COType
+		rts
+_COType:
+		.error_type		
+		.send code
+
+; ************************************************************************************************
+;
+;									Changes and Updates
+;
+; ************************************************************************************************
+;
+;		Date			Notes
+;		==== 			=====
+;
+; ************************************************************************************************
+; ************************************************************************************************
+; ************************************************************************************************
+;
+;		Name:		printchar.asm
+;		Purpose:	Character output interface
+;		Created:	8th May 2023
+;		Reviewed: 	No
+;		Author:		Paul Robson (paul@robsons.org.uk)
+;
+; ************************************************************************************************
+; ************************************************************************************************
+
+		.section code
+		
+; ************************************************************************************************
+;
+;								Print character A to Screen/Error Stream
+;
+; ************************************************************************************************
+
+XPrintCharacter
+		pha
+		phx
+		phy
+		jsr 	$FFD2
+		ply
+		plx
+		pla
+		rts
+		.send code
+
+; ************************************************************************************************
+;
+;									Changes and Updates
+;
+; ************************************************************************************************
+;
+;		Date			Notes
+;		==== 			=====
+;
+; ************************************************************************************************
+; ************************************************************************************************
+; ************************************************************************************************
+;
+;		Name:		x16_save.asm
+;		Purpose:	Write out the object data.
+;		Created:	15th April 2023
+;		Reviewed: 	No
+;		Author:		Paul Robson (paul@robsons.org.uk)
+;
+; ************************************************************************************************
+; ************************************************************************************************
+
+		.section code
+
+; ************************************************************************************************
+;
+;							Save compiled code from A:00 to YX
+;
+; ************************************************************************************************
+
+XSaveMemory:
+		phx
+		phy
+		pha
+
+		lda 	#0 							; set LFS
+		ldx 	#8
+		ldy 	#0
+		jsr 	$FFBA
+
+		lda 	#8 							; set file name
+		ldx 	#SaveName & $FF
+		ldy 	#SaveName >> 8
+		jsr 	$FFBD
+
+		pla 								; set up the start address.
+		sta 	zTemp0+1
+		stz 	zTemp0
+
+		lda 	#zTemp0 					; from index.
+		ply 								; end in YX
+		plx
+		jsr 	$FFD8 						; write out.
+		rts
+
+SaveName:
+		.text 	"CODE.BIN"
+		.send code
+
 
 ; ************************************************************************************************
 ;
