@@ -48,3 +48,10 @@ CSCRIPTS = $(ROOTDIR)common-scripts$(S)
 ASM = 64tass
 PYTHON = python3
 EMULATOR = $(BINDIR)x16emu$(APPSTEM) -scale 2 -debug 
+
+#		Uncommenting .SILENT will shut the whole build up.
+#
+#
+ifndef VERBOSE
+#.SILENT:
+endif
