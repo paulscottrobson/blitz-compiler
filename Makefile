@@ -29,7 +29,8 @@ all: latest libraries
 #		Build the library version of the components. 
 #
 libraries:	
-	make -C source/ifloat32
+	make -C source/tools
+	make -C source/ifloatls32
 	make -C source/polynomials
 	make -C source/runtime
 	make -C source/compiler

@@ -19,8 +19,9 @@ BASICSRC = build$(S)balls.bas
 all: build
 
 prelim: common-code
-	$(PYTHON) $(CSCRIPTS)genx16.py
 	$(PYTHON) $(BINDIR)tokenise.zip $(BASICSRC) testing$(S)code$(S)tokenised.dat
+	$(PYTHON) scripts$(S)genx16.py
+	$(PYTHON) scripts$(S)gencom.py 
 	$(PYTHON) $(CSCRIPTS)errors.py
 	$(PYTHON) $(CSCRIPTS)pcode.py >source$(S)generated$(S)pcodetokens.inc
 	$(PYTHON) $(CSCRIPTS)c64tokens.py >source$(S)generated$(S)c64tokens.inc

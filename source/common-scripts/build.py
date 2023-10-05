@@ -21,6 +21,7 @@ class Builder(object):
 	def __init__(self,searchDir = "."):
 		self.incFiles = []
 		self.asmFiles = []
+		self.defFiles = []
 		self.scanForFiles(searchDir)
 	#
 	#		Scan source the for required modules.
@@ -31,6 +32,8 @@ class Builder(object):
 				if not f.startswith("_"):
 					if f.endswith(".inc"):
 						self.incFiles.append(root+os.sep+f)
+					if f.endswith(".def"):
+						self.defFiles.append(root+os.sep+f)
 					if f.endswith(".asm"):
 						self.asmFiles.append(root+os.sep+f)			
 
@@ -54,6 +57,8 @@ class Builder(object):
 		return self.incFiles
 	def getASMFiles(self):
 		return self.asmFiles
+	def getDEFFiles(self):
+		return self.defFiles
 		
 if __name__ == "__main__":
  	Builder().createFile()
