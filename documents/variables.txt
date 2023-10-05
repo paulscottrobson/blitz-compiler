@@ -1,0 +1,112 @@
+Variables
+
+
+Variables are encoded in 2 bytes
+
+HI
+	Bit 7 		(used to mark array type)
+	Bit 6,5 	(standard ifloat,string,int16 types)
+	Bit 4..0	(ASCII of A-Z 1..26)
+LO
+	Bit 5..0 	(ASCII of 0-9A-Z)
+
+The IdentifyVariable	routine returns the address of the variable passed in YX, creating it if necessary, to YX 
+						and the base type (bits 7,6,5) in A
+
+The GetSetVariable routine takes takes this AXY information and either compiles code to write it (CS) or read it (CC) - 
+						if marked as an array the address is assumed to be on the stack (so it is now FORTH order, 
+						address data %! $! #!)
+
+Simple variables are in the first 260 bytes (representing A-Z, A% to Z% and A$ to Z$)
+
+
+Variable records are stored in 2 bytes
+
+Byte 0: 														Byte 1:
+Bit 7 		: Array 											Bit 7 : Function definition
+Bit 5,6 	: Type (00 Float,10 String,01 Int16) 				Bit 6 : Not used
+Bit 0..4 	: Lower 5 bits of A..Z 								Bit 5..0 : Lower 6 bits of 0-9A-Z
+
+
+General format.
+
++00 	Link to next or $00
++01 	First byte (Byte 0)
++02 	Second byte (Byte 1)
++03 	Data.....
+
+Variable Records
+================
+
+Variables use 2 bytes for strings/int16 and 6 bytes for floats.
+
++03 	Offset Low 	from start of variables.
++04 	Offset High
+
+(type information from byte 0).
+
+Functions 		
+=========
+Functions do not use any variables.
+
+(Same format as GOSUB, called using the same code)
+
++03 	Page
++04 	Object Low
++05 	Object High
+
+Sample function 
+
+DEF FNC(a) = a + 4 : PRINT FNC(7)
+
+Before 0 : goto.z (EOL) as for THEN.
+
+On entry, value 7 is on the stack.
+
+a@ 					; fetch variable A
+swap 				; A is now 2nd, value is 1st.
+a! 					; store new value in A
+
+a@ 4 +  			; body of the function, result TOS, old A second
+
+swap 				; result 2nd, old A TOS
+a! 					; fix it back up
+return 				; back to caller with result on TOS.
+
+Array
+=====
+Array records contain 2 bytes ; they are created when the DIM statement is executed at present
+
++00 	Offset low to first level of array
++01 	Offset high to first level of array
+
+Links to:
+
++00 	Count of elements in array (this is one more than the dimension) e.g. DIM A(10), this would be 11.
++01
++02 	Data type stored. Bit 7 is set if this is an array that has sub arrays.
++03 	First data item (or pointer to first sub array)
+
+Memory is allocated using variable.space
+
+Arrays are accessed using the following pattern
+
+DIM A(4,5,6) or A(4,5,6) is specified as 
+
+4 5 6 	3 e.g. the indices followed by the index count.
+
+for DIM this is completed with a type byte DIM token and an integer store of the result on the stack.
+
+DIM C2(14) would be 14 1 0 dim 42%!
+
+Accessing is done similarly. Array converts it to an address which is then accessed updated.
+
+e.g. print c2(14)
+
+14 1 <offset of c2> array #@
+
+c2(11) = 4
+
+11 1 <offset of c2> array  4  #!
+
+

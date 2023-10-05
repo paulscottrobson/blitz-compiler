@@ -13,10 +13,9 @@
 		.section code
 
 EndProgram:
-		.binary "code/balls.bin"
+		.binary "code/code.bin"
 
 		.send code
-
 
 ; ************************************************************************************************
 ;

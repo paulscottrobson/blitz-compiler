@@ -28,7 +28,7 @@ StartCompiler:
 		;		Main compilation loop
 		;
 MainCompileLoop:
-		jsr 	ReadNextLine 				; read next line into the buffer.
+		jsr 	ReadNextLine 				; read next line into the buffer.		
 		bcc 	SaveCodeAndExit 			; end of source.
 		;
 		jsr 	GetLineNumber 				; get line #
