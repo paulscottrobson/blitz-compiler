@@ -47,7 +47,7 @@ class AppInformation(object):
 		return self.varToOffset[name] if name in self.varToOffset else None 
 
 if __name__ == "__main__":
-	app = AppInformation()
+#	app = AppInformation()
 	dmp = MemoryDump()
 	lbl = LabelStore()
 
@@ -87,3 +87,4 @@ if __name__ == "__main__":
 		if l != 0xFFFF:
 				print("{0}:{1}".format(l,dmp.readWord(lineNumberStart+3)-start))
 		lineNumberStart += 5
+		

@@ -19,6 +19,7 @@ BASICSRC = build$(S)balls.bas
 all: build
 
 prelim: common-code
+	$(PYTHON) $(CSCRIPTS)genx16.py
 	$(PYTHON) $(BINDIR)tokenise.zip $(BASICSRC) testing$(S)code$(S)tokenised.dat
 	$(PYTHON) $(CSCRIPTS)errors.py
 	$(PYTHON) $(CSCRIPTS)pcode.py >source$(S)generated$(S)pcodetokens.inc
@@ -37,7 +38,9 @@ run: build
 	$(CDEL) CODE.BIN
 	$(EXECUTE) 
 	$(CCOPY) CODE.BIN ..$(S)runtime$(S)testing$(S)code$(S)code.bin
-	#$(PYTHON) $(CSCRIPTS)compileinfo.py >testing$(S)code$(S)program.data
+	$(PYTHON) $(CSCRIPTS)compileinfo.py >testing$(S)code$(S)program.data
 	
 show:
 	$(PYTHON) $(CSCRIPTS)pdis.py CODE.BIN
+
+

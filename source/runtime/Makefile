@@ -36,3 +36,5 @@ build: prelim
 run: build
 	$(EXECUTE) 
 	
+variables:
+	$(PYTHON) $(CSCRIPTS)variables.py
