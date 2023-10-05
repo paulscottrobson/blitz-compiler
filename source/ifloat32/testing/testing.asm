@@ -2,7 +2,7 @@
 ; ************************************************************************************************
 ;
 ;		Name:		testing.asm
-;		Purpose:	Basic testing for ifloat32 (only built if float is main)
+;		Purpose:	Basic testing for ifloat32
 ;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)

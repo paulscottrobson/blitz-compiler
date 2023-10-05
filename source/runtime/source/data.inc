@@ -1,8 +1,8 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		testing.asm
-;		Purpose:	Basic testing for polynomical code
+;		Name:		data.inc
+;		Purpose:	Common Data
 ;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
@@ -10,92 +10,34 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section code
-
-WrapperBoot:	
-		ldx 	#255
-		jsr 	TestScript
-		.exitemu
-
-ErrorHandler:
-		.debug		
-
-TestScript:		
-		.include "generated/testcode.dat"	
-		rts
-		
-
 ; ************************************************************************************************
 ;
-;					Assert checks stack has one value, should be -1
-;	
-; ************************************************************************************************
-
-FPAssertCheck:
-		cpx 	#0
-		bne 	_FPACFail
-		lda 	NSMantissa0,x
-		beq 	_FPACFail
-		dex
-		rts
-_FPACFail:
-		.debug
-		bra 	_FPACFail
-
-; ************************************************************************************************
-;
-;										Temp |tos| function
+;									Mandatory Zero page code
 ;
 ; ************************************************************************************************
 
-FPAbs:
-		stz 	NSStatus,x
-		rts
+		.section zeropage
+zsTemp: 									; string temporary area.
+		.fill 	2
+runtimeStackPtr: 							; runtime stack pointer
+		.fill 	2
+		.send zeropage
+
 
 ; ************************************************************************************************
 ;
-;								Push following FP constant on stack
+;										Non Zero Page Data
 ;
 ; ************************************************************************************************
 
-FPPushConstant:
-		inx
-		pla
-		ply
-		sta 	zTemp0
-		sty 	zTemp0+1
-		ldy 	#1
-		lda 	(zTemp0),y
-		sta 	NSMantissa0,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa1,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa2,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa3,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSExponent,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSStatus,x
-		;
-		lda 	zTemp0
-		ldy 	zTemp0+1
-		clc
-		adc 	#6
-		bcc 	_FPPCNoCarry
-		iny
-_FPPCNoCarry:
-		phy
-		pha
-		rts		
+		.section storage
 
-		.send code
+stringLowMemory:
+		.fill 	2		
+stringHighMemory:
+		.fill 	2
 
+		.send 	storage
 
 ; ************************************************************************************************
 ;
@@ -107,3 +49,4 @@ _FPPCNoCarry:
 ;		==== 			=====
 ;
 ; ************************************************************************************************
+

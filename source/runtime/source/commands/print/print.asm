@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		testing.asm
-;		Purpose:	Basic testing for polynomical code
-;		Created:	11th April 2023
+;		Name:		print.asm
+;		Purpose:	Print Indirection Control etc.
+;		Created:	19th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -12,90 +12,73 @@
 
 		.section code
 
-WrapperBoot:	
-		ldx 	#255
-		jsr 	TestScript
-		.exitemu
-
-ErrorHandler:
-		.debug		
-
-TestScript:		
-		.include "generated/testcode.dat"	
-		rts
-		
-
 ; ************************************************************************************************
 ;
-;					Assert checks stack has one value, should be -1
-;	
-; ************************************************************************************************
-
-FPAssertCheck:
-		cpx 	#0
-		bne 	_FPACFail
-		lda 	NSMantissa0,x
-		beq 	_FPACFail
-		dex
-		rts
-_FPACFail:
-		.debug
-		bra 	_FPACFail
-
-; ************************************************************************************************
-;
-;										Temp |tos| function
+;							Get/Set Print Channel from/to stack
 ;
 ; ************************************************************************************************
 
-FPAbs:
-		stz 	NSStatus,x
-		rts
-
-; ************************************************************************************************
-;
-;								Push following FP constant on stack
-;
-; ************************************************************************************************
-
-FPPushConstant:
+GetChannel: ;; [getchannel]
+		.entercmd
+		lda 	currentChannel
 		inx
-		pla
-		ply
-		sta 	zTemp0
-		sty 	zTemp0+1
-		ldy 	#1
-		lda 	(zTemp0),y
-		sta 	NSMantissa0,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa1,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa2,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa3,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSExponent,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSStatus,x
-		;
-		lda 	zTemp0
-		ldy 	zTemp0+1
-		clc
-		adc 	#6
-		bcc 	_FPPCNoCarry
-		iny
-_FPPCNoCarry:
-		phy
-		pha
-		rts		
+		jsr 	FloatSetByte
+		.exitcmd
+
+SetChannel: ;; [setchannel]
+		.entercmd
+		jsr 	FloatIntegerPart
+		lda 	NSMantissa0,x
+		sta 	currentChannel
+		dex
+		.exitcmd
+
+SetDefaultChannel:
+		stz 	currentChannel
+		rts
+
+; ************************************************************************************************
+;
+;						  				Print Character
+;
+; ************************************************************************************************
+
+VectorPrintCharacter:
+		phx
+		ldx 	currentChannel
+
+;
+;		Check we're sending it to the correct channel.
+;
+;		pha
+;		txa
+;		ora 	#48
+;		jsr 	XPrintCharacterToChannel
+;		pla
+
+		jsr 	XPrintCharacterToChannel
+		plx
+		rts
+
+; ************************************************************************************************
+;
+;						  				Get Character
+;
+; ************************************************************************************************
+
+VectorGetCharacter:
+		phx
+		ldx 	currentChannel
+		jsr 	XGetCharacterFromChannel
+		plx
+		rts
 
 		.send code
 
+		.section storage
+currentChannel:
+		.fill 	1
+		.send storage
 
 ; ************************************************************************************************
 ;

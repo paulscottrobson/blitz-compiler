@@ -1,102 +1,61 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		testing.asm
-;		Purpose:	Basic testing for polynomical code
-;		Created:	11th April 2023
+;		Name:		read_float.asm
+;		Purpose:	Read iFloat32
+;		Created:	13th April 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section code
-
-WrapperBoot:	
-		ldx 	#255
-		jsr 	TestScript
-		.exitemu
-
-ErrorHandler:
-		.debug		
-
-TestScript:		
-		.include "generated/testcode.dat"	
-		rts
-		
+		.section 	code
 
 ; ************************************************************************************************
 ;
-;					Assert checks stack has one value, should be -1
-;	
-; ************************************************************************************************
-
-FPAssertCheck:
-		cpx 	#0
-		bne 	_FPACFail
-		lda 	NSMantissa0,x
-		beq 	_FPACFail
-		dex
-		rts
-_FPACFail:
-		.debug
-		bra 	_FPACFail
-
-; ************************************************************************************************
-;
-;										Temp |tos| function
+;								Write float (2 byte command)
 ;
 ; ************************************************************************************************
 
-FPAbs:
-		stz 	NSStatus,x
-		rts
+ReadFloatCommand:
+		.entercmd
+		.vaddress
+		jsr 	ReadFloatZTemp0Sub
+		.exitcmd
 
-; ************************************************************************************************
-;
-;								Push following FP constant on stack
-;
-; ************************************************************************************************
-
-FPPushConstant:
-		inx
-		pla
-		ply
-		sta 	zTemp0
-		sty 	zTemp0+1
+ReadFloatZTemp0Sub:
+		phy 								; start write
 		ldy 	#1
-		lda 	(zTemp0),y
+		inx
+
+		lda 	(zTemp0)
 		sta 	NSMantissa0,x
-		iny
+		
 		lda 	(zTemp0),y
 		sta 	NSMantissa1,x
 		iny
+
 		lda 	(zTemp0),y
 		sta 	NSMantissa2,x
 		iny
+
 		lda 	(zTemp0),y
 		sta 	NSMantissa3,x
 		iny
+
 		lda 	(zTemp0),y
 		sta 	NSExponent,x
 		iny
+
 		lda 	(zTemp0),y
 		sta 	NSStatus,x
-		;
-		lda 	zTemp0
-		ldy 	zTemp0+1
-		clc
-		adc 	#6
-		bcc 	_FPPCNoCarry
-		iny
-_FPPCNoCarry:
-		phy
-		pha
-		rts		
 
-		.send code
+		ply
+		rts
 
-
+		.send 	code
+		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

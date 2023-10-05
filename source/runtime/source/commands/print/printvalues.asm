@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		testing.asm
-;		Purpose:	Basic testing for polynomical code
-;		Created:	11th April 2023
+;		Name:		printvalues.asm
+;		Purpose:	Print String/Number
+;		Created:	19th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -12,90 +12,64 @@
 
 		.section code
 
-WrapperBoot:	
-		ldx 	#255
-		jsr 	TestScript
-		.exitemu
-
-ErrorHandler:
-		.debug		
-
-TestScript:		
-		.include "generated/testcode.dat"	
-		rts
-		
-
 ; ************************************************************************************************
 ;
-;					Assert checks stack has one value, should be -1
-;	
-; ************************************************************************************************
-
-FPAssertCheck:
-		cpx 	#0
-		bne 	_FPACFail
-		lda 	NSMantissa0,x
-		beq 	_FPACFail
-		dex
-		rts
-_FPACFail:
-		.debug
-		bra 	_FPACFail
-
-; ************************************************************************************************
-;
-;										Temp |tos| function
+;						  				Print number
 ;
 ; ************************************************************************************************
 
-FPAbs:
-		stz 	NSStatus,x
-		rts
-
-; ************************************************************************************************
-;
-;								Push following FP constant on stack
-;
-; ************************************************************************************************
-
-FPPushConstant:
+PrintNumber: ;; [print.n]
+		.entercmd
+		lda 	#7
+		jsr 	FloatToString 				; to number in decimal buffer
+		dex 								; drop
+		phx
+		ldx 	#0 							; print buffer.
+_PNLoop:
+		lda 	decimalBuffer,x
+		jsr 	VectorPrintCharacter
 		inx
-		pla
-		ply
+		lda	 	decimalBuffer,x
+		bne 	_PNLoop
+		lda 	#32 						; trailing space
+		jsr 	VectorPrintCharacter
+		plx
+		.exitcmd
+
+; ************************************************************************************************
+;
+;						  				Print string
+;
+; ************************************************************************************************
+
+PrintString: ;; [print.s]
+		.entercmd
+		lda 	NSMantissa0,x 				; point zTemp0 to string
 		sta 	zTemp0
-		sty 	zTemp0+1
-		ldy 	#1
-		lda 	(zTemp0),y
-		sta 	NSMantissa0,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa1,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa2,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa3,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSExponent,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSStatus,x
-		;
-		lda 	zTemp0
-		ldy 	zTemp0+1
-		clc
-		adc 	#6
-		bcc 	_FPPCNoCarry
-		iny
-_FPPCNoCarry:
+		lda 	NSMantissa1,x
+		sta 	zTemp0+1
+		dex 								; drop
+		phx
 		phy
-		pha
-		rts		
+		lda 	(zTemp0) 					; X = count
+		tax
+		ldy 	#1 							; Y = position
+_PSLoop:
+		cpx 	#0 							; complete ?
+		beq 	_PSExit
+		dex 								; dec count
+		lda 	(zTemp0),y 					; print char and bump
+		jsr 	VectorPrintCharacter
+		iny
+		bra 	_PSLoop
+
+_PSExit:
+		ply
+		plx
+		.exitcmd
+
 
 		.send code
-
 
 ; ************************************************************************************************
 ;

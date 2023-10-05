@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		testing.asm
-;		Purpose:	Basic testing for polynomical code
-;		Created:	11th April 2023
+;		Name:		x16_vpoke.asm
+;		Purpose:	VPoke command
+;		Created:	29th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -11,91 +11,62 @@
 ; ************************************************************************************************
 
 		.section code
-
-WrapperBoot:	
-		ldx 	#255
-		jsr 	TestScript
-		.exitemu
-
-ErrorHandler:
-		.debug		
-
-TestScript:		
-		.include "generated/testcode.dat"	
-		rts
 		
-
 ; ************************************************************************************************
 ;
-;					Assert checks stack has one value, should be -1
-;	
-; ************************************************************************************************
-
-FPAssertCheck:
-		cpx 	#0
-		bne 	_FPACFail
-		lda 	NSMantissa0,x
-		beq 	_FPACFail
-		dex
-		rts
-_FPACFail:
-		.debug
-		bra 	_FPACFail
-
-; ************************************************************************************************
-;
-;										Temp |tos| function
+;								VPOKE bank,address,data
 ;
 ; ************************************************************************************************
 
-FPAbs:
-		stz 	NSStatus,x
-		rts
+CommandVPOKE: ;; [vpoke]
+		.entercmd
 
-; ************************************************************************************************
-;
-;								Push following FP constant on stack
-;
-; ************************************************************************************************
-
-FPPushConstant:
-		inx
-		pla
-		ply
-		sta 	zTemp0
-		sty 	zTemp0+1
-		ldy 	#1
-		lda 	(zTemp0),y
-		sta 	NSMantissa0,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa1,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa2,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa3,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSExponent,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSStatus,x
-		;
-		lda 	zTemp0
-		ldy 	zTemp0+1
-		clc
-		adc 	#6
-		bcc 	_FPPCNoCarry
-		iny
-_FPPCNoCarry:
-		phy
+		jsr 	GetInteger8Bit 				; poke value
 		pha
-		rts		
+		dex
+
+		.floatinteger 						; address (MED/LO)
+		lda 	NSMantissa0,x
+		sta 	VRAMLow0
+		lda 	NSMantissa1,x
+		sta 	VRAMMed0
+		dex
+
+		.floatinteger 						; address (HI)
+		jsr 	GetInteger8Bit
+		sta 	VRAMHigh0
+		dex
+
+		pla 								; poke value back
+		sta 	VRAMData0					; and write it out.
+
+		.exitcmd
+
+; ************************************************************************************************
+;
+;								VPOKE bank,address,data
+;
+; ************************************************************************************************
+
+CommandVPEEK: ;; [vpeek]
+		.entercmd
+
+		.floatinteger 						; address (MED/LO)
+		lda 	NSMantissa0,x
+		sta 	VRAMLow0
+		lda 	NSMantissa1,x
+		sta 	VRAMMed0
+		dex
+
+		.floatinteger 						; address (HI)
+		jsr 	GetInteger8Bit
+		sta 	VRAMHigh0
+
+		lda 	VRAMData0					; read data
+		jsr 	FloatSetByte 				; return as byte
+		.exitcmd
 
 		.send code
-
 
 ; ************************************************************************************************
 ;

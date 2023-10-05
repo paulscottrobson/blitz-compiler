@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		testing.asm
-;		Purpose:	Basic testing for polynomical code
-;		Created:	11th April 2023
+;		Name:		x16_peekpoke.asm
+;		Purpose:	Read/Write memory
+;		Created:	20th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -12,90 +12,75 @@
 
 		.section code
 
-WrapperBoot:	
-		ldx 	#255
-		jsr 	TestScript
-		.exitemu
-
-ErrorHandler:
-		.debug		
-
-TestScript:		
-		.include "generated/testcode.dat"	
-		rts
-		
-
 ; ************************************************************************************************
 ;
-;					Assert checks stack has one value, should be -1
-;	
-; ************************************************************************************************
-
-FPAssertCheck:
-		cpx 	#0
-		bne 	_FPACFail
-		lda 	NSMantissa0,x
-		beq 	_FPACFail
-		dex
-		rts
-_FPACFail:
-		.debug
-		bra 	_FPACFail
-
-; ************************************************************************************************
-;
-;										Temp |tos| function
+;											Write Memory
 ;
 ; ************************************************************************************************
 
-FPAbs:
-		stz 	NSStatus,x
-		rts
-
-; ************************************************************************************************
-;
-;								Push following FP constant on stack
-;
-; ************************************************************************************************
-
-FPPushConstant:
-		inx
-		pla
-		ply
-		sta 	zTemp0
+XPokeMemory:
+		stx 	zTemp0
 		sty 	zTemp0+1
-		ldy 	#1
-		lda 	(zTemp0),y
-		sta 	NSMantissa0,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa1,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa2,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa3,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSExponent,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSStatus,x
-		;
-		lda 	zTemp0
-		ldy 	zTemp0+1
-		clc
-		adc 	#6
-		bcc 	_FPPCNoCarry
-		iny
-_FPPCNoCarry:
-		phy
-		pha
-		rts		
+
+		ldy 	SelectRAMBank 				; old RAM bank in Y
+		ldx 	ramBank 					; switch to BANKed RAMBank if not $FF
+		cpx 	#$FF
+		beq 	_XPMNoSwitch
+		stx 	SelectRAMBank
+_XPMNoSwitch:
+		sta 	(zTemp0) 					; do the POKE
+		sty 	SelectRAMBank 				; reselect previous RAM Bank.		
+_XPMExit:
+		rts
+
+; ************************************************************************************************
+;
+;											Read Memory
+;
+; ************************************************************************************************
+
+XPeekMemory:
+		stx 	zTemp0
+		sty 	zTemp0+1
+
+		ldy 	SelectRAMBank 				; old RAM bank in Y
+		ldx 	ramBank 					; switch to BANKed RAMBank if not $FF
+		cpx 	#$FF
+		beq 	_XPMNoSwitch
+		stx 	SelectRAMBank
+_XPMNoSwitch:
+		lda 	(zTemp0) 					; do the PEEK
+		sty 	SelectRAMBank 				; reselect previous RAM bank.
+		rts
+
+
+; ************************************************************************************************
+;
+;											BANK command
+;
+; ************************************************************************************************
+
+CommandBank: ;; [!bank]
+		.entercmd
+		lda 	NSMantissa0 				; RAM bank
+		sta 	ramBank 					; store & make current
+		sta 	SelectRAMBank
+		lda 	NSMantissa0+1 		 		; ROM specified 
+		cmp 	#$FF
+		beq 	_CBNoUpdate
+		sta 	romBank 					; this doesn't set the hardware page.
+_CBNoUpdate:		
+		ldx 	#$FF
+		.exitcmd
 
 		.send code
 
+		.section storage
+ramBank:
+		.fill 	1
+romBank:
+		.fill 	1
+		.send storage
 
 ; ************************************************************************************************
 ;

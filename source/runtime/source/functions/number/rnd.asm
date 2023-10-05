@@ -1,8 +1,8 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		testing.asm
-;		Purpose:	Basic testing for polynomical code
+;		Name:		rnd.asm
+;		Purpose:	Random number function
 ;		Created:	11th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
@@ -12,90 +12,86 @@
 
 		.section code
 
-WrapperBoot:	
-		ldx 	#255
-		jsr 	TestScript
-		.exitemu
-
-ErrorHandler:
-		.debug		
-
-TestScript:		
-		.include "generated/testcode.dat"	
-		rts
-		
-
 ; ************************************************************************************************
 ;
-;					Assert checks stack has one value, should be -1
-;	
-; ************************************************************************************************
-
-FPAssertCheck:
-		cpx 	#0
-		bne 	_FPACFail
-		lda 	NSMantissa0,x
-		beq 	_FPACFail
-		dex
-		rts
-_FPACFail:
-		.debug
-		bra 	_FPACFail
-
-; ************************************************************************************************
-;
-;										Temp |tos| function
+;											RND function
 ;
 ; ************************************************************************************************
 
-FPAbs:
-		stz 	NSStatus,x
-		rts
+UnaryRND:	;; [rnd]
+		.entercmd
 
-; ************************************************************************************************
-;
-;								Push following FP constant on stack
-;
-; ************************************************************************************************
+		bit 	NSStatus,x 					; -ve then set seed from operand
+		bpl 	_URNoSeed
 
-FPPushConstant:
-		inx
-		pla
-		ply
-		sta 	zTemp0
-		sty 	zTemp0+1
-		ldy 	#1
-		lda 	(zTemp0),y
-		sta 	NSMantissa0,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa1,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa2,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa3,x
-		iny
-		lda 	(zTemp0),y
+		jsr 	FloatNormalise 				; some float value
+		lda 	NSMantissa0,x 				; copy to Mantissa
+		sta 	randomSeed+0
+		lda 	NSMantissa1,x
+		sta 	randomSeed+1
+		lda 	NSMantissa2,x
+		sta 	randomSeed+2
+		lda 	NSMantissa3,x
+		sta 	randomSeed+3
+_URNoSeed:
+		jsr 	RandomNumberGenerator 		; create a number and copy to mantissa
+
+		lda 	randomSeed+0
+		sta 	NSMantissa0,x		
+		lda 	randomSeed+1
+		sta 	NSMantissa1,x		
+		lda 	randomSeed+2
+		sta 	NSMantissa2,x		
+		lda 	randomSeed+3
+		and 	#$7F
+		sta 	NSMantissa3,x		
+		lda 	#(-31 & $FF)
 		sta 	NSExponent,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSStatus,x
-		;
-		lda 	zTemp0
-		ldy 	zTemp0+1
-		clc
-		adc 	#6
-		bcc 	_FPPCNoCarry
-		iny
-_FPPCNoCarry:
+		stz 	NSStatus,x
+		
+		.exitcmd
+
+; ************************************************************************************************
+;
+;						Random number generator, originally by Brad Smith
+;
+; ************************************************************************************************
+
+RandomNumberGenerator:
 		phy
-		pha
-		rts		
+		lda 	randomSeed+0 				; check if zero
+		ora 	randomSeed+1
+		ora 	randomSeed+2
+		ora 	randomSeed+3
+		bne 	_RNGNoSeed
+
+		dec 	randomSeed+3 				; if so tweak and flog
+		ldy 	#100
+		bra 	_RNGLoop
+
+_RNGNoSeed:									; do 8 times.
+		ldy 	#8
+		lda 	randomSeed+0
+_RNGLoop:
+		asl		a
+		rol 	randomSeed+1
+		rol 	randomSeed+2
+		rol 	randomSeed+3
+		bcc		_RNGSkip
+		eor 	#$C5
+_RNGSkip:	
+		dey
+		bne		_RNGLoop
+		sta 	randomSeed+0
+		ply
+		rts
 
 		.send code
 
+		.section storage
+randomSeed:
+		.fill 	4
+		.send 	storage
 
 ; ************************************************************************************************
 ;

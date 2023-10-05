@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		testing.asm
-;		Purpose:	Basic testing for polynomical code
-;		Created:	11th April 2023
+;		Name:		spctabprint.asm
+;		Purpose:	Print SPC()/TAB()/TABSTOP functionality
+;		Created:	18th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -12,90 +12,63 @@
 
 		.section code
 
-WrapperBoot:	
-		ldx 	#255
-		jsr 	TestScript
-		.exitemu
-
-ErrorHandler:
-		.debug		
-
-TestScript:		
-		.include "generated/testcode.dat"	
-		rts
-		
-
 ; ************************************************************************************************
 ;
-;					Assert checks stack has one value, should be -1
-;	
-; ************************************************************************************************
-
-FPAssertCheck:
-		cpx 	#0
-		bne 	_FPACFail
-		lda 	NSMantissa0,x
-		beq 	_FPACFail
-		dex
-		rts
-_FPACFail:
-		.debug
-		bra 	_FPACFail
-
-; ************************************************************************************************
-;
-;										Temp |tos| function
+;						  		Print to next TAB stop
 ;
 ; ************************************************************************************************
 
-FPAbs:
-		stz 	NSStatus,x
-		rts
+PrintTab: ;; [print.tab]
+		.entercmd
+		jsr 	XGetHPos
+_PTMod10: 									; subtract 10 till borrow
+		sec
+		sbc 	#10
+		bcs 	_PTMod10		
+		eor 	#255 						; subtract from 10 effectively. negate it
+		inc 	a 							; if modulus is 0, then this will be -10 => 10
+		bra 	PrintSpaceLoop
 
 ; ************************************************************************************************
 ;
-;								Push following FP constant on stack
+;						  		Print to TAB() e.g. position
 ;
 ; ************************************************************************************************
 
-FPPushConstant:
-		inx
-		pla
-		ply
+PrintPos: ;; [print.pos]
+		.entercmd
+		jsr		XGetHPos 					; get current position
 		sta 	zTemp0
-		sty 	zTemp0+1
-		ldy 	#1
-		lda 	(zTemp0),y
-		sta 	NSMantissa0,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa1,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa2,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa3,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSExponent,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSStatus,x
-		;
-		lda 	zTemp0
-		ldy 	zTemp0+1
-		clc
-		adc 	#6
-		bcc 	_FPPCNoCarry
-		iny
-_FPPCNoCarry:
-		phy
+		sec 								; calculate spaces required
+		lda 	NSMantissa0,x 				
+		dex
+		sbc 	zTemp0
+		bcs 	PrintSpaceLoop 				; if >= 0 then do that many spaces
+		.exitcmd
+
+; ************************************************************************************************
+;
+;						  			Print SPC(S[X])
+;
+; ************************************************************************************************
+
+PrintSpace: ;; [print.spc]
+		.entercmd
+		lda 	NSMantissa0,x 	
+		dex
+PrintSpaceLoop:	
+		cmp 	#0
+		beq 	_PSExit
 		pha
-		rts		
-
+		lda 	#" "
+		jsr 	VectorPrintCharacter
+		pla
+		dec 	a
+		bra 	PrintSpaceLoop
+_PSExit:
+		.exitcmd
+		
 		.send code
-
 
 ; ************************************************************************************************
 ;

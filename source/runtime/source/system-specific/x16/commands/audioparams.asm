@@ -1,102 +1,65 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		testing.asm
-;		Purpose:	Basic testing for polynomical code
-;		Created:	11th April 2023
+;		Name:		audioparams.asm
+;		Purpose:	Audio Parameter functions for FM_ PSG_
+;		Created:	9th May 2023
 ;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
+;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
 
-		.section code
+		.section 	code
 
-WrapperBoot:	
-		ldx 	#255
-		jsr 	TestScript
-		.exitemu
+; ************************************************************************************************
+;
+;								Get parameters either as A:0X or A:YX
+;
+; ************************************************************************************************
 
-ErrorHandler:
-		.debug		
-
-TestScript:		
-		.include "generated/testcode.dat"	
+X16_Audio_Parameters8_16:
+		jsr 	X16_Audio_Parameters8_8	
+		ldy 	NSMantissa1+1
 		rts
-		
 
-; ************************************************************************************************
-;
-;					Assert checks stack has one value, should be -1
-;	
-; ************************************************************************************************
-
-FPAssertCheck:
-		cpx 	#0
-		bne 	_FPACFail
-		lda 	NSMantissa0,x
-		beq 	_FPACFail
+X16_Audio_Parameters8_8:
+		ldx 	#1
+		.floatinteger
 		dex
-		rts
-_FPACFail:
-		.debug
-		bra 	_FPACFail
-
-; ************************************************************************************************
-;
-;										Temp |tos| function
-;
-; ************************************************************************************************
-
-FPAbs:
-		stz 	NSStatus,x
+		.floatinteger
+		jsr 	GetInteger8Bit
+		ldx 	NSMantissa0+1
+		ldy 	#0
 		rts
 
 ; ************************************************************************************************
 ;
-;								Push following FP constant on stack
+;						Get parameters as a string : A:Length YX:String
 ;
 ; ************************************************************************************************
 
-FPPushConstant:
-		inx
-		pla
-		ply
-		sta 	zTemp0
-		sty 	zTemp0+1
-		ldy 	#1
-		lda 	(zTemp0),y
-		sta 	NSMantissa0,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa1,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa2,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa3,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSExponent,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSStatus,x
+X16_Audio_Parameters8_String:
+		jsr 	X16_Audio_Parameters8_16 	; get as numbers.
 		;
-		lda 	zTemp0
-		ldy 	zTemp0+1
-		clc
-		adc 	#6
-		bcc 	_FPPCNoCarry
-		iny
-_FPPCNoCarry:
+		phx 								; set the voice
 		phy
-		pha
+		jsr 	X16_JSRFAR
+		jsr 	X16A_bas_playstringvoice
+		.byte 	X16_AudioCodeBank
+		ply
+		plx
+		;
+		stx 	zTemp0
+		sty 	zTemp0+1
+		lda 	(zTemp0) 					; read length
+		inx 								; point YX to first character.
+		bne 	_X16APSSkip
+		iny
+_X16APSSkip:
 		rts		
-
-		.send code
-
-
+		.send 	code
+		
 ; ************************************************************************************************
 ;
 ;									Changes and Updates

@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		testing.asm
-;		Purpose:	Basic testing for polynomical code
-;		Created:	11th April 2023
+;		Name:		x16_i2c.asm
+;		Purpose:	I2C Peek/Poke
+;		Created:	9th May 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -12,90 +12,59 @@
 
 		.section code
 
-WrapperBoot:	
-		ldx 	#255
-		jsr 	TestScript
-		.exitemu
-
-ErrorHandler:
-		.debug		
-
-TestScript:		
-		.include "generated/testcode.dat"	
-		rts
-		
-
 ; ************************************************************************************************
 ;
-;					Assert checks stack has one value, should be -1
-;	
-; ************************************************************************************************
-
-FPAssertCheck:
-		cpx 	#0
-		bne 	_FPACFail
-		lda 	NSMantissa0,x
-		beq 	_FPACFail
-		dex
-		rts
-_FPACFail:
-		.debug
-		bra 	_FPACFail
-
-; ************************************************************************************************
-;
-;										Temp |tos| function
+;								I2CPOKE device,register,value
 ;
 ; ************************************************************************************************
 
-FPAbs:
-		stz 	NSStatus,x
-		rts
-
-; ************************************************************************************************
-;
-;								Push following FP constant on stack
-;
-; ************************************************************************************************
-
-FPPushConstant:
-		inx
-		pla
-		ply
-		sta 	zTemp0
-		sty 	zTemp0+1
-		ldy 	#1
-		lda 	(zTemp0),y
-		sta 	NSMantissa0,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa1,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa2,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSMantissa3,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSExponent,x
-		iny
-		lda 	(zTemp0),y
-		sta 	NSStatus,x
-		;
-		lda 	zTemp0
-		ldy 	zTemp0+1
-		clc
-		adc 	#6
-		bcc 	_FPPCNoCarry
-		iny
-_FPPCNoCarry:
+X16I2CPoke: ;; [!I2CPOKE]
+		.entercmd
 		phy
+		jsr 	GetInteger8Bit 				; value
 		pha
-		rts		
+		dex
+		jsr 	GetInteger8Bit 				; register
+		pha
+		dex
+		jsr 	GetInteger8Bit 				; device
+		tax 			
+		ply
+		pla
+		jsr 	X16_i2c_write_byte 			; write the byte out.
+		bcs 	X16I2CError
+		ply
+		ldx 	#$FF
+		.exitcmd
+
+X16I2CError:
+		.error_channel 
+
+; ************************************************************************************************
+;
+;									I2CPEEK(device,register)
+;
+; ************************************************************************************************
+
+X16I2CPeek: ;; [!I2CPEEK]		
+		.entercmd
+		phx
+		phy
+		jsr 	GetInteger8Bit 				; register
+		pha
+		dex
+		jsr 	GetInteger8Bit 				; device
+		tax 								; X device
+		ply 								; Y register
+		jsr 	X16_i2c_read_byte 			; read I2C
+		bcs 	X16I2CError
+		ply 								; restore Y/X
+		plx
+		dex 								; drop TOS (register)
+		jsr 	FloatSetByte 				; write read value to TOS.
+		.exitcmd
 
 		.send code
-
 
 ; ************************************************************************************************
 ;
