@@ -48,13 +48,10 @@ EHDisplayCodePtr:
 		lda 	#32
 		jsr 	XPrintCharacterToChannel
 		sec
-		lda 	codePtr
-		sbc 	#(EndProgram+2) & $FF
-		pha
-		lda 	codePtr+1
-		sbc 	#(EndProgram+2) >> 8
+		lda 	codePtr+1 					; display the p-code address of the error.
+		sbc 	runtimeHigh
 		jsr 	_EHDisplayHex
-		pla
+		lda 	codePtr
 		jsr 	_EHDisplayHex
 		rts
 

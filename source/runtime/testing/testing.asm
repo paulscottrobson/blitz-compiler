@@ -12,7 +12,8 @@
 
 		.section code
 
-WrapperBoot:	
+WrapperBoot:
+		lda 	#ObjectCode >> 8 			; address of object code to run.	
 		jmp 	StartRuntime
 
 		.send code

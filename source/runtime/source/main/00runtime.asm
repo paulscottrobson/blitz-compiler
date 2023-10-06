@@ -12,17 +12,25 @@
 
 		.section code
 
+; ************************************************************************************************
+;
+;										Execute runtime. 
+;
+;		AA00		is the runtime p-code.
+;
+; ************************************************************************************************
+
 StartRuntime:	
-		ldx 	#$FF 						; reset stack.
-		txs
+		sta 	runtimeHigh 				; save address of code.		
+		sta 	codePtr+1 					; set pointer to code.
+		stz 	codePtr
+		stz 	codePage 					; zero current page.
 
 		jsr 	ClearMemory 				; clear memory.
 		jsr 	XRuntimeSetup 				; initialise the runtime stuff.
 	 	jsr		SetDefaultChannel			; set default input/output channel.
 
 
-		.set16 	codePtr,EndProgram+2 		; also used in RESTORE
-		stz 	codePage
 
 		jsr 	RestoreCode 				; which we now call
 		;
@@ -141,6 +149,11 @@ _NoCPCarry:
 		rts
 
 		.send code
+
+		.section storage
+runtimeHigh:								; high byte of runtime start.
+		.fill 	1
+		.send storage
 
 ; ************************************************************************************************
 ;

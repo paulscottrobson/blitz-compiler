@@ -873,17 +873,25 @@ X16_AudioCodeBank = $0A
 
 		.section code
 
+; ************************************************************************************************
+;
+;										Execute runtime. 
+;
+;		AA00		is the runtime p-code.
+;
+; ************************************************************************************************
+
 StartRuntime:	
-		ldx 	#$FF 						; reset stack.
-		txs
+		sta 	runtimeHigh 				; save address of code.		
+		sta 	codePtr+1 					; set pointer to code.
+		stz 	codePtr
+		stz 	codePage 					; zero current page.
 
 		jsr 	ClearMemory 				; clear memory.
 		jsr 	XRuntimeSetup 				; initialise the runtime stuff.
 	 	jsr		SetDefaultChannel			; set default input/output channel.
 
 
-		.set16 	codePtr,EndProgram+2 		; also used in RESTORE
-		stz 	codePage
 
 		jsr 	RestoreCode 				; which we now call
 		;
@@ -1002,6 +1010,11 @@ _NoCPCarry:
 		rts
 
 		.send code
+
+		.section storage
+runtimeHigh:								; high byte of runtime start.
+		.fill 	1
+		.send storage
 
 ; ************************************************************************************************
 ;
@@ -2269,13 +2282,10 @@ EHDisplayCodePtr:
 		lda 	#32
 		jsr 	XPrintCharacterToChannel
 		sec
-		lda 	codePtr
-		sbc 	#(EndProgram+2) & $FF
-		pha
-		lda 	codePtr+1
-		sbc 	#(EndProgram+2) >> 8
+		lda 	codePtr+1 					; display the p-code address of the error.
+		sbc 	runtimeHigh
 		jsr 	_EHDisplayHex
-		pla
+		lda 	codePtr
 		jsr 	_EHDisplayHex
 		rts
 
@@ -5192,7 +5202,8 @@ CommandRestore: ;; [!restore]
 		.exitcmd
 
 RestoreCode:
-		.set16 	objPtr,EndProgram+2 		; reset pointer and page
+		lda 	runtimeHigh 				; reset pointer and page
+		sta 	objPage+1
 		stz  	objPage
 		stz 	dataRemaining 				; no data remaining.
 		rts
