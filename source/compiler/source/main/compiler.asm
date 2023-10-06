@@ -1,4 +1,4 @@
-make; ************************************************************************************************
+; ************************************************************************************************
 ; ************************************************************************************************
 ;
 ;		Name:		00compiler.asm
@@ -13,6 +13,9 @@ make; **************************************************************************
 		.section code
 
 StartCompiler:	
+		tsx 								; save stack pointer
+		stx 	compilerSP
+
 		jsr 	STRReset 					; reset storage (line#, variable)
 		jsr 	INPUTOpen 					; reset data input
 		jsr 	OUTPUTOpen 					; reset data output.
@@ -74,11 +77,18 @@ SaveCodeAndExit:
 		jsr 	WriteCodeByte
 		jsr 	FixBranches 				; fix up GOTO/GOSUB etc.
 		jsr 	OUTPUTClose
+
 ExitCompiler:		
-		jmp 	$FFFF
+		ldx 	compilerSP 					; reload SP and exit.
+		txs
 		rts
 
 		.send code
+
+		.section storage
+compilerSP:									; stack pointer 6502 on entry.
+		.fill 	1
+		.send storage
 
 ; ************************************************************************************************
 ;

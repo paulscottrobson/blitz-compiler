@@ -52,8 +52,6 @@ MemoryStorage = $400
 ; ************************************************************************************************
 
 		.section code
-		ldx 	#$FF
-		txs
 		jmp 	WrapperBoot
 		.send code
 

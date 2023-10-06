@@ -40,7 +40,13 @@ run: build
 	$(EXECUTE) 
 	$(CCOPY) CODE.BIN ..$(S)runtime$(S)testing$(S)code$(S)code.bin
 	$(PYTHON) $(CSCRIPTS)compileinfo.py >testing$(S)code$(S)program.data
-	
+
+basicrun: run
+	make -C ../runtime run
+
+check: run
+	cmp code.bin.org CODE.BIN
+
 show:
 	$(PYTHON) $(CSCRIPTS)pdis.py CODE.BIN
 

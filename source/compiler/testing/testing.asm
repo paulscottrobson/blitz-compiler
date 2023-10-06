@@ -13,7 +13,17 @@
 		.section code
 
 WrapperBoot:	
-		jmp 	StartCompiler
+		ldx 	#APIDesc & $FF
+		ldy 	#APIDesc >> 8
+		jsr 	StartCompiler
+		jmp 	$FFFF
+		rts
+
+
+APIDesc:
+		.fill 	2
+		.byte 	$80
+		.byte 	$9F
 
 		.send code
 
