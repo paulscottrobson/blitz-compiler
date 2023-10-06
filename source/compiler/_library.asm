@@ -810,7 +810,6 @@ OUTPUTClose:
 StartCompiler:	
 		stx 	zTemp0 						; access API
 		sty 	zTemp0+1
-		.debug
 		;
 		ldy 	#1 							; copy API vector		
 		lda 	(zTemp0)	
