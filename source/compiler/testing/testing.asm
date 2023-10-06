@@ -12,18 +12,20 @@
 
 		.section code
 
+StartWorkSpace = $8000
+EndWorkspace = $9F00
+
 WrapperBoot:	
 		ldx 	#APIDesc & $FF
 		ldy 	#APIDesc >> 8
 		jsr 	StartCompiler
 		jmp 	$FFFF
-		rts
-
 
 APIDesc:
 		.fill 	2
-		.byte 	$80
-		.byte 	$9F
+		.byte 	StartWorkSpace >> 8 		; start of workspace for compiler
+		.byte 	EndWorkspace >> 8 			; end of workspace for compiler
+											; this example is 8000-9EFF.
 
 		.send code
 

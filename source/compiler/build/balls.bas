@@ -1,4 +1,4 @@
-10 n = 40
+10 n = 14
 20 screen 3
 60 print chr$(147);"Hello world !"
 70 dim bx(n):dim by(n):dim bc(n)
@@ -15,7 +15,7 @@
 130 fory=0to29:forx=0to39
 140 q=y*256+x*2+45056
 150 vpoke 1,q,81:vpoke1,q+1,0
-160 nextx:next y
+160 nextx,y
 200 for b=1ton
 210 vpoke 1,45056+by(b)+bx(b),0
 230 dxb=dx(b)

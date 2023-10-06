@@ -65,7 +65,10 @@ STRFindLine:
 
 		sta 	zTemp0 						; zTemp0 line number being searched
 		sty 	zTemp0+1
-		.set16 	zTemp1,WorkArea+WorkAreaSize ; work backwards through table
+		
+		lda 	compilerEndHigh 			; work backwards through table
+		sta 	zTemp1+1
+		stz 	zTemp1
 
 _STRSearch:
 		jsr 	_STRPrevLine 				; look at previous record.

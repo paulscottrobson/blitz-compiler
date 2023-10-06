@@ -51,10 +51,12 @@ if __name__ == "__main__":
 	dmp = MemoryDump()
 	lbl = LabelStore()
 
+	apitab = lbl.get("apidesc")
+	varStart = dmp.read(apitab+2) << 8
+	lineNumberEnd = dmp.read(apitab+3) << 8
 	#
 	#		Output variable offsets in work area
 	#
-	varStart = lbl.get("workarea")
 	while dmp.read(varStart) != 0:
 		c1 = dmp.read(varStart+1)
 		c2 = dmp.read(varStart+2)
@@ -73,13 +75,11 @@ if __name__ == "__main__":
 		print("{0}:{1}".format(name,ofst))
 		varStart += dmp.read(varStart)
 
-
 	#
 	#		Output line number offsets in p-code
 	#
 	lineNumberStart = lbl.get("linenumbertable")
 	lineNumberStart = dmp.readWord(lineNumberStart)
-	lineNumberEnd = lbl.get("workarea")+lbl.get("workareasize")
 
 	start = dmp.readWord(lineNumberEnd-2)-3
 	while lineNumberStart != lineNumberEnd:

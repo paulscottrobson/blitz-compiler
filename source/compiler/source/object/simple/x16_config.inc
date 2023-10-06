@@ -13,11 +13,6 @@
 ;		Runtime p-code goes here. Needs to be on a page boundary.
 ;
 PCodeStart = $4000
-;
-;		Work area space and size. Upwards is variables, Downwards is line number positions.
-;
-WorkArea = $8000
-WorkAreaSize = $1F00
 
 ; ************************************************************************************************
 ;

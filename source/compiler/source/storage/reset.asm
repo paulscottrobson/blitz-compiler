@@ -19,15 +19,27 @@
 ; ************************************************************************************************
 
 STRReset:
-		.set16  variableListEnd,WorkArea 	; set up the two table pointers
-		.set16 	lineNumberTable,WorkArea+WorkAreaSize
+
+		lda	 	compilerStartHigh 			; set up the two table pointers
+		sta 	variableListEnd+1
+		stz 	variableListEnd
+
+		lda 	compilerEndHigh
+		sta 	lineNumberTable+1
+		stz 	lineNumberTable
+
 		.storage_access 					; clear the head of the work area list.
-		stz 	WorkArea
+
+		lda 	variableListEnd
+		sta 	zTemp0+1
+		stz 	zTemp0
+		lda 	#0
+		sta 	(zTemp0)
+
 		.storage_release
 		.set16 freeVariableMemory,0 		; clear the free variable memory record.
 		rts
 		.send code
-
 
 		.section storage
 lineNumberTable:							; line number table, works down.

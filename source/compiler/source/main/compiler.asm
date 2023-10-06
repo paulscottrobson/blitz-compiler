@@ -30,10 +30,10 @@ StartCompiler:
 
 		iny 								; copy data area range.
 		lda 	(zTemp0),y 					
-		sta 	compilerStartLow
+		sta 	compilerStartHigh
 		iny
 		lda 	(zTemp0),y 					
-		sta 	compilerStartHigh
+		sta 	compilerEndHigh
 
 		tsx 								; save stack pointer
 		stx 	compilerSP
@@ -112,9 +112,9 @@ compilerSP:									; stack pointer 6502 on entry.
 		.fill 	1
 APIVector: 									; call API here
 		.fill 	2		
-compilerStartLow:							; MSB of workspace start address
+compilerStartHigh:							; MSB of workspace start address
 		.fill 	1		
-compilerStartHigh:							; MSB of workspace end address
+compilerEndHigh:							; MSB of workspace end address
 		.fill 	1		
 		.send storage
 

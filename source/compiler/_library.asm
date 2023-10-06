@@ -448,11 +448,6 @@ PCD_COLOR            = $caae ; color
 ;		Runtime p-code goes here. Needs to be on a page boundary.
 ;
 PCodeStart = $4000
-;
-;		Work area space and size. Upwards is variables, Downwards is line number positions.
-;
-WorkArea = $8000
-WorkAreaSize = $1F00
 
 ; ************************************************************************************************
 ;
@@ -819,10 +814,10 @@ StartCompiler:
 
 		iny 								; copy data area range.
 		lda 	(zTemp0),y 					
-		sta 	compilerStartLow
+		sta 	compilerStartHigh
 		iny
 		lda 	(zTemp0),y 					
-		sta 	compilerStartHigh
+		sta 	compilerEndHigh
 
 		tsx 								; save stack pointer
 		stx 	compilerSP
@@ -901,9 +896,9 @@ compilerSP:									; stack pointer 6502 on entry.
 		.fill 	1
 APIVector: 									; call API here
 		.fill 	2		
-compilerStartLow:							; MSB of workspace start address
+compilerStartHigh:							; MSB of workspace start address
 		.fill 	1		
-compilerStartHigh:							; MSB of workspace end address
+compilerEndHigh:							; MSB of workspace end address
 		.fill 	1		
 		.send storage
 
@@ -1763,7 +1758,10 @@ _IVTIFloat: 								; TI returns ifloat at $8000
 		;		Not TI or TI$
 		;
 _IVStandard:
-		.set16 	zTemp0,WorkArea 			; start scanning from here.
+		lda 	compilerStartHigh			; start scanning from here.
+		sta 	zTemp0+1
+		stz 	zTemp0
+
 		.storage_access
 _IVCheckLoop:
 		lda 	(zTemp0) 					; finished ?
@@ -3855,7 +3853,10 @@ STRFindLine:
 
 		sta 	zTemp0 						; zTemp0 line number being searched
 		sty 	zTemp0+1
-		.set16 	zTemp1,WorkArea+WorkAreaSize ; work backwards through table
+		
+		lda 	compilerEndHigh 			; work backwards through table
+		sta 	zTemp1+1
+		stz 	zTemp1
 
 _STRSearch:
 		jsr 	_STRPrevLine 				; look at previous record.
@@ -4588,15 +4589,27 @@ _CRExit:
 ; ************************************************************************************************
 
 STRReset:
-		.set16  variableListEnd,WorkArea 	; set up the two table pointers
-		.set16 	lineNumberTable,WorkArea+WorkAreaSize
+
+		lda	 	compilerStartHigh 			; set up the two table pointers
+		sta 	variableListEnd+1
+		stz 	variableListEnd
+
+		lda 	compilerEndHigh
+		sta 	lineNumberTable+1
+		stz 	lineNumberTable
+
 		.storage_access 					; clear the head of the work area list.
-		stz 	WorkArea
+
+		lda 	variableListEnd
+		sta 	zTemp0+1
+		stz 	zTemp0
+		lda 	#0
+		sta 	(zTemp0)
+
 		.storage_release
 		.set16 freeVariableMemory,0 		; clear the free variable memory record.
 		rts
 		.send code
-
 
 		.section storage
 lineNumberTable:							; line number table, works down.

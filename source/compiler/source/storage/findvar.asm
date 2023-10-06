@@ -48,7 +48,10 @@ _IVTIFloat: 								; TI returns ifloat at $8000
 		;		Not TI or TI$
 		;
 _IVStandard:
-		.set16 	zTemp0,WorkArea 			; start scanning from here.
+		lda 	compilerStartHigh			; start scanning from here.
+		sta 	zTemp0+1
+		stz 	zTemp0
+
 		.storage_access
 _IVCheckLoop:
 		lda 	(zTemp0) 					; finished ?
