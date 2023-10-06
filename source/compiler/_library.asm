@@ -801,7 +801,30 @@ OUTPUTClose:
 
 		.section code
 
+; ************************************************************************************************
+;
+;								On entry YX points to API. 
+;
+; ************************************************************************************************
+
 StartCompiler:	
+		stx 	zTemp0 						; access API
+		sty 	zTemp0+1
+		.debug
+		;
+		ldy 	#1 							; copy API vector		
+		lda 	(zTemp0)	
+		sta 	APIVector
+		lda 	(zTemp0),y
+		sta 	APIVector+1
+
+		iny 								; copy data area range.
+		lda 	(zTemp0),y 					
+		sta 	compilerStartLow
+		iny
+		lda 	(zTemp0),y 					
+		sta 	compilerStartHigh
+
 		tsx 								; save stack pointer
 		stx 	compilerSP
 
@@ -877,6 +900,12 @@ ExitCompiler:
 		.section storage
 compilerSP:									; stack pointer 6502 on entry.
 		.fill 	1
+APIVector: 									; call API here
+		.fill 	2		
+compilerStartLow:							; MSB of workspace start address
+		.fill 	1		
+compilerStartHigh:							; MSB of workspace end address
+		.fill 	1		
 		.send storage
 
 ; ************************************************************************************************
