@@ -28,7 +28,7 @@ ArrayConvert: ;; [array]
 		sta 	zTemp1
 		lda 	NSMantissa1,x
 		clc
-		adc 	#(WorkArea >> 8)		
+		adc 	variableStartPage		
 		sta 	zTemp1+1
 		;
 		;		Set up for following, firstly get the number of levels to zTemp2, and point the 
@@ -82,7 +82,7 @@ _ACIndexLoop:
 		iny
 		lda 	(zTemp0),y
 		clc
-		adc 	#(WorkArea >> 8)
+		adc 	variableStartPage
 		sta 	zTemp1+1
 		inx 								; next index
 		bra 	_ACIndexLoop
@@ -139,7 +139,7 @@ _ACNoCarry:
 		lda 	zTemp0+1
 		adc 	zTemp1+1
 		sec 	
-		sbc 	#(WorkArea >> 8)
+		sbc 	variableStartPage
 		sta 	NSMantissa1,x
 		stz 	NSMantissa2,x
 		stz 	NSMantissa3,x

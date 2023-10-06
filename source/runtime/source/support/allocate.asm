@@ -26,7 +26,7 @@ CommandVarSpace: ;; [.varspace]
 		iny 
 		lda 	(codePtr),y
 		clc 
-		adc 	#WorkArea >> 8 				; offset to actual address.
+		adc 	variableStartPage			; offset to actual address.
 		sta 	availableMemory+1
 		iny
 

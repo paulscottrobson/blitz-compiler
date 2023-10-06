@@ -12,14 +12,14 @@
 ;
 ;		Work area space and size
 ;
-WorkArea = $8000
-WorkAreaSize = $1F00
+SWorkArea = $8000
+SWorkAreaSize = $1F00
 ;
 ;		Calculate top string address, e.g. stack/string seperation
 ;
-StringTopAddress = WorkArea + WorkAreaSize - (1 + (WorkAreaSize >> 12)) * 256
-StackTopAddress = WorkArea + WorkAreaSize
-VariableStart = WorkArea
+StringTopAddress = SWorkArea + SWorkAreaSize - (1 + (SWorkAreaSize >> 12)) * 256
+StackTopAddress = SWorkArea + SWorkAreaSize
+
 
 ; ************************************************************************************************
 ;

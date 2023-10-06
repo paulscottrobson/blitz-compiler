@@ -17,6 +17,11 @@
 ;										Execute runtime. 
 ;
 ;		AA00		is the runtime p-code.
+;		XX00 		is the start of memory for strings / stack / etc.
+;		YY00 		is the end of memory.
+;
+;		So if A = $32 and X = $70 and Y = $78 the code is at $3200 and the useable memory
+;		is from $7000-$77FF.
 ;
 ; ************************************************************************************************
 
@@ -25,6 +30,10 @@ StartRuntime:
 		sta 	codePtr+1 					; set pointer to code.
 		stz 	codePtr
 		stz 	codePage 					; zero current page.
+
+		stx 	storeStartHigh 				; save from-to address.
+		sty 	storeEndHigh
+		stx 	variableStartPage
 
 		jsr 	ClearMemory 				; clear memory.
 		jsr 	XRuntimeSetup 				; initialise the runtime stuff.
@@ -153,6 +162,14 @@ _NoCPCarry:
 		.section storage
 runtimeHigh:								; high byte of runtime start.
 		.fill 	1
+
+storeStartHigh:								; p-code run space.
+		.fill 	1
+storeEndHigh:		
+		.fill 	1
+
+variableStartPage: 							; variable start high
+		.fill 	1		
 		.send storage
 
 ; ************************************************************************************************

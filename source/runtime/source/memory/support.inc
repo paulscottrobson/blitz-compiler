@@ -30,7 +30,7 @@ vaddress .macro
 
 		asl 	zTemp0 						; shift zTemp0:A left
 		rol 	a 							; carry will be clear.
-		adc 	#VariableStart >> 8 		; point to variable page.
+		adc 	variableStartPage			; make it point to variable page.
 		sta 	zTemp0+1
 		.endm
 

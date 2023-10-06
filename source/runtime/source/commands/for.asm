@@ -45,7 +45,7 @@ CommandFor: ;; [for]
 		clc
 		and 	#$7F 						; throw the type bit.
 		sta 	(runtimeStackPtr),y
-		adc 	#VariableStart >> 8 		; point to variable page.
+		adc 	variableStartPage 			; point to variable page.
 		sta 	zTemp0+1
 		dex 								; throw reference.
 		;

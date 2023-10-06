@@ -175,7 +175,7 @@ _DCOLRNoBorrow:
 _DCOLExit:		
 		pla 								; get MSB, make offset again
 		sec
-		sbc 	#WorkArea >> 8
+		sbc 	variableStartPage
 		tay
 		pla 								; YA now contains offset address.
 		rts

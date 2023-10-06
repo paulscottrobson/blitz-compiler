@@ -33,7 +33,9 @@ ClearMemory:
 		;
 		;		Zero workspace
 		;
-		.set16 zTemp0,WorkArea 							; erase the work area
+		lda 	storeStartHigh 							; erase the work area
+		sta 	zTemp0+1
+		stz 	zTemp0
 		phy
 		ldy 	#0
 _ClearLoop1:	
@@ -43,7 +45,7 @@ _ClearLoop1:
 		bne 	_ClearLoop1	
 		inc 	zTemp0+1
 		lda 	zTemp0+1
-		cmp 	#(WorkArea+WorkAreaSize) >> 8
+		cmp 	storeEndHigh
 		bne 	_ClearLoop1
 		;
 		;		Initialise strings

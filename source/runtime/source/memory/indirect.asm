@@ -24,7 +24,7 @@ rcall 	.macro
 		sta 	zTemp0
 		lda 	NSMantissa1,x
 		clc
-		adc 	#(WorkArea >> 8)
+		adc 	variableStartPage
 		sta 	zTemp0+1
 		dex 								; throw the address
 		jsr 	\1 							; call read routine
@@ -50,7 +50,7 @@ wcall .macro
 		sta 	zTemp0
 		lda 	NSMantissa1-1,x
 		clc
-		adc 	#(WorkArea >> 8)
+		adc 	variableStartPage
 		sta 	zTemp0+1
 		jsr 	\1 							; call write routine
 		dex 								; throw the address as well.

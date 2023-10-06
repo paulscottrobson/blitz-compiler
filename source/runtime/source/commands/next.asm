@@ -63,7 +63,7 @@ _CNNoIndexVariable:
 		iny
 		lda 	(runtimeStackPtr),y
 		clc 
-		adc 	#VariableStart >> 8 		; point to variable page.
+		adc 	variableStartPage 			; point to variable page.
 		pha
 		sta 	zTemp0+1
 		jsr 	ReadFloatZTemp0Sub 			; read current index onto stack.
@@ -125,7 +125,7 @@ _CNOptimisedNext:
 		iny
 		lda 	(runtimeStackPtr),y
 		clc 
-		adc 	#VariableStart >> 8 		; point to variable page.
+		adc 	variableStartPage 			; point to variable page.
 		sta 	zTemp0+1
 		;
 		;		Increment it - we don't worry about carry out because the test is unsigned.

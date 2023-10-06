@@ -160,14 +160,14 @@ C64_RPTDOLLAR            = $ceda ; $ceda rpt$
 ;
 ;		Work area space and size
 ;
-WorkArea = $8000
-WorkAreaSize = $1F00
+SWorkArea = $8000
+SWorkAreaSize = $1F00
 ;
 ;		Calculate top string address, e.g. stack/string seperation
 ;
-StringTopAddress = WorkArea + WorkAreaSize - (1 + (WorkAreaSize >> 12)) * 256
-StackTopAddress = WorkArea + WorkAreaSize
-VariableStart = WorkArea
+StringTopAddress = SWorkArea + SWorkAreaSize - (1 + (SWorkAreaSize >> 12)) * 256
+StackTopAddress = SWorkArea + SWorkAreaSize
+
 
 ; ************************************************************************************************
 ;
@@ -558,7 +558,7 @@ vaddress .macro
 
 		asl 	zTemp0 						; shift zTemp0:A left
 		rol 	a 							; carry will be clear.
-		adc 	#VariableStart >> 8 		; point to variable page.
+		adc 	variableStartPage			; make it point to variable page.
 		sta 	zTemp0+1
 		.endm
 
@@ -878,6 +878,11 @@ X16_AudioCodeBank = $0A
 ;										Execute runtime. 
 ;
 ;		AA00		is the runtime p-code.
+;		XX00 		is the start of memory for strings / stack / etc.
+;		YY00 		is the end of memory.
+;
+;		So if A = $32 and X = $70 and Y = $78 the code is at $3200 and the useable memory
+;		is from $7000-$77FF.
 ;
 ; ************************************************************************************************
 
@@ -886,6 +891,10 @@ StartRuntime:
 		sta 	codePtr+1 					; set pointer to code.
 		stz 	codePtr
 		stz 	codePage 					; zero current page.
+
+		stx 	storeStartHigh 				; save from-to address.
+		sty 	storeEndHigh
+		stx 	variableStartPage
 
 		jsr 	ClearMemory 				; clear memory.
 		jsr 	XRuntimeSetup 				; initialise the runtime stuff.
@@ -1014,6 +1023,14 @@ _NoCPCarry:
 		.section storage
 runtimeHigh:								; high byte of runtime start.
 		.fill 	1
+
+storeStartHigh:								; p-code run space.
+		.fill 	1
+storeEndHigh:		
+		.fill 	1
+
+variableStartPage: 							; variable start high
+		.fill 	1		
 		.send storage
 
 ; ************************************************************************************************
@@ -1091,7 +1108,7 @@ CommandVarSpace: ;; [.varspace]
 		iny 
 		lda 	(codePtr),y
 		clc 
-		adc 	#WorkArea >> 8 				; offset to actual address.
+		adc 	variableStartPage			; offset to actual address.
 		sta 	availableMemory+1
 		iny
 
@@ -1218,7 +1235,7 @@ ArrayConvert: ;; [array]
 		sta 	zTemp1
 		lda 	NSMantissa1,x
 		clc
-		adc 	#(WorkArea >> 8)		
+		adc 	variableStartPage		
 		sta 	zTemp1+1
 		;
 		;		Set up for following, firstly get the number of levels to zTemp2, and point the 
@@ -1272,7 +1289,7 @@ _ACIndexLoop:
 		iny
 		lda 	(zTemp0),y
 		clc
-		adc 	#(WorkArea >> 8)
+		adc 	variableStartPage
 		sta 	zTemp1+1
 		inx 								; next index
 		bra 	_ACIndexLoop
@@ -1329,7 +1346,7 @@ _ACNoCarry:
 		lda 	zTemp0+1
 		adc 	zTemp1+1
 		sec 	
-		sbc 	#(WorkArea >> 8)
+		sbc 	variableStartPage
 		sta 	NSMantissa1,x
 		stz 	NSMantissa2,x
 		stz 	NSMantissa3,x
@@ -1704,7 +1721,9 @@ ClearMemory:
 		;
 		;		Zero workspace
 		;
-		.set16 zTemp0,WorkArea 							; erase the work area
+		lda 	storeStartHigh 							; erase the work area
+		sta 	zTemp0+1
+		stz 	zTemp0
 		phy
 		ldy 	#0
 _ClearLoop1:	
@@ -1714,7 +1733,7 @@ _ClearLoop1:
 		bne 	_ClearLoop1	
 		inc 	zTemp0+1
 		lda 	zTemp0+1
-		cmp 	#(WorkArea+WorkAreaSize) >> 8
+		cmp 	storeEndHigh
 		bne 	_ClearLoop1
 		;
 		;		Initialise strings
@@ -2126,7 +2145,7 @@ _DCOLRNoBorrow:
 _DCOLExit:		
 		pla 								; get MSB, make offset again
 		sec
-		sbc 	#WorkArea >> 8
+		sbc 	variableStartPage
 		tay
 		pla 								; YA now contains offset address.
 		rts
@@ -2421,7 +2440,7 @@ CommandFor: ;; [for]
 		clc
 		and 	#$7F 						; throw the type bit.
 		sta 	(runtimeStackPtr),y
-		adc 	#VariableStart >> 8 		; point to variable page.
+		adc 	variableStartPage 			; point to variable page.
 		sta 	zTemp0+1
 		dex 								; throw reference.
 		;
@@ -3246,7 +3265,7 @@ rcall 	.macro
 		sta 	zTemp0
 		lda 	NSMantissa1,x
 		clc
-		adc 	#(WorkArea >> 8)
+		adc 	variableStartPage
 		sta 	zTemp0+1
 		dex 								; throw the address
 		jsr 	\1 							; call read routine
@@ -3272,7 +3291,7 @@ wcall .macro
 		sta 	zTemp0
 		lda 	NSMantissa1-1,x
 		clc
-		adc 	#(WorkArea >> 8)
+		adc 	variableStartPage
 		sta 	zTemp0+1
 		jsr 	\1 							; call write routine
 		dex 								; throw the address as well.
@@ -4073,7 +4092,7 @@ _CNNoIndexVariable:
 		iny
 		lda 	(runtimeStackPtr),y
 		clc 
-		adc 	#VariableStart >> 8 		; point to variable page.
+		adc 	variableStartPage 			; point to variable page.
 		pha
 		sta 	zTemp0+1
 		jsr 	ReadFloatZTemp0Sub 			; read current index onto stack.
@@ -4135,7 +4154,7 @@ _CNOptimisedNext:
 		iny
 		lda 	(runtimeStackPtr),y
 		clc 
-		adc 	#VariableStart >> 8 		; point to variable page.
+		adc 	variableStartPage 			; point to variable page.
 		sta 	zTemp0+1
 		;
 		;		Increment it - we don't worry about carry out because the test is unsigned.
