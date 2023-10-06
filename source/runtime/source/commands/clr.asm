@@ -48,14 +48,32 @@ _ClearLoop1:
 		cmp 	storeEndHigh
 		bne 	_ClearLoop1
 		;
-		;		Initialise strings
+		;		Initialise string storage space.
 		;
-		.set16 	stringHighMemory,StringTopAddress 		; reset string memory alloc pointer
+		sec 											; stack space = number of pages in total / 4
+		lda 	storeEndHigh
+		sbc		storeStartHigh
+		lsr 	a 	
+		lsr 	a
+		bne 	_NotEmpty 								; at least 1 !
+		lda 	#1
+_NotEmpty:
+		sec 											; subtract from high to give string high memory
+		eor 	#$FF
+		adc 	storeEndHigh
+		sta 	stringHighMemory+1
+		stz 	stringHighMemory
+
 		stz 	stringInitialised 						; string system not initialised
 		;
-		;		Initialise stack
+		;		Initialise stack space.
 		;
-		.set16 	runtimeStackPtr,StackTopAddress-1 		; current TOS
+		lda 	storeStartHigh 							; stack at end of start memory.
+		dec 	a
+		sta 	runtimeStackPtr+1
+		lda 	#$FF
+		sta 	runtimeStackPtr
+
 		lda 	#$FF 									; duff marker in case we try to remove it.
 		sta 	(runtimeStackPtr)
 		ply
