@@ -36,6 +36,7 @@ class Tokeniser(object):
 			assert m is not None,"Unbalanced quotes "+s
 			self.data += [ord(c) for c in m.group(1)]
 			return m.group(2)
+			
 		if s[0] >= "A" and s[0] <= "Z":
 			m = re.match("^([A-Z]+[\\(\\$\\#]?)(.*)$",s)
 			assert m is not None

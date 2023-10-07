@@ -18,7 +18,7 @@ endif
 
 all: build
 
-BASICSRC = build$(S)balls.bas
+BASICSRC = build$(S)x16font.bas
 
 prelim: 
 	make -C ../common-source
