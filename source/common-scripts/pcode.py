@@ -156,8 +156,8 @@ if __name__ == "__main__":
 #							.FLOAT ex mtp 		$FF		Float as exponent,mantissa with sign in mantissa[3].7
 #							.STRING ll ss 		$FF		ASCIIZ string
 #							.DATA ll ss 		$FF		Packed data statements
-#							.GOTO pp ll hh		3 		Go to page .0=default / offset from the current page beginning.
-#							.GOSUB pp ll hh 	3 		Same but GOSUB
+#							.GOTO ll hh			2 		Go to offset from the current page beginning.
+#							.GOSUB ll hh 		2 		Same but GOSUB. also .GOTO.NZ and .GOTO.Z
 #
 # ***********************************************************************************************************************************************
 
