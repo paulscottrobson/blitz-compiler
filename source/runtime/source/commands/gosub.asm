@@ -32,7 +32,6 @@ CommandReturn: ;; [return]
 		jsr 	StackLoadCurrentPosition
 		iny
 		iny
-		iny
 		jsr 	StackCloseFrame
 		.exitcmd
 

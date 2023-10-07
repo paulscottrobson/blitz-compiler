@@ -15,9 +15,10 @@ else
 include ../../documents/common.make
 endif
 
-BASICSRC = build$(S)balls.bas
 
 all: build
+
+BASICSRC = build$(S)balls.bas
 
 prelim: 
 	$(PYTHON) scripts$(S)genx16.py

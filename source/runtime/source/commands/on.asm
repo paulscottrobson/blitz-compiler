@@ -34,7 +34,6 @@ _CONFind:
 		iny 								; skip over the token (GOTO or GOSUB page, and line #)
 		iny
 		iny
-		iny
 		lda 	(codePtr),y 				; is there a moreon after it, if so we can keep going.
 		iny
 		cmp 	#PCD_MOREON
@@ -63,6 +62,7 @@ CommandMoreOn: ;; [moreon]
 onCount:
 		.fill 	1		
 		.send storage
+
 ; ************************************************************************************************
 ;
 ;									Changes and Updates
