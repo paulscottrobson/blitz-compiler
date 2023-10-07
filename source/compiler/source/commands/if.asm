@@ -32,7 +32,7 @@ CommandIF:
 		bra 	CompileGotoEOL
 
 _CIGoto:	
-		jsr 	GetNext
+		jsr 	GetNext 					
 _CIGoto2:		
 		lda 	#PCD_CMD_GOTOCMD_NZ
 		jsr 	CompileBranchCommand
@@ -41,9 +41,6 @@ _CIGoto2:
 CompileGotoEOL: 							; compile GOTOZ <next line>
 		lda 	#PCD_CMD_GOTOCMD_Z
 		jsr 	WriteCodeByte
-		lda 	#$FF
-		jsr 	WriteCodeByte
-
 		jsr 	GetLineNumber 				; Get the current line number => YA
 		inc 	a 							; and branch to +1
 		bne 	_CGENoCarry

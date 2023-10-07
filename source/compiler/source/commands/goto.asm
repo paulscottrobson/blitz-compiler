@@ -46,11 +46,8 @@ CompileBranchCommand:
 		jsr 	ParseConstant 				; get constant into YA
 		bcc 	_CBCSyntax
 
-		pha
-		lda 	#$FF 						; no address yet.
-		jsr 	WriteCodeByte
-		pla 								; and compile the actual line number
-		jsr 	WriteCodeByte
+ 				
+		jsr 	WriteCodeByte				; and compile the actual line number
 		tya
 		jsr 	WriteCodeByte
 		rts		

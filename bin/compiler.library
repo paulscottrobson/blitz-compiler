@@ -1527,12 +1527,7 @@ _FBExit:
 ;		Found GOTO/GOSUB - look it up in the line# table and fix it up.
 ;
 _FBFixGotoGosub:
-		ldy 	#1 							; if page is currently $FF
-		lda 	(objPtr),y 					; then patch else leave.
-		cmp 	#$FF
-		bne 	_FBNext
-
-		ldy 	#2							; line number in YA
+		ldy 	#1							; line number in YA
 		lda 	(objPtr),y
 		pha
 		iny
@@ -1551,16 +1546,8 @@ _FBFFound:
 		jsr 	STRMakeOffset 				; make it an offset from X:YA
 		
 		phy	 								; patch the GOTO/GOSUB
-		pha
-
 		ldy 	#1
-		txa
 		sta 	(objPtr),y
-
-		iny
-		pla
-		sta 	(objPtr),y
-
 		iny
 		pla
 		sta 	(objPtr),y
@@ -3021,11 +3008,8 @@ CompileBranchCommand:
 		jsr 	ParseConstant 				; get constant into YA
 		bcc 	_CBCSyntax
 
-		pha
-		lda 	#$FF 						; no address yet.
-		jsr 	WriteCodeByte
-		pla 								; and compile the actual line number
-		jsr 	WriteCodeByte
+ 				
+		jsr 	WriteCodeByte				; and compile the actual line number
 		tya
 		jsr 	WriteCodeByte
 		rts		
@@ -3080,7 +3064,7 @@ CommandIF:
 		bra 	CompileGotoEOL
 
 _CIGoto:	
-		jsr 	GetNext
+		jsr 	GetNext 					
 _CIGoto2:		
 		lda 	#PCD_CMD_GOTOCMD_NZ
 		jsr 	CompileBranchCommand
@@ -3089,9 +3073,6 @@ _CIGoto2:
 CompileGotoEOL: 							; compile GOTOZ <next line>
 		lda 	#PCD_CMD_GOTOCMD_Z
 		jsr 	WriteCodeByte
-		lda 	#$FF
-		jsr 	WriteCodeByte
-
 		jsr 	GetLineNumber 				; Get the current line number => YA
 		inc 	a 							; and branch to +1
 		bne 	_CGENoCarry

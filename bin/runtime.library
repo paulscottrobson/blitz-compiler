@@ -2398,7 +2398,6 @@ CommandGoto: ;; [.goto]
 		;		Come here to actually do the GOTO.
 		;
 PerformGOTO:		
-		iny
 		iny 								; push MSB of offset on stack
 		lda 	(codePtr),y
 		pha
@@ -2430,7 +2429,6 @@ CommandGotoZ: ;; [.goto.z]
 		beq 	PerformGOTO
 		iny
 		iny
-		iny
 		.exitcmd
 
 CommandGotoNZ: ;; [.goto.nz]
@@ -2439,7 +2437,6 @@ CommandGotoNZ: ;; [.goto.nz]
 		dex 
 		cmp 	#0
 		bne 	PerformGOTO
-		iny
 		iny
 		iny
 		.exitcmd
@@ -3314,10 +3311,7 @@ LinkDivideInt32: ;; [int.div]
 StackSaveCurrentPosition:
 		jsr 	FixUpY 						; codePtr,Y is corrected so Y = 0
 		phy
-		ldy 	#1
-		lda 	codePage
-		sta 	(runtimeStackPtr),y
-		iny
+		ldy 	#2
 		lda 	codePtr
 		sta 	(runtimeStackPtr),y
 		iny
@@ -3333,10 +3327,7 @@ StackSaveCurrentPosition:
 ; ************************************************************************************************
 
 StackLoadCurrentPosition:
-		ldy 	#1
-		lda 	(runtimeStackPtr),y
-		sta 	codePage
-		iny
+		ldy 	#2
 		lda 	(runtimeStackPtr),y
 		sta 	codePtr
 		iny
@@ -3837,7 +3828,6 @@ _CONFound:
 CommandMoreOn: ;; [moreon] 					
 		.entercmd 							; executing MoreOn skips the whole following GOTO
 		iny 								; so it goes to the first non-goto/gosub
-		iny
 		iny
 		iny
 		.exitcmd

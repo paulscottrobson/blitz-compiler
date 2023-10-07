@@ -25,7 +25,6 @@ CommandGoto: ;; [.goto]
 		;		Come here to actually do the GOTO.
 		;
 PerformGOTO:		
-		iny
 		iny 								; push MSB of offset on stack
 		lda 	(codePtr),y
 		pha
@@ -57,7 +56,6 @@ CommandGotoZ: ;; [.goto.z]
 		beq 	PerformGOTO
 		iny
 		iny
-		iny
 		.exitcmd
 
 CommandGotoNZ: ;; [.goto.nz]
@@ -66,7 +64,6 @@ CommandGotoNZ: ;; [.goto.nz]
 		dex 
 		cmp 	#0
 		bne 	PerformGOTO
-		iny
 		iny
 		iny
 		.exitcmd

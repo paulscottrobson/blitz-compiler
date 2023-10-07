@@ -9,9 +9,9 @@ MOFSizeTable:
 	.byte	5         	; $cd .float
 	.byte	255       	; $ce .string
 	.byte	255       	; $cf .data
-	.byte	3         	; $d0 .goto
-	.byte	3         	; $d1 .gosub
-	.byte	3         	; $d2 .goto.z
-	.byte	3         	; $d3 .goto.nz
+	.byte	2         	; $d0 .goto
+	.byte	2         	; $d1 .gosub
+	.byte	2         	; $d2 .goto.z
+	.byte	2         	; $d3 .goto.nz
 	.byte	2         	; $d4 .varspace
 .send code

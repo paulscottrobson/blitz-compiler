@@ -81,11 +81,10 @@ class PCodeDecompiler(object):
 						s = ".varspace ${0:x}".format(self.data[p]+self.data[p+1]*256)
 						p = p + 2
 					if s.startswith(".goto") or s == ".gosub":
-						page = self.data[p]
-						offset = self.data[p+1]+(self.data[p+2] << 8)
+						offset = self.data[p]+(self.data[p+1] << 8)
 						addr = (p + offset) & 0xFFFF
-						s = "{0} ${1:02x}:{2:04x} [${3:04x}]".format(s,page,addr,offset)
-						p += 3
+						s = "{0}:{1:04x} [${2:04x}]".format(s,addr,offset)
+						p += 2
 				else:
 					s = "data ${0:02x}".format(self.data[p]) if self.data[p] != 0xFF else "<end marker>"
 					p = p + 1

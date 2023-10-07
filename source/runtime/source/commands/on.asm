@@ -55,7 +55,6 @@ CommandMoreOn: ;; [moreon]
 		iny 								; so it goes to the first non-goto/gosub
 		iny
 		iny
-		iny
 		.exitcmd
 
 		.send 	code

@@ -41,12 +41,7 @@ _FBExit:
 ;		Found GOTO/GOSUB - look it up in the line# table and fix it up.
 ;
 _FBFixGotoGosub:
-		ldy 	#1 							; if page is currently $FF
-		lda 	(objPtr),y 					; then patch else leave.
-		cmp 	#$FF
-		bne 	_FBNext
-
-		ldy 	#2							; line number in YA
+		ldy 	#1							; line number in YA
 		lda 	(objPtr),y
 		pha
 		iny
@@ -65,16 +60,8 @@ _FBFFound:
 		jsr 	STRMakeOffset 				; make it an offset from X:YA
 		
 		phy	 								; patch the GOTO/GOSUB
-		pha
-
 		ldy 	#1
-		txa
 		sta 	(objPtr),y
-
-		iny
-		pla
-		sta 	(objPtr),y
-
 		iny
 		pla
 		sta 	(objPtr),y

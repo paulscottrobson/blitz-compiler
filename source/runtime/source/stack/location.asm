@@ -21,10 +21,7 @@
 StackSaveCurrentPosition:
 		jsr 	FixUpY 						; codePtr,Y is corrected so Y = 0
 		phy
-		ldy 	#1
-		lda 	codePage
-		sta 	(runtimeStackPtr),y
-		iny
+		ldy 	#2
 		lda 	codePtr
 		sta 	(runtimeStackPtr),y
 		iny
@@ -40,10 +37,7 @@ StackSaveCurrentPosition:
 ; ************************************************************************************************
 
 StackLoadCurrentPosition:
-		ldy 	#1
-		lda 	(runtimeStackPtr),y
-		sta 	codePage
-		iny
+		ldy 	#2
 		lda 	(runtimeStackPtr),y
 		sta 	codePtr
 		iny
