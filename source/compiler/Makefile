@@ -18,7 +18,7 @@ endif
 
 all: build
 
-BASICSRC = build$(S)balls2.bas
+BASICSRC = build$(S)balls.bas
 
 prelim: 
 	make -C ../common-source

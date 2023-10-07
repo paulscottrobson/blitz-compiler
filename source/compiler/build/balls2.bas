@@ -1,2 +1,2 @@
-60 print chr$(147);"Hello world !"
+60 print chr$(147)
 61 stop

@@ -80,6 +80,7 @@ _GEXToken2:
 _GEXToken1:
 		jsr 	_GEFetchZTemp0
 		jsr 	WriteCodeByte
+		clc
 		rts
 
 ; ------------------------------------------------------------------------------------------------
@@ -224,6 +225,7 @@ ChannelPrefix:
 		jsr 	CheckNextComma 				; check , follows.
 		lda 	#PCD_SETCHANNEL				; set channel
 		jsr 	WriteCodeByte
+		clc
 		rts
 _CPXType:
 		.error_type
@@ -237,6 +239,7 @@ _CPXType:
 ChannelPostfix:
 		lda 	#PCD_SETCHANNEL				; set channel from TOS.
 		jsr 	WriteCodeByte
+		clc
 		rts
 
 		.send  code		
