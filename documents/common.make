@@ -53,10 +53,6 @@ EXECUTE = $(CDEL) dump*.bin ; $(EMULATOR) -prg build$(S)code.prg,1000 -run
 QEXECUTE = $(EXECUTE) -testbench
 FAST = -warp
 #
-# 		Add to library assembler line to make it work - defines everything.
-#
-WRAPPER = $(CSOURCE)wrapper.asm 
-#
 #		Export path to the common scripts.
 #
 ifeq ($(OS),Windows_NT)

@@ -18,7 +18,6 @@ endif
 all: build
 
 prelim: 
-	$(PYTHON) $(CSCRIPTS)errors.py
 	$(PYTHON) scripts$(S)genmapping.py >source$(S)generated$(S)links.asm
 	$(PYTHON) scripts$(S)vectors.py >source$(S)generated$(S)vectors.asm
 

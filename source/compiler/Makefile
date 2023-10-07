@@ -19,10 +19,9 @@ BASICSRC = build$(S)balls.bas
 all: build
 
 prelim: 
-	$(PYTHON) $(BINDIR)tokenise.zip $(BASICSRC) testing$(S)code$(S)tokenised.dat
 	$(PYTHON) scripts$(S)genx16.py
 	$(PYTHON) scripts$(S)gencom.py 
-	$(PYTHON) $(CSCRIPTS)errors.py
+	$(PYTHON) $(BINDIR)tokenise.zip $(BASICSRC) testing$(S)code$(S)tokenised.dat
 	$(PYTHON) $(CSCRIPTS)build.py
 	$(CCOPY) _library.asm $(BINDIR)compiler.library
 	$(CCOPY)  scripts$(S)pcodeconstraw.py $(CSCRIPTS)
