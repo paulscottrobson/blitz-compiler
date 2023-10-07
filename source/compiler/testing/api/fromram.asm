@@ -21,21 +21,7 @@
 APIIOpen:
 		.set16 	srcInputPtr,EndProgram+2 	; the current read point.		
 APIIClose:
-		rts
-		
-; ************************************************************************************************
-;
-;								Get the next character.
-;
-; ************************************************************************************************
-
-APIIGet:
-		lda 	(srcInputPtr)
-		inc 	srcInputPtr
-		bne 	_IGSkip
-		inc 	srcInputPtr+1
-_IGSkip:
-		rts
+		rts		
 
 		.send code
 
