@@ -18,22 +18,18 @@ endif
 BASICSRC = build$(S)balls.bas
 all: build
 
-prelim: common-code
+prelim: 
 	$(PYTHON) $(BINDIR)tokenise.zip $(BASICSRC) testing$(S)code$(S)tokenised.dat
 	$(PYTHON) scripts$(S)genx16.py
 	$(PYTHON) scripts$(S)gencom.py 
 	$(PYTHON) $(CSCRIPTS)errors.py
-	$(PYTHON) $(CSCRIPTS)pcode.py >source$(S)generated$(S)pcodetokens.inc
 	$(PYTHON) $(CSCRIPTS)c64tokens.py >source$(S)generated$(S)c64tokens.inc
 	$(PYTHON) $(CSCRIPTS)build.py
 	$(CCOPY) _library.asm $(BINDIR)compiler.library
 	$(CCOPY)  scripts$(S)pcodeconstraw.py $(CSCRIPTS)
 
-common-code:
-	$(CCOPY) $(CSOURCE)forward.asm source$(S)common
-
 build: prelim
-	$(ASM) $(WRAPPER) testing$(S)testing.asm $(BINDIR)compiler.library $(BINDIR)ifloat32.library testing$(S)testend.asm
+	$(ASM) testing$(S)testing.asm $(BINDIR)compiler.library $(BINDIR)common.library $(BINDIR)ifloat32.library testing$(S)testend.asm
 
 run: build
 	$(CDEL) CODE.BIN

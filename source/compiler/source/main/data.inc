@@ -2,7 +2,7 @@
 ; ************************************************************************************************
 ;
 ;		Name:		data.inc
-;		Purpose:	Common Data
+;		Purpose:	Compiler Data
 ;		Created:	15th April 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)

@@ -23,7 +23,7 @@ prelim:
 	$(CCOPY) _library.asm $(BINDIR)ifloat32.library
 
 build: prelim
-	$(ASM) $(WRAPPER) testing$(S)testing.asm $(BINDIR)ifloat32.library
+	$(ASM) testing$(S)testing.asm $(BINDIR)common.library $(BINDIR)ifloat32.library
 
 run: build
 	$(EXECUTE) $(FAST)
