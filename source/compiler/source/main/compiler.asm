@@ -39,8 +39,12 @@ StartCompiler:
 		stx 	compilerSP
 
 		jsr 	STRReset 					; reset storage (line#, variable)
-		jsr 	APIIOpen 					; reset data input
-		jsr 	APIOOpen 					; reset data output.
+
+		lda 	#BLC_OPENIN					; reset data input
+		jsr 	CallAPIHandler
+
+		lda 	#BLC_RESETOUT 				; reset data output.
+		jsr 	CallAPIHandler
 		;
 		;		Compile _variable.space, filled in on pass 2.
 		;
@@ -53,7 +57,9 @@ StartCompiler:
 		;		Main compilation loop
 		;
 MainCompileLoop:
-		jsr 	ReadNextLine 				; read next line into the buffer.		
+		lda 	#BLC_READIN 				; read next line into the buffer.		
+		jsr 	CallAPIHandler
+
 		bcc 	SaveCodeAndExit 			; end of source.
 		jsr 	ProcessNewLine 				; set up pointer and line number.
 		;
@@ -90,7 +96,9 @@ _MCLCheckAssignment:
 		;		End of compile, fix up GOTO/GOSUB etc., save it and exit.
 		;
 SaveCodeAndExit:
-		jsr 	APIIClose 					; finish input.
+		lda 	#BLC_CLOSEIN				; finish input.
+		jsr 	CallAPIHandler
+
 		lda 	#$FF 						; fake line number $FFFF for forward THEN.
 		tay
 		jsr 	STRMarkLine

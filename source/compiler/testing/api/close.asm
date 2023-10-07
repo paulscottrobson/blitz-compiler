@@ -19,7 +19,7 @@
 ; ************************************************************************************************
 
 APIOClose:
-		lda 	#(PCodeStart >> 8)
+		lda 	#PCodeMemory >> 8
 		ldx 	objPtr
 		ldy 	objPtr+1
 		jsr 	APISaveMemory

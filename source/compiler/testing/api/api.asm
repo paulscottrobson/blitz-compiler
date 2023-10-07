@@ -1,18 +1,53 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		x16_config.inc
-;		Purpose:	Configuration for compiler
-;		Created:	15th April 2023
+;		Name:		api.asm
+;		Purpose:	Compiler API Interface
+;		Created:	7th October 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
 ; ************************************************************************************************
 ; ************************************************************************************************
+
+; ************************************************************************************************
 ;
-;		Runtime p-code goes here. Needs to be on a page boundary.
+;									API Entry point
 ;
-PCodeStart = $4000
+; ************************************************************************************************
+
+PCodeMemory = $A000
+
+		.section code
+
+TestAPI:
+		cmp 	#BLC_OPENIN
+		beq 	_TAOpenIn
+		cmp 	#BLC_CLOSEIN
+		beq 	_TACloseIn
+		cmp 	#BLC_READIN
+		beq 	_TARead
+		cmp 	#BLC_RESETOUT
+		beq 	_TAResetOut
+		.debug
+
+_TAOpenIn:		
+		.set16 	srcInputPtr,EndProgram+2 	
+_TACloseIn:
+		rts		
+_TARead:
+		jmp 	ReadNextLine
+
+_TAResetOut:
+		.set16 	objPtr,PCodeMemory
+		rts
+
+		.send code
+
+		.section zeropage
+srcInputPtr: 								; data from here
+		.fill 	2
+		.send zeropage
 
 ; ************************************************************************************************
 ;

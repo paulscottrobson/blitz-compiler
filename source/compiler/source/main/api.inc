@@ -28,7 +28,7 @@ BLC_CLOSEIN = 1
 ; 		point to the line number data ; e.g. the offset to next, line number etc.
 ;		Returns CS if line available, CC finished.
 ;
-BLC_READ = 2
+BLC_READIN = 2
 ;
 ;		Reset the code writing pointer. Code has to be stored in memory as it is passed over
 ; 		at the end to fix up all the line number references. It can be stored on BLC_CLOSEOUT

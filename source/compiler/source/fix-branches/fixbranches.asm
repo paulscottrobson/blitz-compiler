@@ -19,7 +19,8 @@
 ; ************************************************************************************************
 
 FixBranches:
-		jsr 	APIORewind 					; back to the start of the *object* code.
+		lda 	#BLC_RESETOUT				; back to the start of the *object* code.
+		jsr 	CallAPIHandler
 _FBLoop:
 		lda 	(objPtr) 					; get the next one.
 		cmp 	#PCD_CMD_GOTO 				; found GOTO or GOSUB, patch up.
