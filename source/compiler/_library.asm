@@ -42,20 +42,13 @@ BLC_RESETOUT = 3
 ;
 BLC_CLOSEOUT = 4
 ;
-;		Write a byte A at the obj code point YX (+0..+2 = address.low, address.high, page)
-;		and increment that YX address appropriately. If code is paged it is advised to 
-;		switch page when there are less than 1/4k bytes available, some code will not
-;	 	split across pages.
+;		Write a byte A at the object pointer and bump that address.
 ;
 BLC_WRITEOUT = 5
 ;
-; 		Given a obj code point at YX, add the value at +3 to it.
-;
-BLC_ADJUSTOBJECT = 6
-;
 ;		Print character A to display / stream for errors & information
 ;
-BLC_PRINTCHAR = 7
+BLC_PRINTCHAR = 6
 
 ; ************************************************************************************************
 ;
@@ -790,10 +783,7 @@ SetVariableRecordToCodePosition:
 		.storage_access
 		pha
 		phy
-		lda 	objPage
 		ldy 	#3
-		sta 	(zTemp0),y
-		iny
 		lda 	objPtr+1
 		sta 	(zTemp0),y
 		iny 	
@@ -1534,7 +1524,7 @@ _FBFixGotoGosub:
 		lda 	(objPtr),y
 		tay
 		pla
-		jsr 	STRFindLine			 		; find where it is X:YA
+		jsr 	STRFindLine			 		; find where it is YA
 		bcc 	_FBFFound 					; not found, so must be >
 		pha
 		lda 	(objPtr) 					; which is a fail if not CMD_GOTOCMD_Z
@@ -3241,9 +3231,9 @@ _CLType:
 
 STRMarkLine:
 		pha
-		sec 								; allocate 5 bytes (line #, page+address)
+		sec 								; allocate 4 bytes (line #,address)
 		lda 	lineNumberTable 			; and copy to zTemp0
-		sbc 	#5
+		sbc 	#4
 		sta 	lineNumberTable
 		sta 	zTemp0
 		lda 	lineNumberTable+1
@@ -3253,16 +3243,12 @@ STRMarkLine:
 
 		.storage_access
 		pla
-		sta 	(zTemp0) 					; save it in +0,+1
+		sta 	(zTemp0) 					; line # save it in +0,+1
 		tya
 		ldy 	#1
 		sta 	(zTemp0),y
 		;
-		lda 	objPage 					; and page# in +2
-		iny
-		sta 	(zTemp0),y
-
-		lda 	objPtr 						; save current address in +3,+4
+		lda 	objPtr 						; save current address in +2,+3
 		iny
 		sta 	(zTemp0),y
 		lda 	objPtr+1
@@ -3274,7 +3260,7 @@ STRMarkLine:
 
 ; ************************************************************************************************
 ;
-;				Line number YA - find in table, return page X address YA 
+;				Line number YA - find in table, return address YA 
 ;				
 ;				If FOUND: of the matching line, with Carry Clear.
 ;				If NOT FOUND : of the previous line (e.g. next code line), with Carry Set.
@@ -3314,15 +3300,13 @@ _STRFound:
 		lda 	(zTemp1)
 		eor 	zTemp0
 		beq 	_STROut 					; if zero, exit with A = 0 and correct line.
+
 _STRDifferent:
 		lda 	#$FF 						
 _STROut:
 		clc  								; set carry if different, e.g. > rather than >=
 		adc 	#255 				
 		php
-		iny 								; page into X
-		lda 	(zTemp1),y
-		tax
 		iny 								; address into YA
 		lda 	(zTemp1),y
 		pha
@@ -3337,7 +3321,7 @@ _STROut:
 _STRPrevLine:
 		sec 								; move backwards one entry.
 		lda 	zTemp1
-		sbc 	#5
+		sbc 	#4
 		sta 	zTemp1
 		lda 	zTemp1+1
 		sbc 	#0

@@ -85,6 +85,6 @@ if __name__ == "__main__":
 	while lineNumberStart != lineNumberEnd:
 		l = dmp.readWord(lineNumberStart)
 		if l != 0xFFFF:
-				print("{0}:{1}".format(l,dmp.readWord(lineNumberStart+3)-start))
-		lineNumberStart += 5
+				print("{0}:{1}".format(l,dmp.readWord(lineNumberStart+2)-start))
+		lineNumberStart += 4
 		

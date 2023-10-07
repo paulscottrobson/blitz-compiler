@@ -21,7 +21,6 @@
 
 APIOOpen:
 APIORewind:
-		stz 	objPage
 		.set16 	objPtr,PCodeStart
 		rts
 

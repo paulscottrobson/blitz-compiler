@@ -23,12 +23,12 @@ endif
 #
 REVISION = r43
 
-all: latest libraries
+all: latest libs
 
 #
 #		Build the library version of the components. 
 #
-libraries:	
+libs:	
 	make -C source/common-source
 	make -C source/ifloat32
 	make -C source/polynomials

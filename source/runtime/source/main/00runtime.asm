@@ -29,7 +29,6 @@ StartRuntime:
 		sta 	runtimeHigh 				; save address of code.		
 		sta 	codePtr+1 					; set pointer to code.
 		stz 	codePtr
-		stz 	codePage 					; zero current page.
 
 		stx 	storeStartHigh 				; save from-to address.
 		sty 	storeEndHigh

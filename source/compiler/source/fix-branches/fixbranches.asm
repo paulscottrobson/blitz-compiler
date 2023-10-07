@@ -48,7 +48,7 @@ _FBFixGotoGosub:
 		lda 	(objPtr),y
 		tay
 		pla
-		jsr 	STRFindLine			 		; find where it is X:YA
+		jsr 	STRFindLine			 		; find where it is YA
 		bcc 	_FBFFound 					; not found, so must be >
 		pha
 		lda 	(objPtr) 					; which is a fail if not CMD_GOTOCMD_Z

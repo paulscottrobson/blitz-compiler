@@ -21,6 +21,7 @@ all: build
 BASICSRC = build$(S)balls.bas
 
 prelim: 
+	make -C ../common-source
 	$(PYTHON) scripts$(S)genx16.py
 	$(PYTHON) scripts$(S)gencom.py 
 	$(PYTHON) $(BINDIR)tokenise.zip $(BASICSRC) testing$(S)code$(S)tokenised.dat
@@ -37,7 +38,7 @@ run: build
 	$(CCOPY) CODE.BIN ..$(S)runtime$(S)testing$(S)code$(S)code.bin
 	$(PYTHON) $(CSCRIPTS)compileinfo.py >testing$(S)code$(S)program.data
 
-basicrun: run
+basicrun: run	
 	make -C ../runtime run
 
 check: run

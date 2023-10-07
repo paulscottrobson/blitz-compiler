@@ -24,9 +24,9 @@ CommandRestore: ;; [!restore]
 		.exitcmd
 
 RestoreCode:
-		lda 	runtimeHigh 				; reset pointer and page
-		sta 	objPage+1
-		stz  	objPage
+		lda 	runtimeHigh 				; reset pointer
+		sta 	objPtr+1
+		stz 	objPtr
 		stz 	dataRemaining 				; no data remaining.
 		rts
 

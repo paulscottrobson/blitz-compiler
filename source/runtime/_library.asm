@@ -515,7 +515,6 @@ StartRuntime:
 		sta 	runtimeHigh 				; save address of code.		
 		sta 	codePtr+1 					; set pointer to code.
 		stz 	codePtr
-		stz 	codePage 					; zero current page.
 
 		stx 	storeStartHigh 				; save from-to address.
 		sty 	storeEndHigh
@@ -4688,9 +4687,9 @@ CommandRestore: ;; [!restore]
 		.exitcmd
 
 RestoreCode:
-		lda 	runtimeHigh 				; reset pointer and page
-		sta 	objPage+1
-		stz  	objPage
+		lda 	runtimeHigh 				; reset pointer
+		sta 	objPtr+1
+		stz 	objPtr
 		stz 	dataRemaining 				; no data remaining.
 		rts
 

@@ -53,17 +53,11 @@ MemoryStorage = $400
 
 		.section zeropage
 
-codePtr:	 								; address of current line (allow for paging)
+codePtr:	 								; address of current line.
 		.fill 	2
-codePage:
-		.fill 	1	
 
-objPtr: 									; address in code. The organisation of these four
-		.fill 	2 							; bytes must not change (it could expand) as the
-objPage: 									; API sends these as an address.
-		.fill 	1			
-objIncrement:
-		.fill 	1
+objPtr: 									; address in code. 
+		.fill 	2 							
 
 zTemp0: 									; temporary words used in the interpreter.
 		.fill 	2

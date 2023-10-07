@@ -39,20 +39,13 @@ BLC_RESETOUT = 3
 ;
 BLC_CLOSEOUT = 4
 ;
-;		Write a byte A at the obj code point YX (+0..+2 = address.low, address.high, page)
-;		and increment that YX address appropriately. If code is paged it is advised to 
-;		switch page when there are less than 1/4k bytes available, some code will not
-;	 	split across pages.
+;		Write a byte A at the object pointer and bump that address.
 ;
 BLC_WRITEOUT = 5
 ;
-; 		Given a obj code point at YX, add the value at +3 to it.
-;
-BLC_ADJUSTOBJECT = 6
-;
 ;		Print character A to display / stream for errors & information
 ;
-BLC_PRINTCHAR = 7
+BLC_PRINTCHAR = 6
 
 ; ************************************************************************************************
 ;
