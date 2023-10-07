@@ -15,7 +15,8 @@ else
 include ../../documents/common.make
 endif
 
-BASICSRC = build$(S)balls.bas
+BASICSRC = build$(S)loops.bas
+
 all: build
 
 prelim: 
