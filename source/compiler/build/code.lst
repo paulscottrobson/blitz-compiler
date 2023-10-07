@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.59.3120 listing file
 ; 64tass -c -Wall -o build/code.prg -L build/code.lst -l build/code.lbl testing/testing.asm /home/paulr/Projects/blitz-compiler/documents/../bin/compiler.library /home/paulr/Projects/blitz-compiler/documents/../bin/common.library /home/paulr/Projects/blitz-compiler/documents/../bin/ifloat32.library testing/testend.asm
-; Sat Oct  7 08:22:43 2023
+; Sat Oct  7 08:29:39 2023
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -25,7 +25,7 @@
 .100e	a9 40		lda #$40			lda 	#(PCodeStart >> 8)
 .1010	a6 29		ldx $29				ldx 	objPtr
 .1012	a4 2a		ldy $2a				ldy 	objPtr+1
-.1014	20 7a 10	jsr $107a			jsr 	APISaveMemory
+.1014	20 73 10	jsr $1073			jsr 	APISaveMemory
 .1017	60		rts				rts
 
 ;******  Return to file: testing/testing.asm
@@ -81,37 +81,33 @@
 .1057	85 25		sta $25				sta 	1+srcPtr
 .1059	38		sec				sec
 .105a	60		rts				rts
-.105b					GetLineNumber:
-.105b	ac 01 05	ldy $0501			ldy 	currentLineNumber+1
-.105e	ad 00 05	lda $0500			lda 	currentLineNumber
-.1061	60		rts				rts
 
 ;******  Return to file: testing/testing.asm
 
 
 ;******  Processing file: testing/api/open.asm
 
-.1062					APIOOpen:
-.1062					APIORewind:
-.1062	64 2b		stz $2b				stz 	objPage
-.1064	a9 00		lda #$00			lda 	#((PCodeStart) & $FF)
-.1066	85 29		sta $29				sta 	0+objPtr
-.1068	a9 40		lda #$40			lda 	#((PCodeStart) >> 8) & $FF
-.106a	85 2a		sta $2a				sta 	1+objPtr
-.106c	60		rts				rts
+.105b					APIOOpen:
+.105b					APIORewind:
+.105b	64 2b		stz $2b				stz 	objPage
+.105d	a9 00		lda #$00			lda 	#((PCodeStart) & $FF)
+.105f	85 29		sta $29				sta 	0+objPtr
+.1061	a9 40		lda #$40			lda 	#((PCodeStart) >> 8) & $FF
+.1063	85 2a		sta $2a				sta 	1+objPtr
+.1065	60		rts				rts
 
 ;******  Return to file: testing/testing.asm
 
 
 ;******  Processing file: testing/api/writebyte.asm
 
-.106d					APIOWriteByte:
-.106d	92 29		sta ($29)			sta 	(objPtr)
-.106f	e6 29		inc $29				inc 	objPtr
-.1071	d0 02		bne $1075			bne 	_HWOWBNoCarry
-.1073	e6 2a		inc $2a				inc 	objPtr+1
-.1075					_HWOWBNoCarry:
-.1075	60		rts				rts
+.1066					APIOWriteByte:
+.1066	92 29		sta ($29)			sta 	(objPtr)
+.1068	e6 29		inc $29				inc 	objPtr
+.106a	d0 02		bne $106e			bne 	_HWOWBNoCarry
+.106c	e6 2a		inc $2a				inc 	objPtr+1
+.106e					_HWOWBNoCarry:
+.106e	60		rts				rts
 
 ;******  Return to file: testing/testing.asm
 
@@ -125,37 +121,37 @@
 
 ;******  Processing file: testing/api/x16_printchar.asm
 
-.1076					APIOPrintCharacter
-.1076	20 d2 ff	jsr $ffd2			jsr 	$FFD2
-.1079	60		rts				rts
+.106f					APIOPrintCharacter
+.106f	20 d2 ff	jsr $ffd2			jsr 	$FFD2
+.1072	60		rts				rts
 
 ;******  Return to file: testing/testing.asm
 
 
 ;******  Processing file: testing/api/x16_save.asm
 
-.107a					APISaveMemory:
-.107a	da		phx				phx
-.107b	5a		phy				phy
-.107c	48		pha				pha
-.107d	a9 00		lda #$00			lda 	#0 							; set LFS
-.107f	a2 08		ldx #$08			ldx 	#8
-.1081	a0 00		ldy #$00			ldy 	#0
-.1083	20 ba ff	jsr $ffba			jsr 	$FFBA
-.1086	a9 08		lda #$08			lda 	#8 							; set file name
-.1088	a2 9c		ldx #$9c			ldx 	#SaveName & $FF
-.108a	a0 10		ldy #$10			ldy 	#SaveName >> 8
-.108c	20 bd ff	jsr $ffbd			jsr 	$FFBD
-.108f	68		pla				pla 								; set up the start address.
-.1090	85 2d		sta $2d				sta 	zTemp0+1
-.1092	64 2c		stz $2c				stz 	zTemp0
-.1094	a9 2c		lda #$2c			lda 	#zTemp0 					; from index.
-.1096	7a		ply				ply 								; end in YX
-.1097	fa		plx				plx
-.1098	20 d8 ff	jsr $ffd8			jsr 	$FFD8 						; write out.
-.109b	60		rts				rts
-.109c					SaveName:
->109c	43 4f 44 45 2e 42 49 4e				.text 	"CODE.BIN"
+.1073					APISaveMemory:
+.1073	da		phx				phx
+.1074	5a		phy				phy
+.1075	48		pha				pha
+.1076	a9 00		lda #$00			lda 	#0 							; set LFS
+.1078	a2 08		ldx #$08			ldx 	#8
+.107a	a0 00		ldy #$00			ldy 	#0
+.107c	20 ba ff	jsr $ffba			jsr 	$FFBA
+.107f	a9 08		lda #$08			lda 	#8 							; set file name
+.1081	a2 95		ldx #$95			ldx 	#SaveName & $FF
+.1083	a0 10		ldy #$10			ldy 	#SaveName >> 8
+.1085	20 bd ff	jsr $ffbd			jsr 	$FFBD
+.1088	68		pla				pla 								; set up the start address.
+.1089	85 2d		sta $2d				sta 	zTemp0+1
+.108b	64 2c		stz $2c				stz 	zTemp0
+.108d	a9 2c		lda #$2c			lda 	#zTemp0 					; from index.
+.108f	7a		ply				ply 								; end in YX
+.1090	fa		plx				plx
+.1091	20 d8 ff	jsr $ffd8			jsr 	$FFD8 						; write out.
+.1094	60		rts				rts
+.1095					SaveName:
+>1095	43 4f 44 45 2e 42 49 4e				.text 	"CODE.BIN"
 
 ;******  Return to file: testing/testing.asm
 
@@ -168,52 +164,56 @@
 >0400							.fill 	256
 .0500					currentLineNumber:
 >0500							.fill 	2
-.10a4					InlineNonDecimal:
-.10a4	a2 02		ldx #$02			ldx 	#2 							; get size in X
-.10a6	c9 25		cmp #$25			cmp 	#"%"
-.10a8	f0 02		beq $10ac			beq 	_INDBinary
-.10aa	a2 10		ldx #$10			ldx 	#16
-.10ac					_INDBinary:
-.10ac	85 2e		sta $2e				sta 	zTemp1 						; size => zTemp1
-.10ae	64 2f		stz $2f				stz 	zTemp1+1 					; count => zTemp1+1, at least 1 !
-.10b0	64 2c		stz $2c				stz 	zTemp0 						; zero result
-.10b2	64 2d		stz $2d				stz 	zTemp0+1
-.10b4					_INDLoop:
-.10b4	20 20 1a	jsr $1a20			jsr 	LookNext 					; check next character
-.10b7	20 5c 1a	jsr $1a5c			jsr 	ConvertHexStyle		 		; convert into range 0-35 for 0-9A-Z
-.10ba	90 1f		bcc $10db			bcc		_INDDone 					; didn't convert
-.10bc	c5 2e		cmp $2e				cmp 	zTemp1 						; size too large ?
-.10be	b0 1b		bcs $10db			bcs 	_INDDone
-.10c0	20 ea 10	jsr $10ea			jsr 	_INDShift 					; x 2 or x 16
-.10c3	e0 02		cpx #$02			cpx 	#2
-.10c5	f0 09		beq $10d0			beq 	_INDNotHex
-.10c7	20 ea 10	jsr $10ea			jsr 	_INDShift
-.10ca	20 ea 10	jsr $10ea			jsr 	_INDShift
-.10cd	20 ea 10	jsr $10ea			jsr 	_INDShift
-.10d0					_INDNotHex:
-.10d0	05 2c		ora $2c				ora 	zTemp0 						; or digit into result
-.10d2	85 2c		sta $2c				sta 	zTemp0
-.10d4	20 31 1a	jsr $1a31			jsr 	GetNext 					; consume
-.10d7	e6 2f		inc $2f				inc 	zTemp1+1 					; bump count
-.10d9	80 d9		bra $10b4			bra 	_INDLoop
-.10db					_INDDone:
-.10db	a5 2f		lda $2f				lda 	zTemp1+1 					; done at least 1 ?
-.10dd	f0 08		beq $10e7			beq 	_INDError
-.10df	a4 2d		ldy $2d				ldy 	zTemp0+1 					; push constant
-.10e1	a5 2c		lda $2c				lda 	zTemp0
-.10e3	20 cd 11	jsr $11cd			jsr 	PushIntegerYA
-.10e6	60		rts				rts
-.10e7					_INDError:
-.10e7	4c 30 1f	jmp $1f30		jmp	ErrorV_syntax
-.10ea					_INDShift:
-.10ea	06 2c		asl $2c				asl 	zTemp0
-.10ec	26 2d		rol $2d				rol 	zTemp0+1
+.109d					InlineNonDecimal:
+.109d	a2 02		ldx #$02			ldx 	#2 							; get size in X
+.109f	c9 25		cmp #$25			cmp 	#"%"
+.10a1	f0 02		beq $10a5			beq 	_INDBinary
+.10a3	a2 10		ldx #$10			ldx 	#16
+.10a5					_INDBinary:
+.10a5	85 2e		sta $2e				sta 	zTemp1 						; size => zTemp1
+.10a7	64 2f		stz $2f				stz 	zTemp1+1 					; count => zTemp1+1, at least 1 !
+.10a9	64 2c		stz $2c				stz 	zTemp0 						; zero result
+.10ab	64 2d		stz $2d				stz 	zTemp0+1
+.10ad					_INDLoop:
+.10ad	20 20 1a	jsr $1a20			jsr 	LookNext 					; check next character
+.10b0	20 5c 1a	jsr $1a5c			jsr 	ConvertHexStyle		 		; convert into range 0-35 for 0-9A-Z
+.10b3	90 1f		bcc $10d4			bcc		_INDDone 					; didn't convert
+.10b5	c5 2e		cmp $2e				cmp 	zTemp1 						; size too large ?
+.10b7	b0 1b		bcs $10d4			bcs 	_INDDone
+.10b9	20 e3 10	jsr $10e3			jsr 	_INDShift 					; x 2 or x 16
+.10bc	e0 02		cpx #$02			cpx 	#2
+.10be	f0 09		beq $10c9			beq 	_INDNotHex
+.10c0	20 e3 10	jsr $10e3			jsr 	_INDShift
+.10c3	20 e3 10	jsr $10e3			jsr 	_INDShift
+.10c6	20 e3 10	jsr $10e3			jsr 	_INDShift
+.10c9					_INDNotHex:
+.10c9	05 2c		ora $2c				ora 	zTemp0 						; or digit into result
+.10cb	85 2c		sta $2c				sta 	zTemp0
+.10cd	20 31 1a	jsr $1a31			jsr 	GetNext 					; consume
+.10d0	e6 2f		inc $2f				inc 	zTemp1+1 					; bump count
+.10d2	80 d9		bra $10ad			bra 	_INDLoop
+.10d4					_INDDone:
+.10d4	a5 2f		lda $2f				lda 	zTemp1+1 					; done at least 1 ?
+.10d6	f0 08		beq $10e0			beq 	_INDError
+.10d8	a4 2d		ldy $2d				ldy 	zTemp0+1 					; push constant
+.10da	a5 2c		lda $2c				lda 	zTemp0
+.10dc	20 cd 11	jsr $11cd			jsr 	PushIntegerYA
+.10df	60		rts				rts
+.10e0					_INDError:
+.10e0	4c 30 1f	jmp $1f30		jmp	ErrorV_syntax
+.10e3					_INDShift:
+.10e3	06 2c		asl $2c				asl 	zTemp0
+.10e5	26 2d		rol $2d				rol 	zTemp0+1
+.10e7	60		rts				rts
+.10e8					GetLineNumber:
+.10e8	ac 01 05	ldy $0501			ldy 	currentLineNumber+1
+.10eb	ad 00 05	lda $0500			lda 	currentLineNumber
 .10ee	60		rts				rts
 .10ef					WriteCodeByte:
 .10ef	48		pha				pha 								; save on stack
 .10f0	da		phx				phx
 .10f1	5a		phy				phy
-.10f2	20 6d 10	jsr $106d			jsr 	APIOWriteByte
+.10f2	20 66 10	jsr $1066			jsr 	APIOWriteByte
 .10f5	7a		ply				ply 								; restore from stack
 .10f6	fa		plx				plx
 .10f7	68		pla				pla
@@ -222,7 +222,7 @@
 .10f9	48		pha				pha
 .10fa	da		phx				phx
 .10fb	5a		phy				phy
-.10fc	20 76 10	jsr $1076			jsr 	APIOPrintCharacter
+.10fc	20 6f 10	jsr $106f			jsr 	APIOPrintCharacter
 .10ff	7a		ply				ply
 .1100	fa		plx				plx
 .1101	68		pla				pla
@@ -291,7 +291,7 @@
 .1160	8e 04 06	stx $0604			stx 	compilerSP
 .1163	20 d5 1d	jsr $1dd5			jsr 	STRReset 					; reset storage (line#, variable)
 .1166	20 18 10	jsr $1018			jsr 	APIIOpen 					; reset data input
-.1169	20 62 10	jsr $1062			jsr 	APIOOpen 					; reset data output.
+.1169	20 5b 10	jsr $105b			jsr 	APIOOpen 					; reset data output.
 .116c	a9 d4		lda #$d4			lda 	#PCD_CMD_VARSPACE
 .116e	20 ef 10	jsr $10ef			jsr 	WriteCodeByte
 .1171	a9 00		lda #$00			lda 	#0
@@ -300,7 +300,7 @@
 .1179					MainCompileLoop:
 .1179	20 2a 10	jsr $102a			jsr 	ReadNextLine 				; read next line into the buffer.
 .117c	90 2e		bcc $11ac			bcc 	SaveCodeAndExit 			; end of source.
-.117e	20 5b 10	jsr $105b			jsr 	GetLineNumber 				; get line #
+.117e	20 e8 10	jsr $10e8			jsr 	GetLineNumber 				; get line #
 .1181	20 b6 1b	jsr $1bb6			jsr 	STRMarkLine 				; remember the position and number of this line.
 .1184	a9 a6		lda #$a6			lda 	#PCD_NEWCMD_LINE 			; generate new command line
 .1186	20 ef 10	jsr $10ef			jsr 	WriteCodeByte
@@ -607,7 +607,7 @@
 .13a6	20 f9 10	jsr $10f9			jsr 	PrintCharacter
 .13a9	a2 00		ldx #$00			ldx 	#0 							; convert line# to string
 .13ab	20 78 26	jsr $2678			jsr 	FloatSetByte
-.13ae	20 5b 10	jsr $105b			jsr 	GetLineNumber
+.13ae	20 e8 10	jsr $10e8			jsr 	GetLineNumber
 .13b1	95 3e		sta $3e,x			sta 	NSMantissa0,x
 .13b3	98		tya				tya
 .13b4	95 4a		sta $4a,x			sta 	NSMantissa1,x
@@ -807,7 +807,7 @@
 .14e7	18		clc				clc
 .14e8	60		rts				rts
 .14e9					FixBranches:
-.14e9	20 62 10	jsr $1062			jsr 	APIORewind 					; back to the start of the *object* code.
+.14e9	20 5b 10	jsr $105b			jsr 	APIORewind 					; back to the start of the *object* code.
 .14ec					_FBLoop:
 .14ec	b2 29		lda ($29)			lda 	(objPtr) 					; get the next one.
 .14ee	c9 d0		cmp #$d0			cmp 	#PCD_CMD_GOTO 				; found GOTO or GOSUB, patch up.
@@ -1466,7 +1466,7 @@
 .1b4a	20 ef 10	jsr $10ef			jsr 	WriteCodeByte
 .1b4d	a9 ff		lda #$ff			lda 	#$FF
 .1b4f	20 ef 10	jsr $10ef			jsr 	WriteCodeByte
-.1b52	20 5b 10	jsr $105b			jsr 	GetLineNumber 				; Get the current line number => YA
+.1b52	20 e8 10	jsr $10e8			jsr 	GetLineNumber 				; Get the current line number => YA
 .1b55	1a		inc a				inc 	a 							; and branch to +1
 .1b56	d0 01		bne $1b59			bne 	_CGENoCarry
 .1b58	c8		iny				iny
@@ -1912,7 +1912,7 @@
 .1e39	68		pla				pla
 .1e3a	60		rts				rts
 .1e3b					_CTOtherBase:
-.1e3b	20 a4 10	jsr $10a4			jsr 	InlineNonDecimal 			; non decimal constant handler
+.1e3b	20 9d 10	jsr $109d			jsr 	InlineNonDecimal 			; non decimal constant handler
 .1e3e	a9 00		lda #$00			lda 	#NSSIFloat					; return a iFloat32 integer
 .1e40	60		rts				rts
 .1e41					_CTDigit:
