@@ -29,12 +29,7 @@ APIDesc:
 		.send code
 
 		.include "api/api.asm"
-		.include "api/close.asm"
-		.include "api/fromram.asm"
 		.include "api/line.asm"
-		.include "api/open.asm"
-		.include "api/writebyte.asm"
-		.include "api/x16_printchar.asm"
 		.include "api/x16_save.asm"
 
 ; ************************************************************************************************

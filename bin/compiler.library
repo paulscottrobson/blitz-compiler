@@ -311,7 +311,9 @@ PrintCharacter
 		pha
 		phx
 		phy
-		jsr 	APIOPrintCharacter
+		tax
+		lda 	#BLC_PRINTCHAR
+		jsr 	CallAPIHandler
 		ply
 		plx
 		pla
@@ -596,7 +598,9 @@ SaveCodeAndExit:
 		lda 	#$FF 						; add end marker
 		jsr 	WriteCodeByte
 		jsr 	FixBranches 				; fix up GOTO/GOSUB etc.
-		jsr 	APIOClose
+
+		lda 	#BLC_CLOSEOUT 				; close output store 
+		jsr 	CallAPIHandler
 
 ExitCompiler:		
 		ldx 	compilerSP 					; reload SP and exit.

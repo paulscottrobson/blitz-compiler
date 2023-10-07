@@ -51,7 +51,9 @@ PrintCharacter
 		pha
 		phx
 		phy
-		jsr 	APIOPrintCharacter
+		tax
+		lda 	#BLC_PRINTCHAR
+		jsr 	CallAPIHandler
 		ply
 		plx
 		pla
