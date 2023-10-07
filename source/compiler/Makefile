@@ -23,7 +23,6 @@ prelim:
 	$(PYTHON) scripts$(S)genx16.py
 	$(PYTHON) scripts$(S)gencom.py 
 	$(PYTHON) $(CSCRIPTS)errors.py
-	$(PYTHON) $(CSCRIPTS)c64tokens.py >source$(S)generated$(S)c64tokens.inc
 	$(PYTHON) $(CSCRIPTS)build.py
 	$(CCOPY) _library.asm $(BINDIR)compiler.library
 	$(CCOPY)  scripts$(S)pcodeconstraw.py $(CSCRIPTS)

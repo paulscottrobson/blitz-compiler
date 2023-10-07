@@ -19,6 +19,7 @@ all: build
 
 prelim: 
 	$(PYTHON) $(CSCRIPTS)pcode.py >source$(S)generated$(S)pcodetokens.inc
+	$(PYTHON) $(CSCRIPTS)c64tokens.py >source$(S)generated$(S)c64tokens.inc
 	$(PYTHON) $(CSCRIPTS)build.py
 	$(CCOPY) _library.asm $(BINDIR)common.library
 

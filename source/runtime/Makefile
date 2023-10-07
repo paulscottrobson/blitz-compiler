@@ -19,7 +19,6 @@ all: build
 
 prelim: 
 	$(PYTHON) $(CSCRIPTS)errors.py
-	$(PYTHON) $(CSCRIPTS)c64tokens.py >source$(S)generated$(S)c64tokens.inc
 	$(PYTHON) scripts$(S)genmapping.py >source$(S)generated$(S)links.asm
 	$(PYTHON) scripts$(S)vectors.py >source$(S)generated$(S)vectors.asm
 
