@@ -29,8 +29,6 @@ srcPtr: 									; pointer in source buffer
 ; ************************************************************************************************
 
 		.section storage
-sourceBuffer: 								; current input line.
-		.fill 	256		
 currentLineNumber:							; current line number.
 		.fill 	2		
 		.send 	storage

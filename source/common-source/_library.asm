@@ -205,10 +205,14 @@ codePtr:	 								; address of current line (allow for paging)
 		.fill 	2
 codePage:
 		.fill 	1	
-objPtr: 									; address in code.
-		.fill 	2
-objPage:
+
+objPtr: 									; address in code. The organisation of these four
+		.fill 	2 							; bytes must not change (it could expand) as the
+objPage: 									; API sends these as an address.
 		.fill 	1			
+objIncrement:
+		.fill 	1
+
 zTemp0: 									; temporary words used in the interpreter.
 		.fill 	2
 zTemp1:
@@ -573,7 +577,7 @@ _MOFNoCarry1:
 _MOFAdvance1:
 		ldy 	#1
 _MOFAdvanceY:				
-		tya 								; add X to objPtr
+		tya 								; add Y to objPtr
 		clc
 		adc 	objPtr
 		sta 	objPtr

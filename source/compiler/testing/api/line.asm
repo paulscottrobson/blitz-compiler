@@ -15,7 +15,7 @@
 
 ; ************************************************************************************************
 ;
-;						Read next line into buffer. reset PTR. CC if nothing.
+;					Read next line return address of whole line in YX. CC if nothing.
 ;
 ; ************************************************************************************************
 
@@ -23,29 +23,16 @@ ReadNextLine:
 		lda 	(srcInputPtr) 				; reached the end of the program (address link = $0000)
 		ldy 	#1
 		ora 	(srcInputPtr),y
-		bne 	_RNLBody 
+		bne 	_RLAHaveData
 		clc 		
 		rts									; end of file.
-
-_RNLBody:
-		iny 								; read and save line number
-		lda 	(srcInputPtr),y
-		sta 	currentLineNumber
-		iny
-		lda 	(srcInputPtr),y
-		sta 	currentLineNumber+1
-		iny 								; first character of line.
-
-		clc 								; point srcPtr to the start of the line.
-		lda 	srcInputPtr
-		adc 	#4
-		sta 	srcPtr
-		lda 	srcInputPtr+1
-		adc 	#0
-		sta 	srcPtr+1
-
+_RLAHaveData:
+		ldx 	srcInputPtr 				; remember the line start
+		ldy 	srcInputPtr+1
+		phy
+		ldy 	#4 							; must be at least four bytes (address/line#)
 _RNLRead:
-		lda 	(srcInputPtr),y 			; copy into buffer.
+		lda 	(srcInputPtr),y 			; find the end of the line.
 		iny
 		cmp 	#0
 		bne 	_RNLRead
@@ -57,15 +44,12 @@ _RNLRead:
 		bcc 	_RNLNoCarry
 		inc 	srcInputPtr+1
 _RNLNoCarry:
+
+		ply 								; address of line now in YX.
 		sec
 		rts
 
 	.send 	code
-
-	.section storage
-;srcBuffer:
-;	.fill 	256
-	.send storage
 
 ; ************************************************************************************************
 ;

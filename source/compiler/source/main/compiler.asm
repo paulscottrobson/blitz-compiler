@@ -55,9 +55,10 @@ StartCompiler:
 MainCompileLoop:
 		jsr 	ReadNextLine 				; read next line into the buffer.		
 		bcc 	SaveCodeAndExit 			; end of source.
+		jsr 	ProcessNewLine 				; set up pointer and line number.
 		;
 		jsr 	GetLineNumber 				; get line #
-		jsr 	STRMarkLine 				; remember the position and number of this line.
+		jsr 	STRMarkLine 				; remember the code position and number of this line.
 		lda 	#PCD_NEWCMD_LINE 			; generate new command line
 		jsr 	WriteCodeByte
 

@@ -55,6 +55,32 @@ PrintCharacter
 		pla
 		rts
 
+; ************************************************************************************************
+;
+;					Process new line - set source pointer, extract line number
+;
+; ************************************************************************************************
+ 
+ProcessNewLine:
+		stx 	zTemp0 						; save address in zTemp0
+		sty 	zTemp0+1
+
+		clc 								; set the srcPtr to the start of the actual code (e.g. offset 4)
+		txa
+		adc 	#4
+		sta 	srcPtr
+		tya
+		adc 	#0
+		sta 	srcPtr+1
+
+		ldy 	#2							; read and save line number
+		lda 	(zTemp0),y
+		sta 	currentLineNumber
+		iny
+		lda 	(zTemp0),y
+		sta 	currentLineNumber+1
+		rts
+
 		.send 	code
 
 ; ************************************************************************************************

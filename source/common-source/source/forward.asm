@@ -57,7 +57,7 @@ _MOFNoCarry1:
 _MOFAdvance1:
 		ldy 	#1
 _MOFAdvanceY:				
-		tya 								; add X to objPtr
+		tya 								; add Y to objPtr
 		clc
 		adc 	objPtr
 		sta 	objPtr
