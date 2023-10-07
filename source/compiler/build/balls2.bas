@@ -1,5 +1,5 @@
-130 fory=0to29:forx=0to39
-160 nextx,y
-200 for b=1ton
-290 nextb
+130 fory=0to1
+160 next
+200 for b=1to2
+290 next
 300 goto 200
