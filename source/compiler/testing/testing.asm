@@ -26,9 +26,16 @@ APIDesc:
 		.byte 	StartWorkSpace >> 8 		; start of workspace for compiler
 		.byte 	EndWorkspace >> 8 			; end of workspace for compiler
 											; this example is 8000-9EFF.
-
 		.send code
 
+		.include "api/close.asm"
+		.include "api/fromram.asm"
+		.include "api/line.asm"
+		.include "api/open.asm"
+		.include "api/writebyte.asm"
+		.include "api/x16_config.inc"
+		.include "api/x16_printchar.asm"
+		.include "api/x16_save.asm"
 
 ; ************************************************************************************************
 ;
@@ -40,3 +47,4 @@ APIDesc:
 ;		==== 			=====
 ;
 ; ************************************************************************************************
+

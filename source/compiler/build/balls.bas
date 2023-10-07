@@ -1,5 +1,5 @@
 10 n = 14
-20 screen 3x
+20 screen 3
 60 print chr$(147);"Hello world !"
 70 dim bx(n):dim by(n):dim bc(n)
 75 dim dx(n):dim dy(n)
