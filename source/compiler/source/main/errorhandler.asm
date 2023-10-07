@@ -21,14 +21,14 @@ ErrorHandler:
 		ldy 	#1
 _EHDisplayMsg:
 		lda 	(zTemp0),y
-		jsr 	XPrintCharacter
+		jsr 	PrintCharacter
 		iny
 		lda 	(zTemp0),y
 		bne 	_EHDisplayMsg
 		lda 	#32
-		jsr 	XPrintCharacter
+		jsr 	PrintCharacter
 		lda 	#64
-		jsr 	XPrintCharacter
+		jsr 	PrintCharacter
 		;
 		ldx 	#0 							; convert line# to string
 		jsr 	FloatSetByte
@@ -41,12 +41,15 @@ _EHDisplayMsg:
 		ldx 	#0
 _EHDisplayLine:
 		lda 	decimalBuffer,y
-		jsr 	XPrintCharacter
+		jsr 	PrintCharacter
 		iny
 		lda 	decimalBuffer,y
 		bne 	_EHDisplayLine
 		lda 	#13
-		jsr 	XPrintCharacter
+		jsr 	PrintCharacter
+
+_EHHalt:bra 	_EHHalt
+		
 		jmp 	ExitCompiler
 						
 		.send code

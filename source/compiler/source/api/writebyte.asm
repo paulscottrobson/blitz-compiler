@@ -18,7 +18,7 @@
 ;
 ; ************************************************************************************************
 
-OUTPUTWriteByte:
+APIOWriteByte:
 		sta 	(objPtr)
 		inc 	objPtr
 		bne 	_HWOWBNoCarry

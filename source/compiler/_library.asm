@@ -230,6 +230,65 @@ _INDShift:
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
+;		Name:		api.asm
+;		Purpose:	Short version of common API functions
+;		Created:	7th October 2023
+;		Reviewed: 	No
+;		Author:		Paul Robson (paul@robsons.org.uk)
+;
+; ************************************************************************************************
+; ************************************************************************************************
+
+		.section code
+
+; ************************************************************************************************
+;
+;									Write byte A to output
+;
+; ************************************************************************************************
+
+WriteCodeByte:
+		pha 								; save on stack
+		phx
+		phy
+		jsr 	APIOWriteByte
+		ply 								; restore from stack
+		plx
+		pla
+		rts
+
+; ************************************************************************************************
+;
+;								Print character A to Screen/Error Stream
+;
+; ************************************************************************************************
+
+PrintCharacter
+		pha
+		phx
+		phy
+		jsr 	APIOPrintCharacter
+		ply
+		plx
+		pla
+		rts
+
+		.send 	code
+
+; ************************************************************************************************
+;
+;									Changes and Updates
+;
+; ************************************************************************************************
+;
+;		Date			Notes
+;		==== 			=====
+;
+; ************************************************************************************************
+
+; ************************************************************************************************
+; ************************************************************************************************
+;
 ;		Name:		buffer.asm
 ;		Purpose:	Buffer for inline data, strings etc.
 ;		Created:	16th April 2023
@@ -292,49 +351,6 @@ bufferSize:
 dataBuffer:
 		.fill 	256
 		.send storage
-
-; ************************************************************************************************
-;
-;									Changes and Updates
-;
-; ************************************************************************************************
-;
-;		Date			Notes
-;		==== 			=====
-;
-; ************************************************************************************************
-; ************************************************************************************************
-; ************************************************************************************************
-;
-;		Name:		byte.asm
-;		Purpose:	Wrapper for HWOWriteByte
-;		Created:	15th April 2023
-;		Reviewed: 	No
-;		Author:		Paul Robson (paul@robsons.org.uk)
-;
-; ************************************************************************************************
-; ************************************************************************************************
-
-		.section code
-
-; ************************************************************************************************
-;
-;									Write A with to output
-;
-; ************************************************************************************************
-
-WriteCodeByte:
-		pha 								; save on stack
-		phx
-		phy
-		jsr 	OUTPUTWriteByte
-		ply 								; restore from stack
-		plx
-		pla
-		rts
-
-		.send code
-
 
 ; ************************************************************************************************
 ;
@@ -421,11 +437,11 @@ checkCharacter:
 ;
 ; ************************************************************************************************
 
-OUTPUTClose:
+APIOClose:
 		lda 	#(PCodeStart >> 8)
 		ldx 	objPtr
 		ldy 	objPtr+1
-		jsr 	XSaveMemory
+		jsr 	APISaveMemory
 		rts
 
 		.send code
@@ -481,8 +497,8 @@ StartCompiler:
 		stx 	compilerSP
 
 		jsr 	STRReset 					; reset storage (line#, variable)
-		jsr 	INPUTOpen 					; reset data input
-		jsr 	OUTPUTOpen 					; reset data output.
+		jsr 	APIIOpen 					; reset data input
+		jsr 	APIOOpen 					; reset data output.
 		;
 		;		Compile _variable.space, filled in on pass 2.
 		;
@@ -531,7 +547,7 @@ _MCLCheckAssignment:
 		;		End of compile, fix up GOTO/GOSUB etc., save it and exit.
 		;
 SaveCodeAndExit:
-		jsr 	INPUTClose 					; finish input.
+		jsr 	APIIClose 					; finish input.
 		lda 	#$FF 						; fake line number $FFFF for forward THEN.
 		tay
 		jsr 	STRMarkLine
@@ -540,7 +556,7 @@ SaveCodeAndExit:
 		lda 	#$FF 						; add end marker
 		jsr 	WriteCodeByte
 		jsr 	FixBranches 				; fix up GOTO/GOSUB etc.
-		jsr 	OUTPUTClose
+		jsr 	APIOClose
 
 ExitCompiler:		
 		ldx 	compilerSP 					; reload SP and exit.
@@ -1069,14 +1085,14 @@ ErrorHandler:
 		ldy 	#1
 _EHDisplayMsg:
 		lda 	(zTemp0),y
-		jsr 	XPrintCharacter
+		jsr 	PrintCharacter
 		iny
 		lda 	(zTemp0),y
 		bne 	_EHDisplayMsg
 		lda 	#32
-		jsr 	XPrintCharacter
+		jsr 	PrintCharacter
 		lda 	#64
-		jsr 	XPrintCharacter
+		jsr 	PrintCharacter
 		;
 		ldx 	#0 							; convert line# to string
 		jsr 	FloatSetByte
@@ -1089,12 +1105,15 @@ _EHDisplayMsg:
 		ldx 	#0
 _EHDisplayLine:
 		lda 	decimalBuffer,y
-		jsr 	XPrintCharacter
+		jsr 	PrintCharacter
 		iny
 		lda 	decimalBuffer,y
 		bne 	_EHDisplayLine
 		lda 	#13
-		jsr 	XPrintCharacter
+		jsr 	PrintCharacter
+
+_EHHalt:bra 	_EHHalt
+		
 		jmp 	ExitCompiler
 						
 		.send code
@@ -1440,7 +1459,7 @@ _IVNotFound:
 ; ************************************************************************************************
 
 FixBranches:
-		jsr 	OUTPUTRewind 				; back to the start of the *object* code.
+		jsr 	APIORewind 					; back to the start of the *object* code.
 _FBLoop:
 		lda 	(objPtr) 					; get the next one.
 		cmp 	#PCD_CMD_GOTO 				; found GOTO or GOSUB, patch up.
@@ -1666,9 +1685,9 @@ _CFFail:
 ;
 ; ************************************************************************************************
 
-INPUTOpen:
+APIIOpen:
 		.set16 	srcInputPtr,EndProgram+2 	; the current read point.		
-INPUTClose:
+APIIClose:
 		rts
 		
 ; ************************************************************************************************
@@ -1677,7 +1696,7 @@ INPUTClose:
 ;
 ; ************************************************************************************************
 
-INPUTGet:
+APIIGet:
 		lda 	(srcInputPtr)
 		inc 	srcInputPtr
 		bne 	_IGSkip
@@ -3250,21 +3269,21 @@ _CLType:
 ; ************************************************************************************************
 
 ReadNextLine:
-		jsr 	INPUTGet 					; check offset is not zero.
+		jsr 	APIIGet 					; check offset is not zero.
 		sta 	zTemp0
-		jsr 	INPUTGet
+		jsr 	APIIGet
 		ora 	zTemp0
 		bne 	_RNLBody 
 		clc 		
 		rts						; end of file.
 _RNLBody:
-		jsr 	INPUTGet 					; read and save line number
+		jsr 	APIIGet 					; read and save line number
 		sta 	currentLineNumber
-		jsr 	INPUTGet
+		jsr 	APIIGet
 		sta 	currentLineNumber+1
 		ldx 	#0 							; read line into buffer
 _RNLRead:
-		jsr 	INPUTGet		
+		jsr 	APIIGet		
 		sta 	sourceBuffer,x
 		inx
 		cmp 	#0
@@ -3596,8 +3615,8 @@ _COComplete:
 ;
 ; ************************************************************************************************
 
-OUTPUTOpen:
-OUTPUTRewind:
+APIOOpen:
+APIORewind:
 		stz 	objPage
 		.set16 	objPtr,PCodeStart
 		rts
@@ -4351,7 +4370,7 @@ _CWThirdParameter:
 ;
 ; ************************************************************************************************
 
-OUTPUTWriteByte:
+APIOWriteByte:
 		sta 	(objPtr)
 		inc 	objPtr
 		bne 	_HWOWBNoCarry
@@ -4513,15 +4532,10 @@ _COType:
 ;
 ; ************************************************************************************************
 
-XPrintCharacter
-		pha
-		phx
-		phy
+APIOPrintCharacter
 		jsr 	$FFD2
-		ply
-		plx
-		pla
 		rts
+
 		.send code
 
 ; ************************************************************************************************
@@ -4554,7 +4568,7 @@ XPrintCharacter
 ;
 ; ************************************************************************************************
 
-XSaveMemory:
+APISaveMemory:
 		phx
 		phy
 		pha

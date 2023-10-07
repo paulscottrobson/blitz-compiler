@@ -19,21 +19,21 @@
 ; ************************************************************************************************
 
 ReadNextLine:
-		jsr 	INPUTGet 					; check offset is not zero.
+		jsr 	APIIGet 					; check offset is not zero.
 		sta 	zTemp0
-		jsr 	INPUTGet
+		jsr 	APIIGet
 		ora 	zTemp0
 		bne 	_RNLBody 
 		clc 		
 		rts						; end of file.
 _RNLBody:
-		jsr 	INPUTGet 					; read and save line number
+		jsr 	APIIGet 					; read and save line number
 		sta 	currentLineNumber
-		jsr 	INPUTGet
+		jsr 	APIIGet
 		sta 	currentLineNumber+1
 		ldx 	#0 							; read line into buffer
 _RNLRead:
-		jsr 	INPUTGet		
+		jsr 	APIIGet		
 		sta 	sourceBuffer,x
 		inx
 		cmp 	#0

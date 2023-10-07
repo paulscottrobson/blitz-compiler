@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		byte.asm
-;		Purpose:	Wrapper for HWOWriteByte
-;		Created:	15th April 2023
+;		Name:		api.asm
+;		Purpose:	Short version of common API functions
+;		Created:	7th October 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -14,7 +14,7 @@
 
 ; ************************************************************************************************
 ;
-;									Write A with to output
+;									Write byte A to output
 ;
 ; ************************************************************************************************
 
@@ -22,14 +22,29 @@ WriteCodeByte:
 		pha 								; save on stack
 		phx
 		phy
-		jsr 	OUTPUTWriteByte
+		jsr 	APIOWriteByte
 		ply 								; restore from stack
 		plx
 		pla
 		rts
 
-		.send code
+; ************************************************************************************************
+;
+;								Print character A to Screen/Error Stream
+;
+; ************************************************************************************************
 
+PrintCharacter
+		pha
+		phx
+		phy
+		jsr 	APIOPrintCharacter
+		ply
+		plx
+		pla
+		rts
+
+		.send 	code
 
 ; ************************************************************************************************
 ;
@@ -41,3 +56,4 @@ WriteCodeByte:
 ;		==== 			=====
 ;
 ; ************************************************************************************************
+

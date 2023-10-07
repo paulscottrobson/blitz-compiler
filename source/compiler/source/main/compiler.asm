@@ -39,8 +39,8 @@ StartCompiler:
 		stx 	compilerSP
 
 		jsr 	STRReset 					; reset storage (line#, variable)
-		jsr 	INPUTOpen 					; reset data input
-		jsr 	OUTPUTOpen 					; reset data output.
+		jsr 	APIIOpen 					; reset data input
+		jsr 	APIOOpen 					; reset data output.
 		;
 		;		Compile _variable.space, filled in on pass 2.
 		;
@@ -89,7 +89,7 @@ _MCLCheckAssignment:
 		;		End of compile, fix up GOTO/GOSUB etc., save it and exit.
 		;
 SaveCodeAndExit:
-		jsr 	INPUTClose 					; finish input.
+		jsr 	APIIClose 					; finish input.
 		lda 	#$FF 						; fake line number $FFFF for forward THEN.
 		tay
 		jsr 	STRMarkLine
@@ -98,7 +98,7 @@ SaveCodeAndExit:
 		lda 	#$FF 						; add end marker
 		jsr 	WriteCodeByte
 		jsr 	FixBranches 				; fix up GOTO/GOSUB etc.
-		jsr 	OUTPUTClose
+		jsr 	APIOClose
 
 ExitCompiler:		
 		ldx 	compilerSP 					; reload SP and exit.

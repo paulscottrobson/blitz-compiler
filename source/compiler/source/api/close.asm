@@ -18,11 +18,11 @@
 ;
 ; ************************************************************************************************
 
-OUTPUTClose:
+APIOClose:
 		lda 	#(PCodeStart >> 8)
 		ldx 	objPtr
 		ldy 	objPtr+1
-		jsr 	XSaveMemory
+		jsr 	APISaveMemory
 		rts
 
 		.send code
