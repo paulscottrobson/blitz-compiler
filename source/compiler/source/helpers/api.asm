@@ -33,7 +33,9 @@ WriteCodeByte:
 		pha 								; save on stack
 		phx
 		phy
-		jsr 	APIOWriteByte
+		tax
+		lda 	#BLC_WRITEOUT
+		jsr 	CallAPIHandler
 		ply 								; restore from stack
 		plx
 		pla

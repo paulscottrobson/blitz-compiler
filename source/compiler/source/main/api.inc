@@ -39,11 +39,11 @@ BLC_RESETOUT = 3
 ;
 BLC_CLOSEOUT = 4
 ;
-;		Write a byte A at the object pointer and bump that address.
+;		Write a byte X at the object pointer and bump that address.
 ;
 BLC_WRITEOUT = 5
 ;
-;		Print character A to display / stream for errors & information
+;		Print character X to display / stream for errors & information
 ;
 BLC_PRINTCHAR = 6
 

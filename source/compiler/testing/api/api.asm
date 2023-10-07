@@ -29,6 +29,8 @@ TestAPI:
 		beq 	_TARead
 		cmp 	#BLC_RESETOUT
 		beq 	_TAResetOut
+		cmp 	#BLC_WRITEOUT
+		beq 	_TAWriteByte
 		.debug
 
 _TAOpenIn:		
@@ -42,6 +44,16 @@ _TAResetOut:
 		.set16 	objPtr,PCodeMemory
 		rts
 
+_TAWriteByte:
+APIOWriteByte:		
+		txa
+		sta 	(objPtr)
+		inc 	objPtr
+		bne 	_HWOWBNoCarry
+		inc 	objPtr+1
+_HWOWBNoCarry:		
+		rts
+		
 		.send code
 
 		.section zeropage
