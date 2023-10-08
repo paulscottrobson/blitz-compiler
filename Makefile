@@ -23,7 +23,7 @@ endif
 #
 REVISION = r43
 
-all: latest libs
+all: libs
 
 #
 #		Build the library version of the components. 

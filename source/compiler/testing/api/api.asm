@@ -45,6 +45,8 @@ _TARead:
 		jmp 	ReadNextLine
 
 _TAResetOut:
+		lda 	#1
+		sta 	0
 		.set16 	objPtr,PCodeMemory
 		rts
 

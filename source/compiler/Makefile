@@ -20,21 +20,23 @@ all: build
 
 BASICSRC = build$(S)x16font.bas
 
-prelim: 
+prelim: tokenise
 	make -C ../common-source
 	$(PYTHON) scripts$(S)genx16.py
 	$(PYTHON) scripts$(S)gencom.py 
-	$(PYTHON) $(BINDIR)tokenise.zip $(BASICSRC) testing$(S)code$(S)tokenised.dat
 	$(PYTHON) $(CSCRIPTS)build.py
 	$(CCOPY) _library.asm $(BINDIR)compiler.library
 	$(CCOPY)  scripts$(S)pcodeconstraw.py $(CSCRIPTS)
+
+tokenise:
+	$(PYTHON) $(BINDIR)tokenise.zip $(BASICSRC) testing$(S)code$(S)tokenised.dat
 
 build: prelim
 	$(ASM) testing$(S)testing.asm $(BINDIR)compiler.library $(BINDIR)common.library $(BINDIR)ifloat32.library testing$(S)testend.asm
 
 run: build
 	$(CDEL) CODE.BIN
-	$(EXECUTE) 
+	$(QEXECUTE) 
 	$(CCOPY) CODE.BIN ..$(S)runtime$(S)testing$(S)code$(S)code.bin
 	$(PYTHON) $(CSCRIPTS)compileinfo.py >testing$(S)code$(S)program.data
 
@@ -47,4 +49,5 @@ check: run
 show:
 	$(PYTHON) $(CSCRIPTS)pdis.py CODE.BIN
 
-
+direct: tokenise
+	$(CDEL) dump*.bin ; $(EMULATOR) -prg testing$(S)code$(S)tokenised.dat -run
