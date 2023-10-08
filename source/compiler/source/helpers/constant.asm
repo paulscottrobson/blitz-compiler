@@ -47,7 +47,7 @@ _PIWriteA:
 ;
 ; ************************************************************************************************
 
-PushFloat:
+PushFloatCommand:
 		lda 	#PCD_CMD_FLOAT 				; write CMD_FLOAT
 		jsr 	WriteCodeByte
 		lda 	NSExponent,x 				; and the data

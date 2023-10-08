@@ -688,7 +688,7 @@ _PIWriteA:
 ;
 ; ************************************************************************************************
 
-PushFloat:
+PushFloatCommand:
 		lda 	#PCD_CMD_FLOAT 				; write CMD_FLOAT
 		jsr 	WriteCodeByte
 		lda 	NSExponent,x 				; and the data
@@ -4100,7 +4100,7 @@ _CTDigit:
 		lda 	#NSSIFloat					; return a iFloat32 integer
 		rts
 _CTFloat:
-		jsr 	PushFloat  					; code to push float
+		jsr 	PushFloatCommand			; code to push float
 		lda 	#NSSIFloat 					; return a iFloat32
 		rts		
 		;

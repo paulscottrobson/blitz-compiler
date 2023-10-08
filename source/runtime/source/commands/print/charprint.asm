@@ -18,7 +18,7 @@
 ;
 ; ************************************************************************************************
 
-PrintCharacter: ;; [print.chr]
+PrintCharacterX: ;; [print.chr]
 		.entercmd
 		lda 	NSMantissa0,x 	
 		dex

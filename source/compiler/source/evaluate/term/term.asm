@@ -90,7 +90,7 @@ _CTDigit:
 		lda 	#NSSIFloat					; return a iFloat32 integer
 		rts
 _CTFloat:
-		jsr 	PushFloat  					; code to push float
+		jsr 	PushFloatCommand			; code to push float
 		lda 	#NSSIFloat 					; return a iFloat32
 		rts		
 		;

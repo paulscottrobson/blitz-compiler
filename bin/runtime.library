@@ -1244,7 +1244,7 @@ _UBWLoop:
 ;
 ; ************************************************************************************************
 
-PrintCharacter: ;; [print.chr]
+PrintCharacterX: ;; [print.chr]
 		.entercmd
 		lda 	NSMantissa0,x 	
 		dex
@@ -6019,7 +6019,7 @@ VectorTable:
 	.word	UnaryAsc                 ; $8f asc
 	.word	CommandAssert            ; $90 assert
 	.word	Unary16Bin               ; $91 bin$
-	.word	PrintCharacter           ; $92 print.chr
+	.word	PrintCharacterX          ; $92 print.chr
 	.word	UnaryChr                 ; $93 chr$
 	.word	CompareStrings           ; $94 s.cmp
 	.word	CommandXFor              ; $95 for
