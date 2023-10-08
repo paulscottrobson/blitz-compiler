@@ -21,6 +21,10 @@
 StartCompiler:
 		stx 	zTemp0 						; access API
 		sty 	zTemp0+1
+
+		ldy 	#CompilerErrorHandler >> 8 	; set error handler to compiler one.
+		ldx 	#CompilerErrorHandler & $FF
+		jsr 	SetErrorHandler
 		;
 		ldy 	#1 							; copy API vector		
 		lda 	(zTemp0)	

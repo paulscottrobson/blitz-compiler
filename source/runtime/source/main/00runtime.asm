@@ -34,6 +34,10 @@ StartRuntime:
 		sty 	storeEndHigh
 		stx 	variableStartPage
 
+		ldy 	#RuntimeErrorHandler >> 8 	; set error handler to runtime one.
+		ldx 	#RuntimeErrorHandler & $FF
+		jsr 	SetErrorHandler
+
 		jsr 	ClearMemory 				; clear memory.
 		jsr 	XRuntimeSetup 				; initialise the runtime stuff.
 	 	jsr		SetDefaultChannel			; set default input/output channel.

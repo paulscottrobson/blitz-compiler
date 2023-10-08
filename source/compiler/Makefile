@@ -18,7 +18,7 @@ endif
 
 all: build
 
-BASICSRC = build$(S)x16font.bas
+BASICSRC = build$(S)balls.bas
 
 prelim: tokenise
 	make -C ../common-source
@@ -36,7 +36,7 @@ build: prelim
 
 run: build
 	$(CDEL) CODE.BIN
-	$(QEXECUTE) 
+	$(EXECUTE) 
 	$(CCOPY) CODE.BIN ..$(S)runtime$(S)testing$(S)code$(S)code.bin
 	$(PYTHON) $(CSCRIPTS)compileinfo.py >testing$(S)code$(S)program.data
 

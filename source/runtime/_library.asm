@@ -520,6 +520,10 @@ StartRuntime:
 		sty 	storeEndHigh
 		stx 	variableStartPage
 
+		ldy 	#RuntimeErrorHandler >> 8 	; set error handler to runtime one.
+		ldx 	#RuntimeErrorHandler & $FF
+		jsr 	SetErrorHandler
+
 		jsr 	ClearMemory 				; clear memory.
 		jsr 	XRuntimeSetup 				; initialise the runtime stuff.
 	 	jsr		SetDefaultChannel			; set default input/output channel.
@@ -1910,7 +1914,7 @@ CommandEnd: ;; [!end]
 Unimplemented:
 		jmp 	ErrorV_unimplemented
 		
-ErrorHandler:
+RuntimeErrorHandler:
 		tya
 		clc
 		adc 	codePtr
@@ -1940,7 +1944,7 @@ _EHDisplayMsg:
 _EHStop:bra 	_EHStop
 
 EHDisplayCodePtr:
-		lda 	#32
+		lda 	#'$'
 		jsr 	XPrintCharacterToChannel
 		sec
 		lda 	codePtr+1 					; display the p-code address of the error.

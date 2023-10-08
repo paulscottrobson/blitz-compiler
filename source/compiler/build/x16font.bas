@@ -1,7 +1,7 @@
 1     CR=1
 2     CC=1
 3     FR=1
-4     FC=1
+4     FC=1:stop
 5     K1=$60
 6     RZ=CR
 7     CZ=CC

@@ -15,7 +15,7 @@
 Unimplemented:
 		jmp 	ErrorV_unimplemented
 		
-ErrorHandler:
+RuntimeErrorHandler:
 		tya
 		clc
 		adc 	codePtr
@@ -45,7 +45,7 @@ _EHDisplayMsg:
 _EHStop:bra 	_EHStop
 
 EHDisplayCodePtr:
-		lda 	#32
+		lda 	#'$'
 		jsr 	XPrintCharacterToChannel
 		sec
 		lda 	codePtr+1 					; display the p-code address of the error.
