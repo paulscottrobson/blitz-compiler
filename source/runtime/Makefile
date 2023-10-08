@@ -27,6 +27,10 @@ prelim:
 build: prelim
 	$(ASM) testing$(S)testing.asm $(BINDIR)runtime.library $(BINDIR)common.library $(BINDIR)ifloat32.library  $(BINDIR)polynomials.library testing$(S)testend.asm
 
+checkall: prelim
+	$(ASM) testing$(S)testing.asm $(BINDIR)common.library $(BINDIR)ifloat32.library $(BINDIR)polynomials.library \
+													$(BINDIR)compiler.library $(BINDIR)runtime.library testing$(S)testend.asm
+
 run: build
 	$(EXECUTE) 
 	
