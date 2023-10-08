@@ -18,7 +18,7 @@
 ;
 ; ************************************************************************************************
 
-CommandRead: ;; [read]
+CommandXRead: ;; [read]
 		.entercmd
 		phy 								; save Y
 		jsr 	ReadStringToBuffer 			; read element into buffer

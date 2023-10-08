@@ -18,7 +18,7 @@
 ;
 ; ************************************************************************************************
 
-CommandWAIT: ;; [!wait]
+CommandXWAIT: ;; [!wait]
 		.entercmd
 		lda 	NSMantissa0-2,x 			; get wait address
 		sta 	zTemp0

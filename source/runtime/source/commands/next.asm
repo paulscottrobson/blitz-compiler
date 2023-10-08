@@ -18,7 +18,7 @@
 ;
 ; ************************************************************************************************
 
-CommandNext: ;; [next]
+CommandXNext: ;; [next]
 		.entercmd
 _CNRetry:		
 		lda 	#FRAME_FOR 					; find the FOR 

@@ -1590,7 +1590,7 @@ _SCNoMinimum:
 ;
 ; ************************************************************************************************
 
-CommandData: ;; [.data]
+CommandXData: ;; [.data]
 		.entercmd
 		tya 								; data length +1 added to Y
 		sec 								
@@ -1630,7 +1630,7 @@ CommandData: ;; [.data]
 ;
 ; ************************************************************************************************
 
-CommandDIM: ;; [!dim]
+CommandXDIM: ;; [!dim]
 		.entercmd
 		phy
 		jsr 	GetInteger8Bit 				; get the type we are building for (bits 6 & 5)
@@ -1999,7 +1999,7 @@ _EHNotHex:
 ;
 ; ************************************************************************************************
 
-CommandFor: ;; [for]
+CommandXFor: ;; [for]
 		.entercmd
 		lda 	#FRAME_FOR 					; open frame
 		jsr 	StackOpenFrame 			
@@ -2287,7 +2287,7 @@ UnaryFre:	;; [fre]
 
 		.section code
 
-CommandGet: ;; [get]
+CommandXGet: ;; [get]
 		.entercmd
 		inx
 		lda 	#1 							; 1 character space
@@ -2338,7 +2338,7 @@ _CGNone:
 ;
 ; ************************************************************************************************
 
-CommandGosub: ;; [.gosub]
+CommandXGosub: ;; [.gosub]
 		.entercmd
 		lda 	#FRAME_GOSUB
 		jsr 	StackOpenFrame
@@ -2390,7 +2390,7 @@ CommandReturn: ;; [return]
 ;
 ; ************************************************************************************************
 
-CommandGoto: ;; [.goto]
+CommandXGoto: ;; [.goto]
 		.entercmd
 		;
 		;		Come here to actually do the GOTO.
@@ -2827,7 +2827,7 @@ IndStringWrite:
 ;
 ; ************************************************************************************************
 
-CommandInput: ;; [input]
+CommandXInput: ;; [input]
 		.entercmd
 		phy 								; save Y
 		inx									; space on stack
@@ -3531,7 +3531,7 @@ CommandNewLine: ;; [new.line]
 ;
 ; ************************************************************************************************
 
-CommandNext: ;; [next]
+CommandXNext: ;; [next]
 		.entercmd
 _CNRetry:		
 		lda 	#FRAME_FOR 					; find the FOR 
@@ -3795,7 +3795,7 @@ _NotTOSSkip:
 ;		<get a> ON GOSUB100 MOREON GOSUB200 MOREON GOSUB300
 ;
 
-CommandOn: ;; [on]
+CommandXOn: ;; [on]
 		.entercmd
 		jsr 	GetInteger8Bit 				; get the integer part, the ON x GOTO bit
 		sta 	onCount 					; save it.
@@ -4293,7 +4293,7 @@ CommandPushS: ;; [.string]
 ;
 ; ************************************************************************************************
 
-CommandRead: ;; [read]
+CommandXRead: ;; [read]
 		.entercmd
 		phy 								; save Y
 		jsr 	ReadStringToBuffer 			; read element into buffer
@@ -6022,9 +6022,9 @@ VectorTable:
 	.word	PrintCharacter           ; $92 print.chr
 	.word	UnaryChr                 ; $93 chr$
 	.word	CompareStrings           ; $94 s.cmp
-	.word	CommandFor               ; $95 for
+	.word	CommandXFor              ; $95 for
 	.word	UnaryFre                 ; $96 fre
-	.word	CommandGet               ; $97 get
+	.word	CommandXGet              ; $97 get
 	.word	CommandReturn            ; $98 return
 	.word	Command_PSET             ; $99 pset
 	.word	Command_LINE             ; $9a line
@@ -6032,7 +6032,7 @@ VectorTable:
 	.word	Command_FRAME            ; $9c frame
 	.word	Command_CHAR             ; $9d char
 	.word	Unary16Hex               ; $9e hex$
-	.word	CommandInput             ; $9f input
+	.word	CommandXInput            ; $9f input
 	.word	CommandInputString       ; $a0 input$
 	.word	CommandInputReset        ; $a1 input.start
 	.word	UnaryLen                 ; $a2 len
@@ -6040,9 +6040,9 @@ VectorTable:
 	.word	LinkDivideInt32          ; $a4 int.div
 	.word	NegateTOS                ; $a5 negate
 	.word	CommandNewLine           ; $a6 new.line
-	.word	CommandNext              ; $a7 next
+	.word	CommandXNext             ; $a7 next
 	.word	NotTOS                   ; $a8 not
-	.word	CommandOn                ; $a9 on
+	.word	CommandXOn               ; $a9 on
 	.word	CommandMoreOn            ; $aa moreon
 	.word	UnaryPeek                ; $ab peek
 	.word	CommandPOKE              ; $ac poke
@@ -6051,7 +6051,7 @@ VectorTable:
 	.word	SetChannel               ; $af setchannel
 	.word	PrintNumber              ; $b0 print.n
 	.word	PrintString              ; $b1 print.s
-	.word	CommandRead              ; $b2 read
+	.word	CommandXRead             ; $b2 read
 	.word	CommandReadString        ; $b3 read$
 	.word	UnaryRND                 ; $b4 rnd
 	.word	StringConcatenate        ; $b5 concat
@@ -6071,7 +6071,7 @@ VectorTable:
 	.word	CommandClose             ; $c3 close
 	.word	CommandExit              ; $c4 exit
 	.word	CommandDebug             ; $c5 debug
-	.word	CommandOpen              ; $c6 open
+	.word	CommandXOpen             ; $c6 open
 	.word	CommandScreen            ; $c7 screen
 	.word	CommandVPOKE             ; $c8 vpoke
 	.word	CommandVPEEK             ; $c9 vpeek
@@ -6080,9 +6080,9 @@ VectorTable:
 	.word	PushWordCommand          ; $cc .word
 	.word	CommandPushN             ; $cd .float
 	.word	CommandPushS             ; $ce .string
-	.word	CommandData              ; $cf .data
-	.word	CommandGoto              ; $d0 .goto
-	.word	CommandGosub             ; $d1 .gosub
+	.word	CommandXData             ; $cf .data
+	.word	CommandXGoto             ; $d0 .goto
+	.word	CommandXGosub            ; $d1 .gosub
 	.word	CommandGotoZ             ; $d2 .goto.z
 	.word	CommandGotoNZ            ; $d3 .goto.nz
 	.word	CommandVarSpace          ; $d4 .varspace
@@ -6090,7 +6090,7 @@ VectorTable:
 
 ShiftVectorTable:
 	.word	CommandClr               ; $ca80 clr
-	.word	CommandDIM               ; $ca81 dim
+	.word	CommandXDIM              ; $ca81 dim
 	.word	CommandEnd               ; $ca82 end
 	.word	UnaryJoy                 ; $ca83 joy
 	.word	LinkFloatIntegerPartDown ; $ca84 int
@@ -6109,7 +6109,7 @@ ShiftVectorTable:
 	.word	CommandStop              ; $ca91 stop
 	.word	CommandSYS               ; $ca92 sys
 	.word	CommandTIWrite           ; $ca93 ti$.write
-	.word	CommandWAIT              ; $ca94 wait
+	.word	CommandXWAIT             ; $ca94 wait
 	.word	X16I2CPoke               ; $ca95 i2cpoke
 	.word	X16I2CPeek               ; $ca96 i2cpeek
 	.word	CommandBank              ; $ca97 bank
@@ -6157,7 +6157,7 @@ ShiftVectorTable:
 ;
 ; ************************************************************************************************
 
-CommandWAIT: ;; [!wait]
+CommandXWAIT: ;; [!wait]
 		.entercmd
 		lda 	NSMantissa0-2,x 			; get wait address
 		sta 	zTemp0
@@ -6707,7 +6707,7 @@ X16I2CPeek: ;; [!I2CPEEK]
 ;
 ; ************************************************************************************************
 
-CommandOpen: ;; [open]
+CommandXOpen: ;; [open]
 		.entercmd
 		;
 		;		Set up the file name

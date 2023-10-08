@@ -18,7 +18,7 @@
 ;
 ; ************************************************************************************************
 
-CommandGosub: ;; [.gosub]
+CommandXGosub: ;; [.gosub]
 		.entercmd
 		lda 	#FRAME_GOSUB
 		jsr 	StackOpenFrame

@@ -18,7 +18,7 @@
 ;
 ; ************************************************************************************************
 
-CommandData: ;; [.data]
+CommandXData: ;; [.data]
 		.entercmd
 		tya 								; data length +1 added to Y
 		sec 								

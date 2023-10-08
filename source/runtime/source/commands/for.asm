@@ -18,7 +18,7 @@
 ;
 ; ************************************************************************************************
 
-CommandFor: ;; [for]
+CommandXFor: ;; [for]
 		.entercmd
 		lda 	#FRAME_FOR 					; open frame
 		jsr 	StackOpenFrame 			

@@ -18,7 +18,7 @@
 ;
 ; ************************************************************************************************
 
-CommandOpen: ;; [open]
+CommandXOpen: ;; [open]
 		.entercmd
 		;
 		;		Set up the file name

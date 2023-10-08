@@ -18,7 +18,7 @@
 
 		.section code
 
-CommandGet: ;; [get]
+CommandXGet: ;; [get]
 		.entercmd
 		inx
 		lda 	#1 							; 1 character space

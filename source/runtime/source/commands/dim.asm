@@ -18,7 +18,7 @@
 ;
 ; ************************************************************************************************
 
-CommandDIM: ;; [!dim]
+CommandXDIM: ;; [!dim]
 		.entercmd
 		phy
 		jsr 	GetInteger8Bit 				; get the type we are building for (bits 6 & 5)

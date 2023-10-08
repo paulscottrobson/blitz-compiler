@@ -19,7 +19,7 @@
 ;
 ; ************************************************************************************************
 
-CommandGoto: ;; [.goto]
+CommandXGoto: ;; [.goto]
 		.entercmd
 		;
 		;		Come here to actually do the GOTO.

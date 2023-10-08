@@ -18,7 +18,7 @@
 ;
 ; ************************************************************************************************
 
-CommandInput: ;; [input]
+CommandXInput: ;; [input]
 		.entercmd
 		phy 								; save Y
 		inx									; space on stack

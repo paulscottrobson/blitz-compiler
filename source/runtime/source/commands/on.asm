@@ -23,7 +23,7 @@
 ;		<get a> ON GOSUB100 MOREON GOSUB200 MOREON GOSUB300
 ;
 
-CommandOn: ;; [on]
+CommandXOn: ;; [on]
 		.entercmd
 		jsr 	GetInteger8Bit 				; get the integer part, the ON x GOTO bit
 		sta 	onCount 					; save it.
