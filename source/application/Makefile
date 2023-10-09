@@ -43,7 +43,7 @@ build: prelim
 release: build
 	$(CDEL) OBJECT.PRG
 	$(CCOPY) *.PRG $(RELEASEDIR)
-	$(CCOPY) build$(S)test.bas $(RELEASEDIR)
+	$(CCOPY) build$(S)*.bas $(RELEASEDIR)
 	$(CCOPY) $(BINDIR)tokenise.zip $(RELEASEDIR)
 	cd $(RELEASEDIR) ; $(CDEL) blitz.zip ; zip -q blitz.zip *
 	

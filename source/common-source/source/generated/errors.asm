@@ -53,4 +53,7 @@ ErrorV_memory:
 ErrorV_channel:
 	jsr	CallErrorHandler
 	.text	"INPUT/OUTPUT ERROR",0
+ErrorV_break:
+	jsr	CallErrorHandler
+	.text	"BREAK PRESSED",0
 	.send code

@@ -29,6 +29,7 @@ errors = """
 	index 		  : bad array index
 	memory 		  : out of memory
 	channel 	  : input/output error
+	break 		  : break pressed
 	
 """.strip().split("\n")
 

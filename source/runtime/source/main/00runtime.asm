@@ -51,6 +51,17 @@ StartRuntime:
 		;
 		ldy 	#0	
 NextCommand:
+		lda  	breakCount 					; only check every 16 instructions.
+		adc 	#16
+		sta 	breakCount
+		bcc 	_NXNoCheck
+		phx
+		phy 								; check Ctrl+C
+		jsr 	XCheckStop
+		ply
+		plx
+_NXNoCheck:
+
 		lda 	(codePtr),y 				; get next
 		bmi 	NXCommand 					; -if -ve command
 		iny
@@ -179,6 +190,8 @@ variableStartPage: 							; variable start high
 Runtime6502SP: 								; 6502 stack on start.
 		.fill 	1		
 		
+breakCount: 								; counter so don't check break every instruction.
+		.fill 	1		
 		.send storage
 
 ; ************************************************************************************************

@@ -52,3 +52,6 @@ error_memory .macro
 error_channel .macro
 	jmp	ErrorV_channel
 	.endm
+error_break .macro
+	jmp	ErrorV_break
+	.endm

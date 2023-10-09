@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.59.3120 listing file
 ; 64tass -q -c -Wall -o build/code.prg -L build/code.lst -l build/code.lbl testing/testing.asm /home/paulr/Projects/blitz-compiler/documents/../bin/compiler.library /home/paulr/Projects/blitz-compiler/documents/../bin/common.library /home/paulr/Projects/blitz-compiler/documents/../bin/ifloat32.library testing/testend.asm
-; Mon Oct  9 14:14:57 2023
+; Mon Oct  9 19:42:52 2023
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -41,7 +41,7 @@
 .082b	f0 2e		beq $085b			beq 	_TAPrintScreen
 >082d	db						.byte 	$DB 						; causes a break in the emulator
 .082e					_TAOpenIn:
-.082e	a9 d2		lda #$d2			lda 	#((EndProgram+2) & $FF)
+.082e	a9 e3		lda #$e3			lda 	#((EndProgram+2) & $FF)
 .0830	85 22		sta $22				sta 	0+srcInputPtr
 .0832	a9 1e		lda #$1e			lda 	#((EndProgram+2) >> 8) & $FF
 .0834	85 23		sta $23				sta 	1+srcInputPtr
@@ -624,12 +624,12 @@
 .0be8	a9 40		lda #$40			lda 	#64
 .0bea	20 0d 09	jsr $090d			jsr 	PrintCharacter
 .0bed	a2 00		ldx #$00			ldx 	#0 							; convert line# to string
-.0bef	20 a7 1e	jsr $1ea7			jsr 	FloatSetByte
+.0bef	20 b8 1e	jsr $1eb8			jsr 	FloatSetByte
 .0bf2	20 f9 08	jsr $08f9			jsr 	GetLineNumber
 .0bf5	95 3c		sta $3c,x			sta 	NSMantissa0,x
 .0bf7	98		tya				tya
 .0bf8	95 48		sta $48,x			sta 	NSMantissa1,x
-.0bfa	20 8d 1d	jsr $1d8d			jsr 	FloatToString
+.0bfa	20 9e 1d	jsr $1d9e			jsr 	FloatToString
 .0bfd	a0 00		ldy #$00			ldy 	#0 							; display that string.
 .0bff	a2 00		ldx #$00			ldx 	#0
 .0c01					_EHDisplayLine:
@@ -840,7 +840,7 @@
 .0d43	c9 d4		cmp #$d4			cmp 	#PCD_CMD_VARSPACE
 .0d45	f0 3b		beq $0d82			beq 	_FBFixVarSpace
 .0d47					_FBNext:
-.0d47	20 74 18	jsr $1874			jsr 	MoveObjectForward 			; move forward in object code.
+.0d47	20 85 18	jsr $1885			jsr 	MoveObjectForward 			; move forward in object code.
 .0d4a	90 e5		bcc $0d31			bcc 	_FBLoop 					; not finished
 .0d4c					_FBExit:
 .0d4c	60		rts				rts
@@ -1662,10 +1662,10 @@
 .14be	60		rts				rts
 .14bf					ParseConstant:
 .14bf	a2 00		ldx #$00			ldx 	#0
-.14c1	20 85 1c	jsr $1c85			jsr 	FloatEncodeStart 			; send first
+.14c1	20 96 1c	jsr $1c96			jsr 	FloatEncodeStart 			; send first
 .14c4					_ParseLoop:
 .14c4	20 5a 12	jsr $125a			jsr 	LookNext 					; send subsequent
-.14c7	20 88 1c	jsr $1c88			jsr 	FloatEncodeContinue
+.14c7	20 99 1c	jsr $1c99			jsr 	FloatEncodeContinue
 .14ca	90 05		bcc $14d1			bcc 	_ParseDone
 .14cc	20 6b 12	jsr $126b			jsr 	GetNext 					; consume it
 .14cf	80 f3		bra $14c4			bra 	_ParseLoop
@@ -2398,64 +2398,68 @@
 .185e	20 3f 17	jsr $173f		jsr	CallErrorHandler
 >1861	49 4e 50 55 54 2f 4f 55			.text	"INPUT/OUTPUT ERROR",0
 >1869	54 50 55 54 20 45 52 52 4f 52 00
-.1874					MoveObjectForward:
-.1874	b2 28		lda ($28)			lda 	(objPtr) 					; get next
-.1876	c9 ff		cmp #$ff			cmp 	#$FF
-.1878	f0 36		beq $18b0			beq 	_MOFEnd
-.187a	c9 40		cmp #$40			cmp 	#$40 						; 00-3F
-.187c	90 24		bcc $18a2			bcc 	_MOFAdvance1 				; forward 1
-.187e	a0 02		ldy #$02			ldy 	#2 							; 40-6F
-.1880	c9 70		cmp #$70			cmp 	#$70 						; forward 2
-.1882	90 20		bcc $18a4			bcc 	_MOFAdvanceY
-.1884	c9 ca		cmp #$ca			cmp 	#PCD_STARTSYSTEM 			; 70 - System tokens.
-.1886	90 1a		bcc $18a2			bcc 	_MOFAdvance1 				; forward 1
-.1888	a8		tay				tay 								; read the size.
-.1889	b9 ee 17	lda $17ee,y			lda 	MOFSizeTable-PCD_STARTSYSTEM,y
-.188c	a8		tay				tay
-.188d	c8		iny				iny 								; add 1 for the system token.
-.188e	d0 14		bne $18a4			bne 	_MOFAdvanceY 				; if 0, was $FF thus a string/data skip.
-.1890	a0 01		ldy #$01			ldy 	#1 							; get length byte
-.1892	b1 28		lda ($28),y			lda 	(objPtr),y
-.1894	a8		tay				tay 								; into Y.
-.1895	18		clc				clc
-.1896	a5 28		lda $28				lda 	objPtr						; add 2 to the object pointer
-.1898	69 02		adc #$02			adc 	#2
-.189a	85 28		sta $28				sta 	objPtr
-.189c	90 02		bcc $18a0			bcc 	_MOFNoCarry1
-.189e	e6 29		inc $29				inc 	objPtr+1
-.18a0					_MOFNoCarry1:
-.18a0	80 02		bra $18a4			bra 	_MOFAdvanceY
-.18a2					_MOFAdvance1:
-.18a2	a0 01		ldy #$01			ldy 	#1
-.18a4					_MOFAdvanceY:
-.18a4	98		tya				tya 								; add Y to objPtr
-.18a5	18		clc				clc
-.18a6	65 28		adc $28				adc 	objPtr
-.18a8	85 28		sta $28				sta 	objPtr
-.18aa	90 02		bcc $18ae			bcc 	_MOFNoCarry2
-.18ac	e6 29		inc $29				inc 	objPtr+1
-.18ae					_MOFNoCarry2:
-.18ae	18		clc				clc 								; not completed.
-.18af	60		rts				rts
-.18b0					_MOFEnd:
-.18b0	e6 28		inc $28				inc 	objPtr
-.18b2	d0 02		bne $18b6			bne 	_MOFENoCarry
-.18b4	e6 29		inc $29				inc 	objPtr+1
-.18b6					_MOFENoCarry:
-.18b6	38		sec				sec
-.18b7	60		rts				rts
-.18b8					MOFSizeTable:
->18b8	01					.byte	1         	; $ca .shift
->18b9	01					.byte	1         	; $cb .byte
->18ba	02					.byte	2         	; $cc .word
->18bb	05					.byte	5         	; $cd .float
->18bc	ff					.byte	255       	; $ce .string
->18bd	ff					.byte	255       	; $cf .data
->18be	02					.byte	2         	; $d0 .goto
->18bf	02					.byte	2         	; $d1 .gosub
->18c0	02					.byte	2         	; $d2 .goto.z
->18c1	02					.byte	2         	; $d3 .goto.nz
->18c2	02					.byte	2         	; $d4 .varspace
+.1874					ErrorV_break:
+.1874	20 3f 17	jsr $173f		jsr	CallErrorHandler
+>1877	42 52 45 41 4b 20 50 52			.text	"BREAK PRESSED",0
+>187f	45 53 53 45 44 00
+.1885					MoveObjectForward:
+.1885	b2 28		lda ($28)			lda 	(objPtr) 					; get next
+.1887	c9 ff		cmp #$ff			cmp 	#$FF
+.1889	f0 36		beq $18c1			beq 	_MOFEnd
+.188b	c9 40		cmp #$40			cmp 	#$40 						; 00-3F
+.188d	90 24		bcc $18b3			bcc 	_MOFAdvance1 				; forward 1
+.188f	a0 02		ldy #$02			ldy 	#2 							; 40-6F
+.1891	c9 70		cmp #$70			cmp 	#$70 						; forward 2
+.1893	90 20		bcc $18b5			bcc 	_MOFAdvanceY
+.1895	c9 ca		cmp #$ca			cmp 	#PCD_STARTSYSTEM 			; 70 - System tokens.
+.1897	90 1a		bcc $18b3			bcc 	_MOFAdvance1 				; forward 1
+.1899	a8		tay				tay 								; read the size.
+.189a	b9 ff 17	lda $17ff,y			lda 	MOFSizeTable-PCD_STARTSYSTEM,y
+.189d	a8		tay				tay
+.189e	c8		iny				iny 								; add 1 for the system token.
+.189f	d0 14		bne $18b5			bne 	_MOFAdvanceY 				; if 0, was $FF thus a string/data skip.
+.18a1	a0 01		ldy #$01			ldy 	#1 							; get length byte
+.18a3	b1 28		lda ($28),y			lda 	(objPtr),y
+.18a5	a8		tay				tay 								; into Y.
+.18a6	18		clc				clc
+.18a7	a5 28		lda $28				lda 	objPtr						; add 2 to the object pointer
+.18a9	69 02		adc #$02			adc 	#2
+.18ab	85 28		sta $28				sta 	objPtr
+.18ad	90 02		bcc $18b1			bcc 	_MOFNoCarry1
+.18af	e6 29		inc $29				inc 	objPtr+1
+.18b1					_MOFNoCarry1:
+.18b1	80 02		bra $18b5			bra 	_MOFAdvanceY
+.18b3					_MOFAdvance1:
+.18b3	a0 01		ldy #$01			ldy 	#1
+.18b5					_MOFAdvanceY:
+.18b5	98		tya				tya 								; add Y to objPtr
+.18b6	18		clc				clc
+.18b7	65 28		adc $28				adc 	objPtr
+.18b9	85 28		sta $28				sta 	objPtr
+.18bb	90 02		bcc $18bf			bcc 	_MOFNoCarry2
+.18bd	e6 29		inc $29				inc 	objPtr+1
+.18bf					_MOFNoCarry2:
+.18bf	18		clc				clc 								; not completed.
+.18c0	60		rts				rts
+.18c1					_MOFEnd:
+.18c1	e6 28		inc $28				inc 	objPtr
+.18c3	d0 02		bne $18c7			bne 	_MOFENoCarry
+.18c5	e6 29		inc $29				inc 	objPtr+1
+.18c7					_MOFENoCarry:
+.18c7	38		sec				sec
+.18c8	60		rts				rts
+.18c9					MOFSizeTable:
+>18c9	01					.byte	1         	; $ca .shift
+>18ca	01					.byte	1         	; $cb .byte
+>18cb	02					.byte	2         	; $cc .word
+>18cc	05					.byte	5         	; $cd .float
+>18cd	ff					.byte	255       	; $ce .string
+>18ce	ff					.byte	255       	; $cf .data
+>18cf	02					.byte	2         	; $d0 .goto
+>18d0	02					.byte	2         	; $d1 .gosub
+>18d1	02					.byte	2         	; $d2 .goto.z
+>18d2	02					.byte	2         	; $d3 .goto.nz
+>18d3	02					.byte	2         	; $d4 .varspace
 
 ;******  Processing input file: /home/paulr/Projects/blitz-compiler/documents/../bin/ifloat32.library
 
@@ -2479,962 +2483,962 @@
 >006c							.fill 	MathStackSize
 .0517					numberBuffer:
 >0517							.fill 	34
-.18c3					FloatSubtract:
-.18c3	b5 30		lda $30,x			lda 	NSStatus,x 					; negate top of stack
-.18c5	49 80		eor #$80			eor 	#$80
-.18c7	95 30		sta $30,x			sta 	NSStatus,x					; and fall through.
-.18c9					FloatAdd:
-.18c9	ca		dex				dex
-.18ca	b5 6c		lda $6c,x			lda 	NSExponent,x 				; can use optimised.
-.18cc	15 6d		ora $6d,x			ora 	NSExponent+1,x
-.18ce	15 60		ora $60,x			ora 	NSMantissa3,x
-.18d0	15 61		ora $61,x			ora 	NSMantissa3+1,x
-.18d2	d0 04		bne $18d8			bne 	_FAUseFloat
-.18d4	20 65 1c	jsr $1c65			jsr 	FloatInt32Add 				; use the int32 one.
-.18d7	60		rts				rts
-.18d8					_FAUseFloat:
-.18d8	20 fa 1b	jsr $1bfa			jsr 	FloatNormalise 				; normalise S[X]
-.18db	f0 51		beq $192e			beq 	_FAReturn1
-.18dd	e8		inx				inx 								; normalise S[X+1]
-.18de	20 fa 1b	jsr $1bfa			jsr 	FloatNormalise
-.18e1	ca		dex				dex
-.18e2	c9 00		cmp #$00			cmp 	#0
-.18e4	f0 60		beq $1946			beq 	_FAExit 					; if so, just return A
-.18e6	b5 6c		lda $6c,x			lda 	NSExponent,x 				; are the exponents the same ?
-.18e8	d5 6d		cmp $6d,x			cmp 	NSExponent+1,x
-.18ea	f0 18		beq $1904			beq 	_FAExponentsEqual
-.18ec	b5 6c		lda $6c,x			lda 	NSExponent,x 				; work out the larger exponent
-.18ee	a8		tay				tay
-.18ef	38		sec				sec 								; do a signed comparison of the exponents.
-.18f0	f5 6d		sbc $6d,x			sbc 	NSExponent+1,x
-.18f2	50 02		bvc $18f6			bvc 	_FANoSignedChange
-.18f4	49 80		eor #$80			eor 	#$80
-.18f6					_FANoSignedChange:
-.18f6	29 80		and #$80			and 	#$80
-.18f8	10 02		bpl $18fc			bpl 	_FAHaveMax
-.18fa	b4 6d		ldy $6d,x			ldy 	NSExponent+1,x
-.18fc					_FAHaveMax:
-.18fc	20 47 19	jsr $1947			jsr 	_FAShiftToExponent  		; shift both to the exponent in Y
-.18ff	e8		inx				inx
-.1900	20 47 19	jsr $1947			jsr 	_FAShiftToExponent
-.1903	ca		dex				dex
-.1904					_FAExponentsEqual:
-.1904	b5 30		lda $30,x			lda 	NSStatus,x 					; are the signs the same
-.1906	55 31		eor $31,x			eor 	NSStatus+1,x
-.1908	30 0e		bmi $1918			bmi 	_FADifferentSigns
-.190a	20 31 1c	jsr $1c31			jsr 	FloatAddTopTwoStack 		; do the add of the mantissae
-.190d	b5 60		lda $60,x			lda 	NSMantissa3,x 				; do we have an overflow in Mantissa A ?
-.190f	10 35		bpl $1946			bpl 	_FAExit 					; if no, we are done.
-.1911	20 be 1e	jsr $1ebe			jsr 	FloatShiftRight 				; shift A right, renormalising it.
-.1914	f6 6c		inc $6c,x			inc 	NSExponent,x 				; bump the exponent and exit
-.1916	80 2e		bra $1946			bra 	_FAExit
-.1918					_FADifferentSigns:
-.1918	20 4b 1c	jsr $1c4b			jsr 	FloatSubTopTwoStack 		; subtract mantissa B from A
-.191b	b5 60		lda $60,x			lda 	NSMantissa3,x 				; is the result negative ?
-.191d	10 06		bpl $1925			bpl 	_FACheckZero 				; if no, check for -0
-.191f	20 67 1e	jsr $1e67			jsr 	FloatNegate 					; netate result
-.1922	20 6e 1e	jsr $1e6e			jsr 	FloatNegateMantissa 			; negate (2'c) the mantissa
-.1925					_FACheckZero:
-.1925	20 c7 1e	jsr $1ec7			jsr 	FloatIsZero	 				; check for -0
-.1928	d0 1c		bne $1946			bne 	_FAExit
-.192a	74 30		stz $30,x			stz 	NSStatus,x
-.192c	80 18		bra $1946			bra 	_FAExit
-.192e					_FAReturn1:
-.192e	b5 3d		lda $3d,x			lda 	NSMantissa0+1,x 			; called when S(X) is zero.
-.1930	95 3c		sta $3c,x			sta 	NSMantissa0,x
-.1932	b5 49		lda $49,x			lda 	NSMantissa1+1,x
-.1934	95 48		sta $48,x			sta 	NSMantissa1,x
-.1936	b5 55		lda $55,x			lda 	NSMantissa2+1,x
-.1938	95 54		sta $54,x			sta 	NSMantissa2,x
-.193a	b5 61		lda $61,x			lda 	NSMantissa3+1,x
-.193c	95 60		sta $60,x			sta 	NSMantissa3,x
-.193e	b5 6d		lda $6d,x			lda 	NSExponent+1,x
-.1940	95 6c		sta $6c,x			sta 	NSExponent,x
-.1942	b5 31		lda $31,x			lda 	NSStatus+1,x
-.1944	95 30		sta $30,x			sta 	NSStatus,x
-.1946					_FAExit:
-.1946	60		rts				rts
-.1947					_FAShiftToExponent:
-.1947					_FAShiftToExponent2:
-.1947	98		tya				tya 								; compare Y to exponent
-.1948	d5 6c		cmp $6c,x			cmp 	NSExponent,x 				; reached the exponent required ?
-.194a	f0 07		beq $1953			beq 	_FASEExit 					; exit if so.
-.194c	20 be 1e	jsr $1ebe			jsr 	FloatShiftRight	 			; shift the mantissa right
-.194f	f6 6c		inc $6c,x			inc 	NSExponent,x 				; increment exponent
-.1951	80 f4		bra $1947			bra 	_FAShiftToExponent2
-.1953					_FASEExit:
-.1953	60		rts				rts
-.1954					CompareEqual:
-.1954	b5 3c		lda $3c,x			lda 	NSMantissa0,x
-.1956	d0 09		bne $1961			bne 	ReturnFalse
-.1958					ReturnTrue:
-.1958	a9 01		lda #$01			lda 	#1
-.195a	95 3c		sta $3c,x			sta 	NSMantissa0,x
-.195c	a9 80		lda #$80			lda 	#$80
-.195e	95 30		sta $30,x			sta 	NSStatus,x
-.1960	60		rts				rts
-.1961					ReturnFalse:
-.1961	74 3c		stz $3c,x			stz 	NSMantissa0,x
-.1963	60		rts				rts
-.1964					CompareNotEqual:
-.1964	b5 3c		lda $3c,x			lda 	NSMantissa0,x
-.1966	d0 f0		bne $1958			bne 	ReturnTrue
-.1968	80 f7		bra $1961			bra 	ReturnFalse
-.196a					CompareLess:
-.196a	b5 3c		lda $3c,x			lda 	NSMantissa0,x
-.196c	c9 ff		cmp #$ff			cmp 	#$FF
-.196e	f0 e8		beq $1958			beq 	ReturnTrue
-.1970	80 ef		bra $1961			bra 	ReturnFalse
-.1972					CompareGreater:
-.1972	b5 3c		lda $3c,x			lda 	NSMantissa0,x
-.1974	c9 01		cmp #$01			cmp 	#$01
-.1976	f0 e0		beq $1958			beq 	ReturnTrue
-.1978	80 e7		bra $1961			bra 	ReturnFalse
-.197a					CompareLessEqual:
-.197a	b5 3c		lda $3c,x			lda 	NSMantissa0,x
-.197c	c9 01		cmp #$01			cmp 	#$01
-.197e	d0 d8		bne $1958			bne 	ReturnTrue
-.1980	80 df		bra $1961			bra 	ReturnFalse
-.1982					CompareGreaterEqual:
-.1982	b5 3c		lda $3c,x			lda 	NSMantissa0,x
-.1984	c9 ff		cmp #$ff			cmp 	#$FF
-.1986	d0 d0		bne $1958			bne 	ReturnTrue
-.1988	80 d7		bra $1961			bra 	ReturnFalse
-.198a					FloatCompare:
-.198a	b5 6c		lda $6c,x			lda 	NSExponent,x 				; float comparison.
-.198c	15 6b		ora $6b,x			ora 	NSExponent-1,x 				; integer if both integer.
-.198e	48		pha				pha
-.198f	20 c3 18	jsr $18c3			jsr 	FloatSubtract 				; Calculate S[X]-S[X+1]
-.1992	68		pla				pla
-.1993	d0 0c		bne $19a1			bne 	_FCCompareFloat
-.1995	b5 3c		lda $3c,x			lda 	NSMantissa0,x
-.1997	15 48		ora $48,x			ora 	NSMantissa1,x
-.1999	15 54		ora $54,x			ora 	NSMantissa2,x
-.199b	15 60		ora $60,x			ora 	NSMantissa3,x
-.199d	f0 14		beq $19b3			beq 	_FCExit 					; if zero, return zero
-.199f	80 0a		bra $19ab			bra 	_FCSign
-.19a1					_FCCompareFloat:
-.19a1	b5 48		lda $48,x			lda 	NSMantissa1,x 			 	; so we ignore this - by changing bits checked
-.19a3	29 f0		and #$f0			and 	#$F0
-.19a5	15 54		ora $54,x			ora 	NSMantissa2,x
-.19a7	15 60		ora $60,x			ora 	NSMantissa3,x
-.19a9	f0 08		beq $19b3			beq 	_FCExit 					; zero, so approximately identical
-.19ab					_FCSign:
-.19ab	a9 01		lda #$01			lda 	#1 							; return +1 if result>0
-.19ad	34 30		bit $30,x			bit 	NSStatus,x
-.19af	10 02		bpl $19b3			bpl 	_FCExit
-.19b1					_FCNegative:
-.19b1	a9 ff		lda #$ff			lda 	#$FF 						; and return -1 if result<0
-.19b3					_FCExit:
-.19b3	20 a7 1e	jsr $1ea7			jsr 	FloatSetByte 				; set the result 255,0,1
-.19b6	60		rts				rts
-.19b7					FloatScalarTable:
->19b7	66 66 66 66				.dword $66666666 ; 0.1
->19bb	de					.byte $de
->19bc	1f 85 eb 51				.dword $51eb851f ; 0.01
->19c0	db					.byte $db
->19c1	4c 37 89 41				.dword $4189374c ; 0.001
->19c5	d8					.byte $d8
->19c6	ac 8b db 68				.dword $68db8bac ; 0.0001
->19ca	d4					.byte $d4
->19cb	24 d6 e2 53				.dword $53e2d624 ; 1e-05
->19cf	d1					.byte $d1
->19d0	83 de 1b 43				.dword $431bde83 ; 1e-06
->19d4	ce					.byte $ce
->19d5	6b ca 5f 6b				.dword $6b5fca6b ; 1e-07
->19d9	ca					.byte $ca
->19da	89 3b e6 55				.dword $55e63b89 ; 1e-08
->19de	c7					.byte $c7
->19df	a1 2f b8 44				.dword $44b82fa1 ; 1e-09
->19e3	c4					.byte $c4
->19e4	67 7f f3 6d				.dword $6df37f67 ; 1e-10
->19e8	c0					.byte $c0
->19e9	86 ff f5 57				.dword $57f5ff86 ; 1e-11
->19ed	bd					.byte $bd
-.19ee					FloatDivide:
-.19ee	48		pha				pha
-.19ef	20 fa 1b	jsr $1bfa			jsr 	FloatNormalise		 		; normalise S[x+1] and error if zero.
-.19f2	ca		dex				dex
-.19f3	c9 00		cmp #$00			cmp 	#0
-.19f5	f0 1e		beq $1a15			beq 	_FDZero
-.19f7	20 fa 1b	jsr $1bfa			jsr 	FloatNormalise		 		; normalise S[X] and exit if zero
-.19fa	f0 16		beq $1a12			beq 	_FDExit 					; return zero if zero (e.g. zero/something)
-.19fc	20 5d 1a	jsr $1a5d			jsr 	Int32ShiftDivide 			; do the shift division for dividing.
-.19ff	20 2a 1a	jsr $1a2a			jsr 	NSMCopyPlusTwoToZero 		; copy the mantissa down
-.1a02	20 fa 1b	jsr $1bfa			jsr		FloatNormalise 				; renormalise
-.1a05	20 f0 1b	jsr $1bf0			jsr 	FloatCalculateSign 			; calculate result sign
-.1a08	b5 6c		lda $6c,x			lda 	NSExponent,x 				; calculate exponent
-.1a0a	38		sec				sec
-.1a0b	f5 6d		sbc $6d,x			sbc 	NSExponent+1,x
-.1a0d	38		sec				sec
-.1a0e	e9 1e		sbc #$1e			sbc 	#30
-.1a10	95 6c		sta $6c,x			sta 	NSExponent,x
-.1a12					_FDExit:
-.1a12	68		pla				pla
-.1a13	18		clc				clc
-.1a14	60		rts				rts
-.1a15					_FDZero:
-.1a15	68		pla				pla
-.1a16	38		sec				sec
-.1a17	60		rts				rts
-.1a18					DivideInt32:
-.1a18	20 e0 1a	jsr $1ae0			jsr 	FloatIntegerPart 			; make both integers
-.1a1b	ca		dex				dex
-.1a1c	20 e0 1a	jsr $1ae0			jsr 	FloatIntegerPart
-.1a1f	20 3b 1a	jsr $1a3b			jsr 	Int32Divide 				; divide
-.1a22	20 2a 1a	jsr $1a2a			jsr 	NSMCopyPlusTwoToZero 		; copy result
-.1a25	20 f0 1b	jsr $1bf0			jsr 	FloatCalculateSign 			; calculate result sign
-.1a28	18		clc				clc
-.1a29	60		rts				rts
-.1a2a					NSMCopyPlusTwoToZero:
-.1a2a	b5 3e		lda $3e,x			lda 	NSMantissa0+2,x 			; copy result down from +2
-.1a2c	95 3c		sta $3c,x			sta 	NSMantissa0,x
-.1a2e	b5 4a		lda $4a,x			lda 	NSMantissa1+2,x
-.1a30	95 48		sta $48,x			sta 	NSMantissa1,x
-.1a32	b5 56		lda $56,x			lda 	NSMantissa2+2,x
-.1a34	95 54		sta $54,x			sta 	NSMantissa2,x
-.1a36	b5 62		lda $62,x			lda 	NSMantissa3+2,x
-.1a38	95 60		sta $60,x			sta 	NSMantissa3,x
+.18d4					FloatSubtract:
+.18d4	b5 30		lda $30,x			lda 	NSStatus,x 					; negate top of stack
+.18d6	49 80		eor #$80			eor 	#$80
+.18d8	95 30		sta $30,x			sta 	NSStatus,x					; and fall through.
+.18da					FloatAdd:
+.18da	ca		dex				dex
+.18db	b5 6c		lda $6c,x			lda 	NSExponent,x 				; can use optimised.
+.18dd	15 6d		ora $6d,x			ora 	NSExponent+1,x
+.18df	15 60		ora $60,x			ora 	NSMantissa3,x
+.18e1	15 61		ora $61,x			ora 	NSMantissa3+1,x
+.18e3	d0 04		bne $18e9			bne 	_FAUseFloat
+.18e5	20 76 1c	jsr $1c76			jsr 	FloatInt32Add 				; use the int32 one.
+.18e8	60		rts				rts
+.18e9					_FAUseFloat:
+.18e9	20 0b 1c	jsr $1c0b			jsr 	FloatNormalise 				; normalise S[X]
+.18ec	f0 51		beq $193f			beq 	_FAReturn1
+.18ee	e8		inx				inx 								; normalise S[X+1]
+.18ef	20 0b 1c	jsr $1c0b			jsr 	FloatNormalise
+.18f2	ca		dex				dex
+.18f3	c9 00		cmp #$00			cmp 	#0
+.18f5	f0 60		beq $1957			beq 	_FAExit 					; if so, just return A
+.18f7	b5 6c		lda $6c,x			lda 	NSExponent,x 				; are the exponents the same ?
+.18f9	d5 6d		cmp $6d,x			cmp 	NSExponent+1,x
+.18fb	f0 18		beq $1915			beq 	_FAExponentsEqual
+.18fd	b5 6c		lda $6c,x			lda 	NSExponent,x 				; work out the larger exponent
+.18ff	a8		tay				tay
+.1900	38		sec				sec 								; do a signed comparison of the exponents.
+.1901	f5 6d		sbc $6d,x			sbc 	NSExponent+1,x
+.1903	50 02		bvc $1907			bvc 	_FANoSignedChange
+.1905	49 80		eor #$80			eor 	#$80
+.1907					_FANoSignedChange:
+.1907	29 80		and #$80			and 	#$80
+.1909	10 02		bpl $190d			bpl 	_FAHaveMax
+.190b	b4 6d		ldy $6d,x			ldy 	NSExponent+1,x
+.190d					_FAHaveMax:
+.190d	20 58 19	jsr $1958			jsr 	_FAShiftToExponent  		; shift both to the exponent in Y
+.1910	e8		inx				inx
+.1911	20 58 19	jsr $1958			jsr 	_FAShiftToExponent
+.1914	ca		dex				dex
+.1915					_FAExponentsEqual:
+.1915	b5 30		lda $30,x			lda 	NSStatus,x 					; are the signs the same
+.1917	55 31		eor $31,x			eor 	NSStatus+1,x
+.1919	30 0e		bmi $1929			bmi 	_FADifferentSigns
+.191b	20 42 1c	jsr $1c42			jsr 	FloatAddTopTwoStack 		; do the add of the mantissae
+.191e	b5 60		lda $60,x			lda 	NSMantissa3,x 				; do we have an overflow in Mantissa A ?
+.1920	10 35		bpl $1957			bpl 	_FAExit 					; if no, we are done.
+.1922	20 cf 1e	jsr $1ecf			jsr 	FloatShiftRight 				; shift A right, renormalising it.
+.1925	f6 6c		inc $6c,x			inc 	NSExponent,x 				; bump the exponent and exit
+.1927	80 2e		bra $1957			bra 	_FAExit
+.1929					_FADifferentSigns:
+.1929	20 5c 1c	jsr $1c5c			jsr 	FloatSubTopTwoStack 		; subtract mantissa B from A
+.192c	b5 60		lda $60,x			lda 	NSMantissa3,x 				; is the result negative ?
+.192e	10 06		bpl $1936			bpl 	_FACheckZero 				; if no, check for -0
+.1930	20 78 1e	jsr $1e78			jsr 	FloatNegate 					; netate result
+.1933	20 7f 1e	jsr $1e7f			jsr 	FloatNegateMantissa 			; negate (2'c) the mantissa
+.1936					_FACheckZero:
+.1936	20 d8 1e	jsr $1ed8			jsr 	FloatIsZero	 				; check for -0
+.1939	d0 1c		bne $1957			bne 	_FAExit
+.193b	74 30		stz $30,x			stz 	NSStatus,x
+.193d	80 18		bra $1957			bra 	_FAExit
+.193f					_FAReturn1:
+.193f	b5 3d		lda $3d,x			lda 	NSMantissa0+1,x 			; called when S(X) is zero.
+.1941	95 3c		sta $3c,x			sta 	NSMantissa0,x
+.1943	b5 49		lda $49,x			lda 	NSMantissa1+1,x
+.1945	95 48		sta $48,x			sta 	NSMantissa1,x
+.1947	b5 55		lda $55,x			lda 	NSMantissa2+1,x
+.1949	95 54		sta $54,x			sta 	NSMantissa2,x
+.194b	b5 61		lda $61,x			lda 	NSMantissa3+1,x
+.194d	95 60		sta $60,x			sta 	NSMantissa3,x
+.194f	b5 6d		lda $6d,x			lda 	NSExponent+1,x
+.1951	95 6c		sta $6c,x			sta 	NSExponent,x
+.1953	b5 31		lda $31,x			lda 	NSStatus+1,x
+.1955	95 30		sta $30,x			sta 	NSStatus,x
+.1957					_FAExit:
+.1957	60		rts				rts
+.1958					_FAShiftToExponent:
+.1958					_FAShiftToExponent2:
+.1958	98		tya				tya 								; compare Y to exponent
+.1959	d5 6c		cmp $6c,x			cmp 	NSExponent,x 				; reached the exponent required ?
+.195b	f0 07		beq $1964			beq 	_FASEExit 					; exit if so.
+.195d	20 cf 1e	jsr $1ecf			jsr 	FloatShiftRight	 			; shift the mantissa right
+.1960	f6 6c		inc $6c,x			inc 	NSExponent,x 				; increment exponent
+.1962	80 f4		bra $1958			bra 	_FAShiftToExponent2
+.1964					_FASEExit:
+.1964	60		rts				rts
+.1965					CompareEqual:
+.1965	b5 3c		lda $3c,x			lda 	NSMantissa0,x
+.1967	d0 09		bne $1972			bne 	ReturnFalse
+.1969					ReturnTrue:
+.1969	a9 01		lda #$01			lda 	#1
+.196b	95 3c		sta $3c,x			sta 	NSMantissa0,x
+.196d	a9 80		lda #$80			lda 	#$80
+.196f	95 30		sta $30,x			sta 	NSStatus,x
+.1971	60		rts				rts
+.1972					ReturnFalse:
+.1972	74 3c		stz $3c,x			stz 	NSMantissa0,x
+.1974	60		rts				rts
+.1975					CompareNotEqual:
+.1975	b5 3c		lda $3c,x			lda 	NSMantissa0,x
+.1977	d0 f0		bne $1969			bne 	ReturnTrue
+.1979	80 f7		bra $1972			bra 	ReturnFalse
+.197b					CompareLess:
+.197b	b5 3c		lda $3c,x			lda 	NSMantissa0,x
+.197d	c9 ff		cmp #$ff			cmp 	#$FF
+.197f	f0 e8		beq $1969			beq 	ReturnTrue
+.1981	80 ef		bra $1972			bra 	ReturnFalse
+.1983					CompareGreater:
+.1983	b5 3c		lda $3c,x			lda 	NSMantissa0,x
+.1985	c9 01		cmp #$01			cmp 	#$01
+.1987	f0 e0		beq $1969			beq 	ReturnTrue
+.1989	80 e7		bra $1972			bra 	ReturnFalse
+.198b					CompareLessEqual:
+.198b	b5 3c		lda $3c,x			lda 	NSMantissa0,x
+.198d	c9 01		cmp #$01			cmp 	#$01
+.198f	d0 d8		bne $1969			bne 	ReturnTrue
+.1991	80 df		bra $1972			bra 	ReturnFalse
+.1993					CompareGreaterEqual:
+.1993	b5 3c		lda $3c,x			lda 	NSMantissa0,x
+.1995	c9 ff		cmp #$ff			cmp 	#$FF
+.1997	d0 d0		bne $1969			bne 	ReturnTrue
+.1999	80 d7		bra $1972			bra 	ReturnFalse
+.199b					FloatCompare:
+.199b	b5 6c		lda $6c,x			lda 	NSExponent,x 				; float comparison.
+.199d	15 6b		ora $6b,x			ora 	NSExponent-1,x 				; integer if both integer.
+.199f	48		pha				pha
+.19a0	20 d4 18	jsr $18d4			jsr 	FloatSubtract 				; Calculate S[X]-S[X+1]
+.19a3	68		pla				pla
+.19a4	d0 0c		bne $19b2			bne 	_FCCompareFloat
+.19a6	b5 3c		lda $3c,x			lda 	NSMantissa0,x
+.19a8	15 48		ora $48,x			ora 	NSMantissa1,x
+.19aa	15 54		ora $54,x			ora 	NSMantissa2,x
+.19ac	15 60		ora $60,x			ora 	NSMantissa3,x
+.19ae	f0 14		beq $19c4			beq 	_FCExit 					; if zero, return zero
+.19b0	80 0a		bra $19bc			bra 	_FCSign
+.19b2					_FCCompareFloat:
+.19b2	b5 48		lda $48,x			lda 	NSMantissa1,x 			 	; so we ignore this - by changing bits checked
+.19b4	29 f0		and #$f0			and 	#$F0
+.19b6	15 54		ora $54,x			ora 	NSMantissa2,x
+.19b8	15 60		ora $60,x			ora 	NSMantissa3,x
+.19ba	f0 08		beq $19c4			beq 	_FCExit 					; zero, so approximately identical
+.19bc					_FCSign:
+.19bc	a9 01		lda #$01			lda 	#1 							; return +1 if result>0
+.19be	34 30		bit $30,x			bit 	NSStatus,x
+.19c0	10 02		bpl $19c4			bpl 	_FCExit
+.19c2					_FCNegative:
+.19c2	a9 ff		lda #$ff			lda 	#$FF 						; and return -1 if result<0
+.19c4					_FCExit:
+.19c4	20 b8 1e	jsr $1eb8			jsr 	FloatSetByte 				; set the result 255,0,1
+.19c7	60		rts				rts
+.19c8					FloatScalarTable:
+>19c8	66 66 66 66				.dword $66666666 ; 0.1
+>19cc	de					.byte $de
+>19cd	1f 85 eb 51				.dword $51eb851f ; 0.01
+>19d1	db					.byte $db
+>19d2	4c 37 89 41				.dword $4189374c ; 0.001
+>19d6	d8					.byte $d8
+>19d7	ac 8b db 68				.dword $68db8bac ; 0.0001
+>19db	d4					.byte $d4
+>19dc	24 d6 e2 53				.dword $53e2d624 ; 1e-05
+>19e0	d1					.byte $d1
+>19e1	83 de 1b 43				.dword $431bde83 ; 1e-06
+>19e5	ce					.byte $ce
+>19e6	6b ca 5f 6b				.dword $6b5fca6b ; 1e-07
+>19ea	ca					.byte $ca
+>19eb	89 3b e6 55				.dword $55e63b89 ; 1e-08
+>19ef	c7					.byte $c7
+>19f0	a1 2f b8 44				.dword $44b82fa1 ; 1e-09
+>19f4	c4					.byte $c4
+>19f5	67 7f f3 6d				.dword $6df37f67 ; 1e-10
+>19f9	c0					.byte $c0
+>19fa	86 ff f5 57				.dword $57f5ff86 ; 1e-11
+>19fe	bd					.byte $bd
+.19ff					FloatDivide:
+.19ff	48		pha				pha
+.1a00	20 0b 1c	jsr $1c0b			jsr 	FloatNormalise		 		; normalise S[x+1] and error if zero.
+.1a03	ca		dex				dex
+.1a04	c9 00		cmp #$00			cmp 	#0
+.1a06	f0 1e		beq $1a26			beq 	_FDZero
+.1a08	20 0b 1c	jsr $1c0b			jsr 	FloatNormalise		 		; normalise S[X] and exit if zero
+.1a0b	f0 16		beq $1a23			beq 	_FDExit 					; return zero if zero (e.g. zero/something)
+.1a0d	20 6e 1a	jsr $1a6e			jsr 	Int32ShiftDivide 			; do the shift division for dividing.
+.1a10	20 3b 1a	jsr $1a3b			jsr 	NSMCopyPlusTwoToZero 		; copy the mantissa down
+.1a13	20 0b 1c	jsr $1c0b			jsr		FloatNormalise 				; renormalise
+.1a16	20 01 1c	jsr $1c01			jsr 	FloatCalculateSign 			; calculate result sign
+.1a19	b5 6c		lda $6c,x			lda 	NSExponent,x 				; calculate exponent
+.1a1b	38		sec				sec
+.1a1c	f5 6d		sbc $6d,x			sbc 	NSExponent+1,x
+.1a1e	38		sec				sec
+.1a1f	e9 1e		sbc #$1e			sbc 	#30
+.1a21	95 6c		sta $6c,x			sta 	NSExponent,x
+.1a23					_FDExit:
+.1a23	68		pla				pla
+.1a24	18		clc				clc
+.1a25	60		rts				rts
+.1a26					_FDZero:
+.1a26	68		pla				pla
+.1a27	38		sec				sec
+.1a28	60		rts				rts
+.1a29					DivideInt32:
+.1a29	20 f1 1a	jsr $1af1			jsr 	FloatIntegerPart 			; make both integers
+.1a2c	ca		dex				dex
+.1a2d	20 f1 1a	jsr $1af1			jsr 	FloatIntegerPart
+.1a30	20 4c 1a	jsr $1a4c			jsr 	Int32Divide 				; divide
+.1a33	20 3b 1a	jsr $1a3b			jsr 	NSMCopyPlusTwoToZero 		; copy result
+.1a36	20 01 1c	jsr $1c01			jsr 	FloatCalculateSign 			; calculate result sign
+.1a39	18		clc				clc
 .1a3a	60		rts				rts
-.1a3b					Int32Divide:
-.1a3b	48		pha				pha 								; save AXY
-.1a3c	5a		phy				phy
-.1a3d	20 88 1e	jsr $1e88			jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2]
-.1a40	20 a1 1e	jsr $1ea1			jsr 	FloatSetZeroMantissaOnly 	; set S[X] to zero
-.1a43	a0 20		ldy #$20			ldy 	#32 						; loop 32 times
-.1a45					_I32DivideLoop:
-.1a45	e8		inx				inx
-.1a46	e8		inx				inx
-.1a47	20 b4 1e	jsr $1eb4			jsr 	FloatShiftLeft				; shift S[X+2] S[X] left as a 64 bit element
-.1a4a	ca		dex				dex
-.1a4b	ca		dex				dex
-.1a4c	20 b5 1e	jsr $1eb5			jsr 	FloatRotateLeft
-.1a4f	20 7b 1a	jsr $1a7b			jsr 	FloatDivideCheck 			; check if subtract possible
-.1a52	90 02		bcc $1a56			bcc 	_I32DivideNoCarryIn
-.1a54	f6 3e		inc $3e,x			inc 	NSMantissa0+2,x 			; if possible, set Mantissa0[X+2].0
-.1a56					_I32DivideNoCarryIn:
-.1a56	88		dey				dey 								; loop round till division completed.
-.1a57	d0 ec		bne $1a45			bne 	_I32DivideLoop
-.1a59	7a		ply				ply 								; restore AXY and exit
-.1a5a	68		pla				pla
-.1a5b	18		clc				clc
-.1a5c	60		rts				rts
-.1a5d					Int32ShiftDivide:
-.1a5d	48		pha				pha 								; save AY
-.1a5e	5a		phy				phy
-.1a5f	e8		inx				inx 								; clear S[X+2]
-.1a60	e8		inx				inx
-.1a61	20 a5 1e	jsr $1ea5			jsr 	FloatSetZero
-.1a64	ca		dex				dex
-.1a65	ca		dex				dex
-.1a66	a0 1f		ldy #$1f			ldy 	#31 						; loop 31 times.
-.1a68					_I32SDLoop:
-.1a68	20 7b 1a	jsr $1a7b			jsr 	FloatDivideCheck 			; check if subtract possible
-.1a6b	e8		inx				inx
-.1a6c	e8		inx				inx
-.1a6d	20 b5 1e	jsr $1eb5			jsr 	FloatRotateLeft				; shift 64 bit FPA left, rotating carry in
-.1a70	ca		dex				dex
-.1a71	ca		dex				dex
-.1a72	20 b5 1e	jsr $1eb5			jsr 	FloatRotateLeft
-.1a75	88		dey				dey 	 							; do 31 times
-.1a76	d0 f0		bne $1a68			bne 	_I32SDLoop
-.1a78	7a		ply				ply 								; restore AY and exit
-.1a79	68		pla				pla
-.1a7a	60		rts				rts
-.1a7b					FloatDivideCheck:
-.1a7b	20 4b 1c	jsr $1c4b			jsr 	FloatSubTopTwoStack 		; subtract Stack[X+1] from Stack[X+0]
-.1a7e	b0 04		bcs $1a84			bcs 	_DCSExit 					; if carry set, then could do, exit
-.1a80	20 31 1c	jsr $1c31			jsr 	FloatAddTopTwoStack 		; add it back in
-.1a83	18		clc				clc 								; and return False
-.1a84					_DCSExit:
-.1a84	60		rts				rts
-.1a85					FloatFractionalPart:
-.1a85	5a		phy				phy
-.1a86	b5 30		lda $30,x			lda 	NSStatus,x 					; take absolute value
-.1a88	29 7f		and #$7f			and 	#$7F
-.1a8a	95 30		sta $30,x			sta 	NSStatus,x
-.1a8c	20 fa 1b	jsr $1bfa			jsr 	FloatNormalise
-.1a8f	b5 6c		lda $6c,x			lda 	NSExponent,x 				; calculate exponent-$E0 = digits to blank
-.1a91	38		sec				sec
-.1a92	e9 e0		sbc #$e0			sbc 	#$E0
-.1a94	90 29		bcc $1abf			bcc 	_FFPExit 					; already fractional
-.1a96	c9 20		cmp #$20			cmp 	#32 						; will be zero as blanking 32+ digits.
-.1a98	b0 22		bcs $1abc			bcs 	_FFPZero
-.1a9a	a8		tay				tay 								; put count to do in Y
-.1a9b	b5 60		lda $60,x			lda 	NSMantissa3,x 				; do each in turn.
-.1a9d	20 c4 1a	jsr $1ac4			jsr 	_FFPPartial
-.1aa0	95 60		sta $60,x			sta 	NSMantissa3,x
-.1aa2	b5 54		lda $54,x			lda 	NSMantissa2,x
-.1aa4	20 c4 1a	jsr $1ac4			jsr 	_FFPPartial
-.1aa7	95 54		sta $54,x			sta 	NSMantissa2,x
-.1aa9	b5 48		lda $48,x			lda 	NSMantissa1,x
-.1aab	20 c4 1a	jsr $1ac4			jsr 	_FFPPartial
-.1aae	95 48		sta $48,x			sta 	NSMantissa1,x
-.1ab0	b5 3c		lda $3c,x			lda 	NSMantissa0,x
-.1ab2	20 c4 1a	jsr $1ac4			jsr 	_FFPPartial
-.1ab5	95 3c		sta $3c,x			sta 	NSMantissa0,x
-.1ab7	20 c7 1e	jsr $1ec7			jsr 	FloatIsZero 					; zeroed check.
-.1aba	d0 03		bne $1abf			bne 	_FFPExit
-.1abc					_FFPZero:
-.1abc	20 a5 1e	jsr $1ea5			jsr 	FloatSetZero
-.1abf					_FFPExit:
-.1abf	20 fa 1b	jsr $1bfa			jsr 	FloatNormalise
-.1ac2	7a		ply				ply
-.1ac3	60		rts				rts
-.1ac4					_FFPPartial:
-.1ac4	c0 00		cpy #$00			cpy 	#0 							; no more to do
-.1ac6	f0 17		beq $1adf			beq 	_FFFPPExit
-.1ac8	c0 08		cpy #$08			cpy 	#8 							; whole byte to do ?
-.1aca	b0 0c		bcs $1ad8			bcs 	_FFFPPWholeByte
-.1acc	5a		phy				phy
-.1acd					_FFFPPLeft:
-.1acd	0a		asl a				asl 	a
-.1ace	88		dey				dey
-.1acf	d0 fc		bne $1acd			bne 	_FFFPPLeft
-.1ad1	7a		ply				ply
-.1ad2					_FFFPPRight:
-.1ad2	4a		lsr a				lsr 	a
-.1ad3	88		dey				dey
-.1ad4	d0 fc		bne $1ad2			bne 	_FFFPPRight
-.1ad6	80 07		bra $1adf			bra 	_FFFPPExit
-.1ad8					_FFFPPWholeByte:
-.1ad8	98		tya				tya 								; subtract 8 from count
-.1ad9	38		sec				sec
-.1ada	e9 08		sbc #$08			sbc 	#8
-.1adc	a8		tay				tay
-.1add	a9 00		lda #$00			lda 	#0 							; and clear all
-.1adf					_FFFPPExit:
-.1adf	60		rts				rts
-.1ae0					FloatIntegerPart:
-.1ae0	48		pha				pha
-.1ae1	b5 6c		lda $6c,x			lda 	NSExponent,x 				; is it integer already ?
-.1ae3	f0 1d		beq $1b02			beq 	_FIPExit 					; if so do nothing
-.1ae5	20 c7 1e	jsr $1ec7			jsr 	FloatIsZero 				; is it zero ?
-.1ae8	f0 15		beq $1aff			beq 	_FIPZero 					; if so return zero.
-.1aea	20 fa 1b	jsr $1bfa			jsr 	FloatNormalise 				; normalise
-.1aed	f0 10		beq $1aff			beq 	_FIPZero 					; normalised to zero, exit zero
-.1aef					_FIPShift:
-.1aef	b5 6c		lda $6c,x			lda 	NSExponent,x 				; if Exponent >= 0 exit.
-.1af1	10 07		bpl $1afa			bpl 	_FIPCheckZero
-.1af3	20 be 1e	jsr $1ebe			jsr 	FloatShiftRight 			; shift mantissa right
-.1af6	f6 6c		inc $6c,x			inc 	NSExponent,x 				; bump exponent
-.1af8	80 f5		bra $1aef			bra 	_FIPShift
-.1afa					_FIPCheckZero:
-.1afa	20 c7 1e	jsr $1ec7			jsr 	FloatIsZero 				; avoid -0 problem
-.1afd	d0 03		bne $1b02			bne 	_FIPExit 					; set to zero if mantissa zero.
-.1aff					_FIPZero:
-.1aff	20 a5 1e	jsr $1ea5			jsr 	FloatSetZero
-.1b02					_FIPExit:
-.1b02	68		pla				pla
-.1b03	60		rts				rts
-.1b04					FloatIntegerPartDown:
-.1b04	48		pha				pha
-.1b05	5a		phy				phy
-.1b06	b5 6c		lda $6c,x			lda 	NSExponent,x 				; is it integer already ?
-.1b08	f0 36		beq $1b40			beq 	_FIPExit 					; if so do nothing
-.1b0a	20 c7 1e	jsr $1ec7			jsr 	FloatIsZero 				; is it zero ?
-.1b0d	f0 2e		beq $1b3d			beq 	_FIPZero 					; if so return zero.
-.1b0f	20 fa 1b	jsr $1bfa			jsr 	FloatNormalise 				; normalise
-.1b12	f0 29		beq $1b3d			beq 	_FIPZero 					; normalised to zero, exit zero
-.1b14	a0 00		ldy #$00			ldy 	#0 							; reset the count of bits.
-.1b16					_FIPShift:
-.1b16	b5 6c		lda $6c,x			lda 	NSExponent,x 				; if Exponent >= 0 exit.
-.1b18	10 0a		bpl $1b24			bpl 	_FIPCheckDown
-.1b1a	20 be 1e	jsr $1ebe			jsr 	FloatShiftRight 			; shift mantissa right
-.1b1d	90 01		bcc $1b20			bcc 	_FIPNoFrac 					; shifted a zero out ?
-.1b1f	c8		iny				iny
-.1b20					_FIPNoFrac:
-.1b20	f6 6c		inc $6c,x			inc 	NSExponent,x 				; bump exponent
-.1b22	80 f2		bra $1b16			bra 	_FIPShift
-.1b24					_FIPCheckDown:
-.1b24	c0 00		cpy #$00			cpy 	#0 							; were there any fractional bits.
-.1b26	f0 10		beq $1b38			beq 	_FIPCheckZero
-.1b28	34 30		bit $30,x			bit 	NSStatus,x 					; +ve
-.1b2a	10 0c		bpl $1b38			bpl 	_FIPCheckZero
-.1b2c	e8		inx				inx 								; -ve so round *down*.
-.1b2d	a9 01		lda #$01			lda 	#1
-.1b2f	20 a7 1e	jsr $1ea7			jsr 	FloatSetByte
-.1b32	20 67 1e	jsr $1e67			jsr 	FloatNegate
-.1b35	20 c9 18	jsr $18c9			jsr 	FloatAdd
-.1b38					_FIPCheckZero:
-.1b38	20 c7 1e	jsr $1ec7			jsr 	FloatIsZero 				; avoid -0 problem
-.1b3b	d0 03		bne $1b40			bne 	_FIPExit 					; set to zero if mantissa zero.
-.1b3d					_FIPZero:
-.1b3d	20 a5 1e	jsr $1ea5			jsr 	FloatSetZero
-.1b40					_FIPExit:
-.1b40	7a		ply				ply
-.1b41	68		pla				pla
-.1b42	60		rts				rts
-.1b43					FloatInt8Multiply:
-.1b43	5a		phy				phy
-.1b44	b5 3c		lda $3c,x			lda 	NSMantissa0,x 				; right shifted multiplier in Y
-.1b46	a8		tay				tay
-.1b47	74 3c		stz $3c,x			stz 	NSMantissa0,x 				; zero the result (already 8 bit constant)
-.1b49					_FI8MLoop:
-.1b49	98		tya				tya 								; shift right shifter right into carry
-.1b4a	4a		lsr a				lsr 	a
-.1b4b	a8		tay				tay
-.1b4c	90 0d		bcc $1b5b			bcc 	_FI8MNoAdd
-.1b4e	18		clc				clc
-.1b4f	b5 3c		lda $3c,x			lda 	NSMantissa0,x
-.1b51	75 3d		adc $3d,x			adc 	NSMantissa0+1,x
-.1b53	95 3c		sta $3c,x			sta 	NSMantissa0,x
-.1b55	b5 48		lda $48,x			lda 	NSMantissa1,x
-.1b57	75 49		adc $49,x			adc 	NSMantissa1+1,x
-.1b59	95 48		sta $48,x			sta 	NSMantissa1,x
-.1b5b					_FI8MNoAdd:
-.1b5b	16 3d		asl $3d,x			asl 	NSMantissa0+1,x 			; shift adder left
-.1b5d	36 49		rol $49,x			rol 	NSMantissa1+1,x
-.1b5f	c0 00		cpy #$00			cpy 	#0
-.1b61	d0 e6		bne $1b49			bne 	_FI8MLoop 					; until right shifter zero.
-.1b63	7a		ply				ply
-.1b64	60		rts				rts
-.1b65					FloatMultiply:
-.1b65	ca		dex				dex
-.1b66	b5 6c		lda $6c,x			lda 	NSExponent,x 				; can use optimised ?
-.1b68	15 6d		ora $6d,x			ora 	NSExponent+1,x
-.1b6a	15 60		ora $60,x			ora 	NSMantissa3,x
-.1b6c	15 61		ora $61,x			ora 	NSMantissa3+1,x
-.1b6e	d0 21		bne $1b91			bne 	_FMUseFloat
-.1b70	b5 30		lda $30,x			lda 	NSStatus,x 					; check if it is 8 bit unsigned
-.1b72	15 31		ora $31,x			ora 	NSStatus+1,x
-.1b74	29 80		and #$80			and 	#$80
-.1b76	15 60		ora $60,x			ora 	NSMantissa3,x
-.1b78	15 54		ora $54,x			ora 	NSMantissa2,x
-.1b7a	15 48		ora $48,x			ora 	NSMantissa1,x
-.1b7c	15 61		ora $61,x			ora 	NSMantissa3+1,x
-.1b7e	15 55		ora $55,x			ora 	NSMantissa2+1,x
-.1b80	15 49		ora $49,x			ora 	NSMantissa1+1,x
-.1b82	d0 04		bne $1b88			bne 	_FMInt32
-.1b84	20 43 1b	jsr $1b43			jsr 	FloatInt8Multiply 			; use fast 8x8 multiply.
-.1b87	60		rts				rts
-.1b88					_FMInt32:
-.1b88	20 b2 1b	jsr $1bb2			jsr 	FloatMultiplyShort			; use the int32 one.
-.1b8b	18		clc				clc 								; fix it up if gone out of range
-.1b8c	75 6c		adc $6c,x			adc 	NSExponent,x
-.1b8e	95 6c		sta $6c,x			sta 	NSExponent,x
-.1b90	60		rts				rts
-.1b91					_FMUseFloat:
-.1b91	20 fa 1b	jsr $1bfa			jsr 	FloatNormalise		 		; normalise S[X] and exit if zero
-.1b94	f0 18		beq $1bae			beq 	_FDExit 					; return zero if zero (e.g. zero*something)
-.1b96	e8		inx				inx
-.1b97	20 fa 1b	jsr $1bfa			jsr 	FloatNormalise		 		; normalise S[x+1] and error if zero.
-.1b9a	ca		dex				dex
-.1b9b	c9 00		cmp #$00			cmp 	#0
-.1b9d	f0 0c		beq $1bab			beq 	_FDSetZero
-.1b9f	20 b2 1b	jsr $1bb2			jsr 	FloatMultiplyShort 			; calculate the result.
-.1ba2	75 6c		adc $6c,x			adc 	NSExponent,x 				; calculate exponent including the shift.
-.1ba4	18		clc				clc
-.1ba5	75 6d		adc $6d,x			adc 	NSExponent+1,x
-.1ba7	95 6c		sta $6c,x			sta 	NSExponent,x
-.1ba9	80 03		bra $1bae			bra 	_FDExit
-.1bab					_FDSetZero:
-.1bab	20 a5 1e	jsr $1ea5			jsr 	FloatSetZero 				; return 0
-.1bae					_FDExit:
-.1bae	20 fa 1b	jsr $1bfa			jsr 	FloatNormalise 				; normalise the result
-.1bb1	60		rts				rts
-.1bb2					FloatMultiplyShort:
-.1bb2	5a		phy				phy 								; save Y
-.1bb3	20 88 1e	jsr $1e88			jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2]
-.1bb6	20 a1 1e	jsr $1ea1			jsr 	FloatSetZeroMantissaOnly 	; set mantissa S[X] to zero
-.1bb9	a0 00		ldy #$00			ldy 	#0 							; Y is the shift count.
-.1bbb					_I32MLoop:
-.1bbb	b5 3e		lda $3e,x			lda 	NSMantissa0+2,x 			; check S[X+2] is zero
-.1bbd	15 4a		ora $4a,x			ora 	NSMantissa1+2,x
-.1bbf	15 56		ora $56,x			ora 	NSMantissa2+2,x
-.1bc1	15 62		ora $62,x			ora 	NSMantissa3+2,x
-.1bc3	f0 25		beq $1bea			beq 	_I32MExit 					; exit if zero
-.1bc5	b5 3e		lda $3e,x			lda 	NSMantissa0+2,x 			; check LSB of n1
-.1bc7	29 01		and #$01			and 	#1
-.1bc9	f0 0d		beq $1bd8			beq 	_I32MNoAdd
-.1bcb	20 31 1c	jsr $1c31			jsr 	FloatAddTopTwoStack 		; if so add S[X+1] to S[X+0]
-.1bce	b5 60		lda $60,x			lda 	NSMantissa3,x 				; has MantissaA overflowed ?
-.1bd0	10 06		bpl $1bd8			bpl 	_I32MNoAdd
-.1bd2					_I32ShiftRight:
-.1bd2	20 be 1e	jsr $1ebe			jsr 	FloatShiftRight 			; shift S[X] right
-.1bd5	c8		iny				iny 								; increment shift count
-.1bd6	80 09		bra $1be1			bra 	_I32MShiftUpper 			; n2 is doubled by default.
-.1bd8					_I32MNoAdd:
-.1bd8	34 61		bit $61,x			bit 	NSMantissa3+1,x				; if we can't shift S[X+1] left, shift everything right
-.1bda	70 f6		bvs $1bd2			bvs 	_I32ShiftRight 				; instead.
-.1bdc	e8		inx				inx
-.1bdd	20 b4 1e	jsr $1eb4			jsr 	FloatShiftLeft 				; shift additive S[X+1] left
-.1be0	ca		dex				dex
-.1be1					_I32MShiftUpper:
-.1be1	e8		inx				inx 								; shift S[X+2] right
-.1be2	e8		inx				inx
-.1be3	20 be 1e	jsr $1ebe			jsr 	FloatShiftRight
-.1be6	ca		dex				dex
-.1be7	ca		dex				dex
-.1be8	80 d1		bra $1bbb			bra 	_I32MLoop 					; try again.
-.1bea					_I32MExit:
-.1bea	20 f0 1b	jsr $1bf0			jsr 	FloatCalculateSign
-.1bed	98		tya				tya 								; shift in A
-.1bee	7a		ply				ply 								; restore Y and exit
-.1bef	60		rts				rts
-.1bf0					FloatCalculateSign:
-.1bf0	b5 30		lda $30,x			lda 	NSStatus,x 					; sign of result is 0 if same, 1 if different.
-.1bf2	16 30		asl $30,x			asl 	NSStatus,x 					; shift result left
-.1bf4	55 31		eor $31,x			eor 	NSStatus+1,x
-.1bf6	0a		asl a				asl 	a 							; shift bit 7 into carry
-.1bf7	76 30		ror $30,x			ror 	NSStatus,x 					; shift right into status byte.
-.1bf9	60		rts				rts
-.1bfa					FloatNormalise:
-.1bfa	20 c7 1e	jsr $1ec7			jsr 	FloatIsZero 				; if zero exit
-.1bfd	d0 07		bne $1c06			bne 	_NSNormaliseOptimise 		; if so, normalise it.
-.1bff	16 30		asl $30,x			asl 	NSStatus,x 					; clear the sign bit.
-.1c01	76 30		ror $30,x			ror 	NSStatus,x 					; (no -0)
-.1c03	a9 00		lda #$00			lda 	#0 							; set Z flag
-.1c05	60		rts				rts
-.1c06					_NSNormaliseOptimise:
-.1c06	b5 60		lda $60,x			lda 	NSMantissa3,x 				; upper byte zero ?
-.1c08	d0 19		bne $1c23			bne 	_NSNormaliseLoop
-.1c0a	b5 54		lda $54,x			lda 	NSMantissa2,x 				; byte normalise
-.1c0c	30 15		bmi $1c23			bmi 	_NSNormaliseLoop 			; can't do it if bit 7 set of 2
-.1c0e	95 60		sta $60,x			sta 	NSMantissa3,x
-.1c10	b5 48		lda $48,x			lda 	NSMantissa1,x
-.1c12	95 54		sta $54,x			sta 	NSMantissa2,x
-.1c14	b5 3c		lda $3c,x			lda 	NSMantissa0,x
-.1c16	95 48		sta $48,x			sta 	NSMantissa1,x
-.1c18	74 3c		stz $3c,x			stz 	NSMantissa0,x
-.1c1a	b5 6c		lda $6c,x			lda 	NSExponent,x
-.1c1c	38		sec				sec
-.1c1d	e9 08		sbc #$08			sbc 	#8
-.1c1f	95 6c		sta $6c,x			sta 	NSExponent,x
-.1c21	80 e3		bra $1c06			bra 	_NSNormaliseOptimise
-.1c23					_NSNormaliseLoop:
-.1c23	34 60		bit $60,x			bit 	NSMantissa3,x 				; bit 30 set ?
-.1c25	70 07		bvs $1c2e			bvs 	_NSNExit 					; exit if so with Z flag clear
-.1c27	20 b4 1e	jsr $1eb4			jsr 	FloatShiftLeft 				; shift mantissa left
-.1c2a	d6 6c		dec $6c,x			dec 	NSExponent,x 				; adjust exponent
-.1c2c	80 f5		bra $1c23			bra 	_NSNormaliseLoop
-.1c2e					_NSNExit:
-.1c2e	a9 ff		lda #$ff			lda 	#$FF 						; clear Z flag
-.1c30	60		rts				rts
-.1c31					FloatAddTopTwoStack:
-.1c31	18		clc				clc
-.1c32	b5 3c		lda $3c,x			lda		NSMantissa0,x
-.1c34	75 3d		adc $3d,x			adc 		NSMantissa0+1,x
-.1c36	95 3c		sta $3c,x			sta 	NSMantissa0,x
-.1c38	b5 48		lda $48,x			lda		NSMantissa1,x
-.1c3a	75 49		adc $49,x			adc 		NSMantissa1+1,x
-.1c3c	95 48		sta $48,x			sta 	NSMantissa1,x
-.1c3e	b5 54		lda $54,x			lda		NSMantissa2,x
-.1c40	75 55		adc $55,x			adc 		NSMantissa2+1,x
-.1c42	95 54		sta $54,x			sta 	NSMantissa2,x
-.1c44	b5 60		lda $60,x			lda		NSMantissa3,x
-.1c46	75 61		adc $61,x			adc 		NSMantissa3+1,x
-.1c48	95 60		sta $60,x			sta 	NSMantissa3,x
-.1c4a	60		rts				rts
-.1c4b					FloatSubTopTwoStack:
-.1c4b	38		sec				sec
-.1c4c	b5 3c		lda $3c,x			lda		NSMantissa0,x
-.1c4e	f5 3d		sbc $3d,x			sbc 		NSMantissa0+1,x
-.1c50	95 3c		sta $3c,x			sta 	NSMantissa0,x
-.1c52	b5 48		lda $48,x			lda		NSMantissa1,x
-.1c54	f5 49		sbc $49,x			sbc 		NSMantissa1+1,x
-.1c56	95 48		sta $48,x			sta 	NSMantissa1,x
-.1c58	b5 54		lda $54,x			lda		NSMantissa2,x
-.1c5a	f5 55		sbc $55,x			sbc 		NSMantissa2+1,x
-.1c5c	95 54		sta $54,x			sta 	NSMantissa2,x
-.1c5e	b5 60		lda $60,x			lda		NSMantissa3,x
-.1c60	f5 61		sbc $61,x			sbc 		NSMantissa3+1,x
-.1c62	95 60		sta $60,x			sta 	NSMantissa3,x
-.1c64	60		rts				rts
-.1c65					FloatInt32Add:
-.1c65	b5 30		lda $30,x			lda 	NSStatus,x 					; signs are the same, can just add the mantissae.
-.1c67	55 31		eor $31,x			eor 	NSStatus+1,x
-.1c69	30 04		bmi $1c6f			bmi 	_DiffSigns
-.1c6b	20 31 1c	jsr $1c31			jsr		FloatAddTopTwoStack
-.1c6e	60		rts				rts
-.1c6f					_DiffSigns:
-.1c6f	20 4b 1c	jsr $1c4b			jsr 	FloatSubTopTwoStack 		; do a physical subtraction
-.1c72	34 60		bit $60,x			bit 	NSMantissa3,x 				; result is +ve, okay
-.1c74	10 07		bpl $1c7d			bpl 	_AddExit
-.1c76	b5 31		lda $31,x			lda 	NSStatus+1,x 				; sign is that of 11th value
-.1c78	95 30		sta $30,x			sta 	NSStatus,x
-.1c7a	20 6e 1e	jsr $1e6e			jsr 	FloatNegateMantissa 		; negate the mantissa and exit
-.1c7d					_AddExit:
-.1c7d	20 c7 1e	jsr $1ec7			jsr 	FloatIsZero 				; check for -0
-.1c80	d0 02		bne $1c84			bne 	_AddNonZero
-.1c82	74 30		stz $30,x			stz 	NSStatus,x
-.1c84					_AddNonZero:
-.1c84	60		rts				rts
+.1a3b					NSMCopyPlusTwoToZero:
+.1a3b	b5 3e		lda $3e,x			lda 	NSMantissa0+2,x 			; copy result down from +2
+.1a3d	95 3c		sta $3c,x			sta 	NSMantissa0,x
+.1a3f	b5 4a		lda $4a,x			lda 	NSMantissa1+2,x
+.1a41	95 48		sta $48,x			sta 	NSMantissa1,x
+.1a43	b5 56		lda $56,x			lda 	NSMantissa2+2,x
+.1a45	95 54		sta $54,x			sta 	NSMantissa2,x
+.1a47	b5 62		lda $62,x			lda 	NSMantissa3+2,x
+.1a49	95 60		sta $60,x			sta 	NSMantissa3,x
+.1a4b	60		rts				rts
+.1a4c					Int32Divide:
+.1a4c	48		pha				pha 								; save AXY
+.1a4d	5a		phy				phy
+.1a4e	20 99 1e	jsr $1e99			jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2]
+.1a51	20 b2 1e	jsr $1eb2			jsr 	FloatSetZeroMantissaOnly 	; set S[X] to zero
+.1a54	a0 20		ldy #$20			ldy 	#32 						; loop 32 times
+.1a56					_I32DivideLoop:
+.1a56	e8		inx				inx
+.1a57	e8		inx				inx
+.1a58	20 c5 1e	jsr $1ec5			jsr 	FloatShiftLeft				; shift S[X+2] S[X] left as a 64 bit element
+.1a5b	ca		dex				dex
+.1a5c	ca		dex				dex
+.1a5d	20 c6 1e	jsr $1ec6			jsr 	FloatRotateLeft
+.1a60	20 8c 1a	jsr $1a8c			jsr 	FloatDivideCheck 			; check if subtract possible
+.1a63	90 02		bcc $1a67			bcc 	_I32DivideNoCarryIn
+.1a65	f6 3e		inc $3e,x			inc 	NSMantissa0+2,x 			; if possible, set Mantissa0[X+2].0
+.1a67					_I32DivideNoCarryIn:
+.1a67	88		dey				dey 								; loop round till division completed.
+.1a68	d0 ec		bne $1a56			bne 	_I32DivideLoop
+.1a6a	7a		ply				ply 								; restore AXY and exit
+.1a6b	68		pla				pla
+.1a6c	18		clc				clc
+.1a6d	60		rts				rts
+.1a6e					Int32ShiftDivide:
+.1a6e	48		pha				pha 								; save AY
+.1a6f	5a		phy				phy
+.1a70	e8		inx				inx 								; clear S[X+2]
+.1a71	e8		inx				inx
+.1a72	20 b6 1e	jsr $1eb6			jsr 	FloatSetZero
+.1a75	ca		dex				dex
+.1a76	ca		dex				dex
+.1a77	a0 1f		ldy #$1f			ldy 	#31 						; loop 31 times.
+.1a79					_I32SDLoop:
+.1a79	20 8c 1a	jsr $1a8c			jsr 	FloatDivideCheck 			; check if subtract possible
+.1a7c	e8		inx				inx
+.1a7d	e8		inx				inx
+.1a7e	20 c6 1e	jsr $1ec6			jsr 	FloatRotateLeft				; shift 64 bit FPA left, rotating carry in
+.1a81	ca		dex				dex
+.1a82	ca		dex				dex
+.1a83	20 c6 1e	jsr $1ec6			jsr 	FloatRotateLeft
+.1a86	88		dey				dey 	 							; do 31 times
+.1a87	d0 f0		bne $1a79			bne 	_I32SDLoop
+.1a89	7a		ply				ply 								; restore AY and exit
+.1a8a	68		pla				pla
+.1a8b	60		rts				rts
+.1a8c					FloatDivideCheck:
+.1a8c	20 5c 1c	jsr $1c5c			jsr 	FloatSubTopTwoStack 		; subtract Stack[X+1] from Stack[X+0]
+.1a8f	b0 04		bcs $1a95			bcs 	_DCSExit 					; if carry set, then could do, exit
+.1a91	20 42 1c	jsr $1c42			jsr 	FloatAddTopTwoStack 		; add it back in
+.1a94	18		clc				clc 								; and return False
+.1a95					_DCSExit:
+.1a95	60		rts				rts
+.1a96					FloatFractionalPart:
+.1a96	5a		phy				phy
+.1a97	b5 30		lda $30,x			lda 	NSStatus,x 					; take absolute value
+.1a99	29 7f		and #$7f			and 	#$7F
+.1a9b	95 30		sta $30,x			sta 	NSStatus,x
+.1a9d	20 0b 1c	jsr $1c0b			jsr 	FloatNormalise
+.1aa0	b5 6c		lda $6c,x			lda 	NSExponent,x 				; calculate exponent-$E0 = digits to blank
+.1aa2	38		sec				sec
+.1aa3	e9 e0		sbc #$e0			sbc 	#$E0
+.1aa5	90 29		bcc $1ad0			bcc 	_FFPExit 					; already fractional
+.1aa7	c9 20		cmp #$20			cmp 	#32 						; will be zero as blanking 32+ digits.
+.1aa9	b0 22		bcs $1acd			bcs 	_FFPZero
+.1aab	a8		tay				tay 								; put count to do in Y
+.1aac	b5 60		lda $60,x			lda 	NSMantissa3,x 				; do each in turn.
+.1aae	20 d5 1a	jsr $1ad5			jsr 	_FFPPartial
+.1ab1	95 60		sta $60,x			sta 	NSMantissa3,x
+.1ab3	b5 54		lda $54,x			lda 	NSMantissa2,x
+.1ab5	20 d5 1a	jsr $1ad5			jsr 	_FFPPartial
+.1ab8	95 54		sta $54,x			sta 	NSMantissa2,x
+.1aba	b5 48		lda $48,x			lda 	NSMantissa1,x
+.1abc	20 d5 1a	jsr $1ad5			jsr 	_FFPPartial
+.1abf	95 48		sta $48,x			sta 	NSMantissa1,x
+.1ac1	b5 3c		lda $3c,x			lda 	NSMantissa0,x
+.1ac3	20 d5 1a	jsr $1ad5			jsr 	_FFPPartial
+.1ac6	95 3c		sta $3c,x			sta 	NSMantissa0,x
+.1ac8	20 d8 1e	jsr $1ed8			jsr 	FloatIsZero 					; zeroed check.
+.1acb	d0 03		bne $1ad0			bne 	_FFPExit
+.1acd					_FFPZero:
+.1acd	20 b6 1e	jsr $1eb6			jsr 	FloatSetZero
+.1ad0					_FFPExit:
+.1ad0	20 0b 1c	jsr $1c0b			jsr 	FloatNormalise
+.1ad3	7a		ply				ply
+.1ad4	60		rts				rts
+.1ad5					_FFPPartial:
+.1ad5	c0 00		cpy #$00			cpy 	#0 							; no more to do
+.1ad7	f0 17		beq $1af0			beq 	_FFFPPExit
+.1ad9	c0 08		cpy #$08			cpy 	#8 							; whole byte to do ?
+.1adb	b0 0c		bcs $1ae9			bcs 	_FFFPPWholeByte
+.1add	5a		phy				phy
+.1ade					_FFFPPLeft:
+.1ade	0a		asl a				asl 	a
+.1adf	88		dey				dey
+.1ae0	d0 fc		bne $1ade			bne 	_FFFPPLeft
+.1ae2	7a		ply				ply
+.1ae3					_FFFPPRight:
+.1ae3	4a		lsr a				lsr 	a
+.1ae4	88		dey				dey
+.1ae5	d0 fc		bne $1ae3			bne 	_FFFPPRight
+.1ae7	80 07		bra $1af0			bra 	_FFFPPExit
+.1ae9					_FFFPPWholeByte:
+.1ae9	98		tya				tya 								; subtract 8 from count
+.1aea	38		sec				sec
+.1aeb	e9 08		sbc #$08			sbc 	#8
+.1aed	a8		tay				tay
+.1aee	a9 00		lda #$00			lda 	#0 							; and clear all
+.1af0					_FFFPPExit:
+.1af0	60		rts				rts
+.1af1					FloatIntegerPart:
+.1af1	48		pha				pha
+.1af2	b5 6c		lda $6c,x			lda 	NSExponent,x 				; is it integer already ?
+.1af4	f0 1d		beq $1b13			beq 	_FIPExit 					; if so do nothing
+.1af6	20 d8 1e	jsr $1ed8			jsr 	FloatIsZero 				; is it zero ?
+.1af9	f0 15		beq $1b10			beq 	_FIPZero 					; if so return zero.
+.1afb	20 0b 1c	jsr $1c0b			jsr 	FloatNormalise 				; normalise
+.1afe	f0 10		beq $1b10			beq 	_FIPZero 					; normalised to zero, exit zero
+.1b00					_FIPShift:
+.1b00	b5 6c		lda $6c,x			lda 	NSExponent,x 				; if Exponent >= 0 exit.
+.1b02	10 07		bpl $1b0b			bpl 	_FIPCheckZero
+.1b04	20 cf 1e	jsr $1ecf			jsr 	FloatShiftRight 			; shift mantissa right
+.1b07	f6 6c		inc $6c,x			inc 	NSExponent,x 				; bump exponent
+.1b09	80 f5		bra $1b00			bra 	_FIPShift
+.1b0b					_FIPCheckZero:
+.1b0b	20 d8 1e	jsr $1ed8			jsr 	FloatIsZero 				; avoid -0 problem
+.1b0e	d0 03		bne $1b13			bne 	_FIPExit 					; set to zero if mantissa zero.
+.1b10					_FIPZero:
+.1b10	20 b6 1e	jsr $1eb6			jsr 	FloatSetZero
+.1b13					_FIPExit:
+.1b13	68		pla				pla
+.1b14	60		rts				rts
+.1b15					FloatIntegerPartDown:
+.1b15	48		pha				pha
+.1b16	5a		phy				phy
+.1b17	b5 6c		lda $6c,x			lda 	NSExponent,x 				; is it integer already ?
+.1b19	f0 36		beq $1b51			beq 	_FIPExit 					; if so do nothing
+.1b1b	20 d8 1e	jsr $1ed8			jsr 	FloatIsZero 				; is it zero ?
+.1b1e	f0 2e		beq $1b4e			beq 	_FIPZero 					; if so return zero.
+.1b20	20 0b 1c	jsr $1c0b			jsr 	FloatNormalise 				; normalise
+.1b23	f0 29		beq $1b4e			beq 	_FIPZero 					; normalised to zero, exit zero
+.1b25	a0 00		ldy #$00			ldy 	#0 							; reset the count of bits.
+.1b27					_FIPShift:
+.1b27	b5 6c		lda $6c,x			lda 	NSExponent,x 				; if Exponent >= 0 exit.
+.1b29	10 0a		bpl $1b35			bpl 	_FIPCheckDown
+.1b2b	20 cf 1e	jsr $1ecf			jsr 	FloatShiftRight 			; shift mantissa right
+.1b2e	90 01		bcc $1b31			bcc 	_FIPNoFrac 					; shifted a zero out ?
+.1b30	c8		iny				iny
+.1b31					_FIPNoFrac:
+.1b31	f6 6c		inc $6c,x			inc 	NSExponent,x 				; bump exponent
+.1b33	80 f2		bra $1b27			bra 	_FIPShift
+.1b35					_FIPCheckDown:
+.1b35	c0 00		cpy #$00			cpy 	#0 							; were there any fractional bits.
+.1b37	f0 10		beq $1b49			beq 	_FIPCheckZero
+.1b39	34 30		bit $30,x			bit 	NSStatus,x 					; +ve
+.1b3b	10 0c		bpl $1b49			bpl 	_FIPCheckZero
+.1b3d	e8		inx				inx 								; -ve so round *down*.
+.1b3e	a9 01		lda #$01			lda 	#1
+.1b40	20 b8 1e	jsr $1eb8			jsr 	FloatSetByte
+.1b43	20 78 1e	jsr $1e78			jsr 	FloatNegate
+.1b46	20 da 18	jsr $18da			jsr 	FloatAdd
+.1b49					_FIPCheckZero:
+.1b49	20 d8 1e	jsr $1ed8			jsr 	FloatIsZero 				; avoid -0 problem
+.1b4c	d0 03		bne $1b51			bne 	_FIPExit 					; set to zero if mantissa zero.
+.1b4e					_FIPZero:
+.1b4e	20 b6 1e	jsr $1eb6			jsr 	FloatSetZero
+.1b51					_FIPExit:
+.1b51	7a		ply				ply
+.1b52	68		pla				pla
+.1b53	60		rts				rts
+.1b54					FloatInt8Multiply:
+.1b54	5a		phy				phy
+.1b55	b5 3c		lda $3c,x			lda 	NSMantissa0,x 				; right shifted multiplier in Y
+.1b57	a8		tay				tay
+.1b58	74 3c		stz $3c,x			stz 	NSMantissa0,x 				; zero the result (already 8 bit constant)
+.1b5a					_FI8MLoop:
+.1b5a	98		tya				tya 								; shift right shifter right into carry
+.1b5b	4a		lsr a				lsr 	a
+.1b5c	a8		tay				tay
+.1b5d	90 0d		bcc $1b6c			bcc 	_FI8MNoAdd
+.1b5f	18		clc				clc
+.1b60	b5 3c		lda $3c,x			lda 	NSMantissa0,x
+.1b62	75 3d		adc $3d,x			adc 	NSMantissa0+1,x
+.1b64	95 3c		sta $3c,x			sta 	NSMantissa0,x
+.1b66	b5 48		lda $48,x			lda 	NSMantissa1,x
+.1b68	75 49		adc $49,x			adc 	NSMantissa1+1,x
+.1b6a	95 48		sta $48,x			sta 	NSMantissa1,x
+.1b6c					_FI8MNoAdd:
+.1b6c	16 3d		asl $3d,x			asl 	NSMantissa0+1,x 			; shift adder left
+.1b6e	36 49		rol $49,x			rol 	NSMantissa1+1,x
+.1b70	c0 00		cpy #$00			cpy 	#0
+.1b72	d0 e6		bne $1b5a			bne 	_FI8MLoop 					; until right shifter zero.
+.1b74	7a		ply				ply
+.1b75	60		rts				rts
+.1b76					FloatMultiply:
+.1b76	ca		dex				dex
+.1b77	b5 6c		lda $6c,x			lda 	NSExponent,x 				; can use optimised ?
+.1b79	15 6d		ora $6d,x			ora 	NSExponent+1,x
+.1b7b	15 60		ora $60,x			ora 	NSMantissa3,x
+.1b7d	15 61		ora $61,x			ora 	NSMantissa3+1,x
+.1b7f	d0 21		bne $1ba2			bne 	_FMUseFloat
+.1b81	b5 30		lda $30,x			lda 	NSStatus,x 					; check if it is 8 bit unsigned
+.1b83	15 31		ora $31,x			ora 	NSStatus+1,x
+.1b85	29 80		and #$80			and 	#$80
+.1b87	15 60		ora $60,x			ora 	NSMantissa3,x
+.1b89	15 54		ora $54,x			ora 	NSMantissa2,x
+.1b8b	15 48		ora $48,x			ora 	NSMantissa1,x
+.1b8d	15 61		ora $61,x			ora 	NSMantissa3+1,x
+.1b8f	15 55		ora $55,x			ora 	NSMantissa2+1,x
+.1b91	15 49		ora $49,x			ora 	NSMantissa1+1,x
+.1b93	d0 04		bne $1b99			bne 	_FMInt32
+.1b95	20 54 1b	jsr $1b54			jsr 	FloatInt8Multiply 			; use fast 8x8 multiply.
+.1b98	60		rts				rts
+.1b99					_FMInt32:
+.1b99	20 c3 1b	jsr $1bc3			jsr 	FloatMultiplyShort			; use the int32 one.
+.1b9c	18		clc				clc 								; fix it up if gone out of range
+.1b9d	75 6c		adc $6c,x			adc 	NSExponent,x
+.1b9f	95 6c		sta $6c,x			sta 	NSExponent,x
+.1ba1	60		rts				rts
+.1ba2					_FMUseFloat:
+.1ba2	20 0b 1c	jsr $1c0b			jsr 	FloatNormalise		 		; normalise S[X] and exit if zero
+.1ba5	f0 18		beq $1bbf			beq 	_FDExit 					; return zero if zero (e.g. zero*something)
+.1ba7	e8		inx				inx
+.1ba8	20 0b 1c	jsr $1c0b			jsr 	FloatNormalise		 		; normalise S[x+1] and error if zero.
+.1bab	ca		dex				dex
+.1bac	c9 00		cmp #$00			cmp 	#0
+.1bae	f0 0c		beq $1bbc			beq 	_FDSetZero
+.1bb0	20 c3 1b	jsr $1bc3			jsr 	FloatMultiplyShort 			; calculate the result.
+.1bb3	75 6c		adc $6c,x			adc 	NSExponent,x 				; calculate exponent including the shift.
+.1bb5	18		clc				clc
+.1bb6	75 6d		adc $6d,x			adc 	NSExponent+1,x
+.1bb8	95 6c		sta $6c,x			sta 	NSExponent,x
+.1bba	80 03		bra $1bbf			bra 	_FDExit
+.1bbc					_FDSetZero:
+.1bbc	20 b6 1e	jsr $1eb6			jsr 	FloatSetZero 				; return 0
+.1bbf					_FDExit:
+.1bbf	20 0b 1c	jsr $1c0b			jsr 	FloatNormalise 				; normalise the result
+.1bc2	60		rts				rts
+.1bc3					FloatMultiplyShort:
+.1bc3	5a		phy				phy 								; save Y
+.1bc4	20 99 1e	jsr $1e99			jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2]
+.1bc7	20 b2 1e	jsr $1eb2			jsr 	FloatSetZeroMantissaOnly 	; set mantissa S[X] to zero
+.1bca	a0 00		ldy #$00			ldy 	#0 							; Y is the shift count.
+.1bcc					_I32MLoop:
+.1bcc	b5 3e		lda $3e,x			lda 	NSMantissa0+2,x 			; check S[X+2] is zero
+.1bce	15 4a		ora $4a,x			ora 	NSMantissa1+2,x
+.1bd0	15 56		ora $56,x			ora 	NSMantissa2+2,x
+.1bd2	15 62		ora $62,x			ora 	NSMantissa3+2,x
+.1bd4	f0 25		beq $1bfb			beq 	_I32MExit 					; exit if zero
+.1bd6	b5 3e		lda $3e,x			lda 	NSMantissa0+2,x 			; check LSB of n1
+.1bd8	29 01		and #$01			and 	#1
+.1bda	f0 0d		beq $1be9			beq 	_I32MNoAdd
+.1bdc	20 42 1c	jsr $1c42			jsr 	FloatAddTopTwoStack 		; if so add S[X+1] to S[X+0]
+.1bdf	b5 60		lda $60,x			lda 	NSMantissa3,x 				; has MantissaA overflowed ?
+.1be1	10 06		bpl $1be9			bpl 	_I32MNoAdd
+.1be3					_I32ShiftRight:
+.1be3	20 cf 1e	jsr $1ecf			jsr 	FloatShiftRight 			; shift S[X] right
+.1be6	c8		iny				iny 								; increment shift count
+.1be7	80 09		bra $1bf2			bra 	_I32MShiftUpper 			; n2 is doubled by default.
+.1be9					_I32MNoAdd:
+.1be9	34 61		bit $61,x			bit 	NSMantissa3+1,x				; if we can't shift S[X+1] left, shift everything right
+.1beb	70 f6		bvs $1be3			bvs 	_I32ShiftRight 				; instead.
+.1bed	e8		inx				inx
+.1bee	20 c5 1e	jsr $1ec5			jsr 	FloatShiftLeft 				; shift additive S[X+1] left
+.1bf1	ca		dex				dex
+.1bf2					_I32MShiftUpper:
+.1bf2	e8		inx				inx 								; shift S[X+2] right
+.1bf3	e8		inx				inx
+.1bf4	20 cf 1e	jsr $1ecf			jsr 	FloatShiftRight
+.1bf7	ca		dex				dex
+.1bf8	ca		dex				dex
+.1bf9	80 d1		bra $1bcc			bra 	_I32MLoop 					; try again.
+.1bfb					_I32MExit:
+.1bfb	20 01 1c	jsr $1c01			jsr 	FloatCalculateSign
+.1bfe	98		tya				tya 								; shift in A
+.1bff	7a		ply				ply 								; restore Y and exit
+.1c00	60		rts				rts
+.1c01					FloatCalculateSign:
+.1c01	b5 30		lda $30,x			lda 	NSStatus,x 					; sign of result is 0 if same, 1 if different.
+.1c03	16 30		asl $30,x			asl 	NSStatus,x 					; shift result left
+.1c05	55 31		eor $31,x			eor 	NSStatus+1,x
+.1c07	0a		asl a				asl 	a 							; shift bit 7 into carry
+.1c08	76 30		ror $30,x			ror 	NSStatus,x 					; shift right into status byte.
+.1c0a	60		rts				rts
+.1c0b					FloatNormalise:
+.1c0b	20 d8 1e	jsr $1ed8			jsr 	FloatIsZero 				; if zero exit
+.1c0e	d0 07		bne $1c17			bne 	_NSNormaliseOptimise 		; if so, normalise it.
+.1c10	16 30		asl $30,x			asl 	NSStatus,x 					; clear the sign bit.
+.1c12	76 30		ror $30,x			ror 	NSStatus,x 					; (no -0)
+.1c14	a9 00		lda #$00			lda 	#0 							; set Z flag
+.1c16	60		rts				rts
+.1c17					_NSNormaliseOptimise:
+.1c17	b5 60		lda $60,x			lda 	NSMantissa3,x 				; upper byte zero ?
+.1c19	d0 19		bne $1c34			bne 	_NSNormaliseLoop
+.1c1b	b5 54		lda $54,x			lda 	NSMantissa2,x 				; byte normalise
+.1c1d	30 15		bmi $1c34			bmi 	_NSNormaliseLoop 			; can't do it if bit 7 set of 2
+.1c1f	95 60		sta $60,x			sta 	NSMantissa3,x
+.1c21	b5 48		lda $48,x			lda 	NSMantissa1,x
+.1c23	95 54		sta $54,x			sta 	NSMantissa2,x
+.1c25	b5 3c		lda $3c,x			lda 	NSMantissa0,x
+.1c27	95 48		sta $48,x			sta 	NSMantissa1,x
+.1c29	74 3c		stz $3c,x			stz 	NSMantissa0,x
+.1c2b	b5 6c		lda $6c,x			lda 	NSExponent,x
+.1c2d	38		sec				sec
+.1c2e	e9 08		sbc #$08			sbc 	#8
+.1c30	95 6c		sta $6c,x			sta 	NSExponent,x
+.1c32	80 e3		bra $1c17			bra 	_NSNormaliseOptimise
+.1c34					_NSNormaliseLoop:
+.1c34	34 60		bit $60,x			bit 	NSMantissa3,x 				; bit 30 set ?
+.1c36	70 07		bvs $1c3f			bvs 	_NSNExit 					; exit if so with Z flag clear
+.1c38	20 c5 1e	jsr $1ec5			jsr 	FloatShiftLeft 				; shift mantissa left
+.1c3b	d6 6c		dec $6c,x			dec 	NSExponent,x 				; adjust exponent
+.1c3d	80 f5		bra $1c34			bra 	_NSNormaliseLoop
+.1c3f					_NSNExit:
+.1c3f	a9 ff		lda #$ff			lda 	#$FF 						; clear Z flag
+.1c41	60		rts				rts
+.1c42					FloatAddTopTwoStack:
+.1c42	18		clc				clc
+.1c43	b5 3c		lda $3c,x			lda		NSMantissa0,x
+.1c45	75 3d		adc $3d,x			adc 		NSMantissa0+1,x
+.1c47	95 3c		sta $3c,x			sta 	NSMantissa0,x
+.1c49	b5 48		lda $48,x			lda		NSMantissa1,x
+.1c4b	75 49		adc $49,x			adc 		NSMantissa1+1,x
+.1c4d	95 48		sta $48,x			sta 	NSMantissa1,x
+.1c4f	b5 54		lda $54,x			lda		NSMantissa2,x
+.1c51	75 55		adc $55,x			adc 		NSMantissa2+1,x
+.1c53	95 54		sta $54,x			sta 	NSMantissa2,x
+.1c55	b5 60		lda $60,x			lda		NSMantissa3,x
+.1c57	75 61		adc $61,x			adc 		NSMantissa3+1,x
+.1c59	95 60		sta $60,x			sta 	NSMantissa3,x
+.1c5b	60		rts				rts
+.1c5c					FloatSubTopTwoStack:
+.1c5c	38		sec				sec
+.1c5d	b5 3c		lda $3c,x			lda		NSMantissa0,x
+.1c5f	f5 3d		sbc $3d,x			sbc 		NSMantissa0+1,x
+.1c61	95 3c		sta $3c,x			sta 	NSMantissa0,x
+.1c63	b5 48		lda $48,x			lda		NSMantissa1,x
+.1c65	f5 49		sbc $49,x			sbc 		NSMantissa1+1,x
+.1c67	95 48		sta $48,x			sta 	NSMantissa1,x
+.1c69	b5 54		lda $54,x			lda		NSMantissa2,x
+.1c6b	f5 55		sbc $55,x			sbc 		NSMantissa2+1,x
+.1c6d	95 54		sta $54,x			sta 	NSMantissa2,x
+.1c6f	b5 60		lda $60,x			lda		NSMantissa3,x
+.1c71	f5 61		sbc $61,x			sbc 		NSMantissa3+1,x
+.1c73	95 60		sta $60,x			sta 	NSMantissa3,x
+.1c75	60		rts				rts
+.1c76					FloatInt32Add:
+.1c76	b5 30		lda $30,x			lda 	NSStatus,x 					; signs are the same, can just add the mantissae.
+.1c78	55 31		eor $31,x			eor 	NSStatus+1,x
+.1c7a	30 04		bmi $1c80			bmi 	_DiffSigns
+.1c7c	20 42 1c	jsr $1c42			jsr		FloatAddTopTwoStack
+.1c7f	60		rts				rts
+.1c80					_DiffSigns:
+.1c80	20 5c 1c	jsr $1c5c			jsr 	FloatSubTopTwoStack 		; do a physical subtraction
+.1c83	34 60		bit $60,x			bit 	NSMantissa3,x 				; result is +ve, okay
+.1c85	10 07		bpl $1c8e			bpl 	_AddExit
+.1c87	b5 31		lda $31,x			lda 	NSStatus+1,x 				; sign is that of 11th value
+.1c89	95 30		sta $30,x			sta 	NSStatus,x
+.1c8b	20 7f 1e	jsr $1e7f			jsr 	FloatNegateMantissa 		; negate the mantissa and exit
+.1c8e					_AddExit:
+.1c8e	20 d8 1e	jsr $1ed8			jsr 	FloatIsZero 				; check for -0
+.1c91	d0 02		bne $1c95			bne 	_AddNonZero
+.1c93	74 30		stz $30,x			stz 	NSStatus,x
+.1c95					_AddNonZero:
+.1c95	60		rts				rts
 =1					ESTA_Low = 1 								; state 1 is 1 byte, switches when A >= 24.
 =2					ESTA_High = 2 								; loading up to 32 bit integer in the mantissa
 =3					ESTA_Decimal = 3 							; fractional part.
-.1c85					FloatEncodeStart:
-.1c85	38		sec				sec
-.1c86	80 01		bra $1c89			bra 	FloatEncodeContinue+1
-.1c88					FloatEncodeContinue:
-.1c88	18		clc				clc
-.1c89					FloatEncode:
-.1c89	08		php				php 								; save reset flag.
-.1c8a	c9 2e		cmp #$2e			cmp 	#"." 						; only accept 0-9 and .
-.1c8c	f0 15		beq $1ca3			beq 	_ENIsOkay
-.1c8e	c9 30		cmp #$30			cmp 	#"0"
-.1c90	90 04		bcc $1c96			bcc 	_ENBadNumber
-.1c92	c9 3a		cmp #$3a			cmp 	#"9"+1
-.1c94	90 0d		bcc $1ca3			bcc 	_ENIsOkay
-.1c96					_ENBadNumber:
-.1c96	28		plp				plp 								; throw saved reset
-.1c97	ad 39 05	lda $0539			lda 	encodeState 				; if in decimal mode, construct final number
-.1c9a	c9 03		cmp #$03			cmp 	#ESTA_Decimal
-.1c9c	d0 03		bne $1ca1			bne 	_ENFail
-.1c9e	4c 1b 1d	jmp $1d1b			jmp 	_ENConstructFinal
-.1ca1					_ENFail:
-.1ca1	18		clc				clc 								; not allowed
-.1ca2	60		rts				rts
-.1ca3					_ENIsOkay:
-.1ca3	28		plp				plp 								; are we restarting
-.1ca4	90 15		bcc $1cbb			bcc 	_ENNoRestart
-.1ca6					_ENStartEncode:
-.1ca6	c9 2e		cmp #$2e			cmp 	#'.'						; first is decimal place, go straight to that.
-.1ca8	f0 0c		beq $1cb6			beq 	_ENFirstDP
-.1caa	29 0f		and #$0f			and 	#15 						; put digit in mantissa, initially a single digit constant
-.1cac	20 a7 1e	jsr $1ea7			jsr 	FloatSetByte 				; in single byte mode.
-.1caf	a9 01		lda #$01			lda 	#ESTA_Low
-.1cb1					_ENExitChange:
-.1cb1	8d 39 05	sta $0539			sta 	encodeState 				; save new state
-.1cb4	38		sec				sec
-.1cb5	60		rts				rts
-.1cb6					_ENFirstDP:
-.1cb6	20 a5 1e	jsr $1ea5			jsr 	FloatSetZero 				; clear integer part
-.1cb9	80 3c		bra $1cf7			bra 	_ESTASwitchFloat			; go straight to float and exi
-.1cbb					_ENNoRestart:
-.1cbb	48		pha				pha 								; save digit or DP on stack.
-.1cbc	ad 39 05	lda $0539			lda 	encodeState 				; get current state
-.1cbf	c9 01		cmp #$01			cmp 	#ESTA_Low
-.1cc1	f0 09		beq $1ccc			beq  	_ESTALowState
-.1cc3	c9 02		cmp #$02			cmp 	#ESTA_High
-.1cc5	f0 26		beq $1ced			beq 	_ESTAHighState
-.1cc7	c9 03		cmp #$03			cmp 	#ESTA_Decimal
-.1cc9	f0 38		beq $1d03			beq 	_ESTADecimalState
->1ccb	db						.byte 	$DB 						; causes a break in the emulator
-.1ccc					_ESTALowState:
-.1ccc	68		pla				pla 								; get value back
-.1ccd	c9 2e		cmp #$2e			cmp 	#"."						; decimal point
-.1ccf	f0 26		beq $1cf7			beq 	_ESTASwitchFloat 			; then we need to do the floating point bit
-.1cd1	29 0f		and #$0f			and 	#15 						; make digit
-.1cd3	8d 3a 05	sta $053a			sta 	digitTemp 					; save it.
-.1cd6	b5 3c		lda $3c,x			lda 	NSMantissa0,x 				; x mantissa0 x 10 and add it
-.1cd8	0a		asl a				asl 	a
-.1cd9	0a		asl a				asl 	a
-.1cda	75 3c		adc $3c,x			adc 	NSMantissa0,x
-.1cdc	0a		asl a				asl 	a
-.1cdd	6d 3a 05	adc $053a			adc 	digitTemp
-.1ce0	95 3c		sta $3c,x			sta 	NSMantissa0,x
-.1ce2	c9 19		cmp #$19			cmp 	#25 						; if >= 25 cannot guarantee next will be okay
-.1ce4	90 05		bcc $1ceb			bcc 	_ESTANoSwitch 				; as could be 25 x 10 + 9
-.1ce6	a9 02		lda #$02			lda 	#ESTA_High 					; so if so, switch to the high encoding state
-.1ce8	8d 39 05	sta $0539			sta 	encodeState
-.1ceb					_ESTANoSwitch:
-.1ceb	38		sec				sec
-.1cec	60		rts				rts
-.1ced					_ESTAHighState:
-.1ced	68		pla				pla 								; get value back
-.1cee	c9 2e		cmp #$2e			cmp 	#"." 						; if DP switch to dloat
-.1cf0	f0 05		beq $1cf7			beq 	_ESTASwitchFloat
-.1cf2	20 4d 1d	jsr $1d4d			jsr 	ESTAShiftDigitIntoMantissa 	; a routine does this.
-.1cf5	38		sec				sec
-.1cf6	60		rts				rts
-.1cf7					_ESTASwitchFloat:
-.1cf7	9c 3b 05	stz $053b			stz 	decimalCount 				; reset the count of digits - we divide by 10^n at the end.
-.1cfa	e8		inx				inx 								; zero the decimal additive.
-.1cfb	20 a5 1e	jsr $1ea5			jsr 	FloatSetZero
-.1cfe	ca		dex				dex
-.1cff	a9 03		lda #$03			lda 	#ESTA_Decimal 				; switch to decimal mode
-.1d01	80 ae		bra $1cb1			bra 	_ENExitChange
-.1d03					_ESTADecimalState:
-.1d03	68		pla				pla 								; digit.
-.1d04	c9 2e		cmp #$2e			cmp 	#"." 						; fail on 11th decimal point.
-.1d06	f0 99		beq $1ca1			beq 	_ENFail
-.1d08	e8		inx				inx 								; put digit into fractional part of X+1
-.1d09	20 4d 1d	jsr $1d4d			jsr 	ESTAShiftDigitIntoMantissa
-.1d0c	ca		dex				dex
-.1d0d	ee 3b 05	inc $053b			inc 	decimalCount 				; bump the count of decimals
-.1d10	ad 3b 05	lda $053b			lda 	decimalCount 				; too many decimal digits.
-.1d13	c9 0b		cmp #$0b			cmp 	#11
-.1d15	f0 02		beq $1d19			beq 	_ESTADSFail
-.1d17	38		sec				sec
-.1d18	60		rts				rts
-.1d19					_ESTADSFail:
-.1d19	18		clc				clc
-.1d1a	60		rts				rts
-.1d1b					_ENConstructFinal:
-.1d1b	ad 3b 05	lda $053b			lda 	decimalCount 				; get decimal count
-.1d1e	f0 2b		beq $1d4b			beq 	_ENCFExit 					; no decimals
-.1d20	5a		phy				phy
-.1d21	0a		asl a				asl 	a 							; x 4 and CLC
-.1d22	0a		asl a				asl 	a
-.1d23	6d 3b 05	adc $053b			adc 	decimalCount
-.1d26	a8		tay				tay
-.1d27	b9 b2 19	lda $19b2,y			lda 	FloatScalarTable-5,y 		; copy decimal scalar to X+2
-.1d2a	95 3e		sta $3e,x			sta 	NSMantissa0+2,x  			; this is 10^-n
-.1d2c	b9 b3 19	lda $19b3,y			lda 	FloatScalarTable-5+1,y
-.1d2f	95 4a		sta $4a,x			sta 	NSMantissa1+2,x
-.1d31	b9 b4 19	lda $19b4,y			lda 	FloatScalarTable-5+2,y
-.1d34	95 56		sta $56,x			sta 	NSMantissa2+2,x
-.1d36	b9 b5 19	lda $19b5,y			lda 	FloatScalarTable-5+3,y
-.1d39	95 62		sta $62,x			sta 	NSMantissa3+2,x
-.1d3b	b9 b6 19	lda $19b6,y			lda 	FloatScalarTable-5+4,y
-.1d3e	95 6e		sta $6e,x			sta 	NSExponent+2,x
-.1d40	74 32		stz $32,x			stz 	NSStatus+2,x 				; make +ve
-.1d42	e8		inx				inx 								; multiply decimal const by decimal scalar
-.1d43	e8		inx				inx
-.1d44	20 65 1b	jsr $1b65			jsr 	FloatMultiply
-.1d47	20 c9 18	jsr $18c9			jsr 	FloatAdd 					; add to integer part.
-.1d4a	7a		ply				ply
-.1d4b					_ENCFExit:
-.1d4b	18		clc				clc 								; reject the digit.
-.1d4c	60		rts				rts
-.1d4d					ESTAShiftDigitIntoMantissa:
-.1d4d	29 0f		and #$0f			and 	#15 						; save digit
-.1d4f	48		pha				pha
-.1d50	b5 60		lda $60,x			lda 	NSMantissa3,x 				; push mantissa on stack
-.1d52	48		pha				pha
-.1d53	b5 54		lda $54,x			lda 	NSMantissa2,x
-.1d55	48		pha				pha
-.1d56	b5 48		lda $48,x			lda 	NSMantissa1,x
-.1d58	48		pha				pha
-.1d59	b5 3c		lda $3c,x			lda 	NSMantissa0,x
-.1d5b	48		pha				pha
-.1d5c	20 b4 1e	jsr $1eb4			jsr 	FloatShiftLeft 				; x 2
-.1d5f	20 b4 1e	jsr $1eb4			jsr 	FloatShiftLeft 				; x 4
-.1d62	18		clc				clc 								; pop mantissa and add
-.1d63	68		pla				pla
-.1d64	75 3c		adc $3c,x			adc 	NSMantissa0,x
-.1d66	95 3c		sta $3c,x			sta 	NSMantissa0,x
-.1d68	68		pla				pla
-.1d69	75 48		adc $48,x			adc 	NSMantissa1,x
-.1d6b	95 48		sta $48,x			sta 	NSMantissa1,x
-.1d6d	68		pla				pla
-.1d6e	75 54		adc $54,x			adc 	NSMantissa2,x
-.1d70	95 54		sta $54,x			sta 	NSMantissa2,x
-.1d72	68		pla				pla
-.1d73	75 60		adc $60,x			adc 	NSMantissa3,x
-.1d75	95 60		sta $60,x			sta 	NSMantissa3,x 				; x 5
-.1d77	20 b4 1e	jsr $1eb4			jsr 	FloatShiftLeft 				; x 10
-.1d7a	68		pla				pla 								; add digit
-.1d7b	18		clc				clc
-.1d7c	75 3c		adc $3c,x			adc 	NSMantissa0,x
-.1d7e	95 3c		sta $3c,x			sta 	NSMantissa0,x
-.1d80	90 0a		bcc $1d8c			bcc 	_ESTASDExit
-.1d82	f6 48		inc $48,x			inc 	NSMantissa1,x
-.1d84	d0 06		bne $1d8c			bne 	_ESTASDExit
-.1d86	f6 54		inc $54,x			inc 	NSMantissa2,x
-.1d88	d0 02		bne $1d8c			bne 	_ESTASDExit
-.1d8a	f6 60		inc $60,x			inc 	NSMantissa3,x
-.1d8c					_ESTASDExit:
-.1d8c	60		rts				rts
+.1c96					FloatEncodeStart:
+.1c96	38		sec				sec
+.1c97	80 01		bra $1c9a			bra 	FloatEncodeContinue+1
+.1c99					FloatEncodeContinue:
+.1c99	18		clc				clc
+.1c9a					FloatEncode:
+.1c9a	08		php				php 								; save reset flag.
+.1c9b	c9 2e		cmp #$2e			cmp 	#"." 						; only accept 0-9 and .
+.1c9d	f0 15		beq $1cb4			beq 	_ENIsOkay
+.1c9f	c9 30		cmp #$30			cmp 	#"0"
+.1ca1	90 04		bcc $1ca7			bcc 	_ENBadNumber
+.1ca3	c9 3a		cmp #$3a			cmp 	#"9"+1
+.1ca5	90 0d		bcc $1cb4			bcc 	_ENIsOkay
+.1ca7					_ENBadNumber:
+.1ca7	28		plp				plp 								; throw saved reset
+.1ca8	ad 39 05	lda $0539			lda 	encodeState 				; if in decimal mode, construct final number
+.1cab	c9 03		cmp #$03			cmp 	#ESTA_Decimal
+.1cad	d0 03		bne $1cb2			bne 	_ENFail
+.1caf	4c 2c 1d	jmp $1d2c			jmp 	_ENConstructFinal
+.1cb2					_ENFail:
+.1cb2	18		clc				clc 								; not allowed
+.1cb3	60		rts				rts
+.1cb4					_ENIsOkay:
+.1cb4	28		plp				plp 								; are we restarting
+.1cb5	90 15		bcc $1ccc			bcc 	_ENNoRestart
+.1cb7					_ENStartEncode:
+.1cb7	c9 2e		cmp #$2e			cmp 	#'.'						; first is decimal place, go straight to that.
+.1cb9	f0 0c		beq $1cc7			beq 	_ENFirstDP
+.1cbb	29 0f		and #$0f			and 	#15 						; put digit in mantissa, initially a single digit constant
+.1cbd	20 b8 1e	jsr $1eb8			jsr 	FloatSetByte 				; in single byte mode.
+.1cc0	a9 01		lda #$01			lda 	#ESTA_Low
+.1cc2					_ENExitChange:
+.1cc2	8d 39 05	sta $0539			sta 	encodeState 				; save new state
+.1cc5	38		sec				sec
+.1cc6	60		rts				rts
+.1cc7					_ENFirstDP:
+.1cc7	20 b6 1e	jsr $1eb6			jsr 	FloatSetZero 				; clear integer part
+.1cca	80 3c		bra $1d08			bra 	_ESTASwitchFloat			; go straight to float and exi
+.1ccc					_ENNoRestart:
+.1ccc	48		pha				pha 								; save digit or DP on stack.
+.1ccd	ad 39 05	lda $0539			lda 	encodeState 				; get current state
+.1cd0	c9 01		cmp #$01			cmp 	#ESTA_Low
+.1cd2	f0 09		beq $1cdd			beq  	_ESTALowState
+.1cd4	c9 02		cmp #$02			cmp 	#ESTA_High
+.1cd6	f0 26		beq $1cfe			beq 	_ESTAHighState
+.1cd8	c9 03		cmp #$03			cmp 	#ESTA_Decimal
+.1cda	f0 38		beq $1d14			beq 	_ESTADecimalState
+>1cdc	db						.byte 	$DB 						; causes a break in the emulator
+.1cdd					_ESTALowState:
+.1cdd	68		pla				pla 								; get value back
+.1cde	c9 2e		cmp #$2e			cmp 	#"."						; decimal point
+.1ce0	f0 26		beq $1d08			beq 	_ESTASwitchFloat 			; then we need to do the floating point bit
+.1ce2	29 0f		and #$0f			and 	#15 						; make digit
+.1ce4	8d 3a 05	sta $053a			sta 	digitTemp 					; save it.
+.1ce7	b5 3c		lda $3c,x			lda 	NSMantissa0,x 				; x mantissa0 x 10 and add it
+.1ce9	0a		asl a				asl 	a
+.1cea	0a		asl a				asl 	a
+.1ceb	75 3c		adc $3c,x			adc 	NSMantissa0,x
+.1ced	0a		asl a				asl 	a
+.1cee	6d 3a 05	adc $053a			adc 	digitTemp
+.1cf1	95 3c		sta $3c,x			sta 	NSMantissa0,x
+.1cf3	c9 19		cmp #$19			cmp 	#25 						; if >= 25 cannot guarantee next will be okay
+.1cf5	90 05		bcc $1cfc			bcc 	_ESTANoSwitch 				; as could be 25 x 10 + 9
+.1cf7	a9 02		lda #$02			lda 	#ESTA_High 					; so if so, switch to the high encoding state
+.1cf9	8d 39 05	sta $0539			sta 	encodeState
+.1cfc					_ESTANoSwitch:
+.1cfc	38		sec				sec
+.1cfd	60		rts				rts
+.1cfe					_ESTAHighState:
+.1cfe	68		pla				pla 								; get value back
+.1cff	c9 2e		cmp #$2e			cmp 	#"." 						; if DP switch to dloat
+.1d01	f0 05		beq $1d08			beq 	_ESTASwitchFloat
+.1d03	20 5e 1d	jsr $1d5e			jsr 	ESTAShiftDigitIntoMantissa 	; a routine does this.
+.1d06	38		sec				sec
+.1d07	60		rts				rts
+.1d08					_ESTASwitchFloat:
+.1d08	9c 3b 05	stz $053b			stz 	decimalCount 				; reset the count of digits - we divide by 10^n at the end.
+.1d0b	e8		inx				inx 								; zero the decimal additive.
+.1d0c	20 b6 1e	jsr $1eb6			jsr 	FloatSetZero
+.1d0f	ca		dex				dex
+.1d10	a9 03		lda #$03			lda 	#ESTA_Decimal 				; switch to decimal mode
+.1d12	80 ae		bra $1cc2			bra 	_ENExitChange
+.1d14					_ESTADecimalState:
+.1d14	68		pla				pla 								; digit.
+.1d15	c9 2e		cmp #$2e			cmp 	#"." 						; fail on 11th decimal point.
+.1d17	f0 99		beq $1cb2			beq 	_ENFail
+.1d19	e8		inx				inx 								; put digit into fractional part of X+1
+.1d1a	20 5e 1d	jsr $1d5e			jsr 	ESTAShiftDigitIntoMantissa
+.1d1d	ca		dex				dex
+.1d1e	ee 3b 05	inc $053b			inc 	decimalCount 				; bump the count of decimals
+.1d21	ad 3b 05	lda $053b			lda 	decimalCount 				; too many decimal digits.
+.1d24	c9 0b		cmp #$0b			cmp 	#11
+.1d26	f0 02		beq $1d2a			beq 	_ESTADSFail
+.1d28	38		sec				sec
+.1d29	60		rts				rts
+.1d2a					_ESTADSFail:
+.1d2a	18		clc				clc
+.1d2b	60		rts				rts
+.1d2c					_ENConstructFinal:
+.1d2c	ad 3b 05	lda $053b			lda 	decimalCount 				; get decimal count
+.1d2f	f0 2b		beq $1d5c			beq 	_ENCFExit 					; no decimals
+.1d31	5a		phy				phy
+.1d32	0a		asl a				asl 	a 							; x 4 and CLC
+.1d33	0a		asl a				asl 	a
+.1d34	6d 3b 05	adc $053b			adc 	decimalCount
+.1d37	a8		tay				tay
+.1d38	b9 c3 19	lda $19c3,y			lda 	FloatScalarTable-5,y 		; copy decimal scalar to X+2
+.1d3b	95 3e		sta $3e,x			sta 	NSMantissa0+2,x  			; this is 10^-n
+.1d3d	b9 c4 19	lda $19c4,y			lda 	FloatScalarTable-5+1,y
+.1d40	95 4a		sta $4a,x			sta 	NSMantissa1+2,x
+.1d42	b9 c5 19	lda $19c5,y			lda 	FloatScalarTable-5+2,y
+.1d45	95 56		sta $56,x			sta 	NSMantissa2+2,x
+.1d47	b9 c6 19	lda $19c6,y			lda 	FloatScalarTable-5+3,y
+.1d4a	95 62		sta $62,x			sta 	NSMantissa3+2,x
+.1d4c	b9 c7 19	lda $19c7,y			lda 	FloatScalarTable-5+4,y
+.1d4f	95 6e		sta $6e,x			sta 	NSExponent+2,x
+.1d51	74 32		stz $32,x			stz 	NSStatus+2,x 				; make +ve
+.1d53	e8		inx				inx 								; multiply decimal const by decimal scalar
+.1d54	e8		inx				inx
+.1d55	20 76 1b	jsr $1b76			jsr 	FloatMultiply
+.1d58	20 da 18	jsr $18da			jsr 	FloatAdd 					; add to integer part.
+.1d5b	7a		ply				ply
+.1d5c					_ENCFExit:
+.1d5c	18		clc				clc 								; reject the digit.
+.1d5d	60		rts				rts
+.1d5e					ESTAShiftDigitIntoMantissa:
+.1d5e	29 0f		and #$0f			and 	#15 						; save digit
+.1d60	48		pha				pha
+.1d61	b5 60		lda $60,x			lda 	NSMantissa3,x 				; push mantissa on stack
+.1d63	48		pha				pha
+.1d64	b5 54		lda $54,x			lda 	NSMantissa2,x
+.1d66	48		pha				pha
+.1d67	b5 48		lda $48,x			lda 	NSMantissa1,x
+.1d69	48		pha				pha
+.1d6a	b5 3c		lda $3c,x			lda 	NSMantissa0,x
+.1d6c	48		pha				pha
+.1d6d	20 c5 1e	jsr $1ec5			jsr 	FloatShiftLeft 				; x 2
+.1d70	20 c5 1e	jsr $1ec5			jsr 	FloatShiftLeft 				; x 4
+.1d73	18		clc				clc 								; pop mantissa and add
+.1d74	68		pla				pla
+.1d75	75 3c		adc $3c,x			adc 	NSMantissa0,x
+.1d77	95 3c		sta $3c,x			sta 	NSMantissa0,x
+.1d79	68		pla				pla
+.1d7a	75 48		adc $48,x			adc 	NSMantissa1,x
+.1d7c	95 48		sta $48,x			sta 	NSMantissa1,x
+.1d7e	68		pla				pla
+.1d7f	75 54		adc $54,x			adc 	NSMantissa2,x
+.1d81	95 54		sta $54,x			sta 	NSMantissa2,x
+.1d83	68		pla				pla
+.1d84	75 60		adc $60,x			adc 	NSMantissa3,x
+.1d86	95 60		sta $60,x			sta 	NSMantissa3,x 				; x 5
+.1d88	20 c5 1e	jsr $1ec5			jsr 	FloatShiftLeft 				; x 10
+.1d8b	68		pla				pla 								; add digit
+.1d8c	18		clc				clc
+.1d8d	75 3c		adc $3c,x			adc 	NSMantissa0,x
+.1d8f	95 3c		sta $3c,x			sta 	NSMantissa0,x
+.1d91	90 0a		bcc $1d9d			bcc 	_ESTASDExit
+.1d93	f6 48		inc $48,x			inc 	NSMantissa1,x
+.1d95	d0 06		bne $1d9d			bne 	_ESTASDExit
+.1d97	f6 54		inc $54,x			inc 	NSMantissa2,x
+.1d99	d0 02		bne $1d9d			bne 	_ESTASDExit
+.1d9b	f6 60		inc $60,x			inc 	NSMantissa3,x
+.1d9d					_ESTASDExit:
+.1d9d	60		rts				rts
 .0539					encodeState:
 >0539							.fill 	1
 .053a					digitTemp:
 >053a							.fill 	1
 .053b					decimalCount:
 >053b							.fill 	1
-.1d8d					FloatToString:
-.1d8d	da		phx				phx
-.1d8e	5a		phy				phy 								; save code position
-.1d8f	8d 3c 05	sta $053c			sta 	decimalPlaces	 			; save number of DPs.
-.1d92	9c 3d 05	stz $053d			stz 	dbOffset 					; offset into decimal buffer = start.
-.1d95	b5 30		lda $30,x			lda 	NSStatus,x  				; is it -ve.
-.1d97	10 08		bpl $1da1			bpl 	_CNTSNotNegative
-.1d99	29 7f		and #$7f			and 	#$7F 						; make +ve
-.1d9b	95 30		sta $30,x			sta 	NSStatus,x
-.1d9d	a9 2d		lda #$2d			lda 	#"-"
-.1d9f	80 02		bra $1da3			bra 	_CNTMain
-.1da1					_CNTSNotNegative:
-.1da1	a9 20		lda #$20			lda 	#" "
-.1da3					_CNTMain:
-.1da3	20 05 1e	jsr $1e05			jsr 	WriteDecimalBuffer
-.1da6	b5 6c		lda $6c,x			lda 	NSExponent,x 				; check if decimal
-.1da8	f0 0d		beq $1db7			beq 	_CNTSNotFloat
-.1daa	e8		inx				inx 								; round up so we don't get too many 6.999999
-.1dab	a9 01		lda #$01			lda 	#1
-.1dad	20 a7 1e	jsr $1ea7			jsr 	FloatSetByte
-.1db0	b5 6b		lda $6b,x			lda		NSExponent-1,x
-.1db2	95 6c		sta $6c,x			sta 	NSExponent,x
-.1db4	20 c9 18	jsr $18c9			jsr 	FloatAdd
-.1db7					_CNTSNotFloat:
-.1db7	20 e7 1d	jsr $1de7			jsr 	MakePlusTwoString 			; do the integer part.
-.1dba	20 85 1a	jsr $1a85			jsr 	FloatFractionalPart 		; get the fractional part
-.1dbd	20 fa 1b	jsr $1bfa			jsr 	FloatNormalise					; normalise , exit if zero
-.1dc0	f0 22		beq $1de4			beq 	_CNTSExit
-.1dc2	a9 2e		lda #$2e			lda 	#"."
-.1dc4	20 05 1e	jsr $1e05			jsr 	WriteDecimalBuffer 			; write decimal place
-.1dc7					_CNTSDecimal:
-.1dc7	ce 3c 05	dec $053c			dec 	decimalPlaces 				; done all the decimals
-.1dca	30 18		bmi $1de4			bmi 	_CNTSExit
-.1dcc	e8		inx				inx 								; x 10.0
-.1dcd	a9 0a		lda #$0a			lda 	#10
-.1dcf	20 a7 1e	jsr $1ea7			jsr 	FloatSetByte
-.1dd2	20 65 1b	jsr $1b65			jsr 	FloatMultiply
-.1dd5	20 e7 1d	jsr $1de7			jsr 	MakePlusTwoString 			; put the integer e.g. next digit out.
-.1dd8	20 85 1a	jsr $1a85			jsr 	FloatFractionalPart 		; get the fractional part
-.1ddb	20 fa 1b	jsr $1bfa			jsr 	FloatNormalise 				; normalise it.
-.1dde	b5 6c		lda $6c,x			lda 	NSExponent,x 				; gone to zero, exit.
-.1de0	c9 d0		cmp #$d0			cmp 	#$D0 						; very small remainder, so don't bother.
-.1de2	b0 e3		bcs $1dc7			bcs 	_CNTSDecimal 				; keep going.
-.1de4					_CNTSExit:
-.1de4	7a		ply				ply
-.1de5	fa		plx				plx
-.1de6	60		rts				rts
-.1de7					MakePlusTwoString:
-.1de7	da		phx				phx
-.1de8	20 88 1e	jsr $1e88			jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2] - we will use S[X+2] for the intege part.
-.1deb	e8		inx				inx 								; access it
-.1dec	e8		inx				inx
-.1ded	20 e0 1a	jsr $1ae0			jsr 	FloatIntegerPart 			; make it an integer
-.1df0	a9 0a		lda #$0a			lda 	#10 						; convert it in base 10
-.1df2	20 24 1e	jsr $1e24			jsr 	ConvertInt32
-.1df5	a2 00		ldx #$00			ldx	 	#0 							; write that to the decimal buffer.
-.1df7					_MPTSCopy:
-.1df7	bd 17 05	lda $0517,x			lda 	numberBuffer,x
-.1dfa	20 05 1e	jsr $1e05			jsr 	WriteDecimalBuffer
+.1d9e					FloatToString:
+.1d9e	da		phx				phx
+.1d9f	5a		phy				phy 								; save code position
+.1da0	8d 3c 05	sta $053c			sta 	decimalPlaces	 			; save number of DPs.
+.1da3	9c 3d 05	stz $053d			stz 	dbOffset 					; offset into decimal buffer = start.
+.1da6	b5 30		lda $30,x			lda 	NSStatus,x  				; is it -ve.
+.1da8	10 08		bpl $1db2			bpl 	_CNTSNotNegative
+.1daa	29 7f		and #$7f			and 	#$7F 						; make +ve
+.1dac	95 30		sta $30,x			sta 	NSStatus,x
+.1dae	a9 2d		lda #$2d			lda 	#"-"
+.1db0	80 02		bra $1db4			bra 	_CNTMain
+.1db2					_CNTSNotNegative:
+.1db2	a9 20		lda #$20			lda 	#" "
+.1db4					_CNTMain:
+.1db4	20 16 1e	jsr $1e16			jsr 	WriteDecimalBuffer
+.1db7	b5 6c		lda $6c,x			lda 	NSExponent,x 				; check if decimal
+.1db9	f0 0d		beq $1dc8			beq 	_CNTSNotFloat
+.1dbb	e8		inx				inx 								; round up so we don't get too many 6.999999
+.1dbc	a9 01		lda #$01			lda 	#1
+.1dbe	20 b8 1e	jsr $1eb8			jsr 	FloatSetByte
+.1dc1	b5 6b		lda $6b,x			lda		NSExponent-1,x
+.1dc3	95 6c		sta $6c,x			sta 	NSExponent,x
+.1dc5	20 da 18	jsr $18da			jsr 	FloatAdd
+.1dc8					_CNTSNotFloat:
+.1dc8	20 f8 1d	jsr $1df8			jsr 	MakePlusTwoString 			; do the integer part.
+.1dcb	20 96 1a	jsr $1a96			jsr 	FloatFractionalPart 		; get the fractional part
+.1dce	20 0b 1c	jsr $1c0b			jsr 	FloatNormalise					; normalise , exit if zero
+.1dd1	f0 22		beq $1df5			beq 	_CNTSExit
+.1dd3	a9 2e		lda #$2e			lda 	#"."
+.1dd5	20 16 1e	jsr $1e16			jsr 	WriteDecimalBuffer 			; write decimal place
+.1dd8					_CNTSDecimal:
+.1dd8	ce 3c 05	dec $053c			dec 	decimalPlaces 				; done all the decimals
+.1ddb	30 18		bmi $1df5			bmi 	_CNTSExit
+.1ddd	e8		inx				inx 								; x 10.0
+.1dde	a9 0a		lda #$0a			lda 	#10
+.1de0	20 b8 1e	jsr $1eb8			jsr 	FloatSetByte
+.1de3	20 76 1b	jsr $1b76			jsr 	FloatMultiply
+.1de6	20 f8 1d	jsr $1df8			jsr 	MakePlusTwoString 			; put the integer e.g. next digit out.
+.1de9	20 96 1a	jsr $1a96			jsr 	FloatFractionalPart 		; get the fractional part
+.1dec	20 0b 1c	jsr $1c0b			jsr 	FloatNormalise 				; normalise it.
+.1def	b5 6c		lda $6c,x			lda 	NSExponent,x 				; gone to zero, exit.
+.1df1	c9 d0		cmp #$d0			cmp 	#$D0 						; very small remainder, so don't bother.
+.1df3	b0 e3		bcs $1dd8			bcs 	_CNTSDecimal 				; keep going.
+.1df5					_CNTSExit:
+.1df5	7a		ply				ply
+.1df6	fa		plx				plx
+.1df7	60		rts				rts
+.1df8					MakePlusTwoString:
+.1df8	da		phx				phx
+.1df9	20 99 1e	jsr $1e99			jsr 	FloatShiftUpTwo 			; copy S[X] to S[X+2] - we will use S[X+2] for the intege part.
+.1dfc	e8		inx				inx 								; access it
 .1dfd	e8		inx				inx
-.1dfe	bd 17 05	lda $0517,x			lda 	numberBuffer,x
-.1e01	d0 f4		bne $1df7			bne 	_MPTSCopy
-.1e03	fa		plx				plx
-.1e04	60		rts				rts
-.1e05					WriteDecimalBuffer:
-.1e05	da		phx				phx
-.1e06	ae 3d 05	ldx $053d			ldx 	dbOffset
-.1e09	9d 3e 05	sta $053e,x			sta 	decimalBuffer,x
-.1e0c	9e 3f 05	stz $053f,x			stz 	decimalBuffer+1,x
-.1e0f	ee 3d 05	inc $053d			inc 	dbOffset
-.1e12	fa		plx				plx
-.1e13	60		rts				rts
+.1dfe	20 f1 1a	jsr $1af1			jsr 	FloatIntegerPart 			; make it an integer
+.1e01	a9 0a		lda #$0a			lda 	#10 						; convert it in base 10
+.1e03	20 35 1e	jsr $1e35			jsr 	ConvertInt32
+.1e06	a2 00		ldx #$00			ldx	 	#0 							; write that to the decimal buffer.
+.1e08					_MPTSCopy:
+.1e08	bd 17 05	lda $0517,x			lda 	numberBuffer,x
+.1e0b	20 16 1e	jsr $1e16			jsr 	WriteDecimalBuffer
+.1e0e	e8		inx				inx
+.1e0f	bd 17 05	lda $0517,x			lda 	numberBuffer,x
+.1e12	d0 f4		bne $1e08			bne 	_MPTSCopy
+.1e14	fa		plx				plx
+.1e15	60		rts				rts
+.1e16					WriteDecimalBuffer:
+.1e16	da		phx				phx
+.1e17	ae 3d 05	ldx $053d			ldx 	dbOffset
+.1e1a	9d 3e 05	sta $053e,x			sta 	decimalBuffer,x
+.1e1d	9e 3f 05	stz $053f,x			stz 	decimalBuffer+1,x
+.1e20	ee 3d 05	inc $053d			inc 	dbOffset
+.1e23	fa		plx				plx
+.1e24	60		rts				rts
 .053c					decimalPlaces:
 >053c							.fill 	1
 .053d					dbOffset:
 >053d							.fill 	1
 .053e					decimalBuffer:
 >053e							.fill 	32
-.1e14					ConvertInt16:
-.1e14	85 3c		sta $3c				sta 	NSMantissa0 				; set up as 32 bit conversion
-.1e16	86 48		stx $48				stx 	NSMantissa1
-.1e18	64 54		stz $54				stz 	NSMantissa2
-.1e1a	64 60		stz $60				stz 	NSMantissa3
-.1e1c	64 30		stz $30				stz 	NSStatus 					; positive integer
-.1e1e	a2 00		ldx #$00			ldx 	#0 							; stack level
-.1e20	a9 0a		lda #$0a			lda 	#10 						; base 10 decimal.
-.1e22	80 00		bra $1e24			bra 	ConvertInt32
-.1e24					ConvertInt32:
-.1e24	5a		phy				phy
-.1e25	a0 00		ldy #$00			ldy  	#0 							; index into buffer.
-.1e27	24 30		bit $30				bit 	NSStatus 					; output a - if not negative.
-.1e29	10 08		bpl $1e33			bpl 	_CI32NotNeg
-.1e2b	48		pha				pha
-.1e2c	a9 2d		lda #$2d			lda 	#'-'
-.1e2e	99 17 05	sta $0517,y			sta 	numberBuffer,y
-.1e31	c8		iny				iny
-.1e32	68		pla				pla
-.1e33					_CI32NotNeg:
-.1e33	20 41 1e	jsr $1e41			jsr 	_CI32DivideConvert 			; recursive conversion
-.1e36	a9 00		lda #$00			lda 	#0 							; make ASCIIZ
-.1e38	99 17 05	sta $0517,y			sta 	numberBuffer,y
-.1e3b	7a		ply				ply
-.1e3c	a2 05		ldx #$05			ldx 	#numberBuffer >> 8 			; return address in XA
-.1e3e	a9 17		lda #$17			lda 	#numberBuffer & $FF
-.1e40	60		rts				rts
-.1e41					_CI32DivideConvert:
-.1e41	e8		inx				inx 								; write to next slot up
-.1e42	20 a7 1e	jsr $1ea7			jsr 	FloatSetByte 		 		; write the base out.
-.1e45	ca		dex				dex
-.1e46	20 3b 1a	jsr $1a3b			jsr 	Int32Divide 				; divide
-.1e49	b5 3c		lda $3c,x			lda 	NSMantissa0,x 				; save remainder
-.1e4b	48		pha				pha
-.1e4c	20 2a 1a	jsr $1a2a			jsr 	NSMCopyPlusTwoToZero 		; Copy the divide result into place.
-.1e4f	20 c7 1e	jsr $1ec7			jsr 	FloatIsZero 				; is it zero ?
-.1e52	f0 05		beq $1e59			beq 	_CI32NoRecurse 				; if so, don't recursively call.
-.1e54	b5 3d		lda $3d,x			lda 	NSMantissa0+1,x 			; this is the base which is not changed by divide
-.1e56	20 41 1e	jsr $1e41			jsr 	_CI32DivideConvert 			; and recusrively call.
-.1e59					_CI32NoRecurse:
-.1e59	68		pla				pla 								; remainder
-.1e5a	c9 0a		cmp #$0a			cmp 	#10 						; convert to ASCII, allowing for hexadecimal.
-.1e5c	90 02		bcc $1e60			bcc 	_CI32NotHex
-.1e5e	69 26		adc #$26			adc 	#6+32
-.1e60					_CI32NotHex:
-.1e60	69 30		adc #$30			adc 	#48
-.1e62	99 17 05	sta $0517,y			sta 	numberBuffer,y 				; write out and exit
-.1e65	c8		iny				iny
-.1e66	60		rts				rts
-.1e67					FloatNegate:
-.1e67	b5 30		lda $30,x			lda 	NSStatus,x 					; everything is sign/magnitude usually so just
-.1e69	49 80		eor #$80			eor 	#$80  						; toggle the negative flag
-.1e6b	95 30		sta $30,x			sta 	NSStatus,x
-.1e6d	60		rts				rts
-.1e6e					FloatNegateMantissa:
-.1e6e	38		sec				sec 								; when we want an actual 32 bit 2's complement value.
-.1e6f	a9 00		lda #$00			lda 	#0
-.1e71	f5 3c		sbc $3c,x			sbc 	NSMantissa0,x
-.1e73	95 3c		sta $3c,x			sta 	NSMantissa0,x
-.1e75	a9 00		lda #$00			lda 	#0
-.1e77	f5 48		sbc $48,x			sbc 	NSMantissa1,x
-.1e79	95 48		sta $48,x			sta 	NSMantissa1,x
-.1e7b	a9 00		lda #$00			lda 	#0
-.1e7d	f5 54		sbc $54,x			sbc 	NSMantissa2,x
-.1e7f	95 54		sta $54,x			sta 	NSMantissa2,x
-.1e81	a9 00		lda #$00			lda 	#0
-.1e83	f5 60		sbc $60,x			sbc 	NSMantissa3,x
-.1e85	95 60		sta $60,x			sta 	NSMantissa3,x
-.1e87	60		rts				rts
-.1e88					FloatShiftUpTwo:
-.1e88	b5 3c		lda $3c,x			lda 	NSMantissa0,x
-.1e8a	95 3e		sta $3e,x			sta 	NSMantissa0+2,x
-.1e8c	b5 48		lda $48,x			lda 	NSMantissa1,x
-.1e8e	95 4a		sta $4a,x			sta 	NSMantissa1+2,x
-.1e90	b5 54		lda $54,x			lda 	NSMantissa2,x
-.1e92	95 56		sta $56,x			sta 	NSMantissa2+2,x
-.1e94	b5 60		lda $60,x			lda 	NSMantissa3,x
-.1e96	95 62		sta $62,x			sta 	NSMantissa3+2,x
-.1e98	b5 6c		lda $6c,x			lda 	NSExponent,x
-.1e9a	95 6e		sta $6e,x			sta 	NSExponent+2,x
-.1e9c	b5 30		lda $30,x			lda 	NSStatus,x
-.1e9e	95 32		sta $32,x			sta 	NSStatus+2,x
-.1ea0	60		rts				rts
-.1ea1					FloatSetZeroMantissaOnly:
-.1ea1	74 3c		stz $3c,x			stz 	NSMantissa0,x
-.1ea3	80 08		bra $1ead			bra 	FloatZero13
-.1ea5					FloatSetZero:
-.1ea5	a9 00		lda #$00			lda 	#0
-.1ea7					FloatSetByte:
-.1ea7	74 6c		stz $6c,x			stz 	NSExponent,x 				; zero exponent, as +ve integer value.
-.1ea9					FloatSetMantissa:
-.1ea9	95 3c		sta $3c,x			sta 	NSMantissa0,x 				; zero mantissa
-.1eab	74 30		stz $30,x			stz 	NSStatus,x
-.1ead					FloatZero13:
-.1ead	74 48		stz $48,x			stz 	NSMantissa1,x
-.1eaf	74 54		stz $54,x			stz 	NSMantissa2,x
-.1eb1	74 60		stz $60,x			stz 	NSMantissa3,x
-.1eb3	60		rts				rts
-.1eb4					FloatShiftLeft:
-.1eb4	18		clc				clc
-.1eb5					FloatRotateLeft:
-.1eb5	36 3c		rol $3c,x			rol 	NSMantissa0,x
-.1eb7	36 48		rol $48,x			rol		NSMantissa1,x
-.1eb9	36 54		rol $54,x			rol		NSMantissa2,x
-.1ebb	36 60		rol $60,x			rol		NSMantissa3,x
-.1ebd	60		rts				rts
-.1ebe					FloatShiftRight:
-.1ebe	56 60		lsr $60,x			lsr 	NSMantissa3,x
-.1ec0	76 54		ror $54,x			ror		NSMantissa2,x
-.1ec2	76 48		ror $48,x			ror		NSMantissa1,x
-.1ec4	76 3c		ror $3c,x			ror		NSMantissa0,x
-.1ec6	60		rts				rts
-.1ec7					FloatIsZero:
-.1ec7	b5 60		lda $60,x			lda 	NSMantissa3,x
-.1ec9	15 54		ora $54,x			ora		NSMantissa2,x
-.1ecb	15 48		ora $48,x			ora		NSMantissa1,x
-.1ecd	15 3c		ora $3c,x			ora		NSMantissa0,x
-.1ecf	60		rts				rts
+.1e25					ConvertInt16:
+.1e25	85 3c		sta $3c				sta 	NSMantissa0 				; set up as 32 bit conversion
+.1e27	86 48		stx $48				stx 	NSMantissa1
+.1e29	64 54		stz $54				stz 	NSMantissa2
+.1e2b	64 60		stz $60				stz 	NSMantissa3
+.1e2d	64 30		stz $30				stz 	NSStatus 					; positive integer
+.1e2f	a2 00		ldx #$00			ldx 	#0 							; stack level
+.1e31	a9 0a		lda #$0a			lda 	#10 						; base 10 decimal.
+.1e33	80 00		bra $1e35			bra 	ConvertInt32
+.1e35					ConvertInt32:
+.1e35	5a		phy				phy
+.1e36	a0 00		ldy #$00			ldy  	#0 							; index into buffer.
+.1e38	24 30		bit $30				bit 	NSStatus 					; output a - if not negative.
+.1e3a	10 08		bpl $1e44			bpl 	_CI32NotNeg
+.1e3c	48		pha				pha
+.1e3d	a9 2d		lda #$2d			lda 	#'-'
+.1e3f	99 17 05	sta $0517,y			sta 	numberBuffer,y
+.1e42	c8		iny				iny
+.1e43	68		pla				pla
+.1e44					_CI32NotNeg:
+.1e44	20 52 1e	jsr $1e52			jsr 	_CI32DivideConvert 			; recursive conversion
+.1e47	a9 00		lda #$00			lda 	#0 							; make ASCIIZ
+.1e49	99 17 05	sta $0517,y			sta 	numberBuffer,y
+.1e4c	7a		ply				ply
+.1e4d	a2 05		ldx #$05			ldx 	#numberBuffer >> 8 			; return address in XA
+.1e4f	a9 17		lda #$17			lda 	#numberBuffer & $FF
+.1e51	60		rts				rts
+.1e52					_CI32DivideConvert:
+.1e52	e8		inx				inx 								; write to next slot up
+.1e53	20 b8 1e	jsr $1eb8			jsr 	FloatSetByte 		 		; write the base out.
+.1e56	ca		dex				dex
+.1e57	20 4c 1a	jsr $1a4c			jsr 	Int32Divide 				; divide
+.1e5a	b5 3c		lda $3c,x			lda 	NSMantissa0,x 				; save remainder
+.1e5c	48		pha				pha
+.1e5d	20 3b 1a	jsr $1a3b			jsr 	NSMCopyPlusTwoToZero 		; Copy the divide result into place.
+.1e60	20 d8 1e	jsr $1ed8			jsr 	FloatIsZero 				; is it zero ?
+.1e63	f0 05		beq $1e6a			beq 	_CI32NoRecurse 				; if so, don't recursively call.
+.1e65	b5 3d		lda $3d,x			lda 	NSMantissa0+1,x 			; this is the base which is not changed by divide
+.1e67	20 52 1e	jsr $1e52			jsr 	_CI32DivideConvert 			; and recusrively call.
+.1e6a					_CI32NoRecurse:
+.1e6a	68		pla				pla 								; remainder
+.1e6b	c9 0a		cmp #$0a			cmp 	#10 						; convert to ASCII, allowing for hexadecimal.
+.1e6d	90 02		bcc $1e71			bcc 	_CI32NotHex
+.1e6f	69 26		adc #$26			adc 	#6+32
+.1e71					_CI32NotHex:
+.1e71	69 30		adc #$30			adc 	#48
+.1e73	99 17 05	sta $0517,y			sta 	numberBuffer,y 				; write out and exit
+.1e76	c8		iny				iny
+.1e77	60		rts				rts
+.1e78					FloatNegate:
+.1e78	b5 30		lda $30,x			lda 	NSStatus,x 					; everything is sign/magnitude usually so just
+.1e7a	49 80		eor #$80			eor 	#$80  						; toggle the negative flag
+.1e7c	95 30		sta $30,x			sta 	NSStatus,x
+.1e7e	60		rts				rts
+.1e7f					FloatNegateMantissa:
+.1e7f	38		sec				sec 								; when we want an actual 32 bit 2's complement value.
+.1e80	a9 00		lda #$00			lda 	#0
+.1e82	f5 3c		sbc $3c,x			sbc 	NSMantissa0,x
+.1e84	95 3c		sta $3c,x			sta 	NSMantissa0,x
+.1e86	a9 00		lda #$00			lda 	#0
+.1e88	f5 48		sbc $48,x			sbc 	NSMantissa1,x
+.1e8a	95 48		sta $48,x			sta 	NSMantissa1,x
+.1e8c	a9 00		lda #$00			lda 	#0
+.1e8e	f5 54		sbc $54,x			sbc 	NSMantissa2,x
+.1e90	95 54		sta $54,x			sta 	NSMantissa2,x
+.1e92	a9 00		lda #$00			lda 	#0
+.1e94	f5 60		sbc $60,x			sbc 	NSMantissa3,x
+.1e96	95 60		sta $60,x			sta 	NSMantissa3,x
+.1e98	60		rts				rts
+.1e99					FloatShiftUpTwo:
+.1e99	b5 3c		lda $3c,x			lda 	NSMantissa0,x
+.1e9b	95 3e		sta $3e,x			sta 	NSMantissa0+2,x
+.1e9d	b5 48		lda $48,x			lda 	NSMantissa1,x
+.1e9f	95 4a		sta $4a,x			sta 	NSMantissa1+2,x
+.1ea1	b5 54		lda $54,x			lda 	NSMantissa2,x
+.1ea3	95 56		sta $56,x			sta 	NSMantissa2+2,x
+.1ea5	b5 60		lda $60,x			lda 	NSMantissa3,x
+.1ea7	95 62		sta $62,x			sta 	NSMantissa3+2,x
+.1ea9	b5 6c		lda $6c,x			lda 	NSExponent,x
+.1eab	95 6e		sta $6e,x			sta 	NSExponent+2,x
+.1ead	b5 30		lda $30,x			lda 	NSStatus,x
+.1eaf	95 32		sta $32,x			sta 	NSStatus+2,x
+.1eb1	60		rts				rts
+.1eb2					FloatSetZeroMantissaOnly:
+.1eb2	74 3c		stz $3c,x			stz 	NSMantissa0,x
+.1eb4	80 08		bra $1ebe			bra 	FloatZero13
+.1eb6					FloatSetZero:
+.1eb6	a9 00		lda #$00			lda 	#0
+.1eb8					FloatSetByte:
+.1eb8	74 6c		stz $6c,x			stz 	NSExponent,x 				; zero exponent, as +ve integer value.
+.1eba					FloatSetMantissa:
+.1eba	95 3c		sta $3c,x			sta 	NSMantissa0,x 				; zero mantissa
+.1ebc	74 30		stz $30,x			stz 	NSStatus,x
+.1ebe					FloatZero13:
+.1ebe	74 48		stz $48,x			stz 	NSMantissa1,x
+.1ec0	74 54		stz $54,x			stz 	NSMantissa2,x
+.1ec2	74 60		stz $60,x			stz 	NSMantissa3,x
+.1ec4	60		rts				rts
+.1ec5					FloatShiftLeft:
+.1ec5	18		clc				clc
+.1ec6					FloatRotateLeft:
+.1ec6	36 3c		rol $3c,x			rol 	NSMantissa0,x
+.1ec8	36 48		rol $48,x			rol		NSMantissa1,x
+.1eca	36 54		rol $54,x			rol		NSMantissa2,x
+.1ecc	36 60		rol $60,x			rol		NSMantissa3,x
+.1ece	60		rts				rts
+.1ecf					FloatShiftRight:
+.1ecf	56 60		lsr $60,x			lsr 	NSMantissa3,x
+.1ed1	76 54		ror $54,x			ror		NSMantissa2,x
+.1ed3	76 48		ror $48,x			ror		NSMantissa1,x
+.1ed5	76 3c		ror $3c,x			ror		NSMantissa0,x
+.1ed7	60		rts				rts
+.1ed8					FloatIsZero:
+.1ed8	b5 60		lda $60,x			lda 	NSMantissa3,x
+.1eda	15 54		ora $54,x			ora		NSMantissa2,x
+.1edc	15 48		ora $48,x			ora		NSMantissa1,x
+.1ede	15 3c		ora $3c,x			ora		NSMantissa0,x
+.1ee0	60		rts				rts
 
 ;******  Processing input file: testing/testend.asm
 
-.1ed0					EndProgram:
->1ed0	01 08 18 08 64 00 99 20				.binary "code/tokenised.dat"
->1ed8	22 48 45 4c 4c 4f 2c 20 57 4f 52 4c 44 20 21 22
->1ee8	00 1e 08 6e 00 90 00 00 00
+.1ee1					EndProgram:
+>1ee1	01 08 18 08 64 00 99 20				.binary "code/tokenised.dat"
+>1ee9	22 48 45 4c 4c 4f 2c 20 57 4f 52 4c 44 20 21 22
+>1ef9	00 1e 08 6e 00 90 00 00 00
 
 ;******  End of listing
