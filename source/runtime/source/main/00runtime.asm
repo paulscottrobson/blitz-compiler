@@ -25,7 +25,7 @@
 ;
 ; ************************************************************************************************
 
-StartRuntime:	
+StartRuntime:			
 		sta 	runtimeHigh 				; save address of code.		
 		sta 	codePtr+1 					; set pointer to code.
 		stz 	codePtr
@@ -34,6 +34,9 @@ StartRuntime:
 		sty 	storeEndHigh
 		stx 	variableStartPage
 
+		tsx 								; save the stack.
+		stx 	Runtime6502SP 
+
 		ldy 	#RuntimeErrorHandler >> 8 	; set error handler to runtime one.
 		ldx 	#RuntimeErrorHandler & $FF
 		jsr 	SetErrorHandler
@@ -41,8 +44,6 @@ StartRuntime:
 		jsr 	ClearMemory 				; clear memory.
 		jsr 	XRuntimeSetup 				; initialise the runtime stuff.
 	 	jsr		SetDefaultChannel			; set default input/output channel.
-
-
 
 		jsr 	RestoreCode 				; which we now call
 		;
@@ -96,6 +97,7 @@ IndirectVectors:
 		.word 	IndInt16Write 				; int16 write				
 		.word 	IndStringWrite 				; string write				
 		.word 	Unimplemented
+
 		;		
 		;		Push byte on stack
 		;
@@ -173,6 +175,10 @@ storeEndHigh:
 
 variableStartPage: 							; variable start high
 		.fill 	1		
+
+Runtime6502SP: 								; 6502 stack on start.
+		.fill 	1		
+		
 		.send storage
 
 ; ************************************************************************************************

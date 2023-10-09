@@ -21,7 +21,10 @@
 CommandEnd: ;; [!end]
 		.entercmd
 		stx 	zTemp0
-		jmp 	$FFFF
+EndRuntime:		
+		ldx 	Runtime6502SP 				; set up the stack pointer
+		txs
+		rts
 
 ; ************************************************************************************************
 

@@ -42,7 +42,7 @@ _EHDisplayMsg:
 		lda 	#32
 		jsr 	XPrintCharacterToChannel
 		jsr 	EHDisplayCodePtr
-_EHStop:bra 	_EHStop
+		jmp 	EndRuntime
 
 EHDisplayCodePtr:
 		lda 	#'$'

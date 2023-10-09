@@ -19,6 +19,8 @@ WrapperBoot:
 		ldx 	#APIDesc & $FF
 		ldy 	#APIDesc >> 8
 		jsr 	StartCompiler
+_WBError: 									; stop on error
+		bcs 	_WBError
 		jmp 	$FFFF
 
 APIDesc:

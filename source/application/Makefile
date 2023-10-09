@@ -17,7 +17,7 @@ endif
 
 all: build	
 
-BASICSRC = build$(S)test.bas
+BASICSRC = build$(S)balls.bas
 
 libraries:
 	make -C ..
@@ -45,7 +45,8 @@ release: build
 	$(CCOPY) *.PRG $(RELEASEDIR)
 	$(CCOPY) build$(S)test.bas $(RELEASEDIR)
 	$(CCOPY) $(BINDIR)tokenise.zip $(RELEASEDIR)
-
+	cd $(RELEASEDIR) ; $(CDEL) blitz.zip ; zip -q blitz.zip *
+	
 run: build	
 	$(CDEL) OBJECT.PRG
 	$(EXEBASIC)

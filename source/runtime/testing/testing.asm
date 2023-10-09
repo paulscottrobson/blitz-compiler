@@ -16,7 +16,8 @@ WrapperBoot:
 		lda 	#ObjectCode >> 8 			; address of object code to run.	
 		ldx 	#$81 						; first page of allocatable memory
 		ldy 	#$9F 						; byte after end of last page.
-		jmp 	StartRuntime
+		jsr 	StartRuntime 				; try to run it
+		jmp 	$FFFF 						; then exit.
 
 		.send code
 

@@ -19,7 +19,7 @@ include ../documents/common.make
 endif
 
 
-all: libraries
+all: libraries release
 
 libraries:	
 	make $(MAKEOPTS) -C tools
@@ -28,4 +28,7 @@ libraries:
 	make $(MAKEOPTS) -C polynomials
 	make $(MAKEOPTS) -C runtime
 	make $(MAKEOPTS) -C compiler
-	
+	make $(MAKEOPTS) -C application
+
+release:
+	make $(MAKEOPTS) -C application release

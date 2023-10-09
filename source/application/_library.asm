@@ -380,6 +380,10 @@ _Prompt:lda 	Prompt,x
 		ldy 	#APIDesc >> 8
 		jsr 	StartCompiler
 		jsr 	WriteObjectCode
+		lda 	#"O"
+		jsr 	$FFD2
+		lda 	#"K"
+		jsr 	$FFD2
 		rts
 
 ; ************************************************************************************************
@@ -404,7 +408,8 @@ ObjectFile:
 SourceFile:
 		.text 	'SOURCE.PRG',0					
 Prompt:
-		.text 	'BLITZ (ALPHA 09-10-23)',13,13,'BUGS:HTTPS://GITHUB.COM/PAULSCOTTROBSON/BLITZ-COMPILER',13,13,0								
+		.text 	'*** BLITZ (ALPHA 09-10-23) ***',13,13
+		.text 	'BUGS:HTTPS://GITHUB.COM/PAULSCOTTROBSON/BLITZ-COMPILER',13,13,0								
 
 		.send code
 

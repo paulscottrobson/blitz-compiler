@@ -14,7 +14,7 @@
 
 ; ************************************************************************************************
 ;
-;								On entry YX points to API. 
+;						On entry YX points to API.  On Exit CC if okay.
 ;
 ; ************************************************************************************************
 
@@ -114,6 +114,7 @@ SaveCodeAndExit:
 
 		lda 	#BLC_CLOSEOUT 				; close output store 
 		jsr 	CallAPIHandler
+		clc 								; CC = success
 
 ExitCompiler:		
 		ldx 	compilerSP 					; reload SP and exit.

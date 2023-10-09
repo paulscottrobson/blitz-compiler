@@ -47,9 +47,7 @@ _EHDisplayLine:
 		bne 	_EHDisplayLine
 		lda 	#13
 		jsr 	PrintCharacter
-
-_EHHalt:bra 	_EHHalt
-		
+		sec 								; CS = error	
 		jmp 	ExitCompiler
 						
 		.send code
