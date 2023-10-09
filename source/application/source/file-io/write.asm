@@ -1,8 +1,8 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		00main.header
-;		Purpose:	Main program, compile application
+;		Name:		write.asm
+;		Purpose:	Write file code
 ;		Created:	9th October 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
@@ -14,46 +14,35 @@
 
 ; ************************************************************************************************
 ;
-;								Run program from here
+;								Open sequential file for Write.
+; 									   YX = ASCIIZ name
 ;
 ; ************************************************************************************************
 
-StartBasicProgram:
-		.word 	$080C 						; offset to next.
-		.word 	10 							; line #
-		.byte 	$9E 						; token for 'SYS'		
-		.text 	' 2062'						; space, $080E in decimal
-		.byte  	0 							; end of line
-		.word 	0 							; end of program
-		
-		ldy 	#ObjectFile >> 8
-		ldx 	#ObjectFile & $FF		
-		jsr 	IOOpenWrite
-		lda 	#12
-		jsr 	IOWriteByte
-		lda 	#13
-		jsr 	IOWriteByte
-		jsr 	IOWriteClose
+IOOpenWrite:
+		lda 	#'W'			 			; write
+		jsr 	IOSetFileName 				; set up name/LFS
+		ldx	 	#3 							; use file 3 for writing
+		jsr 	$FFC9 						; CHKOUT
+		rts
 
-		ldy 	#SourceFile >> 8
-		ldx 	#SourceFile & $FF		
-		jsr 	IOOpenRead
-		.debug
-		jsr 	IOReadByte
-		jsr 	IOReadByte
-		jsr 	IOReadClose
+; ************************************************************************************************
+;
+;									Write A to output file
+;
+; ************************************************************************************************
 
-		jmp 	$FFFF
-
-ObjectFile:
-		.text 	'OBJECT.PRG',0		
-SourceFile:
-		.text 	'SOURCE.PRG',0
+IOWriteByte:		
+		pha
+		phx
+		phy
+		jsr 	$FFD2
+		ply
+		plx
+		pla
+		rts
 
 		.send code
-
-		.section storage
-		.send storage
 
 ; ************************************************************************************************
 ;

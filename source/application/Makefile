@@ -44,8 +44,10 @@ build: prelim
 	$(CCOPY) BLITZ.PRG $(BINDIR)
 
 run: build	
+	$(CDEL) OBJECT.PRG
 	$(EXEBASIC)
-
+	hexdump -C OBJECT.PRG
+	
 x16:
 	$(EMULATOR)
 
