@@ -18,9 +18,9 @@
 ;
 ; ************************************************************************************************
 ;
-;		Where to assemble the runnable code.
+;		Where to assemble the runnable code. Happy now , Dave ?
 ;
-CodeStart = $1000
+CodeStart = $801
 ;
 ;		Variables that have to be in zero page because it's used in (xx),y
 ;

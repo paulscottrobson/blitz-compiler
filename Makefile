@@ -29,13 +29,7 @@ all: libs
 #		Build the library version of the components. 
 #
 libs:	
-	make -C source/common-source
-	make -C source/ifloat32
-	make -C source/polynomials
-	make -C source/runtime
-	make -C source/compiler
-	make -C source/tools
-	
+	make $(MAKEOPTS) -C source
 #
 #		Get the most recent version of the emulator & docs. Requires the three
 #		repositories to be in the same directory as the blitz repository

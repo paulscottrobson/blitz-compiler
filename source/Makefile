@@ -3,20 +3,29 @@
 #
 #		Name : 		Makefile
 #		Purpose :	Outer makefile
-#		Date :		5th October 2023
+#		Date :		0th October 2023
 #		Author : 	Paul Robson (paul@robsons.org.uk)
 #
 # *******************************************************************************************
 # *******************************************************************************************
 
+#
+#		Bl**dy Windows.
+#
 ifeq ($(OS),Windows_NT)
-include ..\..\..\documents\common.make
+include ..\documents\common.make
 else
-include ../../../documents/common.make
+include ../documents/common.make
 endif
 
-all:	
-	$(CCOPY) tokenise.py __main__.py
-	zip -j -q tokenise.zip __main__.py ..$(S)..$(S)common-scripts$(S)c64tokens.py
-	$(CCOPY) tokenise.zip $(BINDIR)
-	$(CDEL) __main__.py
+
+all: libraries
+
+libraries:	
+	make $(MAKEOPTS) -C tools
+	make $(MAKEOPTS) -C common-source
+	make $(MAKEOPTS) -C ifloat32
+	make $(MAKEOPTS) -C polynomials
+	make $(MAKEOPTS) -C runtime
+	make $(MAKEOPTS) -C compiler
+	

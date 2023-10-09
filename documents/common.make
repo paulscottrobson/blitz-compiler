@@ -46,12 +46,14 @@ CSOURCE =  $(SRCDIR)common-source$(S)
 #
 #		Current applications.
 # 
-ASM = 64tass -c -Wall -o build$(S)code.prg -L build$(S)code.lst -l build$(S)code.lbl
+ASM = 64tass -q -c -Wall -o build$(S)code.prg -L build$(S)code.lst -l build$(S)code.lbl
 PYTHON = python3
 EMULATOR = $(BINDIR)x16emu$(APPSTEM) -scale 2 -debug -zeroram -dump R
-EXECUTE = $(CDEL) dump*.bin ; $(EMULATOR) -prg build$(S)code.prg,1000 -run
+EXECUTE = $(CDEL) dump*.bin ; $(EMULATOR) -prg build$(S)code.prg,801 -run
+EXEBASIC = $(CDEL) dump*.bin ; $(EMULATOR) -prg build$(S)code.prg -run
 QEXECUTE = $(EXECUTE) -testbench
 FAST = -warp
+MAKEOPTS = --no-print-directory
 #
 #		Export path to the common scripts.
 #
@@ -64,5 +66,5 @@ endif
 #		Uncommenting .SILENT will shut the whole build up.
 #
 ifndef VERBOSE
-#.SILENT:
+.SILENT:
 endif
