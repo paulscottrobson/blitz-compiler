@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.59.3120 listing file
 ; 64tass -q -c -Wall -o build/code.prg -L build/code.lst -l build/code.lbl source/main/00main.header /home/paulr/Projects/blitz-compiler/documents/../bin/runtime.library /home/paulr/Projects/blitz-compiler/documents/../bin/common.library /home/paulr/Projects/blitz-compiler/documents/../bin/ifloat32.library /home/paulr/Projects/blitz-compiler/documents/../bin/polynomials.library /home/paulr/Projects/blitz-compiler/documents/../bin/compiler.library _library.asm source/main/zzfree.footer
-; Mon Oct  9 07:15:14 2023
+; Mon Oct  9 08:04:07 2023
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -15,7 +15,7 @@
 >080b	00						.byte  	0 							; end of line
 >080c	00 00						.word 	0 							; end of program
 .080e					StartCode:
-.080e	4c 10 39	jmp $3910			jmp 	CompileCode 				; to starting the runtime in the saved code.
+.080e	4c 47 39	jmp $3947			jmp 	CompileCode 				; to starting the runtime in the saved code.
 .0811	a9 3a		lda #$3a			lda 	#FreeMemory >> 8 			; address of object code to run.
 .0813	a2 80		ldx #$80			ldx 	#$80 						; 8000-9EFF is used for workspace.
 .0815	a0 9f		ldy #$9f			ldy 	#$9F
@@ -7485,13 +7485,13 @@
 >3857	db						.byte 	$DB 						; causes a break in the emulator
 .3858					_CAOpenIn:
 .3858	a0 39		ldy #$39			ldy 	#SourceFile >> 8 			; name of file
-.385a	a2 2a		ldx #$2a			ldx 	#SourceFile & $FF
-.385c	20 b2 38	jsr $38b2			jsr 	IOOpenRead 					; open file
-.385f	20 bd 38	jsr $38bd			jsr 	IOReadByte 					; skip the 2 byte load address header
-.3862	20 bd 38	jsr $38bd			jsr 	IOReadByte
+.385a	a2 61		ldx #$61			ldx 	#SourceFile & $FF
+.385c	20 e9 38	jsr $38e9			jsr 	IOOpenRead 					; open file
+.385f	20 f4 38	jsr $38f4			jsr 	IOReadByte 					; skip the 2 byte load address header
+.3862	20 f4 38	jsr $38f4			jsr 	IOReadByte
 .3865	60		rts				rts
 .3866					_CACloseIn:
-.3866	4c cc 38	jmp $38cc			jmp 	IOReadClose
+.3866	4c 03 39	jmp $3903			jmp 	IOReadClose
 .3869					_CAResetOut:
 .3869	a9 00		lda #$00			lda 	#((FreeMemory) & $FF)
 .386b	85 2a		sta $2a				sta 	0+objPtr
@@ -7512,20 +7512,20 @@
 .387d	8a		txa				txa
 .387e	4c d2 ff	jmp $ffd2			jmp 	$FFD2
 .3881					_CARead:
-.3881	20 bd 38	jsr $38bd			jsr 	IOReadByte 				; copy the address of next into the buffer
+.3881	20 f4 38	jsr $38f4			jsr 	IOReadByte 				; copy the address of next into the buffer
 .3884	8d cd 06	sta $06cd			sta 	SourceLine+0
-.3887	20 bd 38	jsr $38bd			jsr 	IOReadByte
+.3887	20 f4 38	jsr $38f4			jsr 	IOReadByte
 .388a	8d ce 06	sta $06ce			sta 	SourceLine+1
 .388d	0d cd 06	ora $06cd			ora 	sourceLine				; if both were zero, exit with CC (e.g. fail)
 .3890	18		clc				clc
 .3891	f0 1e		beq $38b1			beq		_CARExit
-.3893	20 bd 38	jsr $38bd			jsr 	IOReadByte 				; read the line # into the buffer.
+.3893	20 f4 38	jsr $38f4			jsr 	IOReadByte 				; read the line # into the buffer.
 .3896	8d cf 06	sta $06cf			sta 	SourceLine+2
-.3899	20 bd 38	jsr $38bd			jsr 	IOReadByte
+.3899	20 f4 38	jsr $38f4			jsr 	IOReadByte
 .389c	8d d0 06	sta $06d0			sta 	SourceLine+3
 .389f	a2 04		ldx #$04			ldx 	#4 						; read the body of the line.
 .38a1					_CAReadLine:
-.38a1	20 bd 38	jsr $38bd			jsr 	IOReadByte 				; now keep copying to EOL
+.38a1	20 f4 38	jsr $38f4			jsr 	IOReadByte 				; now keep copying to EOL
 .38a4	9d cd 06	sta $06cd,x			sta 	SourceLine,x
 .38a7	e8		inx				inx
 .38a8	c9 00		cmp #$00			cmp 	#0
@@ -7537,97 +7537,125 @@
 .38b1	60		rts				rts
 .06cd					SourceLine:
 >06cd							.fill 	256
-.38b2					IOOpenRead:
-.38b2	a9 52		lda #$52			lda 	#'R' 						; read.
-.38b4	20 d5 38	jsr $38d5			jsr 	IOSetFileName 				; set up name/LFS
-.38b7	a2 03		ldx #$03			ldx	 	#3 							; use file 3 for reading
-.38b9	20 c6 ff	jsr $ffc6			jsr 	$FFC6 						; CHKIN
-.38bc	60		rts				rts
-.38bd					IOReadByte:
-.38bd	da		phx				phx
-.38be	5a		phy				phy
-.38bf	20 b7 ff	jsr $ffb7			jsr 	$FFB7 						; read ST
-.38c2	38		sec				sec
-.38c3	d0 04		bne $38c9			bne 	_IORExit
-.38c5	20 cf ff	jsr $ffcf			jsr 	$FFCF 						; read a byte
-.38c8	18		clc				clc 								; status OK.
-.38c9					_IORExit:
-.38c9	7a		ply				ply
-.38ca	fa		plx				plx
-.38cb	60		rts				rts
-.38cc					IOReadClose:
-.38cc					IOWriteClose:
-.38cc	a9 03		lda #$03			lda 	#3 							; CLOSE# 3
-.38ce	20 c3 ff	jsr $ffc3			jsr 	$FFC3
-.38d1	20 cc ff	jsr $ffcc			jsr 	$FFCC 						; CLRCHN
-.38d4	60		rts				rts
-.38d5					IOSetFileName:
-.38d5	48		pha				pha 								; save R/W
-.38d6	86 2c		stx $2c				stx 	zTemp0
-.38d8	84 2d		sty $2d				sty 	zTemp0+1
-.38da	a0 ff		ldy #$ff			ldy 	#$FF 						; copy name given
-.38dc					_IOSCopy:
-.38dc	c8		iny				iny 								; pre-increment copy
-.38dd	b1 2c		lda ($2c),y			lda 	(zTemp0),y
-.38df	99 cd 07	sta $07cd,y			sta 	IONameBuffer,y
-.38e2	d0 f8		bne $38dc			bne 	_IOSCopy
-.38e4	99 d1 07	sta $07d1,y			sta 	IONameBuffer+4,y
-.38e7	a9 2c		lda #$2c			lda 	#',' 						; append ,S,[R|W]
-.38e9	99 cd 07	sta $07cd,y			sta 	IONameBuffer+0,y
-.38ec	99 cf 07	sta $07cf,y			sta 	IONameBuffer+2,y
-.38ef	a9 53		lda #$53			lda 	#'S'
-.38f1	99 ce 07	sta $07ce,y			sta 	IONameBuffer+1,y
-.38f4	68		pla				pla 								; write R/W out
-.38f5	99 d0 07	sta $07d0,y			sta 	IONameBuffer+3,y
-.38f8	98		tya				tya 								; length of name to A
-.38f9	18		clc				clc
-.38fa	69 04		adc #$04			adc 	#4 							; we added 4 characters.
-.38fc	a2 cd		ldx #$cd			ldx 	#IONameBuffer & $FF			; name address to YX
-.38fe	a0 07		ldy #$07			ldy 	#IONameBuffer >> 8
-.3900	20 bd ff	jsr $ffbd		    jsr 	$FFBD          				; call SETNAM
-.3903	a9 03		lda #$03	    	lda 	#3 							; set LFS to 3,8,3
-.3905	a2 08		ldx #$08			ldx 	#8
-.3907	a0 03		ldy #$03			ldy 	#3
-.3909	20 ba ff	jsr $ffba			jsr 	$FFBA
-.390c	20 c0 ff	jsr $ffc0			jsr 	$FFC0 						; OPEN
-.390f	60		rts				rts
+.38b2					WriteObjectCode:
+.38b2	20 1a 08	jsr $081a			jsr 	PatchOutCompile 			; makes it run the runtime on reload
+.38b5	a0 39		ldy #$39			ldy 	#ObjectFile >> 8
+.38b7	a2 56		ldx #$56			ldx 	#ObjectFile & $FF
+.38b9	20 6c 39	jsr $396c			jsr 	IOOpenWrite 				; open write
+.38bc	a9 01		lda #$01			lda 	#1 							; write out the load address $0801
+.38be	20 77 39	jsr $3977			jsr 	IOWriteByte
+.38c1	a9 08		lda #$08			lda 	#8
+.38c3	20 77 39	jsr $3977			jsr 	IOWriteByte
+.38c6	a9 01		lda #$01			lda 	#((StartBasicProgram) & $FF)
+.38c8	85 2c		sta $2c				sta 	0+zTemp0
+.38ca	a9 08		lda #$08			lda 	#((StartBasicProgram) >> 8) & $FF
+.38cc	85 2d		sta $2d				sta 	1+zTemp0
+.38ce					_WOCLoop:
+.38ce	b2 2c		lda ($2c)			lda 	(zTemp0) 					; write code
+.38d0	20 77 39	jsr $3977			jsr 	IOWriteByte
+.38d3	e6 2c		inc $2c				inc 	zTemp0 						; advance pointer
+.38d5	d0 02		bne $38d9			bne 	_WOCSkip
+.38d7	e6 2d		inc $2d				inc 	zTemp0+1
+.38d9					_WOCSkip:
+.38d9	a5 2c		lda $2c				lda 	zTemp0 						; check end
+.38db	c5 2a		cmp $2a				cmp 	objPtr
+.38dd	d0 ef		bne $38ce			bne 	_WOCLoop
+.38df	a5 2d		lda $2d				lda 	zTemp0+1
+.38e1	c5 2b		cmp $2b				cmp 	objPtr+1
+.38e3	d0 e9		bne $38ce			bne 	_WOCLoop
+.38e5	20 03 39	jsr $3903			jsr 	IOWriteClose 				; close the file.
+.38e8	60		rts				rts
+.38e9					IOOpenRead:
+.38e9	a9 52		lda #$52			lda 	#'R' 						; read.
+.38eb	20 0c 39	jsr $390c			jsr 	IOSetFileName 				; set up name/LFS
+.38ee	a2 03		ldx #$03			ldx	 	#3 							; use file 3 for reading
+.38f0	20 c6 ff	jsr $ffc6			jsr 	$FFC6 						; CHKIN
+.38f3	60		rts				rts
+.38f4					IOReadByte:
+.38f4	da		phx				phx
+.38f5	5a		phy				phy
+.38f6	20 b7 ff	jsr $ffb7			jsr 	$FFB7 						; read ST
+.38f9	38		sec				sec
+.38fa	d0 04		bne $3900			bne 	_IORExit
+.38fc	20 cf ff	jsr $ffcf			jsr 	$FFCF 						; read a byte
+.38ff	18		clc				clc 								; status OK.
+.3900					_IORExit:
+.3900	7a		ply				ply
+.3901	fa		plx				plx
+.3902	60		rts				rts
+.3903					IOReadClose:
+.3903					IOWriteClose:
+.3903	a9 03		lda #$03			lda 	#3 							; CLOSE# 3
+.3905	20 c3 ff	jsr $ffc3			jsr 	$FFC3
+.3908	20 cc ff	jsr $ffcc			jsr 	$FFCC 						; CLRCHN
+.390b	60		rts				rts
+.390c					IOSetFileName:
+.390c	48		pha				pha 								; save R/W
+.390d	86 2c		stx $2c				stx 	zTemp0
+.390f	84 2d		sty $2d				sty 	zTemp0+1
+.3911	a0 ff		ldy #$ff			ldy 	#$FF 						; copy name given
+.3913					_IOSCopy:
+.3913	c8		iny				iny 								; pre-increment copy
+.3914	b1 2c		lda ($2c),y			lda 	(zTemp0),y
+.3916	99 cd 07	sta $07cd,y			sta 	IONameBuffer,y
+.3919	d0 f8		bne $3913			bne 	_IOSCopy
+.391b	99 d1 07	sta $07d1,y			sta 	IONameBuffer+4,y
+.391e	a9 2c		lda #$2c			lda 	#',' 						; append ,S,[R|W]
+.3920	99 cd 07	sta $07cd,y			sta 	IONameBuffer+0,y
+.3923	99 cf 07	sta $07cf,y			sta 	IONameBuffer+2,y
+.3926	a9 53		lda #$53			lda 	#'S'
+.3928	99 ce 07	sta $07ce,y			sta 	IONameBuffer+1,y
+.392b	68		pla				pla 								; write R/W out
+.392c	99 d0 07	sta $07d0,y			sta 	IONameBuffer+3,y
+.392f	98		tya				tya 								; length of name to A
+.3930	18		clc				clc
+.3931	69 04		adc #$04			adc 	#4 							; we added 4 characters.
+.3933	a2 cd		ldx #$cd			ldx 	#IONameBuffer & $FF			; name address to YX
+.3935	a0 07		ldy #$07			ldy 	#IONameBuffer >> 8
+.3937	20 bd ff	jsr $ffbd		    jsr 	$FFBD          				; call SETNAM
+.393a	a9 03		lda #$03	    	lda 	#3 							; set LFS to 3,8,3
+.393c	a2 08		ldx #$08			ldx 	#8
+.393e	a0 03		ldy #$03			ldy 	#3
+.3940	20 ba ff	jsr $ffba			jsr 	$FFBA
+.3943	20 c0 ff	jsr $ffc0			jsr 	$FFC0 						; OPEN
+.3946	60		rts				rts
 .07cd					IONameBuffer:
 >07cd							.fill 	64
-.3910					CompileCode:
-.3910	a2 1b		ldx #$1b			ldx 	#APIDesc & $FF
-.3912	a0 39		ldy #$39			ldy 	#APIDesc >> 8
-.3914	20 7a 2a	jsr $2a7a			jsr 	StartCompiler
->3917	db						.byte 	$DB 						; causes a break in the emulator
-.3918	4c ff ff	jmp $ffff			jmp 	$FFFF
-.391b					APIDesc:
->391b	3b 38						.word 	CompilerAPI 				; the compiler API Implementeation
->391d	80						.byte 	$80 						; start of workspace for compiler $8000
->391e	9f						.byte 	$9F							; end of workspace for compiler $9F00
-.391f					ObjectFile:
->391f	4f 42 4a 45 43 54 2e 50				.text 	'OBJECT.PRG',0
->3927	52 47 00
-.392a					SourceFile:
->392a	53 4f 55 52 43 45 2e 50				.text 	'SOURCE.PRG',0
->3932	52 47 00
-.3935					IOOpenWrite:
-.3935	a9 57		lda #$57			lda 	#'W'			 			; write
-.3937	20 d5 38	jsr $38d5			jsr 	IOSetFileName 				; set up name/LFS
-.393a	a2 03		ldx #$03			ldx	 	#3 							; use file 3 for writing
-.393c	20 c9 ff	jsr $ffc9			jsr 	$FFC9 						; CHKOUT
-.393f	60		rts				rts
-.3940					IOWriteByte:
-.3940	48		pha				pha
-.3941	da		phx				phx
-.3942	5a		phy				phy
-.3943	20 d2 ff	jsr $ffd2			jsr 	$FFD2
-.3946	7a		ply				ply
-.3947	fa		plx				plx
-.3948	68		pla				pla
-.3949	60		rts				rts
+.3947					CompileCode:
+.3947	a2 52		ldx #$52			ldx 	#APIDesc & $FF
+.3949	a0 39		ldy #$39			ldy 	#APIDesc >> 8
+.394b	20 7a 2a	jsr $2a7a			jsr 	StartCompiler
+.394e	20 b2 38	jsr $38b2			jsr 	WriteObjectCode
+.3951	60		rts				rts
+.3952					APIDesc:
+>3952	3b 38						.word 	CompilerAPI 				; the compiler API Implementeation
+>3954	80						.byte 	$80 						; start of workspace for compiler $8000
+>3955	9f						.byte 	$9F							; end of workspace for compiler $9F00
+.3956					ObjectFile:
+>3956	4f 42 4a 45 43 54 2e 50				.text 	'OBJECT.PRG',0
+>395e	52 47 00
+.3961					SourceFile:
+>3961	53 4f 55 52 43 45 2e 50				.text 	'SOURCE.PRG',0
+>3969	52 47 00
+.396c					IOOpenWrite:
+.396c	a9 57		lda #$57			lda 	#'W'			 			; write
+.396e	20 0c 39	jsr $390c			jsr 	IOSetFileName 				; set up name/LFS
+.3971	a2 03		ldx #$03			ldx	 	#3 							; use file 3 for writing
+.3973	20 c9 ff	jsr $ffc9			jsr 	$FFC9 						; CHKOUT
+.3976	60		rts				rts
+.3977					IOWriteByte:
+.3977	48		pha				pha
+.3978	da		phx				phx
+.3979	5a		phy				phy
+.397a	20 d2 ff	jsr $ffd2			jsr 	$FFD2
+.397d	7a		ply				ply
+.397e	fa		plx				plx
+.397f	68		pla				pla
+.3980	60		rts				rts
 
 ;******  Processing input file: source/main/zzfree.footer
 
->394a							.align 	256
+>3981							.align 	256
 .3a00					FreeMemory:
 
 ;******  End of listing

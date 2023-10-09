@@ -1,8 +1,8 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		start.asm
-;		Purpose:	Start actual compilation.
+;		Name:		object.asm
+;		Purpose:	Write object code out.
 ;		Created:	9th October 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
@@ -14,39 +14,39 @@
 
 ; ************************************************************************************************
 ;
-;									Compile the code from disk
+;									Write object code out.
 ;
 ; ************************************************************************************************
 
-CompileCode:
-		ldx 	#APIDesc & $FF
-		ldy 	#APIDesc >> 8
-		jsr 	StartCompiler
-		jsr 	WriteObjectCode
+WriteObjectCode:
+		jsr 	PatchOutCompile 			; makes it run the runtime on reload								
+
+		ldy 	#ObjectFile >> 8
+		ldx 	#ObjectFile & $FF				
+		jsr 	IOOpenWrite 				; open write
+
+		lda 	#1 							; write out the load address $0801
+		jsr 	IOWriteByte
+		lda 	#8
+		jsr 	IOWriteByte
+
+		.set16 	zTemp0,StartBasicProgram 	; now write out the whole lot as far as objPtr
+_WOCLoop:
+		lda 	(zTemp0) 					; write code
+		jsr 	IOWriteByte
+		inc 	zTemp0 						; advance pointer
+		bne 	_WOCSkip
+		inc 	zTemp0+1
+_WOCSkip:
+		lda 	zTemp0 						; check end
+		cmp 	objPtr
+		bne 	_WOCLoop
+		lda 	zTemp0+1
+		cmp 	objPtr+1
+		bne 	_WOCLoop
+		jsr 	IOWriteClose 				; close the file.
 		rts
 
-; ************************************************************************************************
-;
-;									API Setup for the compiler
-;
-; ************************************************************************************************
-
-APIDesc:
-		.word 	CompilerAPI 				; the compiler API Implementeation
-		.byte 	$80 						; start of workspace for compiler $8000
-		.byte 	$9F							; end of workspace for compiler $9F00
-
-; ************************************************************************************************
-;
-;									File names for the compiler
-;
-; ************************************************************************************************
-
-ObjectFile:
-		.text 	'OBJECT.PRG',0		
-SourceFile:
-		.text 	'SOURCE.PRG',0
-								
 		.send code
 
 		.section storage
