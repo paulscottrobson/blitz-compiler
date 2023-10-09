@@ -25,35 +25,36 @@ StartBasicProgram:
 		.text 	' 2062'						; space, $080E in decimal
 		.byte  	0 							; end of line
 		.word 	0 							; end of program
-		
-		ldy 	#ObjectFile >> 8
-		ldx 	#ObjectFile & $FF		
-		jsr 	IOOpenWrite
-		lda 	#12
-		jsr 	IOWriteByte
-		lda 	#13
-		jsr 	IOWriteByte
-		jsr 	IOWriteClose
 
-		ldy 	#SourceFile >> 8
-		ldx 	#SourceFile & $FF		
-		jsr 	IOOpenRead
-		.debug
-		jsr 	IOReadByte
-		jsr 	IOReadByte
-		jsr 	IOReadClose
+; ************************************************************************************************
+;
+;								We actually enter here (SYS 2062)
+;		
+; ************************************************************************************************
 
-		jmp 	$FFFF
+StartCode: 									; this is patched out, so we drop through
+		jmp 	CompileCode 				; to starting the runtime in the saved code.
 
-ObjectFile:
-		.text 	'OBJECT.PRG',0		
-SourceFile:
-		.text 	'SOURCE.PRG',0
+		lda 	#FreeMemory >> 8 			; address of object code to run.	
+		ldx 	#$80 						; 8000-9EFF is used for workspace.
+		ldy 	#$9F 						
+		jmp 	StartRuntime 				; and go do it !
+
+; ************************************************************************************************
+;
+;				Calling this makes StartCode fall through into the runtime.
+;
+; ************************************************************************************************
+
+PatchOutCompile:
+		lda 	#$EA 						; $EA is NOP 65C02
+		sta 	StartCode 					; patch out "JMP COMPILECODE"
+		sta 	StartCode+1
+		sta 	StartCode+2
+		rts
 
 		.send code
 
-		.section storage
-		.send storage
 
 ; ************************************************************************************************
 ;

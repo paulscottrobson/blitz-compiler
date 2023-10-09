@@ -1,9 +1,9 @@
 ; ************************************************************************************************
 ; ************************************************************************************************
 ;
-;		Name:		testing.asm
-;		Purpose:	Basic testing for runtime
-;		Created:	11th April 2023
+;		Name:		start.asm
+;		Purpose:	Start actual compilation.
+;		Created:	9th October 2023
 ;		Reviewed: 	No
 ;		Author:		Paul Robson (paul@robsons.org.uk)
 ;
@@ -12,25 +12,37 @@
 
 		.section code
 
-StartWorkSpace = $8000
-EndWorkspace = $9F00
 
-WrapperBoot:	
-		ldx 	#APIDesc & $FF
-		ldy 	#APIDesc >> 8
-		jsr 	StartCompiler
+CompileCode:
+
+		ldy 	#ObjectFile >> 8
+		ldx 	#ObjectFile & $FF		
+		jsr 	IOOpenWrite
+		lda 	#12
+		jsr 	IOWriteByte
+		lda 	#13
+		jsr 	IOWriteByte
+		jsr 	IOWriteClose
+
+		ldy 	#SourceFile >> 8
+		ldx 	#SourceFile & $FF		
+		jsr 	IOOpenRead
+		.debug
+		jsr 	IOReadByte
+		jsr 	IOReadByte
+		jsr 	IOReadClose
+
 		jmp 	$FFFF
 
-APIDesc:
-		.word 	TestAPI 					; the testing API.
-		.byte 	StartWorkSpace >> 8 		; start of workspace for compiler
-		.byte 	EndWorkspace >> 8 			; end of workspace for compiler
-											; this example is 8000-9EFF.
+ObjectFile:
+		.text 	'OBJECT.PRG',0		
+SourceFile:
+		.text 	'SOURCE.PRG',0
+
 		.send code
 
-		.include "api/api.asm"
-		.include "api/line.asm"
-		.include "api/save.asm"
+		.section storage
+		.send storage
 
 ; ************************************************************************************************
 ;
@@ -42,4 +54,3 @@ APIDesc:
 ;		==== 			=====
 ;
 ; ************************************************************************************************
-
