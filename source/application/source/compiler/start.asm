@@ -12,33 +12,41 @@
 
 		.section code
 
+; ************************************************************************************************
+;
+;									Compile the code from disk
+;
+; ************************************************************************************************
 
 CompileCode:
-
-		ldy 	#ObjectFile >> 8
-		ldx 	#ObjectFile & $FF		
-		jsr 	IOOpenWrite
-		lda 	#12
-		jsr 	IOWriteByte
-		lda 	#13
-		jsr 	IOWriteByte
-		jsr 	IOWriteClose
-
-		ldy 	#SourceFile >> 8
-		ldx 	#SourceFile & $FF		
-		jsr 	IOOpenRead
+		ldx 	#APIDesc & $FF
+		ldy 	#APIDesc >> 8
+		jsr 	StartCompiler
 		.debug
-		jsr 	IOReadByte
-		jsr 	IOReadByte
-		jsr 	IOReadClose
-
 		jmp 	$FFFF
+
+; ************************************************************************************************
+;
+;									API Setup for the compiler
+;
+; ************************************************************************************************
+
+APIDesc:
+		.word 	CompilerAPI 				; the compiler API Implementeation
+		.byte 	$80 						; start of workspace for compiler $8000
+		.byte 	$9F							; end of workspace for compiler $9F00
+
+; ************************************************************************************************
+;
+;									File names for the compiler
+;
+; ************************************************************************************************
 
 ObjectFile:
 		.text 	'OBJECT.PRG',0		
 SourceFile:
 		.text 	'SOURCE.PRG',0
-
+								
 		.send code
 
 		.section storage
