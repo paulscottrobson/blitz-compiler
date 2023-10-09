@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.59.3120 listing file
 ; 64tass -q -c -Wall -o build/code.prg -L build/code.lst -l build/code.lbl source/main/00main.header /home/paulr/Projects/blitz-compiler/documents/../bin/runtime.library /home/paulr/Projects/blitz-compiler/documents/../bin/common.library /home/paulr/Projects/blitz-compiler/documents/../bin/ifloat32.library /home/paulr/Projects/blitz-compiler/documents/../bin/polynomials.library /home/paulr/Projects/blitz-compiler/documents/../bin/compiler.library _library.asm source/main/zzfree.footer
-; Mon Oct  9 08:04:07 2023
+; Mon Oct  9 12:07:49 2023
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -7485,7 +7485,7 @@
 >3857	db						.byte 	$DB 						; causes a break in the emulator
 .3858					_CAOpenIn:
 .3858	a0 39		ldy #$39			ldy 	#SourceFile >> 8 			; name of file
-.385a	a2 61		ldx #$61			ldx 	#SourceFile & $FF
+.385a	a2 6e		ldx #$6e			ldx 	#SourceFile & $FF
 .385c	20 e9 38	jsr $38e9			jsr 	IOOpenRead 					; open file
 .385f	20 f4 38	jsr $38f4			jsr 	IOReadByte 					; skip the 2 byte load address header
 .3862	20 f4 38	jsr $38f4			jsr 	IOReadByte
@@ -7540,19 +7540,19 @@
 .38b2					WriteObjectCode:
 .38b2	20 1a 08	jsr $081a			jsr 	PatchOutCompile 			; makes it run the runtime on reload
 .38b5	a0 39		ldy #$39			ldy 	#ObjectFile >> 8
-.38b7	a2 56		ldx #$56			ldx 	#ObjectFile & $FF
-.38b9	20 6c 39	jsr $396c			jsr 	IOOpenWrite 				; open write
+.38b7	a2 63		ldx #$63			ldx 	#ObjectFile & $FF
+.38b9	20 ca 39	jsr $39ca			jsr 	IOOpenWrite 				; open write
 .38bc	a9 01		lda #$01			lda 	#1 							; write out the load address $0801
-.38be	20 77 39	jsr $3977			jsr 	IOWriteByte
+.38be	20 d5 39	jsr $39d5			jsr 	IOWriteByte
 .38c1	a9 08		lda #$08			lda 	#8
-.38c3	20 77 39	jsr $3977			jsr 	IOWriteByte
+.38c3	20 d5 39	jsr $39d5			jsr 	IOWriteByte
 .38c6	a9 01		lda #$01			lda 	#((StartBasicProgram) & $FF)
 .38c8	85 2c		sta $2c				sta 	0+zTemp0
 .38ca	a9 08		lda #$08			lda 	#((StartBasicProgram) >> 8) & $FF
 .38cc	85 2d		sta $2d				sta 	1+zTemp0
 .38ce					_WOCLoop:
 .38ce	b2 2c		lda ($2c)			lda 	(zTemp0) 					; write code
-.38d0	20 77 39	jsr $3977			jsr 	IOWriteByte
+.38d0	20 d5 39	jsr $39d5			jsr 	IOWriteByte
 .38d3	e6 2c		inc $2c				inc 	zTemp0 						; advance pointer
 .38d5	d0 02		bne $38d9			bne 	_WOCSkip
 .38d7	e6 2d		inc $2d				inc 	zTemp0+1
@@ -7622,40 +7622,53 @@
 .07cd					IONameBuffer:
 >07cd							.fill 	64
 .3947					CompileCode:
-.3947	a2 52		ldx #$52			ldx 	#APIDesc & $FF
-.3949	a0 39		ldy #$39			ldy 	#APIDesc >> 8
-.394b	20 7a 2a	jsr $2a7a			jsr 	StartCompiler
-.394e	20 b2 38	jsr $38b2			jsr 	WriteObjectCode
-.3951	60		rts				rts
-.3952					APIDesc:
->3952	3b 38						.word 	CompilerAPI 				; the compiler API Implementeation
->3954	80						.byte 	$80 						; start of workspace for compiler $8000
->3955	9f						.byte 	$9F							; end of workspace for compiler $9F00
-.3956					ObjectFile:
->3956	4f 42 4a 45 43 54 2e 50				.text 	'OBJECT.PRG',0
->395e	52 47 00
-.3961					SourceFile:
->3961	53 4f 55 52 43 45 2e 50				.text 	'SOURCE.PRG',0
->3969	52 47 00
-.396c					IOOpenWrite:
-.396c	a9 57		lda #$57			lda 	#'W'			 			; write
-.396e	20 0c 39	jsr $390c			jsr 	IOSetFileName 				; set up name/LFS
-.3971	a2 03		ldx #$03			ldx	 	#3 							; use file 3 for writing
-.3973	20 c9 ff	jsr $ffc9			jsr 	$FFC9 						; CHKOUT
-.3976	60		rts				rts
-.3977					IOWriteByte:
-.3977	48		pha				pha
-.3978	da		phx				phx
-.3979	5a		phy				phy
-.397a	20 d2 ff	jsr $ffd2			jsr 	$FFD2
-.397d	7a		ply				ply
-.397e	fa		plx				plx
-.397f	68		pla				pla
-.3980	60		rts				rts
+.3947	a2 00		ldx #$00			ldx 	#0
+.3949	bd 79 39	lda $3979,x	_Prompt:lda 	Prompt,x
+.394c	20 d2 ff	jsr $ffd2			jsr 	$FFD2
+.394f	e8		inx				inx
+.3950	c9 00		cmp #$00			cmp 	#0
+.3952	d0 f5		bne $3949			bne 	_Prompt
+.3954	a2 5f		ldx #$5f			ldx 	#APIDesc & $FF
+.3956	a0 39		ldy #$39			ldy 	#APIDesc >> 8
+.3958	20 7a 2a	jsr $2a7a			jsr 	StartCompiler
+.395b	20 b2 38	jsr $38b2			jsr 	WriteObjectCode
+.395e	60		rts				rts
+.395f					APIDesc:
+>395f	3b 38						.word 	CompilerAPI 				; the compiler API Implementeation
+>3961	80						.byte 	$80 						; start of workspace for compiler $8000
+>3962	9f						.byte 	$9F							; end of workspace for compiler $9F00
+.3963					ObjectFile:
+>3963	4f 42 4a 45 43 54 2e 50				.text 	'OBJECT.PRG',0
+>396b	52 47 00
+.396e					SourceFile:
+>396e	53 4f 55 52 43 45 2e 50				.text 	'SOURCE.PRG',0
+>3976	52 47 00
+.3979					Prompt:
+>3979	42 4c 49 54 5a 20 28 41				.text 	'BLITZ (ALPHA 09-10-23)',13,13,'BUGS:HTTPS://GITHUB.COM/PAULSCOTTROBSON/BLITZ-COMPILER',13,13,0
+>3981	4c 50 48 41 20 30 39 2d 31 30 2d 32 33 29 0d 0d
+>3991	42 55 47 53 3a 48 54 54 50 53 3a 2f 2f 47 49 54
+>39a1	48 55 42 2e 43 4f 4d 2f 50 41 55 4c 53 43 4f 54
+>39b1	54 52 4f 42 53 4f 4e 2f 42 4c 49 54 5a 2d 43 4f
+>39c1	4d 50 49 4c 45 52 0d 0d 00
+.39ca					IOOpenWrite:
+.39ca	a9 57		lda #$57			lda 	#'W'			 			; write
+.39cc	20 0c 39	jsr $390c			jsr 	IOSetFileName 				; set up name/LFS
+.39cf	a2 03		ldx #$03			ldx	 	#3 							; use file 3 for writing
+.39d1	20 c9 ff	jsr $ffc9			jsr 	$FFC9 						; CHKOUT
+.39d4	60		rts				rts
+.39d5					IOWriteByte:
+.39d5	48		pha				pha
+.39d6	da		phx				phx
+.39d7	5a		phy				phy
+.39d8	20 d2 ff	jsr $ffd2			jsr 	$FFD2
+.39db	7a		ply				ply
+.39dc	fa		plx				plx
+.39dd	68		pla				pla
+.39de	60		rts				rts
 
 ;******  Processing input file: source/main/zzfree.footer
 
->3981							.align 	256
+>39df							.align 	256
 .3a00					FreeMemory:
 
 ;******  End of listing

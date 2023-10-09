@@ -40,6 +40,7 @@ endif
 #
 ROOTDIR =  $(dir $(realpath $(lastword $(MAKEFILE_LIST))))..$(S)
 BINDIR = $(ROOTDIR)bin$(S)
+RELEASEDIR = $(ROOTDIR)release$(S)
 SRCDIR = $(ROOTDIR)source$(S)
 CSCRIPTS = $(SRCDIR)common-scripts$(S)
 CSOURCE =  $(SRCDIR)common-source$(S)

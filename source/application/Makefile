@@ -17,7 +17,7 @@ endif
 
 all: build	
 
-BASICSRC = build$(S)hello.bas
+BASICSRC = build$(S)test.bas
 
 libraries:
 	make -C ..
@@ -40,13 +40,17 @@ build: prelim
 			_library.asm \
 			source$(S)main$(S)zzfree.footer
 
-	$(CCOPY) build$(S)code.prg BLITZ.PRG
-	$(CCOPY) BLITZ.PRG $(BINDIR)
+release: build
+	$(CDEL) OBJECT.PRG
+	$(CCOPY) *.PRG $(RELEASEDIR)
+	$(CCOPY) build$(S)test.bas $(RELEASEDIR)
+	$(CCOPY) $(BINDIR)tokenise.zip $(RELEASEDIR)
 
 run: build	
 	$(CDEL) OBJECT.PRG
 	$(EXEBASIC)
-	hexdump -C OBJECT.PRG
+	$(CCOPY) build$(S)code.prg BLITZ.PRG
+	$(CCOPY) BLITZ.PRG $(BINDIR)	
 	
 x16:
 	$(EMULATOR)

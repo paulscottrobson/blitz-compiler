@@ -19,6 +19,13 @@
 ; ************************************************************************************************
 
 CompileCode:
+		ldx 	#0
+_Prompt:lda 	Prompt,x
+		jsr 	$FFD2
+		inx
+		cmp 	#0
+		bne 	_Prompt
+
 		ldx 	#APIDesc & $FF
 		ldy 	#APIDesc >> 8
 		jsr 	StartCompiler
@@ -45,8 +52,10 @@ APIDesc:
 ObjectFile:
 		.text 	'OBJECT.PRG',0		
 SourceFile:
-		.text 	'SOURCE.PRG',0
-								
+		.text 	'SOURCE.PRG',0					
+Prompt:
+		.text 	'BLITZ (ALPHA 09-10-23)',13,13,'BUGS:HTTPS://GITHUB.COM/PAULSCOTTROBSON/BLITZ-COMPILER',13,13,0								
+
 		.send code
 
 		.section storage
