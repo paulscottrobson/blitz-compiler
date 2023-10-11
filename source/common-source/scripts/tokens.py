@@ -29,8 +29,12 @@ class TokenStore(object):
 		src = src.replace(" ","").replace("\t","").replace("\n","")
 		for s in src.split("|"):
 			m = s.upper().split(":")
-			self.idToToken[int(m[0])] = m[1]
-			self.tokenToID[m[1]] = int(m[0])
+			self.addToken(int(m[0]),m[1])
+
+	def addToken(self,id,txt):
+			txt = txt.upper()
+			self.idToToken[id] = txt
+			self.tokenToID[txt] = id
 
 	def dump(self):
 		ids = [x for x in self.idToToken.keys()]
@@ -68,7 +72,7 @@ class TokenStore(object):
 				|153:PRINT|154:CONT|155:LIST|156:CLR|157:CMD|158:SYS|159:OPEN|160:CLOSE|161:GET|162:NEW|163:TAB(|164:TO|165:FN|166:SPC(
 				|167:THEN|168:NOT|169:STEP|170:+|171:-|172:*|173:/|174:^|175:AND|176:OR|177:>|178:=|179:<|180:SGN|181:INT|182:ABS|183:USR
 				|184:FRE|185:POS|186:SQR|187:RND|188:LOG|189:EXP|190:COS|191:SIN|192:TAN|193:ATN|194:PEEK|195:LEN|196:STR$|197:VAL|198:ASC
-				|199:CHR$|200:LEFT$|201:RIGHT$|202:MID$|203:GO"""
+				|199:CHR$|200:LEFT$|201:RIGHT$|202:MID$|203:GO|255:PI"""
 
 	#
 	#		X16 keywords sequential from $CE80

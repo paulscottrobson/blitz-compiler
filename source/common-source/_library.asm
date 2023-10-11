@@ -80,6 +80,7 @@ C64_LEFTDOLLAR           = $c8 ; $c8 left$
 C64_RIGHTDOLLAR          = $c9 ; $c9 right$
 C64_MIDDOLLAR            = $ca ; $ca mid$
 C64_GO                   = $cb ; $cb go
+C64_PI                   = $ff ; $ff pi
 C64_MON                  = $ce80 ; $ce80 mon
 C64_DOS                  = $ce81 ; $ce81 dos
 C64_OLD                  = $ce82 ; $ce82 old

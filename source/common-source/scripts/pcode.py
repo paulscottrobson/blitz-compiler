@@ -131,7 +131,7 @@ class PCode(object):
 if __name__ == "__main__":
 	pc = PCode()
 	pc.dump()
-	pc.createClass("scripts/pcodeconstraw.py")
+	pc.createClass("pcodeconstraw.py")
 	pc.dumpSizeTable("source/generated/pcodesize.asm")
 
 # ***********************************************************************************************************************************************

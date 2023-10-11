@@ -42,7 +42,7 @@ ROOTDIR =  $(dir $(realpath $(lastword $(MAKEFILE_LIST))))..$(S)
 BINDIR = $(ROOTDIR)bin$(S)
 RELEASEDIR = $(ROOTDIR)release$(S)
 SRCDIR = $(ROOTDIR)source$(S)
-CSCRIPTS = $(SRCDIR)common-scripts$(S)
+CSCRIPTS = $(SRCDIR)common-source$(S)scripts$(S)
 CSOURCE =  $(SRCDIR)common-source$(S)
 #
 #		Current applications.

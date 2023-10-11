@@ -26,7 +26,6 @@ prelim: tokenise
 	$(PYTHON) scripts$(S)gencom.py 
 	$(PYTHON) $(CSCRIPTS)build.py
 	$(CCOPY) _library.asm $(BINDIR)compiler.library
-	$(CCOPY)  scripts$(S)pcodeconstraw.py $(CSCRIPTS)
 
 tokenise:
 	$(PYTHON) $(BINDIR)tokenise.zip $(BASICSRC) testing$(S)code$(S)tokenised.dat

@@ -35,11 +35,7 @@ class Tokeniser(object):
 			m = re.match('^(\\".*?\\")(.*)$',s)
 			assert m is not None,"Unbalanced quotes "+s
 			self.data += [ord(c) for c in m.group(1)]
-			return m.group(2)
-			
-		if s[:4] == "[PI]":
-			self.data.append(0xFF)
-			return s[4:]
+			return m.group(2)			
 
 		if s[0] >= "A" and s[0] <= "Z":
 			m = re.match("^([A-Z]+[\\(\\$\\#]?)(.*)$",s)
