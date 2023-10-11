@@ -21,7 +21,6 @@
 CommandEnd: ;; [!end]
 		.entercmd
 		stx 	zTemp0
-		clc 								; exit okay.
 EndRuntime:		
 		ldx 	Runtime6502SP 				; set up the stack pointer
 		txs

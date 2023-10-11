@@ -20,7 +20,7 @@ all: build
 BASICSRC = build$(S)balls.bas
 
 libraries:
-	make -C .. libraries
+	make -C ..
 
 prelim: 
 	$(PYTHON) $(CSCRIPTS)build.py
@@ -40,12 +40,11 @@ build: prelim
 			_library.asm \
 			source$(S)main$(S)zzfree.footer
 
-release: libraries build
+release: build
 	$(CDEL) OBJECT.PRG
 	$(CCOPY) *.PRG $(RELEASEDIR)
 	$(CCOPY) build$(S)*.bas $(RELEASEDIR)
 	$(CCOPY) $(BINDIR)tokenise.zip $(RELEASEDIR)
-	$(CCOPY) $(ROOTDIR)CHANGES.txt $(RELEASEDIR)
 	cd $(RELEASEDIR) ; $(CDEL) blitz.zip ; zip -q blitz.zip *
 	
 run: build	

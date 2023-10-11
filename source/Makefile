@@ -22,12 +22,13 @@ endif
 all: libraries release
 
 libraries:	
-	make $(MAKEOPTS) -B -C  tools
-	make $(MAKEOPTS) -B -C  common-source
-	make $(MAKEOPTS) -B -C  ifloat32
-	make $(MAKEOPTS) -B -C  polynomials
-	make $(MAKEOPTS) -B -C  runtime
-	make $(MAKEOPTS) -B -C  compiler
+	make $(MAKEOPTS) -C tools
+	make $(MAKEOPTS) -C common-source
+	make $(MAKEOPTS) -C ifloat32
+	make $(MAKEOPTS) -C polynomials
+	make $(MAKEOPTS) -C runtime
+	make $(MAKEOPTS) -C compiler
+	make $(MAKEOPTS) -C application
 
 release:
-	make $(MAKEOPTS) -B -C  application release
+	make $(MAKEOPTS) -C application release

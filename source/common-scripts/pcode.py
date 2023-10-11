@@ -10,11 +10,11 @@
 # *******************************************************************************************
 
 import os,re,sys
-from tokens import *
+from c64tokens import *
 from build import *
 
 class PCode(object):
-	def __init__(self,tokenList = [TokenStore()]):
+	def __init__(self,tokenList = [C64TokenStore()]):
 		self.tokenList = tokenList
 		self.currentID = 0x80
 		self.defines = []
@@ -131,7 +131,7 @@ class PCode(object):
 if __name__ == "__main__":
 	pc = PCode()
 	pc.dump()
-	pc.createClass("pcodeconstraw.py")
+	pc.createClass("scripts/pcodeconstraw.py")
 	pc.dumpSizeTable("source/generated/pcodesize.asm")
 
 # ***********************************************************************************************************************************************

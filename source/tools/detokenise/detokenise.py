@@ -10,7 +10,7 @@
 # *******************************************************************************************
 
 import os,sys,re
-from tokens import *
+from c64tokens import *
 
 # *******************************************************************************************
 #
@@ -20,7 +20,7 @@ from tokens import *
 
 class DeTokeniser(object):
 	def __init__(self):
-		self.tokens = TokenStore()
+		self.tokens = C64TokenStore()
 
 	def detokenise(self,filename,handle):
 		program = [x for x in open(filename,"rb").read(-1)]

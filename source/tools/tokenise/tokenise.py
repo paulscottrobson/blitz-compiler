@@ -10,7 +10,7 @@
 # *******************************************************************************************
 
 import os,sys,re
-from tokens import *
+from c64tokens import *
 
 # *******************************************************************************************
 #
@@ -20,7 +20,7 @@ from tokens import *
 
 class Tokeniser(object):
 	def __init__(self):
-		self.tokens = TokenStore()
+		self.tokens = C64TokenStore()
 		self.longest = max([len(s) for s in self.tokens.getAllTokens()])
 
 	def tokeniseBody(self,body):
@@ -35,12 +35,11 @@ class Tokeniser(object):
 			m = re.match('^(\\".*?\\")(.*)$',s)
 			assert m is not None,"Unbalanced quotes "+s
 			self.data += [ord(c) for c in m.group(1)]
-			return m.group(2)			
-
+			return m.group(2)
+			
 		if s[0] >= "A" and s[0] <= "Z":
 			m = re.match("^([A-Z]+[\\(\\$\\#]?)(.*)$",s)
 			assert m is not None
-
 			for l in range(7,1,-1):
 				token = self.tokens.getID(s[:l])
 				if token is not None and len(self.tokens.getToken(token)) == l:
