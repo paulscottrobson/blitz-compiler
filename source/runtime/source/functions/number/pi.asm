@@ -20,12 +20,9 @@
 
 UnaryPI: ;; [pi]
 		.entercmd
-		.debug
-		inx
 		lda 	#Const_pi-Const_base
 		jsr 	LoadConstant
-;		lda 	#42
-;		jsr 	FloatSetByte
+		inx
 		.exitcmd
 
 		.send 	code

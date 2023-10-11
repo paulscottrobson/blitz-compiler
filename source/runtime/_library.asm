@@ -3943,12 +3943,9 @@ UnaryPeek:	;; [peek]
 
 UnaryPI: ;; [pi]
 		.entercmd
-		.debug
-		inx
 		lda 	#Const_pi-Const_base
 		jsr 	LoadConstant
-;		lda 	#42
-;		jsr 	FloatSetByte
+		inx
 		.exitcmd
 
 		.send 	code
@@ -7444,14 +7441,18 @@ CommandLocate: ;; [!locate]
 		dex
 		.floatinteger
 		dex
-		lda 	#$13 						; home.
-		jsr 	XPrintCharacterToChannel
-		lda 	#$1D 						; do cursor rights
-		ldx 	NSMantissa0+1
-		jsr 	_CLOutputXA
-		lda 	#$11 						; do cursor downs.
+		pha 								; save registers
+		phx
+		phy
+		clc
+		ldy 	NSMantissa0+1 				; get coords
 		ldx 	NSMantissa0
-		jsr 	_CLOutputXA
+		dey 								; fix up
+		dex
+		jsr 	$FFF0 						; PLOT
+		ply 								; restore registers
+		plx
+		pla
 		.exitcmd
 
 _CLOutputXA: 								; output X A's, 1 based.
