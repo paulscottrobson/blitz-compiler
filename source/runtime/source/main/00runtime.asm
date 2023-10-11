@@ -63,7 +63,6 @@ NextCommand:
 		ply
 		plx
 _NXNoCheck:
-
 		lda 	(codePtr),y 				; get next
 		bmi 	NXCommand 					; -if -ve command
 		iny

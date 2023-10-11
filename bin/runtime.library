@@ -549,7 +549,6 @@ NextCommand:
 		ply
 		plx
 _NXNoCheck:
-
 		lda 	(codePtr),y 				; get next
 		bmi 	NXCommand 					; -if -ve command
 		iny
@@ -3942,7 +3941,7 @@ UnaryPeek:	;; [peek]
 ;
 ; ************************************************************************************************
 
-UnaryPI: ; [pi]
+UnaryPI: ;; [pi]
 		.entercmd
 		lda 	#42
 		jsr 	FloatSetByte
@@ -6113,97 +6112,98 @@ VectorTable:
 	.word	CommandXOn               ; $a9 on
 	.word	CommandMoreOn            ; $aa moreon
 	.word	UnaryPeek                ; $ab peek
-	.word	CommandPOKE              ; $ac poke
-	.word	UnaryPos                 ; $ad pos
-	.word	GetChannel               ; $ae getchannel
-	.word	SetChannel               ; $af setchannel
-	.word	PrintNumber              ; $b0 print.n
-	.word	PrintString              ; $b1 print.s
-	.word	CommandXRead             ; $b2 read
-	.word	CommandReadString        ; $b3 read$
-	.word	UnaryRND                 ; $b4 rnd
-	.word	StringConcatenate        ; $b5 concat
-	.word	SignTOS                  ; $b6 sgn
-	.word	PrintTab                 ; $b7 print.tab
-	.word	PrintPos                 ; $b8 print.pos
-	.word	PrintSpace               ; $b9 print.spc
-	.word	Unary_Str                ; $ba str$
-	.word	Unary_Left               ; $bb left$
-	.word	Unary_Right              ; $bc right$
-	.word	Unary_Mid                ; $bd mid$
-	.word	CommandSwap              ; $be swap
-	.word	TimeTOS                  ; $bf ti
-	.word	TimeString               ; $c0 ti$
-	.word	UnaryUsr                 ; $c1 usr
-	.word	ValUnary                 ; $c2 val
-	.word	CommandClose             ; $c3 close
-	.word	CommandExit              ; $c4 exit
-	.word	CommandDebug             ; $c5 debug
-	.word	CommandXOpen             ; $c6 open
-	.word	CommandScreen            ; $c7 screen
-	.word	CommandVPOKE             ; $c8 vpoke
-	.word	CommandVPEEK             ; $c9 vpeek
-	.word	CommandShift             ; $ca .shift
-	.word	PushByteCommand          ; $cb .byte
-	.word	PushWordCommand          ; $cc .word
-	.word	CommandPushN             ; $cd .float
-	.word	CommandPushS             ; $ce .string
-	.word	CommandXData             ; $cf .data
-	.word	CommandXGoto             ; $d0 .goto
-	.word	CommandXGosub            ; $d1 .gosub
-	.word	CommandGotoZ             ; $d2 .goto.z
-	.word	CommandGotoNZ            ; $d3 .goto.nz
-	.word	CommandVarSpace          ; $d4 .varspace
+	.word	UnaryPI                  ; $ac pi
+	.word	CommandPOKE              ; $ad poke
+	.word	UnaryPos                 ; $ae pos
+	.word	GetChannel               ; $af getchannel
+	.word	SetChannel               ; $b0 setchannel
+	.word	PrintNumber              ; $b1 print.n
+	.word	PrintString              ; $b2 print.s
+	.word	CommandXRead             ; $b3 read
+	.word	CommandReadString        ; $b4 read$
+	.word	UnaryRND                 ; $b5 rnd
+	.word	StringConcatenate        ; $b6 concat
+	.word	SignTOS                  ; $b7 sgn
+	.word	PrintTab                 ; $b8 print.tab
+	.word	PrintPos                 ; $b9 print.pos
+	.word	PrintSpace               ; $ba print.spc
+	.word	Unary_Str                ; $bb str$
+	.word	Unary_Left               ; $bc left$
+	.word	Unary_Right              ; $bd right$
+	.word	Unary_Mid                ; $be mid$
+	.word	CommandSwap              ; $bf swap
+	.word	TimeTOS                  ; $c0 ti
+	.word	TimeString               ; $c1 ti$
+	.word	UnaryUsr                 ; $c2 usr
+	.word	ValUnary                 ; $c3 val
+	.word	CommandClose             ; $c4 close
+	.word	CommandExit              ; $c5 exit
+	.word	CommandDebug             ; $c6 debug
+	.word	CommandXOpen             ; $c7 open
+	.word	CommandScreen            ; $c8 screen
+	.word	CommandVPOKE             ; $c9 vpoke
+	.word	CommandVPEEK             ; $ca vpeek
+	.word	CommandShift             ; $cb .shift
+	.word	PushByteCommand          ; $cc .byte
+	.word	PushWordCommand          ; $cd .word
+	.word	CommandPushN             ; $ce .float
+	.word	CommandPushS             ; $cf .string
+	.word	CommandXData             ; $d0 .data
+	.word	CommandXGoto             ; $d1 .goto
+	.word	CommandXGosub            ; $d2 .gosub
+	.word	CommandGotoZ             ; $d3 .goto.z
+	.word	CommandGotoNZ            ; $d4 .goto.nz
+	.word	CommandVarSpace          ; $d5 .varspace
 
 
 ShiftVectorTable:
-	.word	CommandClr               ; $ca80 clr
-	.word	CommandXDIM              ; $ca81 dim
-	.word	CommandEnd               ; $ca82 end
-	.word	UnaryJoy                 ; $ca83 joy
-	.word	LinkFloatIntegerPartDown ; $ca84 int
-	.word	LinkFloatSquareRoot      ; $ca85 sqr
-	.word	LinkFloatLogarithm       ; $ca86 log
-	.word	LinkFloatExponent        ; $ca87 exp
-	.word	LinkFloatCosine          ; $ca88 cos
-	.word	LinkFloatSine            ; $ca89 sin
-	.word	LinkFloatTangent         ; $ca8a tan
-	.word	LinkFloatArcTan          ; $ca8b atn
-	.word	XCommandMouse            ; $ca8c mouse
-	.word	XUnaryMB                 ; $ca8d mb
-	.word	XUnaryMX                 ; $ca8e mx
-	.word	XUnaryMY                 ; $ca8f my
-	.word	CommandRestore           ; $ca90 restore
-	.word	CommandStop              ; $ca91 stop
-	.word	CommandSYS               ; $ca92 sys
-	.word	CommandTIWrite           ; $ca93 ti$.write
-	.word	CommandXWAIT             ; $ca94 wait
-	.word	X16I2CPoke               ; $ca95 i2cpoke
-	.word	X16I2CPeek               ; $ca96 i2cpeek
-	.word	CommandBank              ; $ca97 bank
-	.word	XCommandSleep            ; $ca98 sleep
-	.word	X16_Audio_FMINIT         ; $ca99 fminit
-	.word	X16_Audio_FMNOTE         ; $ca9a fmnote
-	.word	X16_Audio_FMDRUM         ; $ca9b fmdrum
-	.word	X16_Audio_FMINST         ; $ca9c fminst
-	.word	X16_Audio_FMVIB          ; $ca9d fmvib
-	.word	X16_Audio_FMFREQ         ; $ca9e fmfreq
-	.word	X16_Audio_FMVOL          ; $ca9f fmvol
-	.word	X16_Audio_FMPAN          ; $caa0 fmpan
-	.word	X16_Audio_FMPLAY         ; $caa1 fmplay
-	.word	X16_Audio_FMCHORD        ; $caa2 fmchord
-	.word	X16_Audio_FMPOKE         ; $caa3 fmpoke
-	.word	X16_Audio_PSGINIT        ; $caa4 psginit
-	.word	X16_Audio_PSGNOTE        ; $caa5 psgnote
-	.word	X16_Audio_PSGVOL         ; $caa6 psgvol
-	.word	X16_Audio_PSGWAV         ; $caa7 psgwav
-	.word	X16_Audio_PSGFREQ        ; $caa8 psgfreq
-	.word	X16_Audio_PSGPAN         ; $caa9 psgpan
-	.word	X16_Audio_PSGPLAY        ; $caaa psgplay
-	.word	X16_Audio_PSGCHORD       ; $caab psgchord
-	.word	CommandCls               ; $caac cls
-	.word	CommandLocate            ; $caad locate
-	.word	CommandColor             ; $caae color
+	.word	CommandClr               ; $cb80 clr
+	.word	CommandXDIM              ; $cb81 dim
+	.word	CommandEnd               ; $cb82 end
+	.word	UnaryJoy                 ; $cb83 joy
+	.word	LinkFloatIntegerPartDown ; $cb84 int
+	.word	LinkFloatSquareRoot      ; $cb85 sqr
+	.word	LinkFloatLogarithm       ; $cb86 log
+	.word	LinkFloatExponent        ; $cb87 exp
+	.word	LinkFloatCosine          ; $cb88 cos
+	.word	LinkFloatSine            ; $cb89 sin
+	.word	LinkFloatTangent         ; $cb8a tan
+	.word	LinkFloatArcTan          ; $cb8b atn
+	.word	XCommandMouse            ; $cb8c mouse
+	.word	XUnaryMB                 ; $cb8d mb
+	.word	XUnaryMX                 ; $cb8e mx
+	.word	XUnaryMY                 ; $cb8f my
+	.word	CommandRestore           ; $cb90 restore
+	.word	CommandStop              ; $cb91 stop
+	.word	CommandSYS               ; $cb92 sys
+	.word	CommandTIWrite           ; $cb93 ti$.write
+	.word	CommandXWAIT             ; $cb94 wait
+	.word	X16I2CPoke               ; $cb95 i2cpoke
+	.word	X16I2CPeek               ; $cb96 i2cpeek
+	.word	CommandBank              ; $cb97 bank
+	.word	XCommandSleep            ; $cb98 sleep
+	.word	X16_Audio_FMINIT         ; $cb99 fminit
+	.word	X16_Audio_FMNOTE         ; $cb9a fmnote
+	.word	X16_Audio_FMDRUM         ; $cb9b fmdrum
+	.word	X16_Audio_FMINST         ; $cb9c fminst
+	.word	X16_Audio_FMVIB          ; $cb9d fmvib
+	.word	X16_Audio_FMFREQ         ; $cb9e fmfreq
+	.word	X16_Audio_FMVOL          ; $cb9f fmvol
+	.word	X16_Audio_FMPAN          ; $cba0 fmpan
+	.word	X16_Audio_FMPLAY         ; $cba1 fmplay
+	.word	X16_Audio_FMCHORD        ; $cba2 fmchord
+	.word	X16_Audio_FMPOKE         ; $cba3 fmpoke
+	.word	X16_Audio_PSGINIT        ; $cba4 psginit
+	.word	X16_Audio_PSGNOTE        ; $cba5 psgnote
+	.word	X16_Audio_PSGVOL         ; $cba6 psgvol
+	.word	X16_Audio_PSGWAV         ; $cba7 psgwav
+	.word	X16_Audio_PSGFREQ        ; $cba8 psgfreq
+	.word	X16_Audio_PSGPAN         ; $cba9 psgpan
+	.word	X16_Audio_PSGPLAY        ; $cbaa psgplay
+	.word	X16_Audio_PSGCHORD       ; $cbab psgchord
+	.word	CommandCls               ; $cbac cls
+	.word	CommandLocate            ; $cbad locate
+	.word	CommandColor             ; $cbae color
 	.send code
 ; ************************************************************************************************
 ; ************************************************************************************************
