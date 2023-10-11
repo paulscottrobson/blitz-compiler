@@ -23,6 +23,7 @@ libraries:
 	make -C ..
 
 prelim: 
+	make -B -C ..$(S)common-source
 	$(PYTHON) $(CSCRIPTS)build.py
 	$(PYTHON) $(BINDIR)tokenise.zip $(BASICSRC) SOURCE.PRG
 

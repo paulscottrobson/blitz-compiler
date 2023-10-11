@@ -15,13 +15,13 @@ else
 include ../../documents/common.make
 endif
 
-all: build
-
-prelim: 
+all: 
+	
 	$(PYTHON) $(CSCRIPTS)pcode.py >source$(S)generated$(S)pcodetokens.inc
 	$(PYTHON) $(CSCRIPTS)c64tokens.py >source$(S)generated$(S)c64tokens.inc
 	$(PYTHON) $(CSCRIPTS)errors.py
 	$(PYTHON) $(CSCRIPTS)build.py
+	$(CCOPY) scripts$(S)pcodeconstraw.py ..$(S)common-scripts
+	$(CDEL) scripts$(S)pcodeconstraw.py
 	$(CCOPY) _library.asm $(BINDIR)common.library
 
-build: prelim
