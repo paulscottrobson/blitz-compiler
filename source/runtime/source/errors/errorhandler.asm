@@ -42,6 +42,7 @@ _EHDisplayMsg:
 		lda 	#32
 		jsr 	XPrintCharacterToChannel
 		jsr 	EHDisplayCodePtr
+		sec 								; report error.
 		jmp 	EndRuntime
 
 EHDisplayCodePtr:

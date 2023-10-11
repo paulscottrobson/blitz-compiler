@@ -17,6 +17,8 @@ WrapperBoot:
 		ldx 	#$81 						; first page of allocatable memory
 		ldy 	#$9F 						; byte after end of last page.
 		jsr 	StartRuntime 				; try to run it
+_WBStop: 									; loop on error.
+		bcs 	_WBStop		
 		jmp 	$FFFF 						; then exit.
 
 		.send code

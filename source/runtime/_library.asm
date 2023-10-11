@@ -509,6 +509,8 @@ X16_AudioCodeBank = $0A
 ;		So if A = $32 and X = $70 and Y = $78 the code is at $3200 and the useable memory
 ;		is from $7000-$77FF.
 ;
+;		Carry set on exit if error.
+;
 ; ************************************************************************************************
 
 StartRuntime:			
@@ -1900,6 +1902,7 @@ dimType:									; type bits being checked for.
 CommandEnd: ;; [!end]
 		.entercmd
 		stx 	zTemp0
+		clc 								; exited okay.
 EndRuntime:		
 		ldx 	Runtime6502SP 				; set up the stack pointer
 		txs
@@ -1963,6 +1966,7 @@ _EHDisplayMsg:
 		lda 	#32
 		jsr 	XPrintCharacterToChannel
 		jsr 	EHDisplayCodePtr
+		sec 								; report error.
 		jmp 	EndRuntime
 
 EHDisplayCodePtr:

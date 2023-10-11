@@ -23,6 +23,8 @@
 ;		So if A = $32 and X = $70 and Y = $78 the code is at $3200 and the useable memory
 ;		is from $7000-$77FF.
 ;
+;		Carry set on exit if error.
+;
 ; ************************************************************************************************
 
 StartRuntime:			
