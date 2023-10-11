@@ -10,11 +10,11 @@
 # *******************************************************************************************
 
 import os,re,sys
-from c64tokens import *
+from tokens import *
 from build import *
 
 class PCode(object):
-	def __init__(self,tokenList = [C64TokenStore()]):
+	def __init__(self,tokenList = [TokenStore()]):
 		self.tokenList = tokenList
 		self.currentID = 0x80
 		self.defines = []

@@ -39,6 +39,7 @@ gitrev:
 	cd ..$(S)x16-rom ; git pull ; # make doesn't currently build.
 	cd ..$(S)x16-emulator ; git pull ; make 
 	$(CCOPY) ..$(S)x16-rom$(S)build$(S)x16$(S)rom.bin $(BINDIR)
+	$(CCOPY) ..$(S)x16-rom$(S)basic$(S)token2.s $(ROOTDIR)documents
 	$(CCOPY) ..$(S)x16-emulator$(S)x16emu$(APPSTEM) $(BINDIR)
 #
 #		Get latest release.
@@ -57,4 +58,8 @@ latest:
 	$(CCOPY) $(BTEMP)x16emu.exe $(BINDIR)
 	$(CCOPY) $(BTEMP)rom.bin $(BINDIR)	
 	$(CCOPY) $(BTEMP)*.dll $(BINDIR)	
-
+#
+#		Build release
+#
+release:
+	make -B -C source/application/ release

@@ -28,7 +28,6 @@ libraries:
 	make $(MAKEOPTS) -C polynomials
 	make $(MAKEOPTS) -C runtime
 	make $(MAKEOPTS) -C compiler
-	make $(MAKEOPTS) -C application
 
 release:
 	make $(MAKEOPTS) -C application release

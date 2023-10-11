@@ -11,7 +11,7 @@
 
 import os,re,sys
 from build import *
-from c64tokens import *
+from tokens import *
 from pcodeconst import *
 
 # *******************************************************************************************
@@ -22,7 +22,7 @@ from pcodeconst import *
 
 class Generator(object):
 	def __init__(self,header):
-		self.c64tokens = C64TokenStore()
+		self.c64tokens = TokenStore()
 		token = self.c64tokens.getID(header)
 		assert token is not None,"Unknown "+token
 		if token < 256:
