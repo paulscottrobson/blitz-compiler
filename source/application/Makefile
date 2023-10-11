@@ -40,11 +40,12 @@ build: prelim
 			_library.asm \
 			source$(S)main$(S)zzfree.footer
 
-release: build
+release:  build
 	$(CDEL) OBJECT.PRG
 	$(CCOPY) *.PRG $(RELEASEDIR)
 	$(CCOPY) build$(S)*.bas $(RELEASEDIR)
 	$(CCOPY) $(BINDIR)tokenise.zip $(RELEASEDIR)
+	$(CCOPY) $(ROOTDIR)CHANGES.txt $(RELEASEDIR)
 	cd $(RELEASEDIR) ; $(CDEL) blitz.zip ; zip -q blitz.zip *
 	
 run: build	
