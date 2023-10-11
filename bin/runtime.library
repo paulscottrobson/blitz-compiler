@@ -3943,8 +3943,12 @@ UnaryPeek:	;; [peek]
 
 UnaryPI: ;; [pi]
 		.entercmd
-		lda 	#42
-		jsr 	FloatSetByte
+		.debug
+		inx
+		lda 	#Const_pi-Const_base
+		jsr 	LoadConstant
+;		lda 	#42
+;		jsr 	FloatSetByte
 		.exitcmd
 
 		.send 	code
