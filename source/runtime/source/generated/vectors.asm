@@ -89,6 +89,7 @@ VectorTable:
 	.word	CommandGotoZ             ; $d3 .goto.z
 	.word	CommandGotoNZ            ; $d4 .goto.nz
 	.word	CommandVarSpace          ; $d5 .varspace
+	.word	Unimplemented            ; $d6 .restore
 
 
 ShiftVectorTable:
@@ -108,7 +109,7 @@ ShiftVectorTable:
 	.word	XUnaryMB                 ; $cb8d mb
 	.word	XUnaryMX                 ; $cb8e mx
 	.word	XUnaryMY                 ; $cb8f my
-	.word	CommandRestore           ; $cb90 restore
+	.word	CommandRestoreX          ; $cb90 restore
 	.word	CommandStop              ; $cb91 stop
 	.word	CommandSYS               ; $cb92 sys
 	.word	CommandTIWrite           ; $cb93 ti$.write

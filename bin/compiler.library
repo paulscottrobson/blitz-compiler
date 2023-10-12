@@ -1526,6 +1526,8 @@ _FBLoop:
 		beq 	_FBFixGotoGosub
 		cmp 	#PCD_CMD_VARSPACE
 		beq 	_FBFixVarSpace
+		cmp 	#PCD_CMD_RESTORE 			; patch restore.
+		beq 	_FBFixRestore
 _FBNext:		
 		jsr 	MoveObjectForward 			; move forward in object code.
 		bcc 	_FBLoop 					; not finished
@@ -1534,7 +1536,10 @@ _FBExit:
 ;
 ;		Found GOTO/GOSUB - look it up in the line# table and fix it up.
 ;
+;		also handles RESTORE.
+;
 _FBFixGotoGosub:
+_FBFixRestore:
 		ldy 	#1							; line number in YA
 		lda 	(objPtr),y
 		pha
@@ -1546,8 +1551,11 @@ _FBFixGotoGosub:
 		bcc 	_FBFFound 					; not found, so must be >
 		pha
 		lda 	(objPtr) 					; which is a fail if not CMD_GOTOCMD_Z
-		cmp 	#PCD_CMD_GOTOCMD_Z
+		cmp 	#PCD_CMD_GOTOCMD_Z 			; or RESTORE. These go to the next line
+		beq 	_FBFAllowZero 				; after ; for IF forward scanning, and
+		cmp 	#PCD_CMD_RESTORE 			; because RESTORE <n> <n> is optional.
 		bne 	_FBFFail
+_FBFAllowZero:		
 		pla
 
 _FBFFound:		
