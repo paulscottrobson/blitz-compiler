@@ -67,12 +67,30 @@ XUnaryMY: ;; [!my]
 		sta 	NSMantissa1,x
 		.exitcmd
 
+XUnaryMWheel: ;; [!mwheel]
+		.entercmd
+		jsr 	XUnaryMouseCommon 			; read mouse status
+		inx
+		lda 	zTemp2+1 					; set mantissa to |wheel|
+		pha
+		bpl 	_XUMNotNegative
+		eor 	#$FF
+		inc 	a
+_XUMNotNegative:		
+		jsr 	FloatSetByte
+		pla  								; negate if it was -ve
+		bpl 	_XUMNotNegative2
+		jsr 	FloatNegate
+_XUMNotNegative2:
+		.exitcmd
+
 XUnaryMouseCommon:
 		phx
 		phy
 		ldx 	#zTemp0
 		jsr 	X16_mouse_get
 		sta 	zTemp2
+		stx 	zTemp2+1
 		ply
 		plx
 		rts

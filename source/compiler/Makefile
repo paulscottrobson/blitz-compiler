@@ -18,7 +18,7 @@ endif
 
 all: build
 
-BASICSRC = build$(S)data.bas
+BASICSRC = build$(S)hello.bas
 
 prelim: tokenise
 	make -C ../common-source
