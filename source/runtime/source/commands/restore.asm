@@ -18,10 +18,38 @@
 ;
 ; ************************************************************************************************
 
-CommandRestoreX: ;; [!restore]
+CommandRestoreX: ;; [.restore]
 		.entercmd
-		jsr 	RestoreCode
+		jsr 	RestoreCodeOffset
 		.exitcmd
+
+; ************************************************************************************************
+;
+;										Restore to offset,
+;
+; ************************************************************************************************
+
+RestoreCodeOffset:
+		jsr 	FixUpY  					; make Y = 0 adjusting code Ptr.
+
+		clc 								; add LSB
+		lda 	(codePtr),y
+		adc 	codePtr
+		sta 	objPtr
+
+		iny 								; add MSB
+		lda 	(codePtr),y
+		adc 	codePtr+1
+		sta 	objPtr+1	
+		iny 								; next command.
+		stz 	dataRemaining 				; no data remaining.
+		rts
+
+; ************************************************************************************************
+;
+;							This is the classic RESTORE, to the start.
+;
+; ************************************************************************************************
 
 RestoreCode:
 		lda 	runtimeHigh 				; reset pointer

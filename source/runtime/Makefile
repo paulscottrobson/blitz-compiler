@@ -18,6 +18,7 @@ endif
 all: build
 
 prelim: 
+	make -B -C ../common-source
 	$(PYTHON) scripts$(S)genmapping.py >source$(S)generated$(S)links.asm
 	$(PYTHON) scripts$(S)vectors.py >source$(S)generated$(S)vectors.asm
 
