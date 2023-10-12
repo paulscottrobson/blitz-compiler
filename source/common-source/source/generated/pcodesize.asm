@@ -14,4 +14,5 @@ MOFSizeTable:
 	.byte	2         	; $d3 .goto.z
 	.byte	2         	; $d4 .goto.nz
 	.byte	2         	; $d5 .varspace
+	.byte	2         	; $d6 .restore
 .send code

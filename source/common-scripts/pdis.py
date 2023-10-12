@@ -80,7 +80,7 @@ class PCodeDecompiler(object):
 					if s == ".varspace":
 						s = ".varspace ${0:x}".format(self.data[p]+self.data[p+1]*256)
 						p = p + 2
-					if s.startswith(".goto") or s == ".gosub":
+					if s.startswith(".goto") or s == ".gosub" or s == ".restore":
 						offset = self.data[p]+(self.data[p+1] << 8)
 						addr = (p + offset) & 0xFFFF
 						s = "{0}:{1:04x} [${2:04x}]".format(s,addr,offset)

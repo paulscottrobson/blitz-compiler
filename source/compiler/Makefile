@@ -18,7 +18,7 @@ endif
 
 all: build
 
-BASICSRC = build$(S)x16font.bas
+BASICSRC = build$(S)data.bas
 
 prelim: tokenise
 	make -C ../common-source
