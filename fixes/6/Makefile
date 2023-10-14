@@ -17,13 +17,13 @@ endif
 
 all: decode
 
-BASICPRG = Z06_LIFE1.PRG
+BASICPRG = Z07_MYSTIFY.PRG
 
 libraries:
 	make -B -C ..$(S).. libs release
 
 decode:
-	$(PYTHON) $(ROOTDIR)source$(S)tools$(S)detokenise$(S)detokenise.py $(BASICPRG)
+	$(PYTHON) $(ROOTDIR)source$(S)tools$(S)detokenise$(S)detokenise.py $(BASICPRG) >original.bas
 
 load:
 	$(CDEL) dump*.bin 

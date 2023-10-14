@@ -1,3 +1,2 @@
-110 ti = 42000
-120 print ti,ti$
-130 goto 120
+10    COLOR 5,0:CLS
+20 stop

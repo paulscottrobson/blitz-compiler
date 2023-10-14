@@ -27,6 +27,7 @@ CommandScreen: ;; [screen]
 		jsr 	X16_screen_mode
 		ply
 		plx
+		dex
 		.exitcmd
 
 		.send 	code
