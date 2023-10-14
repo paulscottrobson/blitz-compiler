@@ -31,6 +31,11 @@ all: libs
 libs:	
 	make $(MAKEOPTS) -C source
 #
+#		Build the release
+#
+release:
+	make $(MAKEOPTS) -C source$(S)application release
+#
 #		Get the most recent version of the emulator & docs. Requires the three
 #		repositories to be in the same directory as the blitz repository
 #	

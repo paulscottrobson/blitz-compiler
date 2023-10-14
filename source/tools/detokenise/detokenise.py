@@ -52,7 +52,17 @@ class DeTokeniser(object):
 				code = code + keyword
 			else:
 				code = code + chr(token)
+			if token == 34:
+				done = False
+				while not done:
+					if program[p] == 0:
+						done = True 
+					else:
+						code = code + chr(program[p])
+						done = program[p] == 34
+						p += 1
+
 		return code
 
 if __name__ == "__main__":
-	DeTokeniser().detokenise("X16FONT.PRG",sys.stdout)
+	DeTokeniser().detokenise(sys.argv[1],sys.stdout)

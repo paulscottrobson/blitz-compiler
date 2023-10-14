@@ -2673,6 +2673,11 @@ _GRCNoSwap:
 		lda 	5,x
 		sbc 	1,x
 		sta 	5,x
+
+		inc 	4,x 						; size does not include limits.
+		bne 	_GRCNoCarry
+		inc 	5,x
+_GRCNoCarry:		
 		rts
 
 _GRCSwapByte:

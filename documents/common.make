@@ -52,6 +52,7 @@ PYTHON = python3
 EMULATOR = $(BINDIR)x16emu$(APPSTEM) -scale 2 -debug -zeroram -dump R
 EXECUTE = $(CDEL) dump*.bin ; $(EMULATOR) -prg build$(S)code.prg,801 -run
 EXEBASIC = $(CDEL) dump*.bin ; $(EMULATOR) -prg build$(S)code.prg -run
+COMBASIC = $(EMULATOR) -prg $(ROOTDIR)source$(S)application$(S)BLITZ.PRG -run
 QEXECUTE = $(EXECUTE) -testbench
 FAST = -warp
 MAKEOPTS = --no-print-directory
