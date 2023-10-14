@@ -17,7 +17,7 @@ endif
 
 all: decode
 
-BASICPRG = Z04_LABYRINTH.PRG
+BASICPRG = Z05_BUBBLE.PRG
 
 libraries:
 	make -B -C ..$(S).. libs release
