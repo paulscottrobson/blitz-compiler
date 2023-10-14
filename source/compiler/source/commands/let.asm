@@ -40,12 +40,17 @@ CommandLETHaveFirst:
 		ply
 		plx
 
+		cpy 	#$80 						; is it TI = xxxxx
+		beq 	_CLTINumber
 		cpy 	#$C0 						; is it TI$ = "xxxxx"
 		beq 	_CLTIString
 		sec
 		jsr		GetSetVariable
 		rts
 
+_CLTINumber:
+		.keyword PCD_TICMD_WRITE
+		rts
 _CLTIString:
 		.keyword PCD_TIDOLLARCMD_WRITE
 		rts

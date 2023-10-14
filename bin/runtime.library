@@ -5878,11 +5878,21 @@ TIPushClock:
 
 ; ************************************************************************************************
 ;
+;										TI = functionality
+;
+; ************************************************************************************************
+
+CommandTIWriteN: ;; [!ti.write]
+		.entercmd
+		bra 	WriteTOSToClock
+
+; ************************************************************************************************
+;
 ;										TI$ = functionality
 ;
 ; ************************************************************************************************
 
-CommandTIWrite: ;; [!ti$.write]
+CommandTIWriteS: ;; [!ti$.write]
 		.entercmd
 		lda 	NSMantissa0,x 				; copy string address to ZSTemp
 		sta 	zsTemp
@@ -5890,14 +5900,15 @@ CommandTIWrite: ;; [!ti$.write]
 		sta 	zsTemp+1
 		lda 	(zsTemp) 					; check if it is six
 		cmp 	#6
-		bne 	_CTIWError
+		bne 	CTIWError
 		jsr 	FloatSetZero
-		jsr 	_CTIWDigitPair 				; do a digit pair 3 times
-		jsr 	_CTIWDigitPair
-		jsr 	_CTIWDigitPair
+		jsr 	CTIWDigitPair 				; do a digit pair 3 times
+		jsr 	CTIWDigitPair
+		jsr 	CTIWDigitPair
 		lda 	#60 						; multiply the result by 60.
-		jsr 	_CTIWMultiply
+		jsr 	CTIWMultiply
 
+WriteTOSToClock:
 		phx
 		phy
 
@@ -5917,28 +5928,28 @@ CommandTIWrite: ;; [!ti$.write]
 ;
 ;		Add a pair of digits x 60
 ;
-_CTIWDigitPair:
+CTIWDigitPair:
 		lda 	#6 							; x 6 
-		jsr 	_CTIWMultiply
-		jsr 	_CTIWAddDigit 				; add digit
+		jsr 	CTIWMultiply
+		jsr 	CTIWAddDigit 				; add digit
 		lda 	#10 						; x 10
-		jsr 	_CTIWMultiply
-		jsr 	_CTIWAddDigit 				; add digit
+		jsr 	CTIWMultiply
+		jsr 	CTIWAddDigit 				; add digit
 		rts
 ;
 ;		Add the next digit, validating.
 ;		
-_CTIWAddDigit:
+CTIWAddDigit:
 		inc 	zsTemp 						; pre-increment
-		bne 	_CTIWASkip
+		bne 	CTIWASkip
 		inc 	zsTemp+1
-_CTIWASkip:
+CTIWASkip:
 		lda 	(zsTemp) 					; read and validate it
 		sec
 		sbc 	#"0"
-		bcc 	_CTIWError
+		bcc 	CTIWError
 		cmp 	#9+1
-		bcs 	_CTIWError
+		bcs 	CTIWError
 		inx 								; store at +1
 		jsr 	FloatSetByte
 		dex
@@ -5948,14 +5959,14 @@ _CTIWASkip:
 ;
 ;		Multiply by A
 ;
-_CTIWMultiply: 								
+CTIWMultiply: 								
 		inx
 		jsr 	FloatSetByte
 		dex
 		jsr 	FloatMultiplyShort
 		rts
 
-_CTIWError:
+CTIWError:
 		.error_value
 
 		.send 	code
@@ -6229,34 +6240,35 @@ ShiftVectorTable:
 	.word	XUnaryMWheel             ; $cb90 mwheel
 	.word	CommandStop              ; $cb91 stop
 	.word	CommandSYS               ; $cb92 sys
-	.word	CommandTIWrite           ; $cb93 ti$.write
-	.word	CommandXWAIT             ; $cb94 wait
-	.word	X16I2CPoke               ; $cb95 i2cpoke
-	.word	X16I2CPeek               ; $cb96 i2cpeek
-	.word	CommandBank              ; $cb97 bank
-	.word	XCommandSleep            ; $cb98 sleep
-	.word	X16_Audio_FMINIT         ; $cb99 fminit
-	.word	X16_Audio_FMNOTE         ; $cb9a fmnote
-	.word	X16_Audio_FMDRUM         ; $cb9b fmdrum
-	.word	X16_Audio_FMINST         ; $cb9c fminst
-	.word	X16_Audio_FMVIB          ; $cb9d fmvib
-	.word	X16_Audio_FMFREQ         ; $cb9e fmfreq
-	.word	X16_Audio_FMVOL          ; $cb9f fmvol
-	.word	X16_Audio_FMPAN          ; $cba0 fmpan
-	.word	X16_Audio_FMPLAY         ; $cba1 fmplay
-	.word	X16_Audio_FMCHORD        ; $cba2 fmchord
-	.word	X16_Audio_FMPOKE         ; $cba3 fmpoke
-	.word	X16_Audio_PSGINIT        ; $cba4 psginit
-	.word	X16_Audio_PSGNOTE        ; $cba5 psgnote
-	.word	X16_Audio_PSGVOL         ; $cba6 psgvol
-	.word	X16_Audio_PSGWAV         ; $cba7 psgwav
-	.word	X16_Audio_PSGFREQ        ; $cba8 psgfreq
-	.word	X16_Audio_PSGPAN         ; $cba9 psgpan
-	.word	X16_Audio_PSGPLAY        ; $cbaa psgplay
-	.word	X16_Audio_PSGCHORD       ; $cbab psgchord
-	.word	CommandCls               ; $cbac cls
-	.word	CommandLocate            ; $cbad locate
-	.word	CommandColor             ; $cbae color
+	.word	CommandTIWriteN          ; $cb93 ti.write
+	.word	CommandTIWriteS          ; $cb94 ti$.write
+	.word	CommandXWAIT             ; $cb95 wait
+	.word	X16I2CPoke               ; $cb96 i2cpoke
+	.word	X16I2CPeek               ; $cb97 i2cpeek
+	.word	CommandBank              ; $cb98 bank
+	.word	XCommandSleep            ; $cb99 sleep
+	.word	X16_Audio_FMINIT         ; $cb9a fminit
+	.word	X16_Audio_FMNOTE         ; $cb9b fmnote
+	.word	X16_Audio_FMDRUM         ; $cb9c fmdrum
+	.word	X16_Audio_FMINST         ; $cb9d fminst
+	.word	X16_Audio_FMVIB          ; $cb9e fmvib
+	.word	X16_Audio_FMFREQ         ; $cb9f fmfreq
+	.word	X16_Audio_FMVOL          ; $cba0 fmvol
+	.word	X16_Audio_FMPAN          ; $cba1 fmpan
+	.word	X16_Audio_FMPLAY         ; $cba2 fmplay
+	.word	X16_Audio_FMCHORD        ; $cba3 fmchord
+	.word	X16_Audio_FMPOKE         ; $cba4 fmpoke
+	.word	X16_Audio_PSGINIT        ; $cba5 psginit
+	.word	X16_Audio_PSGNOTE        ; $cba6 psgnote
+	.word	X16_Audio_PSGVOL         ; $cba7 psgvol
+	.word	X16_Audio_PSGWAV         ; $cba8 psgwav
+	.word	X16_Audio_PSGFREQ        ; $cba9 psgfreq
+	.word	X16_Audio_PSGPAN         ; $cbaa psgpan
+	.word	X16_Audio_PSGPLAY        ; $cbab psgplay
+	.word	X16_Audio_PSGCHORD       ; $cbac psgchord
+	.word	CommandCls               ; $cbad cls
+	.word	CommandLocate            ; $cbae locate
+	.word	CommandColor             ; $cbaf color
 	.send code
 ; ************************************************************************************************
 ; ************************************************************************************************
