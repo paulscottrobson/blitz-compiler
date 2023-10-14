@@ -408,8 +408,8 @@ ObjectFile:
 SourceFile:
 		.text 	'SOURCE.PRG',0					
 Prompt:
-		.text 	'*** BLITZ (ALPHA 09-10-23) ***',13,13
-		.text 	'BUGS:HTTPS://GITHUB.COM/PAULSCOTTROBSON/BLITZ-COMPILER',13,13,0								
+		.text 	'*** BLITZ (ALPHA 14-10-23) ***',13,13
+		.text 	'BUGS -> HTTPS://GITHUB.COM/PAULSCOTTROBSON/BLITZ-COMPILER',13,13,0								
 
 		.send code
 
