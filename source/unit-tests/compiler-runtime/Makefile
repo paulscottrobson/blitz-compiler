@@ -10,9 +10,9 @@
 # ************************************************************************************************
 
 ifeq ($(OS),Windows_NT)
-include ..\..\documents\common.make
+include ..\..\..\documents\common.make
 else
-include ../../documents/common.make
+include ../../../documents/common.make
 endif
 
 all: binary compare unary variables parenthesis arrays
@@ -45,6 +45,6 @@ define run_test
 	$(PYTHON) $(BINDIR)tokenise.zip build$(S)test.bas build$(S)test.prg
 	$(ASM) testing$(S)testing.asm $(BINDIR)compiler.library $(BINDIR)common.library $(BINDIR)ifloat32.library testing$(S)testend.asm
 	$(EXECUTE)
-	$(CCOPY) CODE.BIN ..$(S)runtime$(S)testing$(S)code$(S)code.bin
-	make -C ../runtime run
+	$(CCOPY) CODE.BIN ..$(S)..$(S)runtime$(S)testing$(S)code$(S)code.bin
+	make -C ../../runtime run
 endef
