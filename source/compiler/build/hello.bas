@@ -1,4 +1,3 @@
-1 print "0123456789012345678901234567890123456789"
-10 print "*";SPC(2);"*";SPC(0);"*";SPC(10);"*"
-15 print "*";TAB(9);"*";TAB(17);"*";TAB(8);">"
-20 stop
+1210 INPUT "COORDINATES OF CENTER ";K1,K2,K3
+1212 print k1,k2,k3
+1220 stop

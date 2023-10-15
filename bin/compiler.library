@@ -3149,8 +3149,13 @@ CommandINPUT:
 		bne 	CommandINPUTStream
 		jsr 	CompileExpressionAt0
 		.keyword PCD_PRINTCMD_S
-		lda 	#","
-		jsr 	CheckNextComma
+		jsr 	GetNextNonSpace 			; followed by ; or ,
+		cmp 	#","
+		beq 	CommandINPUTStream
+		cmp 	#";"
+		beq 	CommandINPUTStream
+		.error_syntax
+		
 CommandINPUTStream:
 		.keyword PCD_INPUTCMD_START 		; new INPUT.
 		ldx 	#PCD_INPUT 					; do READ with Data from INPUT

@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.59.3120 listing file
 ; 64tass -q -c -Wall -o build/code.prg -L build/code.lst -l build/code.lbl source/main/00main.header /home/paulr/Projects/blitz-compiler/documents/../bin/runtime.library /home/paulr/Projects/blitz-compiler/documents/../bin/common.library /home/paulr/Projects/blitz-compiler/documents/../bin/ifloat32.library /home/paulr/Projects/blitz-compiler/documents/../bin/polynomials.library /home/paulr/Projects/blitz-compiler/documents/../bin/compiler.library _library.asm source/main/zzfree.footer
-; Sun Oct 15 04:01:51 2023
+; Sun Oct 15 09:19:40 2023
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -15,7 +15,7 @@
 >080b	00						.byte  	0 							; end of line
 >080c	00 00						.word 	0 							; end of program
 .080e					StartCode:
-.080e	4c 3c 3a	jmp $3a3c			jmp 	CompileCode 				; to starting the runtime in the saved code.
+.080e	4c 45 3a	jmp $3a45			jmp 	CompileCode 				; to starting the runtime in the saved code.
 .0811	a9 3b		lda #$3b			lda 	#FreeMemory >> 8 			; address of object code to run.
 .0813	a2 80		ldx #$80			ldx 	#$80 						; 8000-9EFF is used for workspace.
 .0815	a0 9f		ldy #$9f			ldy 	#$9F
@@ -5835,7 +5835,7 @@
 .2b17	8d c2 06	sta $06c2			sta 	compilerEndHigh
 .2b1a	ba		tsx				tsx 								; save stack pointer
 .2b1b	8e be 06	stx $06be			stx 	compilerSP
-.2b1e	20 d3 37	jsr $37d3			jsr 	STRReset 					; reset storage (line#, variable)
+.2b1e	20 dc 37	jsr $37dc			jsr 	STRReset 					; reset storage (line#, variable)
 .2b21	a9 00		lda #$00			lda 	#BLC_OPENIN					; reset data input
 .2b23	20 93 2b	jsr $2b93			jsr 	CallAPIHandler
 .2b26	a9 03		lda #$03			lda 	#BLC_RESETOUT 				; reset data output.
@@ -5851,7 +5851,7 @@
 .2b3d	90 31		bcc $2b70			bcc 	SaveCodeAndExit 			; end of source.
 .2b3f	20 9a 2a	jsr $2a9a			jsr 	ProcessNewLine 				; set up pointer and line number.
 .2b42	20 79 2a	jsr $2a79			jsr 	GetLineNumber 				; get line #
-.2b45	20 88 35	jsr $3588			jsr 	STRMarkLine 				; remember the code position and number of this line.
+.2b45	20 91 35	jsr $3591			jsr 	STRMarkLine 				; remember the code position and number of this line.
 .2b48	a9 a6		lda #$a6			lda 	#PCD_NEWCMD_LINE 			; generate new command line
 .2b4a	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
 .2b4d					_MCLSameLine:
@@ -5870,14 +5870,14 @@
 .2b66					_MCLCheckAssignment:
 .2b66	20 21 34	jsr $3421			jsr 	CharIsAlpha 				; if not alpha then syntax error
 .2b69	90 f8		bcc $2b63			bcc 	_MCLSyntax
-.2b6b	20 47 35	jsr $3547			jsr 	CommandLETHaveFirst  		; LET first character, do assign
+.2b6b	20 50 35	jsr $3550			jsr 	CommandLETHaveFirst  		; LET first character, do assign
 .2b6e	80 dd		bra $2b4d			bra		_MCLSameLine 				; loop back.
 .2b70					SaveCodeAndExit:
 .2b70	a9 01		lda #$01			lda 	#BLC_CLOSEIN				; finish input.
 .2b72	20 93 2b	jsr $2b93			jsr 	CallAPIHandler
 .2b75	a9 ff		lda #$ff			lda 	#$FF 						; fake line number $FFFF for forward THEN.
 .2b77	a8		tay				tay
-.2b78	20 88 35	jsr $3588			jsr 	STRMarkLine
+.2b78	20 91 35	jsr $3591			jsr 	STRMarkLine
 .2b7b	a9 c5		lda #$c5			lda 	#PCD_EXIT 					; add an END
 .2b7d	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
 .2b80	a9 ff		lda #$ff			lda 	#$FF 						; add end marker
@@ -6041,7 +6041,7 @@
 .2c8b	20 db 2b	jsr $2bdb			jsr 	CreateVariableRecord 		; create the record for it & put the data in it.
 .2c8e	20 20 2c	jsr $2c20			jsr 	SetVariableRecordToCodePosition
 .2c91	20 0b 34	jsr $340b			jsr 	GetNextNonSpace
-.2c94	20 90 37	jsr $3790			jsr 	GetReferenceTerm 			; get var ref, not array
+.2c94	20 99 37	jsr $3799			jsr 	GetReferenceTerm 			; get var ref, not array
 .2c97	c9 00		cmp #$00			cmp 	#0
 .2c99	30 34		bmi $2ccf			bmi 	_CDError
 .2c9b	8d c3 06	sta $06c3			sta 	defType 					; save type
@@ -6072,7 +6072,7 @@
 .2cd2	ac c5 06	ldy $06c5			ldy 	defVariable+1 				; set up YX
 .2cd5	ae c4 06	ldx $06c4			ldx 	defVariable
 .2cd8	ad c3 06	lda $06c3			lda 	defType
-.2cdb	20 42 37	jsr $3742			jsr 	GetSetVariable
+.2cdb	20 4b 37	jsr $374b			jsr 	GetSetVariable
 .2cde	60		rts				rts
 .06c3					defType:
 >06c3							.fill 	1
@@ -6104,7 +6104,7 @@
 .2d0d	7a		ply				ply
 .2d0e	a9 20		lda #$20			lda 	#NSSIFloat+NSSIInt16 		; pretend it is an int16 reference.
 .2d10	38		sec				sec
-.2d11	20 42 37	jsr $3742			jsr 	GetSetVariable 				; store the address in the reference to the array structure.
+.2d11	20 4b 37	jsr $374b			jsr 	GetSetVariable 				; store the address in the reference to the array structure.
 .2d14	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace 			; , follows ?
 .2d17	c9 2c		cmp #$2c			cmp 	#","
 .2d19	d0 05		bne $2d20			bne 	_CDExit
@@ -6178,7 +6178,7 @@
 .2d96	a9 00		lda #$00			lda 	#0
 .2d98					CompileExpressionAtA:
 .2d98	48		pha				pha  								; save level
-.2d99	20 1a 38	jsr $381a			jsr 	CompileTerm 				; compile a term.
+.2d99	20 23 38	jsr $3823			jsr 	CompileTerm 				; compile a term.
 .2d9c	fa		plx				plx 								; get level back into X
 .2d9d					_ECALoop:
 .2d9d	48		pha				pha 								; save type on stack.
@@ -6387,7 +6387,7 @@
 .2ed7	b1 2a		lda ($2a),y			lda 	(objPtr),y
 .2ed9	a8		tay				tay
 .2eda	68		pla				pla
-.2edb	20 b1 35	jsr $35b1			jsr 	STRFindLine			 		; find where it is YA
+.2edb	20 ba 35	jsr $35ba			jsr 	STRFindLine			 		; find where it is YA
 .2ede	90 0c		bcc $2eec			bcc 	_FBFFound 					; not found, so must be >
 .2ee0	48		pha				pha
 .2ee1	b2 2a		lda ($2a)			lda 	(objPtr) 					; which is a fail if not CMD_GOTOCMD_Z
@@ -6398,7 +6398,7 @@
 .2eeb					_FBFAllowZero:
 .2eeb	68		pla				pla
 .2eec					_FBFFound:
-.2eec	20 01 36	jsr $3601			jsr 	STRMakeOffset 				; make it an offset from X:YA
+.2eec	20 0a 36	jsr $360a			jsr 	STRMakeOffset 				; make it an offset from X:YA
 .2eef	5a		phy				phy	 								; patch the GOTO/GOSUB
 .2ef0	a0 01		ldy #$01			ldy 	#1
 .2ef2	91 2a		sta ($2a),y			sta 	(objPtr),y
@@ -6426,7 +6426,7 @@
 .2f19	20 0b 34	jsr $340b			jsr 	GetNextNonSpace 			; first letter of index variable, should be.
 .2f1c	20 21 34	jsr $3421			jsr 	CharIsAlpha 				; if not alpha , error
 .2f1f	90 59		bcc $2f7a			bcc 	_CFFail
-.2f21	20 90 37	jsr $3790			jsr 	GetReferenceTerm 			; figure out the reference.
+.2f21	20 99 37	jsr $3799			jsr 	GetReferenceTerm 			; figure out the reference.
 .2f24	48		pha				pha 								; save type
 .2f25	29 40		and #$40			and 	#NSSTypeMask 				; check it is numeric
 .2f27	c9 00		cmp #$00			cmp 	#NSSIFloat
@@ -6441,7 +6441,7 @@
 .2f37	5a		phy				phy
 .2f38	da		phx				phx
 .2f39	38		sec				sec 								; set initial value.
-.2f3a	20 42 37	jsr $3742			jsr 	GetSetVariable
+.2f3a	20 4b 37	jsr $374b			jsr 	GetSetVariable
 .2f3d	fa		plx				plx
 .2f3e	7a		ply				ply
 .2f3f	68		pla				pla
@@ -6490,7 +6490,7 @@
 .2f8e	a8		tay				tay
 .2f8f	20 50 2e	jsr $2e50			jsr 	FindVariable				; does it already exist ?
 .2f92	90 25		bcc $2fb9			bcc 	_FNError 					; no.
-.2f94	20 01 36	jsr $3601			jsr 	STRMakeOffset 				; convert to a relative address.
+.2f94	20 0a 36	jsr $360a			jsr 	STRMakeOffset 				; convert to a relative address.
 .2f97	c9 00		cmp #$00			cmp 	#0 							; fix up.
 .2f99	d0 01		bne $2f9c			bne 	_FNNoBorrow
 .2f9b	88		dey				dey
@@ -6517,31 +6517,31 @@
 >2fbc	07 cb 00 03 ce 34 06			.byte	$07,$cb,$00,$03,CommandGOAlt & $FF,CommandGOAlt >> 8,$06
 >2fc3	07 89 00 03 d5 34 06			.byte	$07,$89,$00,$03,CommandGOTO & $FF,CommandGOTO >> 8,$06
 >2fca	07 8d 00 03 c8 34 06			.byte	$07,$8d,$00,$03,CommandGOSUB & $FF,CommandGOSUB >> 8,$06
->2fd1	07 8c 00 03 fb 37 06			.byte	$07,$8c,$00,$03,CommandRESTORE & $FF,CommandRESTORE >> 8,$06
->2fd8	07 88 00 03 44 35 06			.byte	$07,$88,$00,$03,CommandLET & $FF,CommandLET >> 8,$06
+>2fd1	07 8c 00 03 04 38 06			.byte	$07,$8c,$00,$03,CommandRESTORE & $FF,CommandRESTORE >> 8,$06
+>2fd8	07 88 00 03 4d 35 06			.byte	$07,$88,$00,$03,CommandLET & $FF,CommandLET >> 8,$06
 >2fdf	07 85 00 03 24 35 06			.byte	$07,$85,$00,$03,CommandINPUT & $FF,CommandINPUT >> 8,$06
->2fe6	07 84 00 04 38 35 06			.byte	$07,$84,$00,$04,CommandINPUTStream & $FF,CommandINPUTStream >> 8,$06
->2fed	07 99 00 03 88 36 06			.byte	$07,$99,$00,$03,CommandPRINT & $FF,CommandPRINT >> 8,$06
->2ff4	07 98 00 04 88 36 06			.byte	$07,$98,$00,$04,CommandPRINT & $FF,CommandPRINT >> 8,$06
->2ffb	07 8f 00 03 c8 37 06			.byte	$07,$8f,$00,$03,CommandREM & $FF,CommandREM >> 8,$06
+>2fe6	07 84 00 04 41 35 06			.byte	$07,$84,$00,$04,CommandINPUTStream & $FF,CommandINPUTStream >> 8,$06
+>2fed	07 99 00 03 91 36 06			.byte	$07,$99,$00,$03,CommandPRINT & $FF,CommandPRINT >> 8,$06
+>2ff4	07 98 00 04 91 36 06			.byte	$07,$98,$00,$04,CommandPRINT & $FF,CommandPRINT >> 8,$06
+>2ffb	07 8f 00 03 d1 37 06			.byte	$07,$8f,$00,$03,CommandREM & $FF,CommandREM >> 8,$06
 >3002	07 81 00 03 19 2f 06			.byte	$07,$81,$00,$03,CommandFOR & $FF,CommandFOR >> 8,$06
->3009	07 82 00 03 0b 36 06			.byte	$07,$82,$00,$03,CommandNEXT & $FF,CommandNEXT >> 8,$06
+>3009	07 82 00 03 14 36 06			.byte	$07,$82,$00,$03,CommandNEXT & $FF,CommandNEXT >> 8,$06
 >3010	07 a1 00 03 41 34 06			.byte	$07,$a1,$00,$03,CommandGET & $FF,CommandGET >> 8,$06
 >3017	07 83 00 03 4c 2c 06			.byte	$07,$83,$00,$03,CommandDATA & $FF,CommandDATA >> 8,$06
->301e	07 87 00 03 06 37 06			.byte	$07,$87,$00,$03,CommandREAD & $FF,CommandREAD >> 8,$06
+>301e	07 87 00 03 0f 37 06			.byte	$07,$87,$00,$03,CommandREAD & $FF,CommandREAD >> 8,$06
 >3025	07 86 00 03 df 2c 06			.byte	$07,$86,$00,$03,CommandDIM & $FF,CommandDIM >> 8,$06
 >302c	07 96 00 03 68 2c 06			.byte	$07,$96,$00,$03,CommandDEF & $FF,CommandDEF >> 8,$06
 >3033	07 8b 00 e3 f1 34 06			.byte	$07,$8b,$00,$e3,CommandIF & $FF,CommandIF >> 8,$06
->303a	08 92 00 ea e3 b3 38 06			.byte	$08,$92,$00,$ea,$e3,CommandWAIT & $FF,CommandWAIT >> 8,$06
->3042	09 91 00 e1 a9 03 37 36			.byte	$09,$91,$00,$e1,169,$03,CommandON & $FF,CommandON >> 8,$06
+>303a	08 92 00 ea e3 bc 38 06			.byte	$08,$92,$00,$ea,$e3,CommandWAIT & $FF,CommandWAIT >> 8,$06
+>3042	09 91 00 e1 a9 03 40 36			.byte	$09,$91,$00,$e1,169,$03,CommandON & $FF,CommandON >> 8,$06
 >304a	06
 >304b	07 9e 00 e2 cb 92 06			.byte	$07,$9e,$00,$e2,37579 & $FF,37579 >> 8,$06
 >3052	07 97 00 ea e1 ad 06			.byte	$07,$97,$00,$ea,$e1,173,$06
 >3059	06 8e 00 10 98 06			.byte	$06,$8e,$00,$10,152,$06
 >305f	07 90 00 20 cb 91 06			.byte	$07,$90,$00,$20,37323 & $FF,37323 >> 8,$06
 >3066	07 80 00 20 cb 82 06			.byte	$07,$80,$00,$20,33483 & $FF,33483 >> 8,$06
->306d	07 9d 00 e3 d9 38 06			.byte	$07,$9d,$00,$e3,CommandCMD & $FF,CommandCMD >> 8,$06
->3074	0a 9f 00 ea e3 ec 38 10			.byte	$0a,$9f,$00,$ea,$e3,CommandOPEN & $FF,CommandOPEN >> 8,$10,199,$06
+>306d	07 9d 00 e3 e2 38 06			.byte	$07,$9d,$00,$e3,CommandCMD & $FF,CommandCMD >> 8,$06
+>3074	0a 9f 00 ea e3 f5 38 10			.byte	$0a,$9f,$00,$ea,$e3,CommandOPEN & $FF,CommandOPEN >> 8,$10,199,$06
 >307c	c7 06
 >307e	06 a0 00 e1 c4 06			.byte	$06,$a0,$00,$e1,196,$06
 >3084	07 ce 90 20 cb ad 06			.byte	$07,$ce,$90,$20,44491 & $FF,44491 >> 8,$06
@@ -6911,7 +6911,7 @@
 .3454	60		rts				rts
 .3455					CommandGetBody:
 .3455	20 0b 34	jsr $340b			jsr 	GetNextNonSpace 			; get the first character
-.3458	20 90 37	jsr $3790			jsr 	GetReferenceTerm 			; identify variable to assign to
+.3458	20 99 37	jsr $3799			jsr 	GetReferenceTerm 			; identify variable to assign to
 .345b	48		pha				pha
 .345c	29 40		and #$40			and 	#NSSTypeMask 				; check if it is a string
 .345e	c9 40		cmp #$40			cmp 	#NSSString
@@ -6920,7 +6920,7 @@
 .3464	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
 .3467	38		sec				sec
 .3468	68		pla				pla
-.3469	20 42 37	jsr $3742			jsr		GetSetVariable
+.3469	20 4b 37	jsr $374b			jsr		GetSetVariable
 .346c	60		rts				rts
 .346d					_CGType:
 .346d	4c 69 1f	jmp $1f69		jmp	ErrorV_type
@@ -6986,7 +6986,7 @@
 .34db					CompileBranchCommand:
 .34db	20 80 2a	jsr $2a80			jsr 	WriteCodeByte 				; write the command out.
 .34de	20 0b 34	jsr $340b			jsr 	GetNextNonSpace
-.34e1	20 63 36	jsr $3663			jsr 	ParseConstant 				; get constant into YA
+.34e1	20 6c 36	jsr $366c			jsr 	ParseConstant 				; get constant into YA
 .34e4	90 08		bcc $34ee			bcc 	_CBCSyntax
 .34e6	20 80 2a	jsr $2a80			jsr 	WriteCodeByte				; and compile the actual line number
 .34e9	98		tya				tya
@@ -7025,810 +7025,814 @@
 .3524					CommandINPUT:
 .3524	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace 			; check for "
 .3527	c9 22		cmp #$22			cmp 	#'"'
-.3529	d0 0d		bne $3538			bne 	CommandINPUTStream
+.3529	d0 16		bne $3541			bne 	CommandINPUTStream
 .352b	20 96 2d	jsr $2d96			jsr 	CompileExpressionAt0
 .352e	a9 b2		lda #$b2			lda 	#(PCD_PRINTCMD_S) & $FF
 .3530	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.3533	a9 2c		lda #$2c			lda 	#","
-.3535	20 de 2a	jsr $2ade			jsr 	CheckNextComma
-.3538					CommandINPUTStream:
-.3538	a9 a1		lda #$a1			lda 	#(PCD_INPUTCMD_START) & $FF
-.353a	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.353d	a2 9f		ldx #$9f			ldx 	#PCD_INPUT 					; do READ with Data from INPUT
-.353f	a0 a0		ldy #$a0			ldy 	#PCD_INPUTDOLLAR
-.3541	4c 0a 37	jmp $370a			jmp 	CommandReadInputCommon
-.3544					CommandLET:
-.3544	20 0b 34	jsr $340b			jsr 	GetNextNonSpace 			; get the first character
-.3547					CommandLETHaveFirst:
-.3547	20 90 37	jsr $3790			jsr 	GetReferenceTerm 			; identify variable to assign to
-.354a	da		phx				phx 								; save target on the stack.
-.354b	5a		phy				phy
-.354c	48		pha				pha
-.354d	a9 b2		lda #$b2			lda 	#C64_EQUAL 					; check next is =
-.354f	20 e8 2a	jsr $2ae8			jsr 	CheckNextA
-.3552	20 96 2d	jsr $2d96			jsr 	CompileExpressionAt0 		; evaluate the RHS.
-.3555	85 2c		sta $2c				sta 	zTemp0 						; save type returned
-.3557	68		pla				pla 								; get type of assignment
-.3558	48		pha				pha
-.3559	45 2c		eor $2c				eor 	zTemp0 						; compare using EOR
-.355b	29 40		and #$40			and 	#NSSTypeMask 				; so we can mask type as we only need n/s
-.355d	d0 26		bne $3585			bne 	_CLType
-.355f	68		pla				pla 								; restore and compile save code
-.3560	7a		ply				ply
-.3561	fa		plx				plx
-.3562	c0 80		cpy #$80			cpy 	#$80 						; is it TI = xxxxx
-.3564	f0 09		beq $356f			beq 	_CLTINumber
-.3566	c0 c0		cpy #$c0			cpy 	#$C0 						; is it TI$ = "xxxxx"
-.3568	f0 10		beq $357a			beq 	_CLTIString
-.356a	38		sec				sec
-.356b	20 42 37	jsr $3742			jsr		GetSetVariable
-.356e	60		rts				rts
-.356f					_CLTINumber:
-.356f	a9 cb		lda #$cb			lda 	#(PCD_TICMD_WRITE) >> 8
-.3571	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.3574	a9 93		lda #$93			lda 	#(PCD_TICMD_WRITE) & $FF
-.3576	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.3579	60		rts				rts
-.357a					_CLTIString:
-.357a	a9 cb		lda #$cb			lda 	#(PCD_TIDOLLARCMD_WRITE) >> 8
-.357c	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.357f	a9 94		lda #$94			lda 	#(PCD_TIDOLLARCMD_WRITE) & $FF
-.3581	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.3584	60		rts				rts
-.3585					_CLType:
-.3585	4c 69 1f	jmp $1f69		jmp	ErrorV_type
-.3588					STRMarkLine:
-.3588	48		pha				pha
-.3589	38		sec				sec 								; allocate 4 bytes (line #,address)
-.358a	ad c9 06	lda $06c9			lda 	lineNumberTable 			; and copy to zTemp0
-.358d	e9 04		sbc #$04			sbc 	#4
-.358f	8d c9 06	sta $06c9			sta 	lineNumberTable
-.3592	85 2c		sta $2c				sta 	zTemp0
-.3594	ad ca 06	lda $06ca			lda 	lineNumberTable+1
-.3597	e9 00		sbc #$00			sbc 	#0
-.3599	8d ca 06	sta $06ca			sta 	lineNumberTable+1
-.359c	85 2d		sta $2d				sta 	zTemp0+1
-.359e	68		pla				pla
-.359f	92 2c		sta ($2c)			sta 	(zTemp0) 					; line # save it in +0,+1
-.35a1	98		tya				tya
-.35a2	a0 01		ldy #$01			ldy 	#1
-.35a4	91 2c		sta ($2c),y			sta 	(zTemp0),y
-.35a6	a5 2a		lda $2a				lda 	objPtr 						; save current address in +2,+3
-.35a8	c8		iny				iny
-.35a9	91 2c		sta ($2c),y			sta 	(zTemp0),y
-.35ab	a5 2b		lda $2b				lda 	objPtr+1
-.35ad	c8		iny				iny
-.35ae	91 2c		sta ($2c),y			sta 	(zTemp0),y
-.35b0	60		rts				rts
-.35b1					STRFindLine:
-.35b1	85 2c		sta $2c				sta 	zTemp0 						; zTemp0 line number being searched
-.35b3	84 2d		sty $2d				sty 	zTemp0+1
-.35b5	ad c2 06	lda $06c2			lda 	compilerEndHigh 			; work backwards through table
-.35b8	85 2f		sta $2f				sta 	zTemp1+1
-.35ba	64 2e		stz $2e				stz 	zTemp1
-.35bc					_STRSearch:
-.35bc	20 f3 35	jsr $35f3			jsr 	_STRPrevLine 				; look at previous record.
-.35bf	a0 01		ldy #$01			ldy 	#1
-.35c1	b2 2e		lda ($2e)			lda 	(zTemp1) 					; check table line # >= target
-.35c3	c5 2c		cmp $2c				cmp 	zTemp0
-.35c5	b1 2e		lda ($2e),y			lda 	(zTemp1),y
-.35c7	e5 2d		sbc $2d				sbc 	zTemp0+1
-.35c9	b0 0b		bcs $35d6			bcs 	_STRFound 					; >=
-.35cb					_STRNext:
-.35cb	a0 01		ldy #$01			ldy 	#1 							; should not be required !
-.35cd	b1 2e		lda ($2e),y			lda 	(zTemp1),y
-.35cf	c9 ff		cmp #$ff			cmp 	#$FF
-.35d1	d0 e9		bne $35bc			bne 	_STRSearch
-.35d3	4c b3 1f	jmp $1fb3		jmp	ErrorV_internal
-.35d6					_STRFound:
-.35d6	b2 2e		lda ($2e)			lda 	(zTemp1) 					; set A = 0 if the same, 0 if different.
-.35d8	45 2c		eor $2c				eor 	zTemp0
-.35da	d0 06		bne $35e2			bne 	_STRDifferent
-.35dc	b2 2e		lda ($2e)			lda 	(zTemp1)
-.35de	45 2c		eor $2c				eor 	zTemp0
-.35e0	f0 02		beq $35e4			beq 	_STROut 					; if zero, exit with A = 0 and correct line.
-.35e2					_STRDifferent:
-.35e2	a9 ff		lda #$ff			lda 	#$FF
-.35e4					_STROut:
-.35e4	18		clc				clc  								; set carry if different, e.g. > rather than >=
-.35e5	69 ff		adc #$ff			adc 	#255
-.35e7	08		php				php
-.35e8	c8		iny				iny 								; address into YA
-.35e9	b1 2e		lda ($2e),y			lda 	(zTemp1),y
-.35eb	48		pha				pha
-.35ec	c8		iny				iny
-.35ed	b1 2e		lda ($2e),y			lda 	(zTemp1),y
-.35ef	a8		tay				tay
-.35f0	68		pla				pla
-.35f1	28		plp				plp
-.35f2	60		rts				rts
-.35f3					_STRPrevLine:
-.35f3	38		sec				sec 								; move backwards one entry.
-.35f4	a5 2e		lda $2e				lda 	zTemp1
-.35f6	e9 04		sbc #$04			sbc 	#4
-.35f8	85 2e		sta $2e				sta 	zTemp1
-.35fa	a5 2f		lda $2f				lda 	zTemp1+1
-.35fc	e9 00		sbc #$00			sbc 	#0
-.35fe	85 2f		sta $2f				sta 	zTemp1+1
-.3600	60		rts				rts
-.3601					STRMakeOffset:
-.3601	18		clc				clc 								; borrow 1
-.3602	e5 2a		sbc $2a				sbc 	objPtr
-.3604	48		pha				pha
-.3605	98		tya				tya
-.3606	e5 2b		sbc $2b				sbc 	objPtr+1
-.3608	a8		tay				tay
-.3609	68		pla				pla
-.360a	60		rts				rts
-.360b					CommandNEXT:
-.360b	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace 			; first letter of index variable, should be.
-.360e	20 21 34	jsr $3421			jsr 	CharIsAlpha 				; if not alpha , error
-.3611	90 0c		bcc $361f			bcc 	_CNNoReferenceGiven
-.3613	20 00 34	jsr $3400			jsr 	GetNext
-.3616	20 90 37	jsr $3790			jsr 	GetReferenceTerm 			; figure out the reference.
-.3619	8a		txa				txa 								; reference in YA
-.361a	20 96 2b	jsr $2b96			jsr 	PushIntegerYA 				; write it out.
-.361d	80 06		bra $3625			bra 	_CNParametersDone
-.361f					_CNNoReferenceGiven:
-.361f	a9 ff		lda #$ff			lda 	#255 						; write out -1 no
-.3621	a8		tay				tay
-.3622	20 96 2b	jsr $2b96			jsr 	PushIntegerYA 				; write it out.
-.3625					_CNParametersDone:
-.3625	a9 a7		lda #$a7			lda 	#PCD_NEXT  					; compile FOR word.
-.3627	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.362a	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace 			; look for ,
-.362d	c9 2c		cmp #$2c			cmp 	#","
-.362f	d0 05		bne $3636			bne 	_CNExit
-.3631	20 00 34	jsr $3400			jsr 	GetNext 					; consume ,
-.3634	80 d5		bra $360b			bra 	CommandNEXT 				; and go round.
-.3636					_CNExit:
-.3636	60		rts				rts
-.3637					CommandON:
-.3637	20 0b 34	jsr $340b			jsr 	GetNextNonSpace 			; GOTO / GOSUB must follow
-.363a	48		pha				pha 								; save on stack
-.363b	a2 d1		ldx #$d1			ldx 	#PCD_CMD_GOTO
-.363d	c9 89		cmp #$89			cmp 	#C64_GOTO 					; must be GOTO/GOSUB
-.363f	f0 09		beq $364a			beq 	_COCreateLoop
-.3641	a2 d2		ldx #$d2			ldx 	#PCD_CMD_GOSUB
-.3643	c9 8d		cmp #$8d			cmp 	#C64_GOSUB
-.3645	f0 03		beq $364a			beq 	_COCreateLoop
-.3647	4c 59 1f	jmp $1f59		jmp	ErrorV_syntax
-.364a					_COCreateLoop:
-.364a	8a		txa				txa 								; compile a goto/gosub somewhere
-.364b	da		phx				phx
-.364c	20 db 34	jsr $34db			jsr 	CompileBranchCommand
-.364f	fa		plx				plx
-.3650	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace			; ',' follows
-.3653	c9 2c		cmp #$2c			cmp 	#","
-.3655	d0 0a		bne $3661			bne 	_COComplete 				; if so, more line numbers
-.3657	a9 aa		lda #$aa			lda 	#PCD_MOREON 				; ON extends.
-.3659	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.365c	20 00 34	jsr $3400			jsr 	GetNext
-.365f	80 e9		bra $364a			bra 	_COCreateLoop
-.3661					_COComplete:
-.3661	68		pla				pla 								; throw GOTO/GOSUB
-.3662	60		rts				rts
-.3663					ParseConstant:
-.3663	a2 00		ldx #$00			ldx 	#0
-.3665	20 91 24	jsr $2491			jsr 	FloatEncodeStart 			; send first
-.3668					_ParseLoop:
-.3668	20 ef 33	jsr $33ef			jsr 	LookNext 					; send subsequent
-.366b	20 94 24	jsr $2494			jsr 	FloatEncodeContinue
-.366e	90 05		bcc $3675			bcc 	_ParseDone
-.3670	20 00 34	jsr $3400			jsr 	GetNext 					; consume it
-.3673	80 f3		bra $3668			bra 	_ParseLoop
-.3675					_ParseDone:
-.3675	b5 32		lda $32,x			lda 	NSStatus,x 					; shouldn't be -ve ....
-.3677	29 80		and #$80			and 	#$80
-.3679	15 6e		ora $6e,x			ora 	NSExponent,x 				; 16 bit int check
-.367b	15 56		ora $56,x			ora 	NSMantissa2,x
-.367d	15 62		ora $62,x			ora 	NSMantissa3,x
-.367f	18		clc				clc
-.3680	d0 05		bne $3687			bne 	_ParseExit 					; exit with CC if need float to compile
-.3682	b5 3e		lda $3e,x			lda 	NSMantissa0,x 				; read into YA.
-.3684	b4 4a		ldy $4a,x			ldy		NSMantissa1,x
-.3686	38		sec				sec
-.3687					_ParseExit:
-.3687	60		rts				rts
-.3688					CommandPRINT:
-.3688	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace			; what follows ?
-.368b	c9 3b		cmp #$3b			cmp 	#";" 						; semicolon, check end of command
-.368d	f0 27		beq $36b6			beq 	_CPCheckEnd
-.368f	c9 2c		cmp #$2c			cmp 	#"," 						; , TAB and check end of command
-.3691	f0 1e		beq $36b1			beq 	_CPTabCheckEnd
-.3693	20 fa 36	jsr $36fa			jsr 	_CPAtEnd 					; check for : and EOL
-.3696	b0 2a		bcs $36c2			bcs 	_CPExitCR 					; exit with CR
-.3698	c9 a3		cmp #$a3			cmp 	#C64_TABLB 					; TAB( found
-.369a	f0 31		beq $36cd			beq 	_CPHaveTabSpcFunc
-.369c	c9 a6		cmp #$a6			cmp 	#C64_SPCLB 					; SPC( found
-.369e	f0 2d		beq $36cd			beq 	_CPHaveTabSpcFunc
-.36a0	20 96 2d	jsr $2d96			jsr 	CompileExpressionAt0 		; so it is something to print
-.36a3	a2 b2		ldx #$b2			ldx 	#PCD_PRINTCMD_S
-.36a5	29 40		and #$40			and 	#NSSString 					; if string
-.36a7	d0 02		bne $36ab			bne 	_CPOut
-.36a9	a2 b1		ldx #$b1			ldx 	#PCD_PRINTCMD_N
-.36ab					_CPOut:
-.36ab	8a		txa				txa 								; print that thing
-.36ac	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.36af	80 d7		bra $3688			bra 	CommandPRINT 				; and loop round/
-.36b1					_CPTabCheckEnd:
-.36b1	a9 b8		lda #$b8			lda 	#PCD_PRINTCMD_TAB 			; , next tab stop
-.36b3	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.36b6					_CPCheckEnd:
-.36b6	20 00 34	jsr $3400			jsr 	GetNext 					; consume it.
-.36b9	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace 			; what follows ?
-.36bc	20 fa 36	jsr $36fa			jsr 	_CPAtEnd 					; reached end
-.36bf	90 c7		bcc $3688			bcc 	CommandPRINT 				; no, loop back
-.36c1	60		rts				rts
-.36c2					_CPExitCR:
-.36c2	a9 0d		lda #$0d			lda 	#13 						; code to print CR
-.36c4	20 a9 2b	jsr $2ba9			jsr 	PushIntegerA
-.36c7	a9 92		lda #$92			lda 	#PCD_PRINTCMD_CHR
-.36c9	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.36cc	60		rts				rts
-.36cd					_CPHaveTabSpcFunc:
-.36cd	20 0b 34	jsr $340b			jsr 	GetNextNonSpace 			; get the TAB( or SPC(
-.36d0	48		pha				pha 								; save it.
-.36d1	20 96 2d	jsr $2d96			jsr 	CompileExpressionAt0 		; compile expression, the TAB or SPC size.
-.36d4	29 40		and #$40			and 	#NSSTypeMask 				; check number.
-.36d6	c9 00		cmp #$00			cmp  	#NSSIFloat
-.36d8	d0 1d		bne $36f7			bne 	_CPType
-.36da	20 0b 34	jsr $340b			jsr 	GetNextNonSpace 			; get next skipping spaces
-.36dd	c9 29		cmp #$29			cmp 	#")"						; check closing bracket.
-.36df	d0 13		bne $36f4			bne 	_CPSyntax
-.36e1	68		pla				pla
-.36e2	c9 a3		cmp #$a3			cmp 	#C64_TABLB 					; output SPC or POS command accordingly.
-.36e4	f0 07		beq $36ed			beq 	_CPIsTabFunc
-.36e6	a9 ba		lda #$ba			lda 	#PCD_PRINTCMD_SPC
-.36e8	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.36eb	80 9b		bra $3688			bra 	CommandPRINT
-.36ed					_CPIsTabFunc:
-.36ed	a9 b9		lda #$b9			lda 	#PCD_PRINTCMD_POS
-.36ef	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.36f2	80 94		bra $3688			bra 	CommandPRINT
-.36f4					_CPSyntax:
-.36f4	4c 59 1f	jmp $1f59		jmp	ErrorV_syntax
-.36f7					_CPType:
-.36f7	4c 69 1f	jmp $1f69		jmp	ErrorV_type
-.36fa					_CPAtEnd:
-.36fa	c9 00		cmp #$00			cmp 	#0
-.36fc	f0 06		beq $3704			beq 	_CPIsEnd
-.36fe	c9 3a		cmp #$3a			cmp 	#":"
-.3700	f0 02		beq $3704			beq 	_CPIsEnd
-.3702	18		clc				clc
-.3703	60		rts				rts
-.3704					_CPIsEnd:
-.3704	38		sec				sec
-.3705	60		rts				rts
-.3706					CommandREAD:
-.3706	a2 b3		ldx #$b3			ldx 	#PCD_READ
-.3708	a0 b4		ldy #$b4			ldy 	#PCD_READDOLLAR
-.370a					CommandReadInputCommon:
-.370a	8e c7 06	stx $06c7			stx 	numberPCode
-.370d	8c c8 06	sty $06c8			sty 	stringPCode
-.3710					_CRLoop:
-.3710	20 0b 34	jsr $340b			jsr 	GetNextNonSpace 			; first char of identifier
-.3713	20 21 34	jsr $3421			jsr 	CharIsAlpha 				; check A-Z
-.3716	90 27		bcc $373f			bcc 	_CRSyntax
-.3718	20 90 37	jsr $3790			jsr 	GetReferenceTerm 			; get the variable.
-.371b	48		pha				pha 								; save type.
-.371c	29 40		and #$40			and 	#NSSTypeMask 				; is it a string ?
-.371e	c9 40		cmp #$40			cmp 	#NSSString
-.3720	f0 05		beq $3727			beq 	_CRString
-.3722	ad c7 06	lda $06c7			lda 	numberPCode 				; output read/input
-.3725	80 03		bra $372a			bra 	_CRHaveType
-.3727					_CRString:
-.3727	ad c8 06	lda $06c8			lda 	stringPCode					; output read$/input$
-.372a					_CRHaveType:
-.372a	20 80 2a	jsr $2a80			jsr 	WriteCodeByte 				; so we have one typed data item.
-.372d	68		pla				pla 								; restore type
-.372e	38		sec				sec  								; write update code.
-.372f	20 42 37	jsr $3742			jsr 	GetSetVariable
-.3732	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace 			; , follows ?
-.3735	c9 2c		cmp #$2c			cmp 	#","
-.3737	d0 05		bne $373e			bne 	_CRExit 					; if not, end of READ.
-.3739	20 00 34	jsr $3400			jsr 	GetNext 					; consume comma
-.373c	80 d2		bra $3710			bra 	_CRLoop 					; keep going
-.373e					_CRExit:
-.373e	60		rts				rts
-.373f					_CRSyntax:
-.373f	4c 59 1f	jmp $1f59		jmp	ErrorV_syntax
+.3533	20 0b 34	jsr $340b			jsr 	GetNextNonSpace 			; followed by ; or ,
+.3536	c9 2c		cmp #$2c			cmp 	#","
+.3538	f0 07		beq $3541			beq 	CommandINPUTStream
+.353a	c9 3b		cmp #$3b			cmp 	#";"
+.353c	f0 03		beq $3541			beq 	CommandINPUTStream
+.353e	4c 59 1f	jmp $1f59		jmp	ErrorV_syntax
+.3541					CommandINPUTStream:
+.3541	a9 a1		lda #$a1			lda 	#(PCD_INPUTCMD_START) & $FF
+.3543	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.3546	a2 9f		ldx #$9f			ldx 	#PCD_INPUT 					; do READ with Data from INPUT
+.3548	a0 a0		ldy #$a0			ldy 	#PCD_INPUTDOLLAR
+.354a	4c 13 37	jmp $3713			jmp 	CommandReadInputCommon
+.354d					CommandLET:
+.354d	20 0b 34	jsr $340b			jsr 	GetNextNonSpace 			; get the first character
+.3550					CommandLETHaveFirst:
+.3550	20 99 37	jsr $3799			jsr 	GetReferenceTerm 			; identify variable to assign to
+.3553	da		phx				phx 								; save target on the stack.
+.3554	5a		phy				phy
+.3555	48		pha				pha
+.3556	a9 b2		lda #$b2			lda 	#C64_EQUAL 					; check next is =
+.3558	20 e8 2a	jsr $2ae8			jsr 	CheckNextA
+.355b	20 96 2d	jsr $2d96			jsr 	CompileExpressionAt0 		; evaluate the RHS.
+.355e	85 2c		sta $2c				sta 	zTemp0 						; save type returned
+.3560	68		pla				pla 								; get type of assignment
+.3561	48		pha				pha
+.3562	45 2c		eor $2c				eor 	zTemp0 						; compare using EOR
+.3564	29 40		and #$40			and 	#NSSTypeMask 				; so we can mask type as we only need n/s
+.3566	d0 26		bne $358e			bne 	_CLType
+.3568	68		pla				pla 								; restore and compile save code
+.3569	7a		ply				ply
+.356a	fa		plx				plx
+.356b	c0 80		cpy #$80			cpy 	#$80 						; is it TI = xxxxx
+.356d	f0 09		beq $3578			beq 	_CLTINumber
+.356f	c0 c0		cpy #$c0			cpy 	#$C0 						; is it TI$ = "xxxxx"
+.3571	f0 10		beq $3583			beq 	_CLTIString
+.3573	38		sec				sec
+.3574	20 4b 37	jsr $374b			jsr		GetSetVariable
+.3577	60		rts				rts
+.3578					_CLTINumber:
+.3578	a9 cb		lda #$cb			lda 	#(PCD_TICMD_WRITE) >> 8
+.357a	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.357d	a9 93		lda #$93			lda 	#(PCD_TICMD_WRITE) & $FF
+.357f	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.3582	60		rts				rts
+.3583					_CLTIString:
+.3583	a9 cb		lda #$cb			lda 	#(PCD_TIDOLLARCMD_WRITE) >> 8
+.3585	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.3588	a9 94		lda #$94			lda 	#(PCD_TIDOLLARCMD_WRITE) & $FF
+.358a	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.358d	60		rts				rts
+.358e					_CLType:
+.358e	4c 69 1f	jmp $1f69		jmp	ErrorV_type
+.3591					STRMarkLine:
+.3591	48		pha				pha
+.3592	38		sec				sec 								; allocate 4 bytes (line #,address)
+.3593	ad c9 06	lda $06c9			lda 	lineNumberTable 			; and copy to zTemp0
+.3596	e9 04		sbc #$04			sbc 	#4
+.3598	8d c9 06	sta $06c9			sta 	lineNumberTable
+.359b	85 2c		sta $2c				sta 	zTemp0
+.359d	ad ca 06	lda $06ca			lda 	lineNumberTable+1
+.35a0	e9 00		sbc #$00			sbc 	#0
+.35a2	8d ca 06	sta $06ca			sta 	lineNumberTable+1
+.35a5	85 2d		sta $2d				sta 	zTemp0+1
+.35a7	68		pla				pla
+.35a8	92 2c		sta ($2c)			sta 	(zTemp0) 					; line # save it in +0,+1
+.35aa	98		tya				tya
+.35ab	a0 01		ldy #$01			ldy 	#1
+.35ad	91 2c		sta ($2c),y			sta 	(zTemp0),y
+.35af	a5 2a		lda $2a				lda 	objPtr 						; save current address in +2,+3
+.35b1	c8		iny				iny
+.35b2	91 2c		sta ($2c),y			sta 	(zTemp0),y
+.35b4	a5 2b		lda $2b				lda 	objPtr+1
+.35b6	c8		iny				iny
+.35b7	91 2c		sta ($2c),y			sta 	(zTemp0),y
+.35b9	60		rts				rts
+.35ba					STRFindLine:
+.35ba	85 2c		sta $2c				sta 	zTemp0 						; zTemp0 line number being searched
+.35bc	84 2d		sty $2d				sty 	zTemp0+1
+.35be	ad c2 06	lda $06c2			lda 	compilerEndHigh 			; work backwards through table
+.35c1	85 2f		sta $2f				sta 	zTemp1+1
+.35c3	64 2e		stz $2e				stz 	zTemp1
+.35c5					_STRSearch:
+.35c5	20 fc 35	jsr $35fc			jsr 	_STRPrevLine 				; look at previous record.
+.35c8	a0 01		ldy #$01			ldy 	#1
+.35ca	b2 2e		lda ($2e)			lda 	(zTemp1) 					; check table line # >= target
+.35cc	c5 2c		cmp $2c				cmp 	zTemp0
+.35ce	b1 2e		lda ($2e),y			lda 	(zTemp1),y
+.35d0	e5 2d		sbc $2d				sbc 	zTemp0+1
+.35d2	b0 0b		bcs $35df			bcs 	_STRFound 					; >=
+.35d4					_STRNext:
+.35d4	a0 01		ldy #$01			ldy 	#1 							; should not be required !
+.35d6	b1 2e		lda ($2e),y			lda 	(zTemp1),y
+.35d8	c9 ff		cmp #$ff			cmp 	#$FF
+.35da	d0 e9		bne $35c5			bne 	_STRSearch
+.35dc	4c b3 1f	jmp $1fb3		jmp	ErrorV_internal
+.35df					_STRFound:
+.35df	b2 2e		lda ($2e)			lda 	(zTemp1) 					; set A = 0 if the same, 0 if different.
+.35e1	45 2c		eor $2c				eor 	zTemp0
+.35e3	d0 06		bne $35eb			bne 	_STRDifferent
+.35e5	b2 2e		lda ($2e)			lda 	(zTemp1)
+.35e7	45 2c		eor $2c				eor 	zTemp0
+.35e9	f0 02		beq $35ed			beq 	_STROut 					; if zero, exit with A = 0 and correct line.
+.35eb					_STRDifferent:
+.35eb	a9 ff		lda #$ff			lda 	#$FF
+.35ed					_STROut:
+.35ed	18		clc				clc  								; set carry if different, e.g. > rather than >=
+.35ee	69 ff		adc #$ff			adc 	#255
+.35f0	08		php				php
+.35f1	c8		iny				iny 								; address into YA
+.35f2	b1 2e		lda ($2e),y			lda 	(zTemp1),y
+.35f4	48		pha				pha
+.35f5	c8		iny				iny
+.35f6	b1 2e		lda ($2e),y			lda 	(zTemp1),y
+.35f8	a8		tay				tay
+.35f9	68		pla				pla
+.35fa	28		plp				plp
+.35fb	60		rts				rts
+.35fc					_STRPrevLine:
+.35fc	38		sec				sec 								; move backwards one entry.
+.35fd	a5 2e		lda $2e				lda 	zTemp1
+.35ff	e9 04		sbc #$04			sbc 	#4
+.3601	85 2e		sta $2e				sta 	zTemp1
+.3603	a5 2f		lda $2f				lda 	zTemp1+1
+.3605	e9 00		sbc #$00			sbc 	#0
+.3607	85 2f		sta $2f				sta 	zTemp1+1
+.3609	60		rts				rts
+.360a					STRMakeOffset:
+.360a	18		clc				clc 								; borrow 1
+.360b	e5 2a		sbc $2a				sbc 	objPtr
+.360d	48		pha				pha
+.360e	98		tya				tya
+.360f	e5 2b		sbc $2b				sbc 	objPtr+1
+.3611	a8		tay				tay
+.3612	68		pla				pla
+.3613	60		rts				rts
+.3614					CommandNEXT:
+.3614	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace 			; first letter of index variable, should be.
+.3617	20 21 34	jsr $3421			jsr 	CharIsAlpha 				; if not alpha , error
+.361a	90 0c		bcc $3628			bcc 	_CNNoReferenceGiven
+.361c	20 00 34	jsr $3400			jsr 	GetNext
+.361f	20 99 37	jsr $3799			jsr 	GetReferenceTerm 			; figure out the reference.
+.3622	8a		txa				txa 								; reference in YA
+.3623	20 96 2b	jsr $2b96			jsr 	PushIntegerYA 				; write it out.
+.3626	80 06		bra $362e			bra 	_CNParametersDone
+.3628					_CNNoReferenceGiven:
+.3628	a9 ff		lda #$ff			lda 	#255 						; write out -1 no
+.362a	a8		tay				tay
+.362b	20 96 2b	jsr $2b96			jsr 	PushIntegerYA 				; write it out.
+.362e					_CNParametersDone:
+.362e	a9 a7		lda #$a7			lda 	#PCD_NEXT  					; compile FOR word.
+.3630	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.3633	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace 			; look for ,
+.3636	c9 2c		cmp #$2c			cmp 	#","
+.3638	d0 05		bne $363f			bne 	_CNExit
+.363a	20 00 34	jsr $3400			jsr 	GetNext 					; consume ,
+.363d	80 d5		bra $3614			bra 	CommandNEXT 				; and go round.
+.363f					_CNExit:
+.363f	60		rts				rts
+.3640					CommandON:
+.3640	20 0b 34	jsr $340b			jsr 	GetNextNonSpace 			; GOTO / GOSUB must follow
+.3643	48		pha				pha 								; save on stack
+.3644	a2 d1		ldx #$d1			ldx 	#PCD_CMD_GOTO
+.3646	c9 89		cmp #$89			cmp 	#C64_GOTO 					; must be GOTO/GOSUB
+.3648	f0 09		beq $3653			beq 	_COCreateLoop
+.364a	a2 d2		ldx #$d2			ldx 	#PCD_CMD_GOSUB
+.364c	c9 8d		cmp #$8d			cmp 	#C64_GOSUB
+.364e	f0 03		beq $3653			beq 	_COCreateLoop
+.3650	4c 59 1f	jmp $1f59		jmp	ErrorV_syntax
+.3653					_COCreateLoop:
+.3653	8a		txa				txa 								; compile a goto/gosub somewhere
+.3654	da		phx				phx
+.3655	20 db 34	jsr $34db			jsr 	CompileBranchCommand
+.3658	fa		plx				plx
+.3659	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace			; ',' follows
+.365c	c9 2c		cmp #$2c			cmp 	#","
+.365e	d0 0a		bne $366a			bne 	_COComplete 				; if so, more line numbers
+.3660	a9 aa		lda #$aa			lda 	#PCD_MOREON 				; ON extends.
+.3662	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.3665	20 00 34	jsr $3400			jsr 	GetNext
+.3668	80 e9		bra $3653			bra 	_COCreateLoop
+.366a					_COComplete:
+.366a	68		pla				pla 								; throw GOTO/GOSUB
+.366b	60		rts				rts
+.366c					ParseConstant:
+.366c	a2 00		ldx #$00			ldx 	#0
+.366e	20 91 24	jsr $2491			jsr 	FloatEncodeStart 			; send first
+.3671					_ParseLoop:
+.3671	20 ef 33	jsr $33ef			jsr 	LookNext 					; send subsequent
+.3674	20 94 24	jsr $2494			jsr 	FloatEncodeContinue
+.3677	90 05		bcc $367e			bcc 	_ParseDone
+.3679	20 00 34	jsr $3400			jsr 	GetNext 					; consume it
+.367c	80 f3		bra $3671			bra 	_ParseLoop
+.367e					_ParseDone:
+.367e	b5 32		lda $32,x			lda 	NSStatus,x 					; shouldn't be -ve ....
+.3680	29 80		and #$80			and 	#$80
+.3682	15 6e		ora $6e,x			ora 	NSExponent,x 				; 16 bit int check
+.3684	15 56		ora $56,x			ora 	NSMantissa2,x
+.3686	15 62		ora $62,x			ora 	NSMantissa3,x
+.3688	18		clc				clc
+.3689	d0 05		bne $3690			bne 	_ParseExit 					; exit with CC if need float to compile
+.368b	b5 3e		lda $3e,x			lda 	NSMantissa0,x 				; read into YA.
+.368d	b4 4a		ldy $4a,x			ldy		NSMantissa1,x
+.368f	38		sec				sec
+.3690					_ParseExit:
+.3690	60		rts				rts
+.3691					CommandPRINT:
+.3691	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace			; what follows ?
+.3694	c9 3b		cmp #$3b			cmp 	#";" 						; semicolon, check end of command
+.3696	f0 27		beq $36bf			beq 	_CPCheckEnd
+.3698	c9 2c		cmp #$2c			cmp 	#"," 						; , TAB and check end of command
+.369a	f0 1e		beq $36ba			beq 	_CPTabCheckEnd
+.369c	20 03 37	jsr $3703			jsr 	_CPAtEnd 					; check for : and EOL
+.369f	b0 2a		bcs $36cb			bcs 	_CPExitCR 					; exit with CR
+.36a1	c9 a3		cmp #$a3			cmp 	#C64_TABLB 					; TAB( found
+.36a3	f0 31		beq $36d6			beq 	_CPHaveTabSpcFunc
+.36a5	c9 a6		cmp #$a6			cmp 	#C64_SPCLB 					; SPC( found
+.36a7	f0 2d		beq $36d6			beq 	_CPHaveTabSpcFunc
+.36a9	20 96 2d	jsr $2d96			jsr 	CompileExpressionAt0 		; so it is something to print
+.36ac	a2 b2		ldx #$b2			ldx 	#PCD_PRINTCMD_S
+.36ae	29 40		and #$40			and 	#NSSString 					; if string
+.36b0	d0 02		bne $36b4			bne 	_CPOut
+.36b2	a2 b1		ldx #$b1			ldx 	#PCD_PRINTCMD_N
+.36b4					_CPOut:
+.36b4	8a		txa				txa 								; print that thing
+.36b5	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.36b8	80 d7		bra $3691			bra 	CommandPRINT 				; and loop round/
+.36ba					_CPTabCheckEnd:
+.36ba	a9 b8		lda #$b8			lda 	#PCD_PRINTCMD_TAB 			; , next tab stop
+.36bc	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.36bf					_CPCheckEnd:
+.36bf	20 00 34	jsr $3400			jsr 	GetNext 					; consume it.
+.36c2	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace 			; what follows ?
+.36c5	20 03 37	jsr $3703			jsr 	_CPAtEnd 					; reached end
+.36c8	90 c7		bcc $3691			bcc 	CommandPRINT 				; no, loop back
+.36ca	60		rts				rts
+.36cb					_CPExitCR:
+.36cb	a9 0d		lda #$0d			lda 	#13 						; code to print CR
+.36cd	20 a9 2b	jsr $2ba9			jsr 	PushIntegerA
+.36d0	a9 92		lda #$92			lda 	#PCD_PRINTCMD_CHR
+.36d2	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.36d5	60		rts				rts
+.36d6					_CPHaveTabSpcFunc:
+.36d6	20 0b 34	jsr $340b			jsr 	GetNextNonSpace 			; get the TAB( or SPC(
+.36d9	48		pha				pha 								; save it.
+.36da	20 96 2d	jsr $2d96			jsr 	CompileExpressionAt0 		; compile expression, the TAB or SPC size.
+.36dd	29 40		and #$40			and 	#NSSTypeMask 				; check number.
+.36df	c9 00		cmp #$00			cmp  	#NSSIFloat
+.36e1	d0 1d		bne $3700			bne 	_CPType
+.36e3	20 0b 34	jsr $340b			jsr 	GetNextNonSpace 			; get next skipping spaces
+.36e6	c9 29		cmp #$29			cmp 	#")"						; check closing bracket.
+.36e8	d0 13		bne $36fd			bne 	_CPSyntax
+.36ea	68		pla				pla
+.36eb	c9 a3		cmp #$a3			cmp 	#C64_TABLB 					; output SPC or POS command accordingly.
+.36ed	f0 07		beq $36f6			beq 	_CPIsTabFunc
+.36ef	a9 ba		lda #$ba			lda 	#PCD_PRINTCMD_SPC
+.36f1	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.36f4	80 9b		bra $3691			bra 	CommandPRINT
+.36f6					_CPIsTabFunc:
+.36f6	a9 b9		lda #$b9			lda 	#PCD_PRINTCMD_POS
+.36f8	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.36fb	80 94		bra $3691			bra 	CommandPRINT
+.36fd					_CPSyntax:
+.36fd	4c 59 1f	jmp $1f59		jmp	ErrorV_syntax
+.3700					_CPType:
+.3700	4c 69 1f	jmp $1f69		jmp	ErrorV_type
+.3703					_CPAtEnd:
+.3703	c9 00		cmp #$00			cmp 	#0
+.3705	f0 06		beq $370d			beq 	_CPIsEnd
+.3707	c9 3a		cmp #$3a			cmp 	#":"
+.3709	f0 02		beq $370d			beq 	_CPIsEnd
+.370b	18		clc				clc
+.370c	60		rts				rts
+.370d					_CPIsEnd:
+.370d	38		sec				sec
+.370e	60		rts				rts
+.370f					CommandREAD:
+.370f	a2 b3		ldx #$b3			ldx 	#PCD_READ
+.3711	a0 b4		ldy #$b4			ldy 	#PCD_READDOLLAR
+.3713					CommandReadInputCommon:
+.3713	8e c7 06	stx $06c7			stx 	numberPCode
+.3716	8c c8 06	sty $06c8			sty 	stringPCode
+.3719					_CRLoop:
+.3719	20 0b 34	jsr $340b			jsr 	GetNextNonSpace 			; first char of identifier
+.371c	20 21 34	jsr $3421			jsr 	CharIsAlpha 				; check A-Z
+.371f	90 27		bcc $3748			bcc 	_CRSyntax
+.3721	20 99 37	jsr $3799			jsr 	GetReferenceTerm 			; get the variable.
+.3724	48		pha				pha 								; save type.
+.3725	29 40		and #$40			and 	#NSSTypeMask 				; is it a string ?
+.3727	c9 40		cmp #$40			cmp 	#NSSString
+.3729	f0 05		beq $3730			beq 	_CRString
+.372b	ad c7 06	lda $06c7			lda 	numberPCode 				; output read/input
+.372e	80 03		bra $3733			bra 	_CRHaveType
+.3730					_CRString:
+.3730	ad c8 06	lda $06c8			lda 	stringPCode					; output read$/input$
+.3733					_CRHaveType:
+.3733	20 80 2a	jsr $2a80			jsr 	WriteCodeByte 				; so we have one typed data item.
+.3736	68		pla				pla 								; restore type
+.3737	38		sec				sec  								; write update code.
+.3738	20 4b 37	jsr $374b			jsr 	GetSetVariable
+.373b	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace 			; , follows ?
+.373e	c9 2c		cmp #$2c			cmp 	#","
+.3740	d0 05		bne $3747			bne 	_CRExit 					; if not, end of READ.
+.3742	20 00 34	jsr $3400			jsr 	GetNext 					; consume comma
+.3745	80 d2		bra $3719			bra 	_CRLoop 					; keep going
+.3747					_CRExit:
+.3747	60		rts				rts
+.3748					_CRSyntax:
+.3748	4c 59 1f	jmp $1f59		jmp	ErrorV_syntax
 .06c7					numberPCode:
 >06c7							.fill 	1
 .06c8					stringPCode:
 >06c8							.fill 	1
-.3742					GetSetVariable:
-.3742	08		php				php 								; save direction on stack
-.3743	c0 00		cpy #$00			cpy 	#$00
-.3745	30 21		bmi $3768			bmi 	_GSVReadWriteSpecial
-.3747	c9 00		cmp #$00			cmp 	#$00
-.3749	30 33		bmi $377e			bmi 	_GSVArray
-.374b	29 60		and #$60			and 	#NSSTypeMask+NSSIInt16 		; get type bits
-.374d	4a		lsr a				lsr 	a 							; divide by 2
-.374e	09 40		ora #$40			ora 	#64 						; and set bit 6.
-.3750	28		plp				plp
-.3751	90 02		bcc $3755			bcc 	_GSVNotWrite
-.3753	09 08		ora #$08			ora 	#8  						; set bit 3 if it is write.
-.3755					_GSVNotWrite:
-.3755	85 2c		sta $2c				sta 	zTemp0
-.3757	98		tya				tya 	 							; shift X/Y right as the address stored is halved
-.3758	4a		lsr a				lsr 	a
-.3759	a8		tay				tay
-.375a	8a		txa				txa
-.375b	6a		ror a				ror 	a
-.375c	aa		tax				tax
-.375d	98		tya				tya 								; lower 3 bits of YX are ORed into the opcode
-.375e	05 2c		ora $2c				ora 	zTemp0 						; which is the first byte of the opcode
-.3760	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.3763	8a		txa				txa 								; and the lower 8 bits of YX are the second byte
-.3764	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.3767	60		rts				rts
-.3768					_GSVReadWriteSpecial:
-.3768	28		plp				plp
-.3769	b0 10		bcs $377b			bcs 	_GSVSyntax
-.376b	c0 c0		cpy #$c0			cpy 	#$C0 						; TI$ ?
-.376d	f0 06		beq $3775			beq 	_GSVRWString
-.376f	a9 c0		lda #$c0			lda 	#(PCD_TI) & $FF
-.3771	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.3774	60		rts				rts
-.3775					_GSVRWString:
-.3775	a9 c1		lda #$c1			lda 	#(PCD_TIDOLLAR) & $FF
-.3777	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.377a	60		rts				rts
-.377b					_GSVSyntax:
-.377b	4c 59 1f	jmp $1f59		jmp	ErrorV_syntax
-.377e					_GSVArray:
-.377e	29 60		and #$60			and 	#NSSTypeMask+NSSIInt16 		; mask out 2 bits of type data
-.3780	4a		lsr a				lsr 	a		 					; shift from 5,6 to 0,1
-.3781	4a		lsr a				lsr 	a
-.3782	4a		lsr a				lsr 	a
-.3783	4a		lsr a				lsr 	a
-.3784	4a		lsr a				lsr 	a
-.3785	28		plp				plp 								; if writing array then set bit 2.
-.3786	90 02		bcc $378a			bcc 	_GSVANotWrite
-.3788	09 04		ora #$04			ora 	#4
-.378a					_GSVANotWrite:
-.378a	09 78		ora #$78			ora 	#$78 						; make a valid opcode.
-.378c	20 80 2a	jsr $2a80			jsr 	WriteCodeByte 				; and write it out
-.378f	60		rts				rts
-.3790					GetReferenceTerm:
-.3790	20 70 34	jsr $3470			jsr 	ExtractVariableName 		; get name & type info
-.3793	e0 00		cpx #$00			cpx 	#0 							; check for array handler
-.3795	30 10		bmi $37a7			bmi 	_GRTArray
-.3797	da		phx				phx 								; save type on stack
-.3798	20 50 2e	jsr $2e50			jsr 	FindVariable 				; find it
-.379b	b0 06		bcs $37a3			bcs 	_GRTNoCreate 				; create if required.
-.379d	20 db 2b	jsr $2bdb			jsr 	CreateVariableRecord 		; create a variable.
-.37a0	20 30 2c	jsr $2c30			jsr 	AllocateBytesForType 		; allocate memory for it
-.37a3					_GRTNoCreate:
-.37a3	68		pla				pla 								; get type back, strip out type information.
-.37a4	29 60		and #$60			and 	#NSSTypeMask+NSSIInt16
-.37a6	60		rts				rts
-.37a7					_GRTArray:
-.37a7	da		phx				phx 								; save type information
-.37a8	20 50 2e	jsr $2e50			jsr 	FindVariable 				; read its data, the base address in YX
-.37ab	90 18		bcc $37c5			bcc 	_GRTUndeclared 				; undeclared array.
-.37ad	da		phx				phx 								; save base address
-.37ae	5a		phy				phy
-.37af	20 27 2d	jsr $2d27			jsr 	OutputIndexGroup 			; create an index group and generate them
-.37b2	7a		ply				ply 								; get the array base address into YX
-.37b3	fa		plx				plx
-.37b4	a9 20		lda #$20			lda 	#NSSIFloat+NSSIInt16 		; pretend it is an int16 reference.
-.37b6	18		clc				clc
-.37b7	20 42 37	jsr $3742			jsr 	GetSetVariable 				; load the address of the array structure.
-.37ba	a9 8e		lda #$8e			lda 	#(PCD_ARRAY) & $FF
-.37bc	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.37bf	68		pla				pla 								; and the type data into A
-.37c0	29 60		and #$60			and 	#NSSTypeMask+NSSIInt16
-.37c2	09 80		ora #$80			ora 	#$80 						; with the array flag set.
-.37c4	60		rts				rts
-.37c5					_GRTUndeclared:
-.37c5	4c 10 20	jmp $2010		jmp	ErrorV_undeclared
-.37c8					CommandREM:
-.37c8	20 ef 33	jsr $33ef			jsr 	LookNext
-.37cb	f0 05		beq $37d2			beq 	_CRExit
-.37cd	20 00 34	jsr $3400			jsr 	GetNext
-.37d0	80 f6		bra $37c8			bra 	CommandREM
-.37d2					_CRExit:
-.37d2	60		rts				rts
-.37d3					STRReset:
-.37d3	ad c1 06	lda $06c1			lda	 	compilerStartHigh 			; set up the two table pointers
-.37d6	8d cc 06	sta $06cc			sta 	variableListEnd+1
-.37d9	9c cb 06	stz $06cb			stz 	variableListEnd
-.37dc	ad c2 06	lda $06c2			lda 	compilerEndHigh
-.37df	8d ca 06	sta $06ca			sta 	lineNumberTable+1
-.37e2	9c c9 06	stz $06c9			stz 	lineNumberTable
-.37e5	ad cb 06	lda $06cb			lda 	variableListEnd
-.37e8	85 2d		sta $2d				sta 	zTemp0+1
-.37ea	64 2c		stz $2c				stz 	zTemp0
-.37ec	a9 00		lda #$00			lda 	#0
-.37ee	92 2c		sta ($2c)			sta 	(zTemp0)
-.37f0	a9 00		lda #$00			lda 	#((0) & $FF)
-.37f2	8d cd 06	sta $06cd			sta 	0+freeVariableMemory
-.37f5	a9 00		lda #$00			lda 	#((0) >> 8) & $FF
-.37f7	8d ce 06	sta $06ce			sta 	1+freeVariableMemory
-.37fa	60		rts				rts
+.374b					GetSetVariable:
+.374b	08		php				php 								; save direction on stack
+.374c	c0 00		cpy #$00			cpy 	#$00
+.374e	30 21		bmi $3771			bmi 	_GSVReadWriteSpecial
+.3750	c9 00		cmp #$00			cmp 	#$00
+.3752	30 33		bmi $3787			bmi 	_GSVArray
+.3754	29 60		and #$60			and 	#NSSTypeMask+NSSIInt16 		; get type bits
+.3756	4a		lsr a				lsr 	a 							; divide by 2
+.3757	09 40		ora #$40			ora 	#64 						; and set bit 6.
+.3759	28		plp				plp
+.375a	90 02		bcc $375e			bcc 	_GSVNotWrite
+.375c	09 08		ora #$08			ora 	#8  						; set bit 3 if it is write.
+.375e					_GSVNotWrite:
+.375e	85 2c		sta $2c				sta 	zTemp0
+.3760	98		tya				tya 	 							; shift X/Y right as the address stored is halved
+.3761	4a		lsr a				lsr 	a
+.3762	a8		tay				tay
+.3763	8a		txa				txa
+.3764	6a		ror a				ror 	a
+.3765	aa		tax				tax
+.3766	98		tya				tya 								; lower 3 bits of YX are ORed into the opcode
+.3767	05 2c		ora $2c				ora 	zTemp0 						; which is the first byte of the opcode
+.3769	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.376c	8a		txa				txa 								; and the lower 8 bits of YX are the second byte
+.376d	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.3770	60		rts				rts
+.3771					_GSVReadWriteSpecial:
+.3771	28		plp				plp
+.3772	b0 10		bcs $3784			bcs 	_GSVSyntax
+.3774	c0 c0		cpy #$c0			cpy 	#$C0 						; TI$ ?
+.3776	f0 06		beq $377e			beq 	_GSVRWString
+.3778	a9 c0		lda #$c0			lda 	#(PCD_TI) & $FF
+.377a	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.377d	60		rts				rts
+.377e					_GSVRWString:
+.377e	a9 c1		lda #$c1			lda 	#(PCD_TIDOLLAR) & $FF
+.3780	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.3783	60		rts				rts
+.3784					_GSVSyntax:
+.3784	4c 59 1f	jmp $1f59		jmp	ErrorV_syntax
+.3787					_GSVArray:
+.3787	29 60		and #$60			and 	#NSSTypeMask+NSSIInt16 		; mask out 2 bits of type data
+.3789	4a		lsr a				lsr 	a		 					; shift from 5,6 to 0,1
+.378a	4a		lsr a				lsr 	a
+.378b	4a		lsr a				lsr 	a
+.378c	4a		lsr a				lsr 	a
+.378d	4a		lsr a				lsr 	a
+.378e	28		plp				plp 								; if writing array then set bit 2.
+.378f	90 02		bcc $3793			bcc 	_GSVANotWrite
+.3791	09 04		ora #$04			ora 	#4
+.3793					_GSVANotWrite:
+.3793	09 78		ora #$78			ora 	#$78 						; make a valid opcode.
+.3795	20 80 2a	jsr $2a80			jsr 	WriteCodeByte 				; and write it out
+.3798	60		rts				rts
+.3799					GetReferenceTerm:
+.3799	20 70 34	jsr $3470			jsr 	ExtractVariableName 		; get name & type info
+.379c	e0 00		cpx #$00			cpx 	#0 							; check for array handler
+.379e	30 10		bmi $37b0			bmi 	_GRTArray
+.37a0	da		phx				phx 								; save type on stack
+.37a1	20 50 2e	jsr $2e50			jsr 	FindVariable 				; find it
+.37a4	b0 06		bcs $37ac			bcs 	_GRTNoCreate 				; create if required.
+.37a6	20 db 2b	jsr $2bdb			jsr 	CreateVariableRecord 		; create a variable.
+.37a9	20 30 2c	jsr $2c30			jsr 	AllocateBytesForType 		; allocate memory for it
+.37ac					_GRTNoCreate:
+.37ac	68		pla				pla 								; get type back, strip out type information.
+.37ad	29 60		and #$60			and 	#NSSTypeMask+NSSIInt16
+.37af	60		rts				rts
+.37b0					_GRTArray:
+.37b0	da		phx				phx 								; save type information
+.37b1	20 50 2e	jsr $2e50			jsr 	FindVariable 				; read its data, the base address in YX
+.37b4	90 18		bcc $37ce			bcc 	_GRTUndeclared 				; undeclared array.
+.37b6	da		phx				phx 								; save base address
+.37b7	5a		phy				phy
+.37b8	20 27 2d	jsr $2d27			jsr 	OutputIndexGroup 			; create an index group and generate them
+.37bb	7a		ply				ply 								; get the array base address into YX
+.37bc	fa		plx				plx
+.37bd	a9 20		lda #$20			lda 	#NSSIFloat+NSSIInt16 		; pretend it is an int16 reference.
+.37bf	18		clc				clc
+.37c0	20 4b 37	jsr $374b			jsr 	GetSetVariable 				; load the address of the array structure.
+.37c3	a9 8e		lda #$8e			lda 	#(PCD_ARRAY) & $FF
+.37c5	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.37c8	68		pla				pla 								; and the type data into A
+.37c9	29 60		and #$60			and 	#NSSTypeMask+NSSIInt16
+.37cb	09 80		ora #$80			ora 	#$80 						; with the array flag set.
+.37cd	60		rts				rts
+.37ce					_GRTUndeclared:
+.37ce	4c 10 20	jmp $2010		jmp	ErrorV_undeclared
+.37d1					CommandREM:
+.37d1	20 ef 33	jsr $33ef			jsr 	LookNext
+.37d4	f0 05		beq $37db			beq 	_CRExit
+.37d6	20 00 34	jsr $3400			jsr 	GetNext
+.37d9	80 f6		bra $37d1			bra 	CommandREM
+.37db					_CRExit:
+.37db	60		rts				rts
+.37dc					STRReset:
+.37dc	ad c1 06	lda $06c1			lda	 	compilerStartHigh 			; set up the two table pointers
+.37df	8d cc 06	sta $06cc			sta 	variableListEnd+1
+.37e2	9c cb 06	stz $06cb			stz 	variableListEnd
+.37e5	ad c2 06	lda $06c2			lda 	compilerEndHigh
+.37e8	8d ca 06	sta $06ca			sta 	lineNumberTable+1
+.37eb	9c c9 06	stz $06c9			stz 	lineNumberTable
+.37ee	ad cb 06	lda $06cb			lda 	variableListEnd
+.37f1	85 2d		sta $2d				sta 	zTemp0+1
+.37f3	64 2c		stz $2c				stz 	zTemp0
+.37f5	a9 00		lda #$00			lda 	#0
+.37f7	92 2c		sta ($2c)			sta 	(zTemp0)
+.37f9	a9 00		lda #$00			lda 	#((0) & $FF)
+.37fb	8d cd 06	sta $06cd			sta 	0+freeVariableMemory
+.37fe	a9 00		lda #$00			lda 	#((0) >> 8) & $FF
+.3800	8d ce 06	sta $06ce			sta 	1+freeVariableMemory
+.3803	60		rts				rts
 .06c9					lineNumberTable:
 >06c9							.fill 	2
 .06cb					variableListEnd:
 >06cb							.fill 	2
 .06cd					freeVariableMemory:
 >06cd							.fill 	2
-.37fb					CommandRESTORE:
-.37fb	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace 			; what follows ?
-.37fe	c9 3a		cmp #$3a			cmp 	#':'						; if : or EOL then default
-.3800	f0 0a		beq $380c			beq 	_CRDefault
-.3802	c9 00		cmp #$00			cmp 	#0
-.3804	f0 06		beq $380c			beq 	_CRDefault
-.3806	a9 d6		lda #$d6			lda 	#PCD_CMD_RESTORE 			; no, we have a parameter like GOTO/GOSUB
-.3808	20 db 34	jsr $34db			jsr 	CompileBranchCommand
-.380b	60		rts				rts
-.380c					_CRDefault:
-.380c	a9 d6		lda #$d6			lda 	#PCD_CMD_RESTORE 			; compile RESTORE
-.380e	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.3811	a9 00		lda #$00			lda 	#0		 					; with zero "line#"
-.3813	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.3816	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.3819	60		rts				rts
-.381a					CompileTerm:
-.381a	20 0b 34	jsr $340b			jsr 	GetNextNonSpace 			; get first non space character.
-.381d	30 72		bmi $3891			bmi 	_CTUnaryFunctions
-.381f	20 15 34	jsr $3415			jsr 	CharIsDigit 				; found a number
-.3822	b0 3a		bcs $385e			bcs 	_CTDigit
-.3824	c9 2e		cmp #$2e			cmp 	#"."
-.3826	f0 36		beq $385e			beq 	_CTDigit
-.3828	c9 22		cmp #$22			cmp 	#'"' 						; found a string ?
-.382a	f0 43		beq $386f			beq 	_CTString
-.382c	c9 25		cmp #$25			cmp 	#"%"						; binary or hexadecimal ?
-.382e	f0 28		beq $3858			beq 	_CTOtherBase
-.3830	c9 24		cmp #$24			cmp 	#"$"
-.3832	f0 24		beq $3858			beq 	_CTOtherBase
-.3834	c9 28		cmp #$28			cmp 	#"(" 						; check parenthesis
-.3836	f0 17		beq $384f			beq 	_CTBrackets
-.3838	c9 41		cmp #$41			cmp 	#"A" 						; check variable/array ?
-.383a	90 10		bcc $384c			bcc 	_CTSyntax
-.383c	c9 5b		cmp #$5b			cmp 	#"Z"+1
-.383e	b0 0c		bcs $384c			bcs 	_CTSyntax
-.3840	20 90 37	jsr $3790			jsr 	GetReferenceTerm 			; figure out what it is.
-.3843	48		pha				pha 								; save type on stack
-.3844	18		clc				clc 								; read it
-.3845	20 42 37	jsr $3742			jsr 	GetSetVariable
-.3848	68		pla				pla
-.3849	29 40		and #$40			and 	#NSSTypeMask 				; reduce to basic type
-.384b	60		rts				rts
-.384c					_CTSyntax:
-.384c	4c 59 1f	jmp $1f59		jmp	ErrorV_syntax
-.384f					_CTBrackets:
-.384f	20 96 2d	jsr $2d96			jsr 	CompileExpressionAt0
-.3852	48		pha				pha
-.3853	20 e2 2a	jsr $2ae2			jsr 	CheckNextRParen
-.3856	68		pla				pla
-.3857	60		rts				rts
-.3858					_CTOtherBase:
-.3858	20 2e 2a	jsr $2a2e			jsr 	InlineNonDecimal 			; non decimal constant handler
-.385b	a9 00		lda #$00			lda 	#NSSIFloat					; return a iFloat32 integer
-.385d	60		rts				rts
-.385e					_CTDigit:
-.385e	20 63 36	jsr $3663			jsr 	ParseConstant 				; parse out an number, first is in A already.
-.3861	90 06		bcc $3869			bcc	 	_CTFloat 					; have a float or long int.
-.3863	20 96 2b	jsr $2b96			jsr 	PushIntegerYA 				; code to push on stack
-.3866	a9 00		lda #$00			lda 	#NSSIFloat					; return a iFloat32 integer
-.3868	60		rts				rts
-.3869					_CTFloat:
-.3869	20 b8 2b	jsr $2bb8			jsr 	PushFloatCommand			; code to push float
-.386c	a9 00		lda #$00			lda 	#NSSIFloat 					; return a iFloat32
-.386e	60		rts				rts
-.386f					_CTString:
-.386f	20 b7 2a	jsr $2ab7			jsr 	BufferClear 				; copy it to the buffer
-.3872					_CTStringLoop:
-.3872	20 ef 33	jsr $33ef			jsr 	LookNext 					; reached EOL/EOS
-.3875	f0 d5		beq $384c			beq 	_CTSyntax
-.3877	c9 22		cmp #$22			cmp 	#'"'
-.3879	f0 08		beq $3883			beq 	_CTStringDone
-.387b	20 bb 2a	jsr $2abb			jsr 	BufferWrite 				; write and consume
-.387e	20 00 34	jsr $3400			jsr 	GetNext
-.3881	80 ef		bra $3872			bra 	_CTStringLoop
-.3883					_CTStringDone:
-.3883	20 00 34	jsr $3400			jsr 	GetNext 					; consume closing quote.
-.3886	a9 cf		lda #$cf			lda 	#PCD_CMD_STRING 			; output command and buffer
-.3888	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.388b	20 c7 2a	jsr $2ac7			jsr 	BufferOutput
-.388e	a9 40		lda #$40			lda 	#NSSString 					; string type
-.3890	60		rts				rts
-.3891					_CTUnaryFunctions:
-.3891	c9 ab		cmp #$ab			cmp 	#C64_MINUS 					; negation of term.
-.3893	f0 0a		beq $389f			beq 	_CTNegation
-.3895	a2 8a		ldx #$8a			ldx 	#UnaryTables & $FF 			; check vs unary tables.
-.3897	a0 31		ldy #$31			ldy 	#UnaryTables >> 8
-.3899	20 91 32	jsr $3291			jsr 	GeneratorProcess
-.389c	90 ae		bcc $384c			bcc		_CTSyntax
-.389e	60		rts				rts
-.389f					_CTNegation:
-.389f	20 1a 38	jsr $381a			jsr 	CompileTerm 				; compile a term.
-.38a2	48		pha				pha
-.38a3	29 40		and #$40			and 	#NSSTypeMask 				; if not an ifloat32 of some sort.
-.38a5	c9 00		cmp #$00			cmp 	#NSSIFloat
-.38a7	d0 07		bne $38b0			bne 	_CTType 					; error
-.38a9	a9 a5		lda #$a5			lda 	#PCD_NEGATE 				; compile negate
-.38ab	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.38ae	68		pla				pla 								; return original type.
-.38af	60		rts				rts
-.38b0					_CTType:
-.38b0	4c 69 1f	jmp $1f69		jmp	ErrorV_type
-.38b3					CommandWAIT:
-.38b3	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace
-.38b6	c9 2c		cmp #$2c			cmp 	#","
-.38b8	f0 10		beq $38ca			beq 	_CWThirdParameter
-.38ba	a9 00		lda #$00			lda 	#0
-.38bc	20 a9 2b	jsr $2ba9			jsr 	PushIntegerA
-.38bf					_CWExit:
-.38bf	a9 cb		lda #$cb			lda 	#(PCD_WAIT) >> 8
-.38c1	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.38c4	a9 95		lda #$95			lda 	#(PCD_WAIT) & $FF
-.38c6	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.38c9	60		rts				rts
-.38ca					_CWThirdParameter:
-.38ca	20 00 34	jsr $3400			jsr 	GetNext
-.38cd	20 98 2d	jsr $2d98			jsr 	CompileExpressionAtA
-.38d0	29 40		and #$40			and 	#NSSTypeMask
-.38d2	c9 00		cmp #$00			cmp 	#NSSIFloat
-.38d4	f0 e9		beq $38bf			beq 	_CWExit
-.38d6	4c 69 1f	jmp $1f69		jmp	ErrorV_type
-.38d9					CommandCMD:
-.38d9	a9 b0		lda #$b0			lda 	#PCD_SETCHANNEL 			; set the channel to this now forever.
-.38db	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.38de	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace 			; followed by a , ?
-.38e1	c9 2c		cmp #$2c			cmp 	#","
-.38e3	d0 06		bne $38eb			bne 	_CCMDExit
-.38e5	20 00 34	jsr $3400			jsr 	GetNext 					; consume comma.
-.38e8	20 88 36	jsr $3688			jsr 	CommandPRINT 				; do the print code
-.38eb					_CCMDExit:
-.38eb	60		rts				rts
-.38ec					CommandOPEN:
-.38ec	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace 			; followed by a , ?
-.38ef	c9 2c		cmp #$2c			cmp 	#","
-.38f1	d0 15		bne $3908			bne 	_COTwoDefaults
-.38f3	20 00 34	jsr $3400			jsr 	GetNext 					; consume comma
-.38f6	20 96 2d	jsr $2d96			jsr 	CompileExpressionAt0 		; what follows could be text or number.
-.38f9	29 40		and #$40			and 	#NSSString 					; if a number want a string to follow
-.38fb	f0 1e		beq $391b			beq 	_COThreeIntegers
-.38fd	a9 00		lda #$00			lda 	#0		 					; so we have n,n,$,0 so swap !
-.38ff	20 a9 2b	jsr $2ba9			jsr 	PushIntegerA
-.3902	a9 bf		lda #$bf			lda 	#(PCD_SWAP) & $FF
-.3904	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.3907	60		rts				rts
-.3908					_COTwoDefaults:
-.3908	a9 00		lda #$00			lda 	#0
-.390a	20 a9 2b	jsr $2ba9			jsr 	PushIntegerA
-.390d					_COCompileNullString:
-.390d	a9 cf		lda #$cf			lda 	#(PCD_CMD_STRING) & $FF
-.390f	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.3912	a9 00		lda #$00			lda 	#0
-.3914	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.3917	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
-.391a	60		rts				rts
-.391b					_COThreeIntegers:
-.391b	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace 			; is there a ,
-.391e	c9 2c		cmp #$2c			cmp 	#","
-.3920	d0 eb		bne $390d			bne 	_COCompileNullString 		; if not it is n,n,n so default filename.
-.3922	20 00 34	jsr $3400			jsr 	GetNext
-.3925	20 96 2d	jsr $2d96			jsr 	CompileExpressionAt0 		; should be a filename
-.3928	29 40		and #$40			and 	#NSSString
-.392a	f0 01		beq $392d			beq 	_COType
-.392c	60		rts				rts
-.392d					_COType:
-.392d	4c 69 1f	jmp $1f69		jmp	ErrorV_type
+.3804					CommandRESTORE:
+.3804	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace 			; what follows ?
+.3807	c9 3a		cmp #$3a			cmp 	#':'						; if : or EOL then default
+.3809	f0 0a		beq $3815			beq 	_CRDefault
+.380b	c9 00		cmp #$00			cmp 	#0
+.380d	f0 06		beq $3815			beq 	_CRDefault
+.380f	a9 d6		lda #$d6			lda 	#PCD_CMD_RESTORE 			; no, we have a parameter like GOTO/GOSUB
+.3811	20 db 34	jsr $34db			jsr 	CompileBranchCommand
+.3814	60		rts				rts
+.3815					_CRDefault:
+.3815	a9 d6		lda #$d6			lda 	#PCD_CMD_RESTORE 			; compile RESTORE
+.3817	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.381a	a9 00		lda #$00			lda 	#0		 					; with zero "line#"
+.381c	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.381f	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.3822	60		rts				rts
+.3823					CompileTerm:
+.3823	20 0b 34	jsr $340b			jsr 	GetNextNonSpace 			; get first non space character.
+.3826	30 72		bmi $389a			bmi 	_CTUnaryFunctions
+.3828	20 15 34	jsr $3415			jsr 	CharIsDigit 				; found a number
+.382b	b0 3a		bcs $3867			bcs 	_CTDigit
+.382d	c9 2e		cmp #$2e			cmp 	#"."
+.382f	f0 36		beq $3867			beq 	_CTDigit
+.3831	c9 22		cmp #$22			cmp 	#'"' 						; found a string ?
+.3833	f0 43		beq $3878			beq 	_CTString
+.3835	c9 25		cmp #$25			cmp 	#"%"						; binary or hexadecimal ?
+.3837	f0 28		beq $3861			beq 	_CTOtherBase
+.3839	c9 24		cmp #$24			cmp 	#"$"
+.383b	f0 24		beq $3861			beq 	_CTOtherBase
+.383d	c9 28		cmp #$28			cmp 	#"(" 						; check parenthesis
+.383f	f0 17		beq $3858			beq 	_CTBrackets
+.3841	c9 41		cmp #$41			cmp 	#"A" 						; check variable/array ?
+.3843	90 10		bcc $3855			bcc 	_CTSyntax
+.3845	c9 5b		cmp #$5b			cmp 	#"Z"+1
+.3847	b0 0c		bcs $3855			bcs 	_CTSyntax
+.3849	20 99 37	jsr $3799			jsr 	GetReferenceTerm 			; figure out what it is.
+.384c	48		pha				pha 								; save type on stack
+.384d	18		clc				clc 								; read it
+.384e	20 4b 37	jsr $374b			jsr 	GetSetVariable
+.3851	68		pla				pla
+.3852	29 40		and #$40			and 	#NSSTypeMask 				; reduce to basic type
+.3854	60		rts				rts
+.3855					_CTSyntax:
+.3855	4c 59 1f	jmp $1f59		jmp	ErrorV_syntax
+.3858					_CTBrackets:
+.3858	20 96 2d	jsr $2d96			jsr 	CompileExpressionAt0
+.385b	48		pha				pha
+.385c	20 e2 2a	jsr $2ae2			jsr 	CheckNextRParen
+.385f	68		pla				pla
+.3860	60		rts				rts
+.3861					_CTOtherBase:
+.3861	20 2e 2a	jsr $2a2e			jsr 	InlineNonDecimal 			; non decimal constant handler
+.3864	a9 00		lda #$00			lda 	#NSSIFloat					; return a iFloat32 integer
+.3866	60		rts				rts
+.3867					_CTDigit:
+.3867	20 6c 36	jsr $366c			jsr 	ParseConstant 				; parse out an number, first is in A already.
+.386a	90 06		bcc $3872			bcc	 	_CTFloat 					; have a float or long int.
+.386c	20 96 2b	jsr $2b96			jsr 	PushIntegerYA 				; code to push on stack
+.386f	a9 00		lda #$00			lda 	#NSSIFloat					; return a iFloat32 integer
+.3871	60		rts				rts
+.3872					_CTFloat:
+.3872	20 b8 2b	jsr $2bb8			jsr 	PushFloatCommand			; code to push float
+.3875	a9 00		lda #$00			lda 	#NSSIFloat 					; return a iFloat32
+.3877	60		rts				rts
+.3878					_CTString:
+.3878	20 b7 2a	jsr $2ab7			jsr 	BufferClear 				; copy it to the buffer
+.387b					_CTStringLoop:
+.387b	20 ef 33	jsr $33ef			jsr 	LookNext 					; reached EOL/EOS
+.387e	f0 d5		beq $3855			beq 	_CTSyntax
+.3880	c9 22		cmp #$22			cmp 	#'"'
+.3882	f0 08		beq $388c			beq 	_CTStringDone
+.3884	20 bb 2a	jsr $2abb			jsr 	BufferWrite 				; write and consume
+.3887	20 00 34	jsr $3400			jsr 	GetNext
+.388a	80 ef		bra $387b			bra 	_CTStringLoop
+.388c					_CTStringDone:
+.388c	20 00 34	jsr $3400			jsr 	GetNext 					; consume closing quote.
+.388f	a9 cf		lda #$cf			lda 	#PCD_CMD_STRING 			; output command and buffer
+.3891	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.3894	20 c7 2a	jsr $2ac7			jsr 	BufferOutput
+.3897	a9 40		lda #$40			lda 	#NSSString 					; string type
+.3899	60		rts				rts
+.389a					_CTUnaryFunctions:
+.389a	c9 ab		cmp #$ab			cmp 	#C64_MINUS 					; negation of term.
+.389c	f0 0a		beq $38a8			beq 	_CTNegation
+.389e	a2 8a		ldx #$8a			ldx 	#UnaryTables & $FF 			; check vs unary tables.
+.38a0	a0 31		ldy #$31			ldy 	#UnaryTables >> 8
+.38a2	20 91 32	jsr $3291			jsr 	GeneratorProcess
+.38a5	90 ae		bcc $3855			bcc		_CTSyntax
+.38a7	60		rts				rts
+.38a8					_CTNegation:
+.38a8	20 23 38	jsr $3823			jsr 	CompileTerm 				; compile a term.
+.38ab	48		pha				pha
+.38ac	29 40		and #$40			and 	#NSSTypeMask 				; if not an ifloat32 of some sort.
+.38ae	c9 00		cmp #$00			cmp 	#NSSIFloat
+.38b0	d0 07		bne $38b9			bne 	_CTType 					; error
+.38b2	a9 a5		lda #$a5			lda 	#PCD_NEGATE 				; compile negate
+.38b4	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.38b7	68		pla				pla 								; return original type.
+.38b8	60		rts				rts
+.38b9					_CTType:
+.38b9	4c 69 1f	jmp $1f69		jmp	ErrorV_type
+.38bc					CommandWAIT:
+.38bc	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace
+.38bf	c9 2c		cmp #$2c			cmp 	#","
+.38c1	f0 10		beq $38d3			beq 	_CWThirdParameter
+.38c3	a9 00		lda #$00			lda 	#0
+.38c5	20 a9 2b	jsr $2ba9			jsr 	PushIntegerA
+.38c8					_CWExit:
+.38c8	a9 cb		lda #$cb			lda 	#(PCD_WAIT) >> 8
+.38ca	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.38cd	a9 95		lda #$95			lda 	#(PCD_WAIT) & $FF
+.38cf	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.38d2	60		rts				rts
+.38d3					_CWThirdParameter:
+.38d3	20 00 34	jsr $3400			jsr 	GetNext
+.38d6	20 98 2d	jsr $2d98			jsr 	CompileExpressionAtA
+.38d9	29 40		and #$40			and 	#NSSTypeMask
+.38db	c9 00		cmp #$00			cmp 	#NSSIFloat
+.38dd	f0 e9		beq $38c8			beq 	_CWExit
+.38df	4c 69 1f	jmp $1f69		jmp	ErrorV_type
+.38e2					CommandCMD:
+.38e2	a9 b0		lda #$b0			lda 	#PCD_SETCHANNEL 			; set the channel to this now forever.
+.38e4	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.38e7	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace 			; followed by a , ?
+.38ea	c9 2c		cmp #$2c			cmp 	#","
+.38ec	d0 06		bne $38f4			bne 	_CCMDExit
+.38ee	20 00 34	jsr $3400			jsr 	GetNext 					; consume comma.
+.38f1	20 91 36	jsr $3691			jsr 	CommandPRINT 				; do the print code
+.38f4					_CCMDExit:
+.38f4	60		rts				rts
+.38f5					CommandOPEN:
+.38f5	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace 			; followed by a , ?
+.38f8	c9 2c		cmp #$2c			cmp 	#","
+.38fa	d0 15		bne $3911			bne 	_COTwoDefaults
+.38fc	20 00 34	jsr $3400			jsr 	GetNext 					; consume comma
+.38ff	20 96 2d	jsr $2d96			jsr 	CompileExpressionAt0 		; what follows could be text or number.
+.3902	29 40		and #$40			and 	#NSSString 					; if a number want a string to follow
+.3904	f0 1e		beq $3924			beq 	_COThreeIntegers
+.3906	a9 00		lda #$00			lda 	#0		 					; so we have n,n,$,0 so swap !
+.3908	20 a9 2b	jsr $2ba9			jsr 	PushIntegerA
+.390b	a9 bf		lda #$bf			lda 	#(PCD_SWAP) & $FF
+.390d	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.3910	60		rts				rts
+.3911					_COTwoDefaults:
+.3911	a9 00		lda #$00			lda 	#0
+.3913	20 a9 2b	jsr $2ba9			jsr 	PushIntegerA
+.3916					_COCompileNullString:
+.3916	a9 cf		lda #$cf			lda 	#(PCD_CMD_STRING) & $FF
+.3918	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.391b	a9 00		lda #$00			lda 	#0
+.391d	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.3920	20 80 2a	jsr $2a80			jsr 	WriteCodeByte
+.3923	60		rts				rts
+.3924					_COThreeIntegers:
+.3924	20 f2 33	jsr $33f2			jsr 	LookNextNonSpace 			; is there a ,
+.3927	c9 2c		cmp #$2c			cmp 	#","
+.3929	d0 eb		bne $3916			bne 	_COCompileNullString 		; if not it is n,n,n so default filename.
+.392b	20 00 34	jsr $3400			jsr 	GetNext
+.392e	20 96 2d	jsr $2d96			jsr 	CompileExpressionAt0 		; should be a filename
+.3931	29 40		and #$40			and 	#NSSString
+.3933	f0 01		beq $3936			beq 	_COType
+.3935	60		rts				rts
+.3936					_COType:
+.3936	4c 69 1f	jmp $1f69		jmp	ErrorV_type
 
 ;******  Processing input file: _library.asm
 
-.3930					CompilerAPI:
-.3930	c9 00		cmp #$00			cmp 	#BLC_OPENIN
-.3932	f0 19		beq $394d			beq 	_CAOpenIn
-.3934	c9 01		cmp #$01			cmp 	#BLC_CLOSEIN
-.3936	f0 23		beq $395b			beq 	_CACloseIn
-.3938	c9 02		cmp #$02			cmp 	#BLC_READIN
-.393a	f0 3a		beq $3976			beq 	_CARead
-.393c	c9 03		cmp #$03			cmp 	#BLC_RESETOUT
-.393e	f0 1e		beq $395e			beq 	_CAResetOut
-.3940	c9 04		cmp #$04			cmp 	#BLC_CLOSEOUT
-.3942	f0 23		beq $3967			beq 	_CACloseOut
-.3944	c9 05		cmp #$05			cmp 	#BLC_WRITEOUT
-.3946	f0 20		beq $3968			beq 	_CAWriteByte
-.3948	c9 06		cmp #$06			cmp 	#BLC_PRINTCHAR
-.394a	f0 26		beq $3972			beq 	_CAPrintScreen
->394c	db						.byte 	$DB 						; causes a break in the emulator
-.394d					_CAOpenIn:
-.394d	a0 3a		ldy #$3a			ldy 	#SourceFile >> 8 			; name of file
-.394f	a2 6d		ldx #$6d			ldx 	#SourceFile & $FF
-.3951	20 de 39	jsr $39de			jsr 	IOOpenRead 					; open file
-.3954	20 e9 39	jsr $39e9			jsr 	IOReadByte 					; skip the 2 byte load address header
-.3957	20 e9 39	jsr $39e9			jsr 	IOReadByte
-.395a	60		rts				rts
-.395b					_CACloseIn:
-.395b	4c f8 39	jmp $39f8			jmp 	IOReadClose
-.395e					_CAResetOut:
-.395e	a9 00		lda #$00			lda 	#((FreeMemory) & $FF)
-.3960	85 2a		sta $2a				sta 	0+objPtr
-.3962	a9 3b		lda #$3b			lda 	#((FreeMemory) >> 8) & $FF
-.3964	85 2b		sta $2b				sta 	1+objPtr
-.3966	60		rts				rts
-.3967					_CACloseOut:
-.3967	60		rts				rts
-.3968					_CAWriteByte:
-.3968	8a		txa				txa
-.3969	92 2a		sta ($2a)			sta 	(objPtr)
-.396b	e6 2a		inc $2a				inc 	objPtr
-.396d	d0 02		bne $3971			bne 	_HWOWBNoCarry
-.396f	e6 2b		inc $2b				inc 	objPtr+1
-.3971					_HWOWBNoCarry:
-.3971	60		rts				rts
-.3972					_CAPrintScreen:
-.3972	8a		txa				txa
-.3973	4c d2 ff	jmp $ffd2			jmp 	$FFD2
-.3976					_CARead:
-.3976	20 e9 39	jsr $39e9			jsr 	IOReadByte 				; copy the address of next into the buffer
-.3979	8d cf 06	sta $06cf			sta 	SourceLine+0
-.397c	20 e9 39	jsr $39e9			jsr 	IOReadByte
-.397f	8d d0 06	sta $06d0			sta 	SourceLine+1
-.3982	0d cf 06	ora $06cf			ora 	sourceLine				; if both were zero, exit with CC (e.g. fail)
-.3985	18		clc				clc
-.3986	f0 1e		beq $39a6			beq		_CARExit
-.3988	20 e9 39	jsr $39e9			jsr 	IOReadByte 				; read the line # into the buffer.
-.398b	8d d1 06	sta $06d1			sta 	SourceLine+2
-.398e	20 e9 39	jsr $39e9			jsr 	IOReadByte
-.3991	8d d2 06	sta $06d2			sta 	SourceLine+3
-.3994	a2 04		ldx #$04			ldx 	#4 						; read the body of the line.
-.3996					_CAReadLine:
-.3996	20 e9 39	jsr $39e9			jsr 	IOReadByte 				; now keep copying to EOL
-.3999	9d cf 06	sta $06cf,x			sta 	SourceLine,x
-.399c	e8		inx				inx
-.399d	c9 00		cmp #$00			cmp 	#0
-.399f	d0 f5		bne $3996			bne 	_CAReadLine
-.39a1	38		sec				sec 							; read a line okay
-.39a2	a0 06		ldy #$06			ldy 	#SourceLine >> 8
-.39a4	a2 cf		ldx #$cf			ldx 	#SourceLine & $FF
-.39a6					_CARExit:
-.39a6	60		rts				rts
+.3939					CompilerAPI:
+.3939	c9 00		cmp #$00			cmp 	#BLC_OPENIN
+.393b	f0 19		beq $3956			beq 	_CAOpenIn
+.393d	c9 01		cmp #$01			cmp 	#BLC_CLOSEIN
+.393f	f0 23		beq $3964			beq 	_CACloseIn
+.3941	c9 02		cmp #$02			cmp 	#BLC_READIN
+.3943	f0 3a		beq $397f			beq 	_CARead
+.3945	c9 03		cmp #$03			cmp 	#BLC_RESETOUT
+.3947	f0 1e		beq $3967			beq 	_CAResetOut
+.3949	c9 04		cmp #$04			cmp 	#BLC_CLOSEOUT
+.394b	f0 23		beq $3970			beq 	_CACloseOut
+.394d	c9 05		cmp #$05			cmp 	#BLC_WRITEOUT
+.394f	f0 20		beq $3971			beq 	_CAWriteByte
+.3951	c9 06		cmp #$06			cmp 	#BLC_PRINTCHAR
+.3953	f0 26		beq $397b			beq 	_CAPrintScreen
+>3955	db						.byte 	$DB 						; causes a break in the emulator
+.3956					_CAOpenIn:
+.3956	a0 3a		ldy #$3a			ldy 	#SourceFile >> 8 			; name of file
+.3958	a2 76		ldx #$76			ldx 	#SourceFile & $FF
+.395a	20 e7 39	jsr $39e7			jsr 	IOOpenRead 					; open file
+.395d	20 f2 39	jsr $39f2			jsr 	IOReadByte 					; skip the 2 byte load address header
+.3960	20 f2 39	jsr $39f2			jsr 	IOReadByte
+.3963	60		rts				rts
+.3964					_CACloseIn:
+.3964	4c 01 3a	jmp $3a01			jmp 	IOReadClose
+.3967					_CAResetOut:
+.3967	a9 00		lda #$00			lda 	#((FreeMemory) & $FF)
+.3969	85 2a		sta $2a				sta 	0+objPtr
+.396b	a9 3b		lda #$3b			lda 	#((FreeMemory) >> 8) & $FF
+.396d	85 2b		sta $2b				sta 	1+objPtr
+.396f	60		rts				rts
+.3970					_CACloseOut:
+.3970	60		rts				rts
+.3971					_CAWriteByte:
+.3971	8a		txa				txa
+.3972	92 2a		sta ($2a)			sta 	(objPtr)
+.3974	e6 2a		inc $2a				inc 	objPtr
+.3976	d0 02		bne $397a			bne 	_HWOWBNoCarry
+.3978	e6 2b		inc $2b				inc 	objPtr+1
+.397a					_HWOWBNoCarry:
+.397a	60		rts				rts
+.397b					_CAPrintScreen:
+.397b	8a		txa				txa
+.397c	4c d2 ff	jmp $ffd2			jmp 	$FFD2
+.397f					_CARead:
+.397f	20 f2 39	jsr $39f2			jsr 	IOReadByte 				; copy the address of next into the buffer
+.3982	8d cf 06	sta $06cf			sta 	SourceLine+0
+.3985	20 f2 39	jsr $39f2			jsr 	IOReadByte
+.3988	8d d0 06	sta $06d0			sta 	SourceLine+1
+.398b	0d cf 06	ora $06cf			ora 	sourceLine				; if both were zero, exit with CC (e.g. fail)
+.398e	18		clc				clc
+.398f	f0 1e		beq $39af			beq		_CARExit
+.3991	20 f2 39	jsr $39f2			jsr 	IOReadByte 				; read the line # into the buffer.
+.3994	8d d1 06	sta $06d1			sta 	SourceLine+2
+.3997	20 f2 39	jsr $39f2			jsr 	IOReadByte
+.399a	8d d2 06	sta $06d2			sta 	SourceLine+3
+.399d	a2 04		ldx #$04			ldx 	#4 						; read the body of the line.
+.399f					_CAReadLine:
+.399f	20 f2 39	jsr $39f2			jsr 	IOReadByte 				; now keep copying to EOL
+.39a2	9d cf 06	sta $06cf,x			sta 	SourceLine,x
+.39a5	e8		inx				inx
+.39a6	c9 00		cmp #$00			cmp 	#0
+.39a8	d0 f5		bne $399f			bne 	_CAReadLine
+.39aa	38		sec				sec 							; read a line okay
+.39ab	a0 06		ldy #$06			ldy 	#SourceLine >> 8
+.39ad	a2 cf		ldx #$cf			ldx 	#SourceLine & $FF
+.39af					_CARExit:
+.39af	60		rts				rts
 .06cf					SourceLine:
 >06cf							.fill 	256
-.39a7					WriteObjectCode:
-.39a7	20 1a 08	jsr $081a			jsr 	PatchOutCompile 			; makes it run the runtime on reload
-.39aa	a0 3a		ldy #$3a			ldy 	#ObjectFile >> 8
-.39ac	a2 62		ldx #$62			ldx 	#ObjectFile & $FF
-.39ae	20 d4 3a	jsr $3ad4			jsr 	IOOpenWrite 				; open write
-.39b1	a9 01		lda #$01			lda 	#1 							; write out the load address $0801
-.39b3	20 df 3a	jsr $3adf			jsr 	IOWriteByte
-.39b6	a9 08		lda #$08			lda 	#8
-.39b8	20 df 3a	jsr $3adf			jsr 	IOWriteByte
-.39bb	a9 01		lda #$01			lda 	#((StartBasicProgram) & $FF)
-.39bd	85 2c		sta $2c				sta 	0+zTemp0
-.39bf	a9 08		lda #$08			lda 	#((StartBasicProgram) >> 8) & $FF
-.39c1	85 2d		sta $2d				sta 	1+zTemp0
-.39c3					_WOCLoop:
-.39c3	b2 2c		lda ($2c)			lda 	(zTemp0) 					; write code
-.39c5	20 df 3a	jsr $3adf			jsr 	IOWriteByte
-.39c8	e6 2c		inc $2c				inc 	zTemp0 						; advance pointer
-.39ca	d0 02		bne $39ce			bne 	_WOCSkip
-.39cc	e6 2d		inc $2d				inc 	zTemp0+1
-.39ce					_WOCSkip:
-.39ce	a5 2c		lda $2c				lda 	zTemp0 						; check end
-.39d0	c5 2a		cmp $2a				cmp 	objPtr
-.39d2	d0 ef		bne $39c3			bne 	_WOCLoop
-.39d4	a5 2d		lda $2d				lda 	zTemp0+1
-.39d6	c5 2b		cmp $2b				cmp 	objPtr+1
-.39d8	d0 e9		bne $39c3			bne 	_WOCLoop
-.39da	20 f8 39	jsr $39f8			jsr 	IOWriteClose 				; close the file.
-.39dd	60		rts				rts
-.39de					IOOpenRead:
-.39de	a9 52		lda #$52			lda 	#'R' 						; read.
-.39e0	20 01 3a	jsr $3a01			jsr 	IOSetFileName 				; set up name/LFS
-.39e3	a2 03		ldx #$03			ldx	 	#3 							; use file 3 for reading
-.39e5	20 c6 ff	jsr $ffc6			jsr 	$FFC6 						; CHKIN
-.39e8	60		rts				rts
-.39e9					IOReadByte:
-.39e9	da		phx				phx
-.39ea	5a		phy				phy
-.39eb	20 b7 ff	jsr $ffb7			jsr 	$FFB7 						; read ST
-.39ee	38		sec				sec
-.39ef	d0 04		bne $39f5			bne 	_IORExit
-.39f1	20 cf ff	jsr $ffcf			jsr 	$FFCF 						; read a byte
-.39f4	18		clc				clc 								; status OK.
-.39f5					_IORExit:
-.39f5	7a		ply				ply
-.39f6	fa		plx				plx
-.39f7	60		rts				rts
-.39f8					IOReadClose:
-.39f8					IOWriteClose:
-.39f8	a9 03		lda #$03			lda 	#3 							; CLOSE# 3
-.39fa	20 c3 ff	jsr $ffc3			jsr 	$FFC3
-.39fd	20 cc ff	jsr $ffcc			jsr 	$FFCC 						; CLRCHN
+.39b0					WriteObjectCode:
+.39b0	20 1a 08	jsr $081a			jsr 	PatchOutCompile 			; makes it run the runtime on reload
+.39b3	a0 3a		ldy #$3a			ldy 	#ObjectFile >> 8
+.39b5	a2 6b		ldx #$6b			ldx 	#ObjectFile & $FF
+.39b7	20 dd 3a	jsr $3add			jsr 	IOOpenWrite 				; open write
+.39ba	a9 01		lda #$01			lda 	#1 							; write out the load address $0801
+.39bc	20 e8 3a	jsr $3ae8			jsr 	IOWriteByte
+.39bf	a9 08		lda #$08			lda 	#8
+.39c1	20 e8 3a	jsr $3ae8			jsr 	IOWriteByte
+.39c4	a9 01		lda #$01			lda 	#((StartBasicProgram) & $FF)
+.39c6	85 2c		sta $2c				sta 	0+zTemp0
+.39c8	a9 08		lda #$08			lda 	#((StartBasicProgram) >> 8) & $FF
+.39ca	85 2d		sta $2d				sta 	1+zTemp0
+.39cc					_WOCLoop:
+.39cc	b2 2c		lda ($2c)			lda 	(zTemp0) 					; write code
+.39ce	20 e8 3a	jsr $3ae8			jsr 	IOWriteByte
+.39d1	e6 2c		inc $2c				inc 	zTemp0 						; advance pointer
+.39d3	d0 02		bne $39d7			bne 	_WOCSkip
+.39d5	e6 2d		inc $2d				inc 	zTemp0+1
+.39d7					_WOCSkip:
+.39d7	a5 2c		lda $2c				lda 	zTemp0 						; check end
+.39d9	c5 2a		cmp $2a				cmp 	objPtr
+.39db	d0 ef		bne $39cc			bne 	_WOCLoop
+.39dd	a5 2d		lda $2d				lda 	zTemp0+1
+.39df	c5 2b		cmp $2b				cmp 	objPtr+1
+.39e1	d0 e9		bne $39cc			bne 	_WOCLoop
+.39e3	20 01 3a	jsr $3a01			jsr 	IOWriteClose 				; close the file.
+.39e6	60		rts				rts
+.39e7					IOOpenRead:
+.39e7	a9 52		lda #$52			lda 	#'R' 						; read.
+.39e9	20 0a 3a	jsr $3a0a			jsr 	IOSetFileName 				; set up name/LFS
+.39ec	a2 03		ldx #$03			ldx	 	#3 							; use file 3 for reading
+.39ee	20 c6 ff	jsr $ffc6			jsr 	$FFC6 						; CHKIN
+.39f1	60		rts				rts
+.39f2					IOReadByte:
+.39f2	da		phx				phx
+.39f3	5a		phy				phy
+.39f4	20 b7 ff	jsr $ffb7			jsr 	$FFB7 						; read ST
+.39f7	38		sec				sec
+.39f8	d0 04		bne $39fe			bne 	_IORExit
+.39fa	20 cf ff	jsr $ffcf			jsr 	$FFCF 						; read a byte
+.39fd	18		clc				clc 								; status OK.
+.39fe					_IORExit:
+.39fe	7a		ply				ply
+.39ff	fa		plx				plx
 .3a00	60		rts				rts
-.3a01					IOSetFileName:
-.3a01	48		pha				pha 								; save R/W
-.3a02	86 2c		stx $2c				stx 	zTemp0
-.3a04	84 2d		sty $2d				sty 	zTemp0+1
-.3a06	a0 ff		ldy #$ff			ldy 	#$FF 						; copy name given
-.3a08					_IOSCopy:
-.3a08	c8		iny				iny 								; pre-increment copy
-.3a09	b1 2c		lda ($2c),y			lda 	(zTemp0),y
-.3a0b	99 cf 07	sta $07cf,y			sta 	IONameBuffer,y
-.3a0e	d0 f8		bne $3a08			bne 	_IOSCopy
-.3a10	99 d3 07	sta $07d3,y			sta 	IONameBuffer+4,y
-.3a13	a9 2c		lda #$2c			lda 	#',' 						; append ,S,[R|W]
-.3a15	99 cf 07	sta $07cf,y			sta 	IONameBuffer+0,y
-.3a18	99 d1 07	sta $07d1,y			sta 	IONameBuffer+2,y
-.3a1b	a9 53		lda #$53			lda 	#'S'
-.3a1d	99 d0 07	sta $07d0,y			sta 	IONameBuffer+1,y
-.3a20	68		pla				pla 								; write R/W out
-.3a21	99 d2 07	sta $07d2,y			sta 	IONameBuffer+3,y
-.3a24	98		tya				tya 								; length of name to A
-.3a25	18		clc				clc
-.3a26	69 04		adc #$04			adc 	#4 							; we added 4 characters.
-.3a28	a2 cf		ldx #$cf			ldx 	#IONameBuffer & $FF			; name address to YX
-.3a2a	a0 07		ldy #$07			ldy 	#IONameBuffer >> 8
-.3a2c	20 bd ff	jsr $ffbd		    jsr 	$FFBD          				; call SETNAM
-.3a2f	a9 03		lda #$03	    	lda 	#3 							; set LFS to 3,8,3
-.3a31	a2 08		ldx #$08			ldx 	#8
-.3a33	a0 03		ldy #$03			ldy 	#3
-.3a35	20 ba ff	jsr $ffba			jsr 	$FFBA
-.3a38	20 c0 ff	jsr $ffc0			jsr 	$FFC0 						; OPEN
-.3a3b	60		rts				rts
+.3a01					IOReadClose:
+.3a01					IOWriteClose:
+.3a01	a9 03		lda #$03			lda 	#3 							; CLOSE# 3
+.3a03	20 c3 ff	jsr $ffc3			jsr 	$FFC3
+.3a06	20 cc ff	jsr $ffcc			jsr 	$FFCC 						; CLRCHN
+.3a09	60		rts				rts
+.3a0a					IOSetFileName:
+.3a0a	48		pha				pha 								; save R/W
+.3a0b	86 2c		stx $2c				stx 	zTemp0
+.3a0d	84 2d		sty $2d				sty 	zTemp0+1
+.3a0f	a0 ff		ldy #$ff			ldy 	#$FF 						; copy name given
+.3a11					_IOSCopy:
+.3a11	c8		iny				iny 								; pre-increment copy
+.3a12	b1 2c		lda ($2c),y			lda 	(zTemp0),y
+.3a14	99 cf 07	sta $07cf,y			sta 	IONameBuffer,y
+.3a17	d0 f8		bne $3a11			bne 	_IOSCopy
+.3a19	99 d3 07	sta $07d3,y			sta 	IONameBuffer+4,y
+.3a1c	a9 2c		lda #$2c			lda 	#',' 						; append ,S,[R|W]
+.3a1e	99 cf 07	sta $07cf,y			sta 	IONameBuffer+0,y
+.3a21	99 d1 07	sta $07d1,y			sta 	IONameBuffer+2,y
+.3a24	a9 53		lda #$53			lda 	#'S'
+.3a26	99 d0 07	sta $07d0,y			sta 	IONameBuffer+1,y
+.3a29	68		pla				pla 								; write R/W out
+.3a2a	99 d2 07	sta $07d2,y			sta 	IONameBuffer+3,y
+.3a2d	98		tya				tya 								; length of name to A
+.3a2e	18		clc				clc
+.3a2f	69 04		adc #$04			adc 	#4 							; we added 4 characters.
+.3a31	a2 cf		ldx #$cf			ldx 	#IONameBuffer & $FF			; name address to YX
+.3a33	a0 07		ldy #$07			ldy 	#IONameBuffer >> 8
+.3a35	20 bd ff	jsr $ffbd		    jsr 	$FFBD          				; call SETNAM
+.3a38	a9 03		lda #$03	    	lda 	#3 							; set LFS to 3,8,3
+.3a3a	a2 08		ldx #$08			ldx 	#8
+.3a3c	a0 03		ldy #$03			ldy 	#3
+.3a3e	20 ba ff	jsr $ffba			jsr 	$FFBA
+.3a41	20 c0 ff	jsr $ffc0			jsr 	$FFC0 						; OPEN
+.3a44	60		rts				rts
 .07cf					IONameBuffer:
 >07cf							.fill 	64
-.3a3c					CompileCode:
-.3a3c	a2 00		ldx #$00			ldx 	#0
-.3a3e	bd 78 3a	lda $3a78,x	_Prompt:lda 	Prompt,x
-.3a41	20 d2 ff	jsr $ffd2			jsr 	$FFD2
-.3a44	e8		inx				inx
-.3a45	c9 00		cmp #$00			cmp 	#0
-.3a47	d0 f5		bne $3a3e			bne 	_Prompt
-.3a49	a2 5e		ldx #$5e			ldx 	#APIDesc & $FF
-.3a4b	a0 3a		ldy #$3a			ldy 	#APIDesc >> 8
-.3a4d	20 f7 2a	jsr $2af7			jsr 	StartCompiler
-.3a50	20 a7 39	jsr $39a7			jsr 	WriteObjectCode
-.3a53	a9 4f		lda #$4f			lda 	#"O"
-.3a55	20 d2 ff	jsr $ffd2			jsr 	$FFD2
-.3a58	a9 4b		lda #$4b			lda 	#"K"
-.3a5a	20 d2 ff	jsr $ffd2			jsr 	$FFD2
-.3a5d	60		rts				rts
-.3a5e					APIDesc:
->3a5e	30 39						.word 	CompilerAPI 				; the compiler API Implementeation
->3a60	80						.byte 	$80 						; start of workspace for compiler $8000
->3a61	9f						.byte 	$9F							; end of workspace for compiler $9F00
-.3a62					ObjectFile:
->3a62	4f 42 4a 45 43 54 2e 50				.text 	'OBJECT.PRG',0
->3a6a	52 47 00
-.3a6d					SourceFile:
->3a6d	53 4f 55 52 43 45 2e 50				.text 	'SOURCE.PRG',0
->3a75	52 47 00
-.3a78					Prompt:
->3a78	2a 2a 2a 20 42 4c 49 54				.text 	'*** BLITZ (ALPHA 14-10-23) ***',13,13
->3a80	5a 20 28 41 4c 50 48 41 20 31 34 2d 31 30 2d 32
->3a90	33 29 20 2a 2a 2a 0d 0d
->3a98	42 55 47 53 20 2d 3e 20				.text 	'BUGS -> HTTPS://GITHUB.COM/PAULSCOTTROBSON/BLITZ-COMPILER',13,13,0
->3aa0	48 54 54 50 53 3a 2f 2f 47 49 54 48 55 42 2e 43
->3ab0	4f 4d 2f 50 41 55 4c 53 43 4f 54 54 52 4f 42 53
->3ac0	4f 4e 2f 42 4c 49 54 5a 2d 43 4f 4d 50 49 4c 45
->3ad0	52 0d 0d 00
-.3ad4					IOOpenWrite:
-.3ad4	a9 57		lda #$57			lda 	#'W'			 			; write
-.3ad6	20 01 3a	jsr $3a01			jsr 	IOSetFileName 				; set up name/LFS
-.3ad9	a2 03		ldx #$03			ldx	 	#3 							; use file 3 for writing
-.3adb	20 c9 ff	jsr $ffc9			jsr 	$FFC9 						; CHKOUT
-.3ade	60		rts				rts
-.3adf					IOWriteByte:
-.3adf	48		pha				pha
-.3ae0	da		phx				phx
-.3ae1	5a		phy				phy
-.3ae2	20 d2 ff	jsr $ffd2			jsr 	$FFD2
-.3ae5	7a		ply				ply
-.3ae6	fa		plx				plx
-.3ae7	68		pla				pla
-.3ae8	60		rts				rts
+.3a45					CompileCode:
+.3a45	a2 00		ldx #$00			ldx 	#0
+.3a47	bd 81 3a	lda $3a81,x	_Prompt:lda 	Prompt,x
+.3a4a	20 d2 ff	jsr $ffd2			jsr 	$FFD2
+.3a4d	e8		inx				inx
+.3a4e	c9 00		cmp #$00			cmp 	#0
+.3a50	d0 f5		bne $3a47			bne 	_Prompt
+.3a52	a2 67		ldx #$67			ldx 	#APIDesc & $FF
+.3a54	a0 3a		ldy #$3a			ldy 	#APIDesc >> 8
+.3a56	20 f7 2a	jsr $2af7			jsr 	StartCompiler
+.3a59	20 b0 39	jsr $39b0			jsr 	WriteObjectCode
+.3a5c	a9 4f		lda #$4f			lda 	#"O"
+.3a5e	20 d2 ff	jsr $ffd2			jsr 	$FFD2
+.3a61	a9 4b		lda #$4b			lda 	#"K"
+.3a63	20 d2 ff	jsr $ffd2			jsr 	$FFD2
+.3a66	60		rts				rts
+.3a67					APIDesc:
+>3a67	39 39						.word 	CompilerAPI 				; the compiler API Implementeation
+>3a69	80						.byte 	$80 						; start of workspace for compiler $8000
+>3a6a	9f						.byte 	$9F							; end of workspace for compiler $9F00
+.3a6b					ObjectFile:
+>3a6b	4f 42 4a 45 43 54 2e 50				.text 	'OBJECT.PRG',0
+>3a73	52 47 00
+.3a76					SourceFile:
+>3a76	53 4f 55 52 43 45 2e 50				.text 	'SOURCE.PRG',0
+>3a7e	52 47 00
+.3a81					Prompt:
+>3a81	2a 2a 2a 20 42 4c 49 54				.text 	'*** BLITZ (ALPHA 14-10-23) ***',13,13
+>3a89	5a 20 28 41 4c 50 48 41 20 31 34 2d 31 30 2d 32
+>3a99	33 29 20 2a 2a 2a 0d 0d
+>3aa1	42 55 47 53 20 2d 3e 20				.text 	'BUGS -> HTTPS://GITHUB.COM/PAULSCOTTROBSON/BLITZ-COMPILER',13,13,0
+>3aa9	48 54 54 50 53 3a 2f 2f 47 49 54 48 55 42 2e 43
+>3ab9	4f 4d 2f 50 41 55 4c 53 43 4f 54 54 52 4f 42 53
+>3ac9	4f 4e 2f 42 4c 49 54 5a 2d 43 4f 4d 50 49 4c 45
+>3ad9	52 0d 0d 00
+.3add					IOOpenWrite:
+.3add	a9 57		lda #$57			lda 	#'W'			 			; write
+.3adf	20 0a 3a	jsr $3a0a			jsr 	IOSetFileName 				; set up name/LFS
+.3ae2	a2 03		ldx #$03			ldx	 	#3 							; use file 3 for writing
+.3ae4	20 c9 ff	jsr $ffc9			jsr 	$FFC9 						; CHKOUT
+.3ae7	60		rts				rts
+.3ae8					IOWriteByte:
+.3ae8	48		pha				pha
+.3ae9	da		phx				phx
+.3aea	5a		phy				phy
+.3aeb	20 d2 ff	jsr $ffd2			jsr 	$FFD2
+.3aee	7a		ply				ply
+.3aef	fa		plx				plx
+.3af0	68		pla				pla
+.3af1	60		rts				rts
 
 ;******  Processing input file: source/main/zzfree.footer
 
->3ae9							.align 	256
+>3af2							.align 	256
 .3b00					FreeMemory:
 
 ;******  End of listing
