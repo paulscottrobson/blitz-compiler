@@ -17,7 +17,7 @@ endif
 
 all: decode
 
-BASICPRG = Z07_MYSTIFY.PRG
+BASICPRG = Z06_LIFE1.PRG
 
 libraries:
 	make -B -C ..$(S).. libs release

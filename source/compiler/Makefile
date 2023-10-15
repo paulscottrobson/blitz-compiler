@@ -29,6 +29,7 @@ prelim: tokenise
 
 tokenise:
 	$(PYTHON) $(BINDIR)tokenise.zip $(BASICSRC) testing$(S)code$(S)tokenised.dat
+	#$(CCOPY) build$(S)PROTEUS7.PRG testing$(S)code$(S)tokenised.dat
 
 build: prelim
 	$(ASM) testing$(S)testing.asm $(BINDIR)compiler.library $(BINDIR)common.library $(BINDIR)ifloat32.library testing$(S)testend.asm

@@ -17,7 +17,7 @@ endif
 
 all: decode
 
-BASICPRG = Z07_MYSTIFY.PRG
+BASICPRG = Z03_PROTEUS-DEMO-UPDT.PRG
 
 libraries:
 	make -B -C ..$(S).. libs release

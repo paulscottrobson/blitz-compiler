@@ -3614,7 +3614,10 @@ CommandPRINT:
 		jsr 	_CPAtEnd 					; check for : and EOL
 		bcs 	_CPExitCR 					; exit with CR
 		;
-		;		TODO check TAB( and SPC(
+		cmp 	#C64_TABLB 					; TAB( found
+		beq 	_CPHaveTabSpcFunc
+		cmp 	#C64_SPCLB 					; SPC( found
+		beq 	_CPHaveTabSpcFunc
 		;
 		jsr 	CompileExpressionAt0 		; so it is something to print
 		ldx 	#PCD_PRINTCMD_S
@@ -3649,7 +3652,35 @@ _CPExitCR:
 		lda 	#PCD_PRINTCMD_CHR
 		jsr 	WriteCodeByte
 		rts
+		;
+		;		TAB( and SPC( come here
+		;
+_CPHaveTabSpcFunc:
+		jsr 	GetNextNonSpace 			; get the TAB( or SPC(
+		pha 								; save it.
+		jsr 	CompileExpressionAt0 		; compile expression, the TAB or SPC size.
+		and 	#NSSTypeMask 				; check number.
+		cmp  	#NSSIFloat
+		bne 	_CPType
+		jsr 	GetNextNonSpace 			; get next skipping spaces
+		cmp 	#")"						; check closing bracket.
+		bne 	_CPSyntax	
+		pla
+		cmp 	#C64_TABLB 					; output SPC or POS command accordingly.
+		beq 	_CPIsTabFunc
+		lda 	#PCD_PRINTCMD_SPC
+		jsr 	WriteCodeByte
+		bra 	CommandPRINT
+_CPIsTabFunc:
+		lda 	#PCD_PRINTCMD_POS
+		jsr 	WriteCodeByte
+		bra 	CommandPRINT
 
+_CPSyntax:		
+		.error_syntax
+
+_CPType:
+		.error_type
 ;
 ;		Check ending character, is it EOS or :
 ;
