@@ -7520,15 +7520,6 @@ CommandLocate: ;; [!locate]
 		pla
 		.exitcmd
 
-_CLOutputXA: 								; output X A's, 1 based.
-		dex
-		beq 	_CLOExit
-		bmi 	_CLOExit
-		jsr 	XPrintCharacterToChannel
-		bra 	_CLOutputXA
-_CLOExit:
-		rts		
-
 ; ************************************************************************************************
 ;
 ;										Color F[,B]
@@ -7553,10 +7544,12 @@ _CCNoBGR:
 		.exitcmd
 
 _CCSetColour:
+		phx 								; peserve X
 		and 	#15 						; look up in control codes table.
 		tax
 		lda 	_CCCommandTable,x
 		jsr 	XPrintCharacterToChannel
+		plx
 		rts
 
 _CCCommandTable:
